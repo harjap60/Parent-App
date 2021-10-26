@@ -10,16 +10,17 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.ParentApp">
         <activity
-            android:name=".ChildListActivity"
+            android:name=".ui.ChildListActivity"
+            android:exported="false"
+            android:theme="@style/Theme.ParentApp.NoActionBar"/>
+        <activity
+            android:name=".ui.TimerActivity"
             android:exported="false" />
         <activity
-            android:name=".TimerActivity"
+            android:name=".ui.FlipActivity"
             android:exported="false" />
         <activity
-            android:name=".FlipActivity"
-            android:exported="false" />
-        <activity
-            android:name=".MainActivity"
+            android:name=".ui.MainActivity"
             android:exported="true"
             android:label="@string/app_name"
             android:theme="@style/Theme.ParentApp.NoActionBar">
