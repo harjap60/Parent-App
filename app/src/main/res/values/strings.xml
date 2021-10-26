@@ -5,4 +5,10 @@
     <!-- Strings used for CHILD LIST ACTIVITY -->
     <string name="child_list_activity_toolbar_label">Child List</string>
     <!-- ==================================== -->
+
+    <!-- Strings used for ADD CHILD ACTIVITY -->
+    <string name="add_child">Add Child</string>
+    <string name="enter_name_child_here">Enter name here</string>
+    <string name="child_name">Child name</string>
+    <!-- ==================================== -->
 </resources>

@@ -10,9 +10,12 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.ParentApp">
         <activity
+            android:name=".ui.AddChildActivity"
+            android:exported="false" />
+        <activity
             android:name=".ui.ChildListActivity"
             android:exported="false"
-            android:theme="@style/Theme.ParentApp.NoActionBar"/>
+            android:theme="@style/Theme.ParentApp.NoActionBar" />
         <activity
             android:name=".ui.TimerActivity"
             android:exported="false" />
