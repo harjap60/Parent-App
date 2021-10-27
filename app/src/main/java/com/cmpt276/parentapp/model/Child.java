@@ -1,13 +1,13 @@
 package com.cmpt276.parentapp.model;
 
 public class Child {
-    private String kidName;
+    private String childName;
 
-    public Child(String kidName){
-        this.kidName = kidName;
+    public Child(String childName){
+        this.childName = childName;
     }
 
-    public String getKidName(){
-        return kidName;
+    public String getChildName(){
+        return childName;
     }
 }

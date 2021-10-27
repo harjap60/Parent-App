@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import android.os.Bundle;
+import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
@@ -25,14 +26,14 @@ public class ChildListActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_child_list);
 
-        setUpToolbar();
-        setUpNewGameButton();
-
         manager = ChildManager.getInstance();
 
+        setUpToolbar();
+        setUpNewGameButton();
         populateListView();
     }
 
+    @Override
     protected void onResume(){
         super.onResume();
         updateUI();
@@ -42,24 +43,33 @@ public class ChildListActivity extends AppCompatActivity {
     }
 
     private void populateListView(){
+        // Build the adapter
         ArrayAdapter<Child> adapter = new MyListAdapter();
+
+        // Configure the list view
         ListView childList = findViewById(R.id.child_list_view);
         childList.setAdapter(adapter);
     }
 
+    // MyListAdapter that will help make the complex list view
     private class MyListAdapter extends  ArrayAdapter<Child>{
         public MyListAdapter(){
             super(ChildListActivity.this, R.layout.child_name_view, manager.getAllChildren());
         }
         public View getView(int position, View convertView, ViewGroup parent){
+
+            // make sure we have a view to work with (may have been given null)
             View itemView = convertView;
             if(itemView == null){
                 itemView = getLayoutInflater().inflate(R.layout.child_name_view, parent, false);
             }
 
+            // Find the child to work with
             Child currentChild = manager.retrieveChildByIndex(position);
+
+            // Fill the view
             TextView childNameText = itemView.findViewById(R.id.child_name_text_view);
-            childNameText.setText(currentChild.getKidName());
+            childNameText.setText(currentChild.getChildName());
 
             return itemView;
         }

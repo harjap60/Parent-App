@@ -16,7 +16,7 @@ public class ChildManager {
         return instance;
     }
 
-    public void addKid(Child child){
+    public void addChild(Child child){
         children.add(child);
     }
 

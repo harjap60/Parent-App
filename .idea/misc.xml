@@ -3,13 +3,20 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
-        <entry key="app/src/main/res/layout/activity_add_child.xml" value="0.35572916666666665" />
-        <entry key="app/src/main/res/layout/activity_child_list.xml" value="0.22" />
-        <entry key="app/src/main/res/layout/activity_flip.xml" value="0.19791666666666666" />
-        <entry key="app/src/main/res/layout/activity_main.xml" value="0.19791666666666666" />
-        <entry key="app/src/main/res/layout/activity_timer.xml" value="0.19791666666666666" />
-        <entry key="app/src/main/res/layout/child_list_view.xml" value="0.19427083333333334" />
-        <entry key="app/src/main/res/layout/child_name_view.xml" value="0.1" />
+        <entry key="..\:/Users/divij/AndroidStudioProjects/ParentApp/app/src/main/res/layout/activity_add_child.xml" value="0.25416666666666665" />
+        <entry key="..\:/Users/divij/AndroidStudioProjects/ParentApp/app/src/main/res/layout/activity_child_list.xml" value="0.25416666666666665" />
+        <entry key="..\:/Users/divij/AndroidStudioProjects/ParentApp/app/src/main/res/layout/activity_flip.xml" value="0.25416666666666665" />
+        <entry key="..\:/Users/divij/AndroidStudioProjects/ParentApp/app/src/main/res/layout/activity_main.xml" value="0.25416666666666665" />
+        <entry key="..\:/Users/divij/AndroidStudioProjects/ParentApp/app/src/main/res/layout/activity_timer.xml" value="0.25416666666666665" />
+        <entry key="..\:/Users/divij/AndroidStudioProjects/ParentApp/app/src/main/res/layout/child_name_view.xml" value="0.25416666666666665" />
+        <entry key="..\:/Users/divij/AndroidStudioProjects/ParentApp/app/src/main/res/menu/menu_add_child.xml" value="0.25416666666666665" />
+        <entry key="..\:/Users/divij/AndroidStudioProjects/ParentApp/app/src/main/res/menu/menu_main.xml" value="0.25416666666666665" />
+        <entry key="app/src/main/res/layout/activity_child_list.xml" value="0.21510416666666668" />
+        <entry key="app/src/main/res/layout/activity_flip.xml" value="0.2907692307692308" />
+        <entry key="app/src/main/res/layout/activity_main.xml" value="0.30512820512820515" />
+        <entry key="app/src/main/res/layout/activity_timer.xml" value="0.28125" />
+        <entry key="app/src/main/res/layout/content_main.xml" value="0.30512820512820515" />
+        <entry key="app/src/main/res/layout/fragment_first.xml" value="0.30512820512820515" />
       </map>
     </option>
   </component>

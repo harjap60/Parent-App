@@ -11,7 +11,9 @@
         android:theme="@style/Theme.ParentApp">
         <activity
             android:name=".ui.AddChildActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:theme="@style/Theme.ParentApp.NoActionBar"
+            android:parentActivityName=".ui.ChildListActivity"/>
         <activity
             android:name=".ui.ChildListActivity"
             android:exported="false"

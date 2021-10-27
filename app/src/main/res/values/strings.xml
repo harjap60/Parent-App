@@ -8,7 +8,15 @@
 
     <!-- Strings used for ADD CHILD ACTIVITY -->
     <string name="add_child">Add Child</string>
-    <string name="enter_name_child_here">Enter name here</string>
+    <string name="hint_enter_child_name">Enter name</string>
     <string name="child_name">Child name</string>
+    <string name="add_child_activity_toolbar_label">Add new child</string>
     <!-- ==================================== -->
+
+    <!-- Strings used for ALERT DIALOG BOX -->
+    <string name="warning_message">Warning...</string>
+    <string name="empty_name">The name is empty!!!</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+    <!-- ================================= -->
 </resources>
