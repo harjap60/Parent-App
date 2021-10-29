@@ -35,12 +35,15 @@ public class FlipActivity extends AppCompatActivity {
                 coinFlip.start();
                 final ObjectAnimator firstAnimation = ObjectAnimator.ofFloat(imageView, "scaleY", 1f, 0f);
                 final ObjectAnimator secondAnimation = ObjectAnimator.ofFloat(imageView, "scaleY", 0f, 1f);
+
                 //50 = 2.5 seconds
                 firstAnimation.setDuration(50);
                 //Number of flips the coin does in the duration
                 firstAnimation.setRepeatCount(100);
+
                 firstAnimation.setInterpolator(new DecelerateInterpolator());
                 secondAnimation.setInterpolator(new AccelerateDecelerateInterpolator());
+
                 firstAnimation.addListener(new AnimatorListenerAdapter() {
                     @Override
                     public void onAnimationEnd(Animator animation) {
@@ -54,6 +57,7 @@ public class FlipActivity extends AppCompatActivity {
         });
     }
 
+    //Determine the side of the coin which will be shown
     private int determineSide() {
         int randomNum = random.nextInt(2);
         if (randomNum == 1) {
