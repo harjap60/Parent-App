@@ -3,12 +3,12 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
-        <entry key="app/src/main/res/layout/activity_child_list.xml" value="0.21510416666666668" />
-        <entry key="app/src/main/res/layout/activity_flip.xml" value="0.2907692307692308" />
-        <entry key="app/src/main/res/layout/activity_main.xml" value="0.30512820512820515" />
-        <entry key="app/src/main/res/layout/activity_timer.xml" value="0.28125" />
-        <entry key="app/src/main/res/layout/content_main.xml" value="0.30512820512820515" />
-        <entry key="app/src/main/res/layout/fragment_first.xml" value="0.30512820512820515" />
+        <entry key="app/src/main/res/layout/activity_flip.xml" value="0.20625" />
+        <entry key="app/src/main/res/layout/activity_main.xml" value="0.22" />
+        <entry key="app/src/main/res/layout/activity_timer.xml" value="0.20625" />
+        <entry key="app/src/main/res/layout/activity_timer_create.xml" value="0.20260416666666667" />
+        <entry key="app/src/main/res/layout/activity_timer_runnign.xml" value="0.20260416666666667" />
+        <entry key="app/src/main/res/layout/activity_timer_running.xml" value="0.2776268115942029" />
       </map>
     </option>
   </component>

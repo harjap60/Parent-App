@@ -15,10 +15,10 @@
         android:text="ChildList"
         android:textColor="#212121"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@+id/start_timer"
+        app:layout_constraintEnd_toEndOf="@+id/create_timer"
         app:layout_constraintHorizontal_bias="0.555"
-        app:layout_constraintStart_toStartOf="@+id/start_timer"
-        app:layout_constraintTop_toBottomOf="@+id/start_timer" />
+        app:layout_constraintStart_toStartOf="@+id/create_timer"
+        app:layout_constraintTop_toBottomOf="@+id/create_timer" />
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
@@ -44,7 +44,7 @@
         app:layout_constraintVertical_bias="0.137" />
 
     <Button
-        android:id="@+id/start_timer"
+        android:id="@+id/create_timer"
         android:layout_width="134dp"
         android:layout_height="62dp"
         android:layout_marginTop="8dp"

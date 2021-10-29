@@ -13,12 +13,14 @@ import java.util.Locale;
 public class TimerActivity extends AppCompatActivity {
 
     public static final int COUNT_DOWN_INTERVAL = 1000;
-    public static final int MILLIS_IN_FUTURE = 10000;
     public static final int SECONDS_IN_MINUTE = 60;
-    private CountDownTimer timer;
+    public static final String TIMER_DURATION = "TIMER_DURATION_TAG";
+    private CountDownTimer timer = null;
 
-    public static Intent getIntent(Context context) {
-        return new Intent(context, TimerActivity.class);
+    public static Intent getIntentWithDuration(Context context, int duration) {
+        Intent i = new Intent(context, TimerActivity.class);
+        i.putExtra(TIMER_DURATION, duration);
+        return i;
     }
 
     @Override
@@ -30,9 +32,9 @@ public class TimerActivity extends AppCompatActivity {
     }
 
     private void setupTimer() {
+        long duration = this.getIntent().getIntExtra(TIMER_DURATION, 0);
         TextView tvTimerRemaining = this.findViewById(R.id.tvTimeRemaining);
-
-        timer = new CountDownTimer(MILLIS_IN_FUTURE, COUNT_DOWN_INTERVAL) {
+        timer = new CountDownTimer(duration * COUNT_DOWN_INTERVAL, COUNT_DOWN_INTERVAL) {
             @Override
             public void onTick(long millisUntilFinished) {
                 long totalSeconds = millisUntilFinished / COUNT_DOWN_INTERVAL;
@@ -45,12 +47,10 @@ public class TimerActivity extends AppCompatActivity {
 
             @Override
             public void onFinish() {
-                tvTimerRemaining.setText("Done");
+                tvTimerRemaining.setText(R.string.timer_activity_end_message);
             }
-        };
 
+        };
         timer.start();
     }
-
-
 }

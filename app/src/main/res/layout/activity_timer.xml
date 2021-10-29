@@ -5,6 +5,5 @@
     android:layout_height="match_parent"
     tools:context=".TimerActivity">
 
-    <include layout="@layout/activity_timer_create" />
     <include layout="@layout/activity_timer_running" />
 </androidx.constraintlayout.widget.ConstraintLayout>
