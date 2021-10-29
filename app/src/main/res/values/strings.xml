@@ -6,17 +6,28 @@
     <string name="child_list_activity_toolbar_label">Child List</string>
     <!-- ==================================== -->
 
-    <!-- Strings used for ADD CHILD ACTIVITY -->
-    <string name="add_child">Add Child</string>
+    <!-- Strings used for ADD/EDIT CHILD ACTIVITY -->
+    <string name="add_child_button_text">Add Child</string>
     <string name="hint_enter_child_name">Enter name</string>
     <string name="child_name">Child name</string>
     <string name="add_child_activity_toolbar_label">Add new child</string>
+
+    <string name="edit_child_button_text">Edit Child</string>
+    <string name="edit_child_activity_toolbar_label">Edit Child</string>
+    <string name="confirm_edit_child_dialog_box_message">
+        Are you sure you want the name from \"%1$s\" to \"%2$s\"?
+    </string>
+    <string name="delete_child_button_text">Delete child</string>
+    <string name="confirm_delete_child_dialog_box_message">
+        Are you sure you want to delete \"%1$s\" from you list?
+    </string>
     <!-- ==================================== -->
 
     <!-- Strings used for ALERT DIALOG BOX -->
     <string name="warning_message">Warning...</string>
-    <string name="empty_name">The name is empty!!!</string>
+    <string name="empty_name">Did not save because the name is empty!!</string>
     <string name="yes">Yes</string>
     <string name="no">No</string>
     <!-- ================================= -->
+
 </resources>

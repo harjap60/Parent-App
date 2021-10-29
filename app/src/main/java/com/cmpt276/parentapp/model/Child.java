@@ -10,4 +10,8 @@ public class Child {
     public String getChildName(){
         return childName;
     }
+
+    public void setChildName(String childName){
+        this.childName = childName;
+    }
 }

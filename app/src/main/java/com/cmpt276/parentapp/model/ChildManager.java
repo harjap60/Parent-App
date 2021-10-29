@@ -32,6 +32,10 @@ public class ChildManager {
         return children;
     }
 
+    public  void setChildren(List<Child> children){
+        this.children = children;
+    }
+
     public int size(){
         return children.size();
     }
