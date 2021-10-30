@@ -14,22 +14,30 @@ import android.widget.ImageView;
 
 import java.util.Random;
 
+/**
+ *When the activity starts a coin will appear on the screen with the heads side.
+ * When the coin is flipped, a side (heads or tails) will randomly be chosen
+ * as the new side facing "up"
+ *
+ */
+
 public class FlipActivity extends AppCompatActivity {
-    Random random;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_flip);
-        random = new Random();
+
         flipCoin();
     }
 
     private void flipCoin() {
         ImageView imageView = findViewById(R.id.coin_image_view);
         final MediaPlayer coinFlip = MediaPlayer.create(this, R.raw.coinflip);
+
         //Source: https://stackoverflow.com/questions/46111262/card-flip-animation-in-android
         imageView.setOnClickListener(new View.OnClickListener() {
+
             @Override
             public void onClick(View view) {
                 coinFlip.start();
@@ -59,6 +67,7 @@ public class FlipActivity extends AppCompatActivity {
 
     //Determine the side of the coin which will be shown
     private int determineSide() {
+        Random random = new Random();
         int randomNum = random.nextInt(2);
         if (randomNum == 1) {
             return R.drawable.heads;
