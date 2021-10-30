@@ -23,6 +23,10 @@ import java.util.Random;
 
 public class FlipActivity extends AppCompatActivity {
 
+    public static final int HEADS = 1;
+    private final int ANIMATION_REPEAT_COUNT = 100;
+    private final int ANIMATION_DURATION = 50;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,9 +49,9 @@ public class FlipActivity extends AppCompatActivity {
                 final ObjectAnimator secondAnimation = ObjectAnimator.ofFloat(imageView, "scaleY", 0f, 1f);
 
                 //50 = 2.5 seconds
-                firstAnimation.setDuration(50);
+                firstAnimation.setDuration(ANIMATION_DURATION);
                 //Number of flips the coin does in the duration
-                firstAnimation.setRepeatCount(100);
+                firstAnimation.setRepeatCount(ANIMATION_REPEAT_COUNT);
 
                 firstAnimation.setInterpolator(new DecelerateInterpolator());
                 secondAnimation.setInterpolator(new AccelerateDecelerateInterpolator());
@@ -69,7 +73,7 @@ public class FlipActivity extends AppCompatActivity {
     private int determineSide() {
         Random random = new Random();
         int randomNum = random.nextInt(2);
-        if (randomNum == 1) {
+        if (randomNum == HEADS) {
             return R.drawable.heads;
         } else {
             return R.drawable.tails;
