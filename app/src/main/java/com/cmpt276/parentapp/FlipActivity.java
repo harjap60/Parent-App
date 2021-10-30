@@ -24,6 +24,8 @@ import java.util.Random;
 public class FlipActivity extends AppCompatActivity {
 
     private final int ANIMATION_REPEAT_COUNT = 100;
+
+    //50 = 2.5 seconds
     private final int ANIMATION_DURATION = 50;
 
     @Override
@@ -47,9 +49,8 @@ public class FlipActivity extends AppCompatActivity {
                 final ObjectAnimator firstAnimation = ObjectAnimator.ofFloat(imageView, "scaleY", 1f, 0f);
                 final ObjectAnimator secondAnimation = ObjectAnimator.ofFloat(imageView, "scaleY", 0f, 1f);
 
-                //50 = 2.5 seconds
+
                 firstAnimation.setDuration(ANIMATION_DURATION);
-                //Number of flips the coin does in the duration
                 firstAnimation.setRepeatCount(ANIMATION_REPEAT_COUNT);
 
                 firstAnimation.setInterpolator(new DecelerateInterpolator());
