@@ -23,8 +23,6 @@ import java.util.Random;
 
 public class FlipActivity extends AppCompatActivity {
 
-    public static final int HEADS = 1;
-    public static final int NUM_SIDES_COIN = 2;
     private final int ANIMATION_REPEAT_COUNT = 100;
     private final int ANIMATION_DURATION = 50;
 
@@ -73,7 +71,10 @@ public class FlipActivity extends AppCompatActivity {
     //Determine the side of the coin which will be shown
     private int determineSide() {
         Random random = new Random();
+        int NUM_SIDES_COIN = 2;
         int randomNum = random.nextInt(NUM_SIDES_COIN);
+
+        int HEADS = 1;
         if (randomNum == HEADS) {
             return R.drawable.heads;
         } else {
