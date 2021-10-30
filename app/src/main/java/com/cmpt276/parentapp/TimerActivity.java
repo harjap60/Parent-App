@@ -17,9 +17,9 @@ public class TimerActivity extends AppCompatActivity {
     public static final String TIMER_DURATION = "TIMER_DURATION_TAG";
     private CountDownTimer timer = null;
 
-    public static Intent getIntentWithDuration(Context context, int duration) {
+    public static Intent getIntentWithDurationMinutes(Context context, int duration) {
         Intent i = new Intent(context, TimerActivity.class);
-        i.putExtra(TIMER_DURATION, duration);
+        i.putExtra(TIMER_DURATION, duration * SECONDS_IN_MINUTE);
         return i;
     }
 

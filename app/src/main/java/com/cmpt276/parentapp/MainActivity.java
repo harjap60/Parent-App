@@ -1,20 +1,16 @@
 package com.cmpt276.parentapp;
 
-import android.app.Dialog;
-import android.app.TimePickerDialog;
+import android.app.AlertDialog;
+import android.content.Intent;
 import android.os.Bundle;
-import android.text.format.DateFormat;
 import android.view.Menu;
+import android.view.View;
 import android.widget.Button;
-import android.widget.TimePicker;
+import android.widget.EditText;
+import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.fragment.app.DialogFragment;
-
-import java.time.Duration;
-import java.util.Calendar;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -28,49 +24,88 @@ public class MainActivity extends AppCompatActivity {
         setupFlipButton();
         setupTimerButton();
         setupChildButton();
-
-
     }
 
     private void setupChildButton() {
         Button child = findViewById(R.id.start_child_list);
-        child.setOnClickListener(view -> startActivity(ChildListActivity.getIntent(this)));
+        child.setOnClickListener(view ->
+                startActivity(
+                        ChildListActivity.getIntent(this)
+                )
+        );
     }
 
     private void setupTimerButton() {
         Button timer = findViewById(R.id.create_timer);
-        timer.setOnClickListener(view -> startActivity(TimerActivity.getIntentWithDuration(this,15)));
+        timer.setOnClickListener(view -> showTimerDurationDialog());
+    }
+
+    private void showTimerDurationDialog() {
+        String[] options = this.getResources().getStringArray(R.array.durations);
+        String custom_duration_item = this.getResources().getString(R.string.custom_duration_item);
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+
+        builder.setTitle(this.getString(R.string.dialog_duration_title))
+                .setItems(options, (dialog, index) -> {
+                    String selection = options[index];
+
+                    if (selection.equals(custom_duration_item)) {
+                        showCustomDurationDialog();
+                        return;
+                    }
+
+                    String[] optionParts = selection.split(" ", 2);
+                    int duration = Integer.parseInt(optionParts[0]);
+
+                    Intent i = TimerActivity.getIntentWithDurationMinutes(
+                            this,
+                            duration
+                    );
+                    this.startActivity(i);
+
+                }).create()
+                .show();
+    }
+
+    private void showCustomDurationDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        View v = this.getLayoutInflater().inflate(R.layout.dialog_custom_duration, null);
+
+        builder.setView(v)
+                .setTitle(R.string.dialog_custom_duration_title)
+                .setPositiveButton(R.string.dialog_custom_duration_title, (dialog, id) -> {
+                    try {
+                        EditText tvTimerDuration = v.findViewById(R.id.tvTimerDuration);
+                        int duration = Integer.parseInt(tvTimerDuration.getText().toString());
+                        Intent i = TimerActivity.getIntentWithDurationMinutes(
+                                this,
+                                duration
+                        );
+                        this.startActivity(i);
+                    } catch (Exception e) {
+                        Toast.makeText(
+                                this,
+                                this.getString(R.string.dialog_custom_duration_invalid_input),
+                                Toast.LENGTH_SHORT
+                        ).show();
+                    }
+                })
+                .setNegativeButton(R.string.dialog_custom_duration_dialog_cancel, null)
+                .create()
+                .show();
     }
 
     private void setupFlipButton() {
         Button flip = findViewById(R.id.start_flip);
-        flip.setOnClickListener(view -> startActivity(FlipActivity.getIntent(this)));
+        flip.setOnClickListener(view ->
+                startActivity(FlipActivity.getIntent(this))
+        );
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
-    }
-
-    public static class TimePickerFragment extends DialogFragment
-            implements TimePickerDialog.OnTimeSetListener {
-
-        @NonNull
-        @Override
-        public Dialog onCreateDialog(Bundle savedInstanceState) {
-            // Use the current time as the default values for the picker
-            final Calendar c = Calendar.getInstance();
-            int hour = c.get(Calendar.HOUR_OF_DAY);
-            int minute = c.get(Calendar.MINUTE);
-
-            // Create a new instance of TimePickerDialog and return it
-            return new TimePickerDialog(getActivity(), this, hour, minute,
-                    DateFormat.is24HourFormat(getActivity()));
-        }
-
-        public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-            // Do something with the time chosen by the user
-        }
     }
 }

@@ -9,4 +9,13 @@
 
     <string name="hello_first_fragment">Hello first fragment</string>
     <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
+    <string name="timer_activity_end_message">Done</string>
+
+    <string name="dialog_duration_title">Select Duration</string>
+
+    <string name="dialog_custom_duration_title">Custom Duration</string>
+    <string name="dialog_custom_duration_invalid_input">Please send a valid number of minutes.</string>
+    <string name="dialog_custom_duration_start_button">Start</string>
+    <string name="dialog_custom_duration_dialog_cancel">Cancel</string>
+    <string name="dialog_custom_duration_hint">Minutes</string>
 </resources>

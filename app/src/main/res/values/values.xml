@@ -1,8 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string-array name="timer_durations">
+    <array name="durations">
         <item>1 Minute</item>
+        <item>2 Minutes</item>
         <item>5 Minutes</item>
         <item>10 Minutes</item>
-    </string-array>
+        <item>Custom</item>
+    </array>
+
+    <string name="custom_duration_item">Custom</string>
 </resources>
