@@ -19,4 +19,6 @@
     <string name="dialog_custom_duration_dialog_cancel">Cancel</string>
     <string name="dialog_custom_duration_hint">Minutes</string>
     <string name="btn_timer_cancel">Cancel Timer</string>
+    <string name="timer_activity_mm_ss">%02d:%02d</string>
+    <string name="timer_activity_hh_mm_ss">%02d:%02d:%02d</string>
 </resources>
