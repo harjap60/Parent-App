@@ -18,4 +18,5 @@
     <string name="dialog_custom_duration_start_button">Start</string>
     <string name="dialog_custom_duration_dialog_cancel">Cancel</string>
     <string name="dialog_custom_duration_hint">Minutes</string>
+    <string name="btn_timer_cancel">Cancel Timer</string>
 </resources>
