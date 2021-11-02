@@ -57,7 +57,7 @@ public class AddChildActivity extends AppCompatActivity {
         setContentView(R.layout.activity_add_child);
 
         // instantiating the manager
-        manager = ChildManager.getInstance();
+        manager = ChildManager.getInstance(this);
 
         extractDataFromIntent();
         setUpInitialString();

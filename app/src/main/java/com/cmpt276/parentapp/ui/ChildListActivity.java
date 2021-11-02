@@ -15,7 +15,6 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
@@ -25,10 +24,7 @@ import androidx.appcompat.widget.Toolbar;
 import com.cmpt276.parentapp.R;
 import com.cmpt276.parentapp.model.Child;
 import com.cmpt276.parentapp.model.ChildManager;
-import com.cmpt276.parentapp.model.PrefConfig;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-
-import java.util.List;
 
 public class ChildListActivity extends AppCompatActivity {
 
@@ -39,26 +35,8 @@ public class ChildListActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_child_list);
 
-
-
-        /*manager = PrefConfig.readListFromPref(this);
-        if(manager == null){
-            manager = ChildManager.getInstance();
-        }*/
-
-        manager = ChildManager.getInstance();
-        // the following code reads the data from shared preferences
-        // which contains the list of children
-        List<Child> children = PrefConfig.readListFromPref(this);
-        if(children != null){
-            // if the 'children' variable is null, it means this is the first time that
-            // the user is running the app and children will have a value of null (empty list), so
-            // - if the 'children' variable(list) is null, then let the Child Manager make an
-            // empty list of children
-            // - if the 'children' variable(list) is not null, then set the manager's list of
-            // children to the data that just got extracted from shared preferences
-            manager.setChildren(children);
-        }
+        // instantiating the manager
+        manager = ChildManager.getInstance(this);
 
         setUpToolbar();
         enableUpOnToolbar();

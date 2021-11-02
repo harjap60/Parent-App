@@ -17,7 +17,7 @@ import java.util.List;
 
 public class PrefConfig {
 
-    private static final String PREFS_STRING_FOR_LIST_OF_CHILDREN = "Child List Pref String";
+    private static final String PREFS_STRING_FOR_LIST_OF_CHILDREN = "ChildList - Prefs String";
     private static final String PREFS_DEFAULT_STRING_FOR_LIST_OF_CHILDREN = "";
 
     public static void writeListInPref(Context context, List<Child> children){
