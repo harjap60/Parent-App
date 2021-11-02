@@ -1,3 +1,7 @@
+/**
+ * Child class - This will store the information of the child
+ * currently it's just the name
+ */
 package com.cmpt276.parentapp.model;
 
 public class Child {

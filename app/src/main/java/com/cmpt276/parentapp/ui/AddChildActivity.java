@@ -1,3 +1,9 @@
+/**
+ * Add Child Activity - This activity lets you add a new child to the list.
+ *                      Or edit an existing child in the list.
+ * The user sets the name of the child but has a restriction to it
+ * - the name of the new/edit child cannot be empty
+ */
 package com.cmpt276.parentapp.ui;
 
 import androidx.annotation.NonNull;
@@ -27,16 +33,16 @@ public class AddChildActivity extends AppCompatActivity {
     private EditText childNameInput;
     private Button addChildButton;
     private ChildManager manager;
-    private boolean addChild, pressedYesOnDialogBox;
+    private boolean addChild;
     private int positionForEditChild;
-    private static final String EXTRA_FOR_INDEX = "com.cmpt276.parentapp.ui.AddChidActivity - the index";
-    private final String WARNING_CHANGE_HAPPENED_FOR_ADD_CHILD = "Are you sure you want to go back? This will not add the new child!!";
-    private final String WARNING_CHANGE_HAPPENED_FOR_EDIT_CHILD = "Are you sure you want to go back? This will not edit the name of the child!!";
+    private static final String EXTRA_FOR_INDEX =
+            "com.cmpt276.parentapp.ui.AddChildActivity - the index";
+    private static final int DEFAULT_VALUE_FOR_ADD_CHILD_FOR_INTENT  = -1;
 
-    private String initialString;
+    private String initialString = "";
 
     public static Intent makeIntentForAddChild(Context context){
-        return makeIntentForEditChild(context, -1);
+        return makeIntentForEditChild(context, DEFAULT_VALUE_FOR_ADD_CHILD_FOR_INTENT);
     }
 
     public static Intent makeIntentForEditChild(Context context, int index){
@@ -53,13 +59,10 @@ public class AddChildActivity extends AppCompatActivity {
         // instantiating the manager
         manager = ChildManager.getInstance();
 
-        pressedYesOnDialogBox = false;
-
         extractDataFromIntent();
         setUpInitialString();
         setUpEditTextChildName();
         setUpToolbar();
-        enableUpButtonOnToolbar();
         setupAddChildButton();
     }
 
@@ -90,7 +93,7 @@ public class AddChildActivity extends AppCompatActivity {
                 deleteChild();
                 return true;
 
-            case android.R.id.home:
+            case android.R.id.home: // up button
                 onBackPressed();
                 return true;
 
@@ -102,15 +105,12 @@ public class AddChildActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         if(changeHappened()){
-
-            AlertDialog.Builder builder = setAlertDialogBox();
-
-            if(addChild){
-                builder.setMessage(WARNING_CHANGE_HAPPENED_FOR_ADD_CHILD);
-            }
-            else {
-                builder.setMessage(WARNING_CHANGE_HAPPENED_FOR_EDIT_CHILD);
-            }
+            AlertDialog.Builder builder = getAlertDialogBox();
+            builder.setMessage(
+                    addChild ?
+                        getString(R.string.warning_change_happened_for_add_child) :
+                        getString(R.string.warning_change_happened_for_edit_child)
+            );
 
             builder.setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
                 @Override
@@ -124,7 +124,6 @@ public class AddChildActivity extends AppCompatActivity {
 
         }
         else{
-            Toast.makeText(this, "Going back!!! Nothing happened", Toast.LENGTH_SHORT).show();
             finish();
         }
     }
@@ -143,24 +142,24 @@ public class AddChildActivity extends AppCompatActivity {
     private void setUpToolbar() {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        if(addChild){
-            getSupportActionBar().setTitle(getText(R.string.add_child_activity_toolbar_label));
-        }
-        else {
-            getSupportActionBar().setTitle(getText(R.string.edit_child_activity_toolbar_label));
-        }
-    }
+        getSupportActionBar().setTitle(
+                addChild ?
+                        getString(R.string.add_child_activity_toolbar_label) :
+                        getString(R.string.edit_child_activity_toolbar_label)
+        );
 
-    private void enableUpButtonOnToolbar(){
         ActionBar ab = getSupportActionBar();
         ab.setDisplayHomeAsUpEnabled(true);
     }
 
     private void setupAddChildButton(){
         addChildButton = findViewById(R.id.add_child_button);
-        if(!addChild){
-            addChildButton.setText(getString(R.string.edit_child_button_text));
-        }
+        addChildButton.setText(
+                addChild ?
+                        getString(R.string.add_child_button_text) :
+                        getString(R.string.edit_child_button_text)
+        );
+
         addChildButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -179,8 +178,12 @@ public class AddChildActivity extends AppCompatActivity {
             if(changeHappened()){
                 // ----------change happened--------------
                 // set alert dialog box that confirms if the user really wants to change the name
-                AlertDialog.Builder builder = setAlertDialogBox();
-                builder.setMessage(getString(R.string.confirm_edit_child_dialog_box_message, initialString, childNameInput.getText()));
+                AlertDialog.Builder builder = getAlertDialogBox();
+                builder.setMessage(getString(
+                        R.string.confirm_edit_child_dialog_box_message,
+                        initialString,
+                        childNameInput.getText()
+                ));
                 builder.setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
@@ -195,7 +198,7 @@ public class AddChildActivity extends AppCompatActivity {
             else{
                 // ---------- change didn't happen -------------
                 Toast.makeText(AddChildActivity.this,
-                        "Did not change name!!",
+                        getString(R.string.did_not_change_name_text_for_dialog_box),
                         Toast.LENGTH_SHORT
                 ).show();
                 finish();
@@ -213,8 +216,11 @@ public class AddChildActivity extends AppCompatActivity {
     }
 
     private void deleteChild(){
-        AlertDialog.Builder builder = setAlertDialogBox();
-        builder.setMessage(getString(R.string.confirm_delete_child_dialog_box_message, childNameInput.getText()));
+        AlertDialog.Builder builder = getAlertDialogBox();
+        builder.setMessage(getString(
+                R.string.confirm_delete_child_dialog_box_message,
+                childNameInput.getText()
+        ));
         builder.setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
@@ -252,23 +258,17 @@ public class AddChildActivity extends AppCompatActivity {
         manager.addChild(new Child(childName));
         Toast.makeText(
                 AddChildActivity.this,
-                "\"" + childName +"\" has been added to the list.",
+                getString(R.string.toast_has_been_added_to_list, childName),
                 Toast.LENGTH_SHORT
         ).show();
     }
 
 
-    private AlertDialog.Builder setAlertDialogBox(){
+    private AlertDialog.Builder getAlertDialogBox(){
         AlertDialog.Builder builder = new AlertDialog.Builder(AddChildActivity.this);
         builder.setTitle(R.string.warning_message);
 
-
-        builder.setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-
-            }
-        });
+        builder.setNegativeButton(R.string.no, null);
 
         return builder;
     }
@@ -280,10 +280,7 @@ public class AddChildActivity extends AppCompatActivity {
     }
 
     private void setUpInitialString(){
-        if(addChild){
-            initialString = "";
-        }
-        else{
+        if(!addChild){
             initialString = manager.retrieveChildByIndex(positionForEditChild).getChildName();
         }
     }

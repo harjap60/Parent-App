@@ -1,10 +1,14 @@
+/**
+ * Child List Activity - This activity will display a list of all the
+ * children added by the user. The user will also have the ability to
+ * - add more children to the list and
+ * - edit an existing child in the list
+ */
 package com.cmpt276.parentapp.ui;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-
-import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -13,15 +17,18 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+
 import com.cmpt276.parentapp.R;
 import com.cmpt276.parentapp.model.Child;
 import com.cmpt276.parentapp.model.ChildManager;
 import com.cmpt276.parentapp.model.PrefConfig;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 public class ChildListActivity extends AppCompatActivity {
 
@@ -32,26 +39,85 @@ public class ChildListActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_child_list);
 
+
+
+        /*manager = PrefConfig.readListFromPref(this);
+        if(manager == null){
+            manager = ChildManager.getInstance();
+        }*/
+
         manager = ChildManager.getInstance();
+        // the following code reads the data from shared preferences
+        // which contains the list of children
         List<Child> children = PrefConfig.readListFromPref(this);
         if(children != null){
+            // if the 'children' variable is null, it means this is the first time that
+            // the user is running the app and children will have a value of null (empty list), so
+            // - if the 'children' variable(list) is null, then let the Child Manager make an
+            // empty list of children
+            // - if the 'children' variable(list) is not null, then set the manager's list of
+            // children to the data that just got extracted from shared preferences
             manager.setChildren(children);
         }
 
         setUpToolbar();
-        setUpNewGameButton();
+        enableUpOnToolbar();
+        setUpAddNewChildButton();
         populateListView();
         registerClickCallback();
 
     }
 
     @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // inflate the menu:
+        getMenuInflater().inflate(R.menu.menu_child_list, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()){
+            case R.id.action_add_child_button_for_child_list:
+                startActivity(
+                        AddChildActivity.makeIntentForAddChild(ChildListActivity.this)
+                );
+                return true;
+
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
+    @Override
     protected void onResume(){
         super.onResume();
-        updateUI();
-    }
-    private void updateUI(){
+
+        // updateUI
         populateListView();
+    }
+
+    private void setUpToolbar() {
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setTitle(getText(R.string.child_list_activity_toolbar_label));
+    }
+
+    private void enableUpOnToolbar(){
+        ActionBar ab = getSupportActionBar();
+        ab.setDisplayHomeAsUpEnabled(true);
+    }
+
+    private void setUpAddNewChildButton() {
+        FloatingActionButton addNewChildFabButton = findViewById(R.id.add_child_fab);
+        addNewChildFabButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(
+                        AddChildActivity.makeIntentForAddChild(ChildListActivity.this)
+                );
+            }
+        });
     }
 
     private void populateListView(){
@@ -63,17 +129,32 @@ public class ChildListActivity extends AppCompatActivity {
         childList.setAdapter(adapter);
     }
 
+    private void registerClickCallback(){
+        ListView list = (ListView) findViewById(R.id.child_list_view);
+        list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View viewClicked, int position, long id) {
+                startActivity(
+                        AddChildActivity.makeIntentForEditChild(
+                                ChildListActivity.this, position)
+                );
+            }
+        });
+    }
+
     // MyListAdapter that will help make the complex list view
     private class MyListAdapter extends  ArrayAdapter<Child>{
         public MyListAdapter(){
-            super(ChildListActivity.this, R.layout.child_name_view, manager.getAllChildren());
+            super(ChildListActivity.this,
+                    R.layout.child_name_view, manager.getAllChildren());
         }
         public View getView(int position, View convertView, ViewGroup parent){
 
             // make sure we have a view to work with (may have been given null)
             View itemView = convertView;
             if(itemView == null){
-                itemView = getLayoutInflater().inflate(R.layout.child_name_view, parent, false);
+                itemView = getLayoutInflater()
+                        .inflate(R.layout.child_name_view, parent, false);
             }
 
             // Find the child to work with
@@ -86,43 +167,4 @@ public class ChildListActivity extends AppCompatActivity {
             return itemView;
         }
     }
-
-    private void setUpToolbar() {
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setTitle(getText(R.string.child_list_activity_toolbar_label));
-    }
-
-    private void setUpNewGameButton() {
-        FloatingActionButton addNewChildFabButton = findViewById(R.id.add_child_fab);
-        addNewChildFabButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Toast.makeText(
-                        ChildListActivity.this,
-                        "This button will let you add a new child",
-                        Toast.LENGTH_SHORT
-                ).show();
-                startActivity(AddChildActivity.makeIntentForAddChild(ChildListActivity.this));
-            }
-        });
-    }
-
-    private void registerClickCallback(){
-        ListView list = (ListView) findViewById(R.id.child_list_view);
-        list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View viewClicked, int position, long id) {
-                startActivity(AddChildActivity.makeIntentForEditChild(ChildListActivity.this, position));
-            }
-        });
-    }
-
-   /* private void storeChildListToSharedPrefs(){
-        Set<String> set = new HashSet<String>();
-        set.addAll(manager.getAllChildren());
-        SharedPreferences prefs = getSharedPreferences("Child List Prefs String", MODE_PRIVATE);
-        SharedPreferences.Editor editor = prefs.edit();
-        editor.put
-    }*/
 }

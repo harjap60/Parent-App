@@ -1,3 +1,7 @@
+/**
+ * ChildManager class - This class stores the information
+ * of all the children currently in the list
+ */
 package com.cmpt276.parentapp.model;
 
 import java.util.ArrayList;
