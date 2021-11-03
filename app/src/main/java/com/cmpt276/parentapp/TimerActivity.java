@@ -4,76 +4,110 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.CountDownTimer;
-import android.widget.Button;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-import java.util.Locale;
+import com.cmpt276.parentapp.databinding.ActivityTimerRunningBinding;
 
 public class TimerActivity extends AppCompatActivity {
 
     public static final int COUNT_DOWN_INTERVAL = 1000;
     public static final int SECONDS_IN_MINUTE = 60;
-    public static final String TIMER_DURATION = "TIMER_DURATION_TAG";
     public static final int MINUTES_IN_HOUR = 60;
+
+    public static final String TIMER_DURATION = "TIMER_DURATION_TAG";
+
+    private ActivityTimerRunningBinding binding;
+    private long initialMillisUntilFinished;
+    private long millisUntilFinished;
+    private CountDownTimer timer;
 
     public static Intent getIntentWithDurationMinutes(Context context, int duration) {
         Intent i = new Intent(context, TimerActivity.class);
-        i.putExtra(TIMER_DURATION, duration * SECONDS_IN_MINUTE);
+        i.putExtra(TIMER_DURATION, duration * SECONDS_IN_MINUTE * COUNT_DOWN_INTERVAL);
         return i;
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_timer);
+        binding = ActivityTimerRunningBinding.inflate(this.getLayoutInflater());
+        setContentView(binding.getRoot());
 
-        setupTimer();
+        extractDurationFromIntent();
+        setupPauseResumeButton();
+        setupResetTimerButton();
+        createAndStartTimer();
+        updateUI();
     }
 
-    private void setupTimer() {
-        long duration = this.getIntent().getIntExtra(TIMER_DURATION, 0);
-        TextView tvTimerRemaining = this.findViewById(R.id.tvTimeRemaining);
-        CountDownTimer timer = new CountDownTimer(duration * COUNT_DOWN_INTERVAL, COUNT_DOWN_INTERVAL) {
+    private void extractDurationFromIntent() {
+        initialMillisUntilFinished = (long) this.getIntent().getIntExtra(TIMER_DURATION, 0);
+        millisUntilFinished = initialMillisUntilFinished;
+    }
+
+    private void createAndStartTimer() {
+        timer = new CountDownTimer(millisUntilFinished, COUNT_DOWN_INTERVAL) {
             @Override
             public void onTick(long millisUntilFinished) {
-                tvTimerRemaining.setText(getRemainingTimeString(millisUntilFinished));
-            }
-
-            @NonNull
-            private String getRemainingTimeString(long millisUntilFinished) {
-                long totalSeconds = millisUntilFinished / COUNT_DOWN_INTERVAL;
-
-                long minutes = totalSeconds / SECONDS_IN_MINUTE;
-                long seconds = totalSeconds % SECONDS_IN_MINUTE;
-
-                String timerText;
-
-                if (minutes >= MINUTES_IN_HOUR) {
-                    long hours = minutes / MINUTES_IN_HOUR;
-                    minutes = minutes % MINUTES_IN_HOUR;
-                    timerText = String.format(getString(R.string.timer_activity_hh_mm_ss), hours, minutes, seconds);
-                } else {
-                    timerText = String.format(getString(R.string.timer_activity_mm_ss), minutes, seconds);
-                }
-                return timerText;
+                TimerActivity.this.millisUntilFinished = millisUntilFinished;
+                updateUI();
             }
 
             @Override
             public void onFinish() {
-                tvTimerRemaining.setText(R.string.timer_activity_end_message);
+
             }
-        };
+        }.start();
+    }
 
-        Button btnTimerCancel = this.findViewById(R.id.btnTimerCancel);
+    private void pauseTimer() {
+        if(timer == null){
+            return;
+        }
 
-        btnTimerCancel.setOnClickListener(v -> {
-            timer.cancel();
-            finish();
+        timer.cancel();
+        timer = null;
+    }
+
+    private void setupResetTimerButton() {
+        binding.btnTimerReset.setOnClickListener(v -> {
+            pauseTimer();
+            millisUntilFinished = initialMillisUntilFinished;
+            updateUI();
         });
+    }
 
-        timer.start();
+    private void setupPauseResumeButton() {
+        binding.btnTimerPause.setOnClickListener(v -> {
+            if (timer != null) {
+                pauseTimer();
+            } else {
+                createAndStartTimer();
+            }
+            updateUI();
+        });
+    }
+
+    private void updateUI() {
+        int pauseButtonString = R.string.btn_timer_start;
+        if (initialMillisUntilFinished != millisUntilFinished) {
+            pauseButtonString = timer == null ? R.string.btn_timer_resume : R.string.btn_timer_pause;
+        }
+        binding.btnTimerPause.setText(getString(pauseButtonString));
+
+        binding.tvTimeRemaining.setText(getRemainingTimeString(this.millisUntilFinished));
+    }
+
+    @NonNull
+    private String getRemainingTimeString(long millisUntilFinished) {
+        long totalSeconds = millisUntilFinished / COUNT_DOWN_INTERVAL;
+
+        long minutes = totalSeconds / SECONDS_IN_MINUTE;
+        long hours = minutes / MINUTES_IN_HOUR;
+        long seconds = totalSeconds % SECONDS_IN_MINUTE;
+
+        return String.format(getString(R.string.timer_activity_hh_mm_ss), hours, minutes, seconds);
     }
 }

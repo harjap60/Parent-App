@@ -18,7 +18,9 @@
     <string name="dialog_custom_duration_start_button">Start</string>
     <string name="dialog_custom_duration_dialog_cancel">Cancel</string>
     <string name="dialog_custom_duration_hint">Minutes</string>
-    <string name="btn_timer_cancel">Cancel Timer</string>
+    <string name="btn_timer_reset">Reset</string>
+    <string name="btn_timer_resume">Resume</string>
+    <string name="btn_timer_pause">Pause</string>
     <string name="timer_activity_mm_ss">%02d:%02d</string>
     <string name="timer_activity_hh_mm_ss">%02d:%02d:%02d</string>
 </resources>

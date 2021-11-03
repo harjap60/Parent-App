@@ -6,4 +6,5 @@
     tools:context=".TimerActivity">
 
     <include layout="@layout/activity_timer_running" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
