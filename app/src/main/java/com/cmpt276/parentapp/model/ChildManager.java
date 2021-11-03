@@ -51,12 +51,4 @@ public class ChildManager {
     public List<Child> getAllChildren(){
         return children;
     }
-
-    public  void setChildren(List<Child> children){
-        this.children = children;
-    }
-
-    public int size(){
-        return children.size();
-    }
 }

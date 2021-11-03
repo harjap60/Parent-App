@@ -160,17 +160,12 @@ public class AddChildActivity extends AppCompatActivity {
                         getString(R.string.edit_child_button_text)
         );
 
-        addChildButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if(addChild){
-                    addOrDiscardChildName();
-                }
-                else{
-                    editChildName();
-                }
-            }
-        });
+        if(addChild){
+            addChildButton.setOnClickListener(view -> addOrDiscardChildName());
+        }
+        else{
+            addChildButton.setOnClickListener(view -> editChildName());
+        }
     }
 
     private void editChildName(){
