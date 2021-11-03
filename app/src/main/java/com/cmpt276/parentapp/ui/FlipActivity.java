@@ -1,4 +1,4 @@
-package com.cmpt276.parentapp;
+package com.cmpt276.parentapp.ui;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -20,6 +20,8 @@ import java.util.Random;
  * as the new side facing "up"
  *
  */
+
+import com.cmpt276.parentapp.R;
 
 public class FlipActivity extends AppCompatActivity {
 

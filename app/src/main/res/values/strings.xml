@@ -1,13 +1,44 @@
 <resources>
     <string name="app_name">ParentApp</string>
     <string name="action_settings">Settings</string>
-    <!-- Strings used for fragments for navigation -->
-    <string name="first_fragment_label">First Fragment</string>
-    <string name="second_fragment_label">Second Fragment</string>
-    <string name="next">Next</string>
-    <string name="previous">Previous</string>
+
+    <!-- Strings used for CHILD LIST ACTIVITY -->
+    <string name="child_list_activity_toolbar_label">Child List</string>
+    <!-- ==================================== -->
 
     <string name="hello_first_fragment">Hello first fragment</string>
     <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
     <string name="image_of_a_coin">image of a coin</string>
+
+    <!-- Strings used for ADD/EDIT CHILD ACTIVITY -->
+    <string name="add_child_button_text">Add Child</string>
+    <string name="hint_enter_child_name">Enter name</string>
+    <string name="child_name">Child name</string>
+    <string name="add_child_activity_toolbar_label">Add new child</string>
+
+    <string name="edit_child_button_text">Edit Child</string>
+    <string name="edit_child_activity_toolbar_label">Edit Child</string>
+    <string name="confirm_edit_child_dialog_box_message">
+        Are you sure you want the name from \"%1$s\" to \"%2$s\"?
+    </string>
+    <string name="delete_child_button_text">Delete child</string>
+    <string name="confirm_delete_child_dialog_box_message">
+        Are you sure you want to delete \"%1$s\" from you list?
+    </string>
+    <string name="toast_has_been_added_to_list">
+        \"%1$s\" has been added to the list
+    </string>
+    <string name="warning_change_happened_for_add_child">
+        Are you sure you want to go back? This will not add the new child!!
+    </string>
+    <string name="warning_change_happened_for_edit_child">
+        Are you sure you want to go back? This will not edit the name of the child!!
+    </string>
+    <string name="warning_message">Warning...</string>
+    <string name="empty_name">Did not save because the name is empty!!</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+    <string name="did_not_change_name_text_for_dialog_box">Did not change name!!</string>
+    <!-- ================================= -->
+
 </resources>
