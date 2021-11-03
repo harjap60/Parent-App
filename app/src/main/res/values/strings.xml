@@ -6,6 +6,10 @@
     <string name="child_list_activity_toolbar_label">Child List</string>
     <!-- ==================================== -->
 
+    <string name="hello_first_fragment">Hello first fragment</string>
+    <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
+    <string name="image_of_a_coin">image of a coin</string>
+
     <!-- Strings used for ADD/EDIT CHILD ACTIVITY -->
     <string name="add_child_button_text">Add Child</string>
     <string name="hint_enter_child_name">Enter name</string>
