@@ -23,4 +23,7 @@
     <string name="btn_timer_pause">Pause</string>
     <string name="timer_activity_mm_ss">%02d:%02d</string>
     <string name="timer_activity_hh_mm_ss">%02d:%02d:%02d</string>
+    <string name="channel_name">Main_Channel</string>
+    <string name="channel_description">Main Channel to handle notifications from the parent app.</string>
+    <string name="btn_timer_start">Start</string>
 </resources>
