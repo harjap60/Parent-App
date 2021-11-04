@@ -1,33 +1,29 @@
 package com.cmpt276.parentapp.ui;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.ObjectAnimator;
 import android.media.MediaPlayer;
 import android.os.Bundle;
-import android.telecom.TelecomManager;
-import android.view.View;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.view.animation.DecelerateInterpolator;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.TextView;
 
-import java.util.Random;
-
-/**
- *When the activity starts a coin will appear on the screen with the heads side.
- * When the coin is flipped, a side (heads or tails) will randomly be chosen
- * as the new side facing "up"
- *
- */
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.cmpt276.parentapp.R;
 import com.cmpt276.parentapp.model.ChildManager;
 import com.cmpt276.parentapp.model.HistoryOfFlips;
 import com.cmpt276.parentapp.model.SingleFlipInformation;
+
+import java.util.Random;
+
+/**
+ * When the activity starts a coin will appear on the screen with the heads side.
+ * When the coin is flipped, a side (heads or tails) will randomly be chosen
+ * as the new side facing "up"
+ */
 
 public class FlipActivity extends AppCompatActivity {
 
