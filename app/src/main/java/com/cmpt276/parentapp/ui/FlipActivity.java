@@ -61,10 +61,18 @@ public class FlipActivity extends AppCompatActivity {
         userChoiceHeads = findViewById(R.id.user_choice_heads_button);
         userChoiceTails = findViewById(R.id.user_choice_tails_button);
 
+        setupHistoryButton();
+
         getChoice();
         getChild();
 
         coinClickListener();
+    }
+
+    private void setupHistoryButton() {
+        Button historyButton = findViewById(R.id.flip_history_button);
+        historyButton.setOnClickListener(view ->
+                startActivity(FlipHistoryActivity.getIntent(this)));
     }
 
 
