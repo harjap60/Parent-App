@@ -42,6 +42,10 @@
     <string name="heads">Heads</string>
     <string name="tails">Tails</string>
     <string name="history_of_flips">History of Flips</string>
+    <string name="default_date_flip_information">Date</string>
+    <string name="default_name_flip_information">Name:</string>
+    <string name="default_did_win_flip_information">win?</string>
+    <string name="default_child_choice_flip_information">choice</string>
     <!-- ================================= -->
 
 </resources>

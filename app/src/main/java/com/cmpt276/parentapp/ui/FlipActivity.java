@@ -99,12 +99,14 @@ public class FlipActivity extends AppCompatActivity {
     }
 
     private void coinClickListener() {
-        coinImage.setOnClickListener(view -> flipCoin());
+        coinImage.setOnClickListener(view -> {
+            flip.startFlip();
+            flipCoin();
+        });
     }
 
     private void flipCoin() {
-        final MediaPlayer coinFlip = MediaPlayer.create(this, R.raw.coinflip);
-        coinFlip.start();
+        startCoinSound();
 
         //Source: https://stackoverflow.com/questions/46111262/card-flip-animation-in-android
         final ObjectAnimator firstAnimation = ObjectAnimator.ofFloat(coinImage, "scaleY", 1f, 0f);
@@ -126,6 +128,11 @@ public class FlipActivity extends AppCompatActivity {
             }
         });
         firstAnimation.start();
+    }
+
+    private void startCoinSound(){
+        final MediaPlayer coinFlip = MediaPlayer.create(this, R.raw.coinflip);
+        coinFlip.start();
     }
 
     private void checkWin() {
