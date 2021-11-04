@@ -11,10 +11,31 @@
         android:layout_width="233dp"
         android:layout_height="228dp"
         android:layout_marginTop="83dp"
+        android:contentDescription="@string/image_of_a_coin"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/heads"
-        android:contentDescription="@string/image_of_a_coin" />
+        app:srcCompat="@drawable/heads" />
+
+    <Button
+        android:id="@+id/user_choice_heads_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="100dp"
+        android:layout_marginEnd="64dp"
+        android:text="@string/heads"
+        app:layout_constraintEnd_toStartOf="@+id/user_choice_tails_button"
+        app:layout_constraintTop_toBottomOf="@+id/coin_image_view" />
+
+    <Button
+        android:id="@+id/user_choice_tails_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="-5dp"
+        android:text="@string/tails"
+        app:layout_constraintBottom_toBottomOf="@+id/user_choice_heads_button"
+        app:layout_constraintEnd_toEndOf="@+id/coin_image_view"
+        app:layout_constraintTop_toTopOf="@+id/user_choice_heads_button" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

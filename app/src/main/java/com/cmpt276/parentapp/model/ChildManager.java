@@ -51,4 +51,8 @@ public class ChildManager {
     public List<Child> getAllChildren(){
         return children;
     }
+
+    public int size(){
+        return children.size();
+    }
 }
