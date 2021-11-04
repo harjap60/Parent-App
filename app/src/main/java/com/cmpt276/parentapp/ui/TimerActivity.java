@@ -1,4 +1,4 @@
-package com.cmpt276.parentapp;
+package com.cmpt276.parentapp.ui;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -8,6 +8,8 @@ import android.os.CountDownTimer;
 import android.util.Log;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+
+import com.cmpt276.parentapp.R;
 
 public class TimerActivity extends AppCompatActivity {
     double i = 0;

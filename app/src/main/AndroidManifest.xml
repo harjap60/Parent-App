@@ -14,8 +14,10 @@
             android:theme="@android:style/Theme.Translucent.NoTitleBar.Fullscreen"
             android:exported="false" />
         <activity
-            android:name=".ChildListActivity"
-            android:exported="false" />
+            android:name=".AddChildActivity"
+            android:exported="false"
+            android:theme="@style/Theme.ParentApp.NoActionBar"
+            android:parentActivityName=".MainActivity"/>
         <activity
             android:name=".TimerActivity"
             android:exported="false"
@@ -41,7 +43,3 @@
     </application>
 
 </manifest>
-    <!--
-                android:theme="@android:style/Theme.Translucent.NoTitleBar.Fullscreen"
-                android:theme="@android:style/Theme.Holo.Dialog"
-    -->
