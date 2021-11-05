@@ -1,4 +1,4 @@
-package com.cmpt276.parentapp;
+package com.cmpt276.parentapp.ui;
 
 import android.app.Service;
 import android.content.Context;
@@ -24,14 +24,10 @@ public class TimerService extends Service {
         return i;
     }
 
-    @Override
-    public void onCreate() {
-        super.onCreate();
-    }
-
     @Nullable
     @Override
     public IBinder onBind(Intent intent) {
+
         return null;
     }
 
