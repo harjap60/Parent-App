@@ -1,4 +1,4 @@
-package com.cmpt276.parentapp;
+package com.cmpt276.parentapp.ui;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -10,6 +10,8 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.cmpt276.parentapp.databinding.ActivityTimerRunningBinding;
+
+import com.cmpt276.parentapp.R;
 
 public class TimerActivity extends AppCompatActivity {
 

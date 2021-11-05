@@ -1,8 +1,15 @@
-package com.cmpt276.parentapp;
+package com.cmpt276.parentapp.ui;
 
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
+
+import com.cmpt276.parentapp.R;
+
+import androidx.appcompat.app.AppCompatActivity;
+
+import androidx.appcompat.widget.Toolbar;
+
 import android.view.Menu;
 import android.view.View;
 import android.widget.Button;
