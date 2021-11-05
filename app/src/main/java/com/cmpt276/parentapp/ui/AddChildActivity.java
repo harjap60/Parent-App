@@ -26,6 +26,7 @@ import android.widget.Toast;
 import com.cmpt276.parentapp.R;
 import com.cmpt276.parentapp.model.Child;
 import com.cmpt276.parentapp.model.ChildManager;
+import com.cmpt276.parentapp.model.HistoryOfFlips;
 import com.cmpt276.parentapp.model.PrefConfig;
 
 public class AddChildActivity extends AppCompatActivity {
@@ -219,6 +220,15 @@ public class AddChildActivity extends AppCompatActivity {
         builder.setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
+
+                //---------------------------------------------------------//
+                //For having the correct index in the coin flip
+                HistoryOfFlips history = HistoryOfFlips.getInstance();
+                if(positionForEditChild < history.getFlipIndex()){
+                    history.setFlipIndex(history.getFlipIndex()-1);
+                }
+                //------------------------------------------------//
+
                 manager.removeChild(positionForEditChild);
                 saveChildListToSharedPrefs();
                 finish();

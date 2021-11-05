@@ -21,7 +21,7 @@ public class HistoryOfFlips {
         index = i;
     }
 
-    public int getIndex(){
+    public int getFlipIndex(){
         return index;
     }
 

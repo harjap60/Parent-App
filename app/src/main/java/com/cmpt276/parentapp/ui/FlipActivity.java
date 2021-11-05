@@ -9,6 +9,7 @@ import android.view.animation.AccelerateDecelerateInterpolator;
 import android.view.animation.DecelerateInterpolator;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -60,7 +61,7 @@ public class FlipActivity extends AppCompatActivity {
         setupHistoryButton();
 
         getChoice();
-        getChild();
+        getChildIndex();
 
         coinClickListener();
     }
@@ -86,7 +87,6 @@ public class FlipActivity extends AppCompatActivity {
             updateSetClickableAfterChoice();
         });
     }
-
 
     private void updateSetClickableAfterChoice() {
         userChoiceHeads.setEnabled(false);
@@ -120,7 +120,7 @@ public class FlipActivity extends AppCompatActivity {
                 secondAnimation.start();
                 checkWin();
                 historyOfFlips.addFlip(flip);
-
+                incrementChildIndex();
             }
         });
         firstAnimation.start();
@@ -145,22 +145,25 @@ public class FlipActivity extends AppCompatActivity {
 
     }
 
-    private void getChild() {
-        currChildIndex = historyOfFlips.getIndex();
+    private void getChildIndex() {
+        currChildIndex = historyOfFlips.getFlipIndex();
 
+        TextView view = findViewById(R.id.flip_index_tv);
+        view.setText("Current index "+(currChildIndex));
+
+        prevChildIndex = currChildIndex;
+        flip.setChildName(
+                childNames.retrieveChildByIndex(currChildIndex).getChildName()
+        );
+    }
+
+    private void incrementChildIndex(){
         if (currChildIndex == childNames.size() - 1) {
             currChildIndex = 0;
         } else {
             currChildIndex++;
         }
-        prevChildIndex = currChildIndex;
-
-        flip.setChildName(
-                childNames.retrieveChildByIndex(currChildIndex).getChildName()
-        );
-
         historyOfFlips.setFlipIndex(currChildIndex);
-
 
     }
 
@@ -178,6 +181,5 @@ public class FlipActivity extends AppCompatActivity {
             isHeads = false;
             return R.drawable.tails;
         }
-
     }
 }
