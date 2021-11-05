@@ -1,10 +1,10 @@
 package com.cmpt276.parentapp.ui;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.ObjectAnimator;
+import android.content.Context;
+import android.content.Intent;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.view.View;
@@ -12,16 +12,11 @@ import android.view.animation.AccelerateDecelerateInterpolator;
 import android.view.animation.DecelerateInterpolator;
 import android.widget.ImageView;
 
-import java.util.Random;
-
-/**
- *When the activity starts a coin will appear on the screen with the heads side.
- * When the coin is flipped, a side (heads or tails) will randomly be chosen
- * as the new side facing "up"
- *
- */
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.cmpt276.parentapp.R;
+
+import java.util.Random;
 
 public class FlipActivity extends AppCompatActivity {
 
@@ -29,6 +24,10 @@ public class FlipActivity extends AppCompatActivity {
 
     //50 = 2.5 seconds
     private final int ANIMATION_DURATION = 50;
+
+    public static Intent getIntent(Context context) {
+        return new Intent(context, FlipActivity.class);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
