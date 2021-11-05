@@ -149,15 +149,16 @@ public class FlipActivity extends AppCompatActivity {
         currChildIndex = historyOfFlips.getFlipIndex();
 
         TextView view = findViewById(R.id.flip_index_tv);
-        view.setText("Current index "+(currChildIndex));
+        view.setText("Current index "+(currChildIndex)+"\nPrevious Index "+ prevChildIndex);
 
-        prevChildIndex = currChildIndex;
+
         flip.setChildName(
                 childNames.retrieveChildByIndex(currChildIndex).getChildName()
         );
     }
 
     private void incrementChildIndex(){
+        prevChildIndex = currChildIndex;
         if (currChildIndex == childNames.size() - 1) {
             currChildIndex = 0;
         } else {

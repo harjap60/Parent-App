@@ -35,16 +35,6 @@ public class FlipHistoryActivity extends AppCompatActivity {
         return new Intent(context, FlipHistoryActivity.class);
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-        updateUI();
-    }
-
-    private void updateUI(){
-        populateListView();
-    }
-
     private void populateListView(){
         ArrayAdapter<SingleFlipInformation> adapter = new MyListAdapter();
         ListView historyList = findViewById(R.id.flip_history_list);
