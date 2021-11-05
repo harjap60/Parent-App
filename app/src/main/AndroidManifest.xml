@@ -12,10 +12,6 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.ParentApp">
         <activity
-            android:name=".ui.TimerOptionsActivity"
-            android:theme="@android:style/Theme.Translucent.NoTitleBar.Fullscreen"
-            android:exported="false" />
-        <activity
             android:name=".ui.AddChildActivity"
             android:exported="false"
             android:theme="@style/Theme.ParentApp.NoActionBar"
