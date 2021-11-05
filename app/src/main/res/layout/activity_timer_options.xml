@@ -5,79 +5,76 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#BF000000"
-    tools:context=".TimerOptionsActivity">
+    tools:context=".ui.TimerOptionsActivity">
 
     <Button
         android:id="@+id/button3"
-        android:layout_width="198dp"
-        android:layout_height="102dp"
-        android:layout_marginBottom="92dp"
+        android:layout_width="209dp"
+        android:layout_height="49dp"
+        android:layout_marginBottom="156dp"
         android:backgroundTint="#6692B5"
-        android:text="5 minutes"
+        android:text="@string/five_minutes"
         app:layout_constraintBottom_toTopOf="@+id/button5"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.924"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent" />
 
     <Button
         android:id="@+id/button"
-        android:layout_width="195dp"
-        android:layout_height="87dp"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
         android:backgroundTint="#6692B5"
-        android:text="1 Minute"
+        android:text="@string/one_minute"
         app:layout_constraintBottom_toTopOf="@+id/button3"
         app:layout_constraintEnd_toStartOf="@+id/button2"
-        app:layout_constraintHorizontal_bias="0.533"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.522" />
+        app:layout_constraintVertical_bias="0.435" />
 
     <Button
         android:id="@+id/button6"
-        android:layout_width="195dp"
-        android:layout_height="87dp"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
         android:backgroundTint="#6692B5"
-        android:text="3 Minute"
+        android:text="@string/three_minute"
         app:layout_constraintBottom_toTopOf="@+id/button4"
         app:layout_constraintEnd_toStartOf="@+id/button2"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.786" />
+        app:layout_constraintVertical_bias="0.637" />
 
     <Button
         android:id="@+id/button2"
-        android:layout_width="201dp"
-        android:layout_height="93dp"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
         android:backgroundTint="#6692B5"
-        android:text="2 Minutes"
+        android:text="@string/two_minutes"
         app:layout_constraintBottom_toTopOf="@+id/button4"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@+id/button3"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.323" />
+        app:layout_constraintVertical_bias="0.227" />
 
     <Button
         android:id="@+id/button4"
-        android:layout_width="207dp"
-        android:layout_height="95dp"
-        android:layout_marginTop="320dp"
-        android:layout_marginEnd="200dp"
+        android:layout_width="208dp"
+        android:layout_height="53dp"
+        android:layout_marginTop="360dp"
         android:backgroundTint="#6692B5"
-        android:text="10 minutes"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:text="@string/ten_minutes"
+        app:layout_constraintEnd_toStartOf="@+id/button5"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/button" />
 
     <Button
         android:id="@+id/button5"
-        android:layout_width="174dp"
-        android:layout_height="114dp"
-        android:layout_marginBottom="72dp"
+        android:layout_width="198dp"
+        android:layout_height="54dp"
+        android:layout_marginBottom="160dp"
         android:backgroundTint="#6692B5"
-        android:text="Custom Minutes"
+        android:text="@string/custom_minutes"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -4,15 +4,128 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".TimerActivity">
+    android:background="@drawable/blue_gradient"
+    tools:context=".ui.TimerActivity">
 
     <TextView
-        android:id="@+id/textView"
+        android:id="@+id/timer_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="START TIMER"
+        android:layout_marginTop="32dp"
+        android:text="@string/timeout_timer"
+        android:textColor="@color/white"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/timer_live"
+        android:layout_width="412dp"
+        android:layout_height="132dp"
+        android:fontFamily="@font/roboto"
+        android:text="@string/timer_live_text"
+        android:textAlignment="center"
+        android:textColor="@android:color/white"
+        android:textSize="105sp"
+        android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.178" />
+
+    <TextView
+        android:id="@+id/time_elapsed"
+        android:layout_width="74dp"
+        android:layout_height="42dp"
+        android:layout_marginStart="12dp"
+        android:text="@string/initial_time_elapsed"
+        android:textAlignment="center"
+        android:textColor="@android:color/white"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/timer_live"
+        app:layout_constraintVertical_bias="0.298" />
+
+    <TextView
+        android:id="@+id/time_total"
+        android:layout_width="81dp"
+        android:layout_height="41dp"
+        android:layout_marginEnd="16dp"
+        android:text="@string/initial_selected"
+        android:textAlignment="center"
+        android:textColor="@android:color/white"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toEndOf="@+id/time_elapsed"
+        app:layout_constraintTop_toBottomOf="@+id/timer_live"
+        app:layout_constraintVertical_bias="0.3" />
+
+    <ImageButton
+        android:id="@+id/right_image_button"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:background="@drawable/custom_round_button"
+        android:clickable="true"
+        android:contentDescription="rightImageButton"
+        android:focusable="true"
+        android:foreground="?attr/selectableItemBackgroundBorderless"
+        app:layout_constraintBottom_toBottomOf="@+id/timerBar"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/timerBar"
+        app:layout_constraintTop_toTopOf="@+id/timerBar"
+        app:srcCompat="@android:drawable/ic_lock_idle_lock" />
+
+    <ImageButton
+        android:id="@+id/left_image_button"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:background="@drawable/custom_round_button"
+        android:clickable="true"
+        android:contentDescription="leftImageButton"
+        android:focusable="true"
+        android:foreground="?attr/selectableItemBackgroundBorderless"
+        app:layout_constraintBottom_toBottomOf="@+id/timerBar"
+        app:layout_constraintEnd_toStartOf="@+id/timerBar"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/timerBar"
+        app:srcCompat="@android:drawable/ic_lock_idle_lock" />
+
+    <ProgressBar
+        android:id="@+id/timerBar"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="230dp"
+        android:layout_height="195dp"
+        android:layout_marginTop="16dp"
+        android:backgroundTint="#683A3131"
+        android:layoutDirection="ltr"
+        android:max="100"
+        android:progress="100"
+        android:progressDrawable="@drawable/timer_circle"
+        android:rotation="-90"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.486"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/time_elapsed" />
+
+    <Button
+        android:id="@+id/start_pause_resume_button"
+        android:layout_width="174dp"
+        android:layout_height="161dp"
+        android:background="@drawable/round_button"
+        android:foreground="?attr/selectableItemBackgroundBorderless"
+        android:text="@string/start"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="@+id/timerBar"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/timerBar" />
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>
