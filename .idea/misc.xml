@@ -21,12 +21,17 @@
         <entry key="..\:/Users/divij/AndroidStudioProjects/ParentApp/app/src/main/res/menu/menu_child_list.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/divij/AndroidStudioProjects/ParentApp/app/src/main/res/menu/menu_edit_child.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/divij/AndroidStudioProjects/ParentApp/app/src/main/res/menu/menu_main.xml" value="0.25416666666666665" />
+        <entry key="app/src/main/res/drawable/round_button.xml" value="0.18072916666666666" />
+        <entry key="app/src/main/res/drawable/timer_circle.xml" value="0.18072916666666666" />
+        <entry key="app/src/main/res/layout/activity_add_child.xml" value="0.16458333333333333" />
         <entry key="app/src/main/res/layout/activity_child_list.xml" value="0.21510416666666668" />
         <entry key="app/src/main/res/layout/activity_flip.xml" value="0.2907692307692308" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.30512820512820515" />
         <entry key="app/src/main/res/layout/activity_timer.xml" value="0.28125" />
+        <entry key="app/src/main/res/layout/activity_timer_options.xml" value="0.26614583333333336" />
         <entry key="app/src/main/res/layout/content_main.xml" value="0.30512820512820515" />
         <entry key="app/src/main/res/layout/fragment_first.xml" value="0.30512820512820515" />
+        <entry key="app/src/main/res/menu/menu_main.xml" value="0.16458333333333333" />
       </map>
     </option>
   </component>
