@@ -9,9 +9,8 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.cmpt276.parentapp.databinding.ActivityTimerRunningBinding;
-
 import com.cmpt276.parentapp.R;
+import com.cmpt276.parentapp.databinding.ActivityTimerBinding;
 
 public class TimerActivity extends AppCompatActivity {
 
@@ -20,7 +19,7 @@ public class TimerActivity extends AppCompatActivity {
 
     public static final String TIMER_DURATION_TAG = "TIMER_DURATION_TAG";
 
-    private ActivityTimerRunningBinding binding;
+    private ActivityTimerBinding binding;
     private Intent timerServiceIntent;
 
     private long initialMillisUntilFinished;
@@ -37,7 +36,7 @@ public class TimerActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        binding = ActivityTimerRunningBinding.inflate(this.getLayoutInflater());
+        binding = ActivityTimerBinding.inflate(this.getLayoutInflater());
         setContentView(binding.getRoot());
 
         extractDurationFromIntent();
@@ -68,6 +67,35 @@ public class TimerActivity extends AppCompatActivity {
         registerReceiver(receiver, filter);
     }
 
+    private void setupResetTimerButton() {
+        binding.rightImageButton.setOnClickListener(v -> {
+            pauseTimer();
+            millisUntilFinished = initialMillisUntilFinished;
+            updateUI();
+        });
+    }
+
+    private void setupPauseResumeButton() {
+        binding.startPauseResumeButton.setOnClickListener(v -> {
+            if (timerServiceIntent != null) {
+                pauseTimer();
+            } else {
+                createAndStartTimer();
+            }
+            updateUI();
+        });
+    }
+
+    private void updateUI() {
+        int pauseButtonString = R.string.btn_timer_start;
+        if (initialMillisUntilFinished != millisUntilFinished) {
+            pauseButtonString = timerServiceIntent == null ? R.string.btn_timer_resume : R.string.btn_timer_pause;
+        }
+
+        binding.startPauseResumeButton.setText(getString(pauseButtonString));
+        binding.timerLive.setText(getRemainingTimeString(millisUntilFinished));
+        binding.timerBar.setProgress((int) ((millisUntilFinished * 100) / initialMillisUntilFinished));
+    }
 
     private void extractDurationFromIntent() {
         initialMillisUntilFinished = this.getIntent().getLongExtra(TIMER_DURATION_TAG, 0);
@@ -88,38 +116,9 @@ public class TimerActivity extends AppCompatActivity {
         timerServiceIntent = null;
     }
 
-    private void setupResetTimerButton() {
-        binding.btnTimerReset.setOnClickListener(v -> {
-            pauseTimer();
-            millisUntilFinished = initialMillisUntilFinished;
-            updateUI();
-        });
-    }
-
-    private void setupPauseResumeButton() {
-        binding.btnTimerPause.setOnClickListener(v -> {
-            if (timerServiceIntent != null) {
-                pauseTimer();
-            } else {
-                createAndStartTimer();
-            }
-            updateUI();
-        });
-    }
-
-    private void updateUI() {
-        int pauseButtonString = R.string.btn_timer_start;
-        if (initialMillisUntilFinished != millisUntilFinished) {
-            pauseButtonString = timerServiceIntent == null ? R.string.btn_timer_resume : R.string.btn_timer_pause;
-        }
-        binding.btnTimerPause.setText(getString(pauseButtonString));
-
-        binding.tvTimeRemaining.setText(getRemainingTimeString());
-    }
-
     @NonNull
-    private String getRemainingTimeString() {
-        long totalSeconds = millisUntilFinished/TimerService.COUNT_DOWN_INTERVAL;
+    private String getRemainingTimeString(long millis) {
+        long totalSeconds = millis / TimerService.COUNT_DOWN_INTERVAL;
 
         long minutes = totalSeconds / SECONDS_IN_MINUTE;
         long hours = minutes / MINUTES_IN_HOUR;
