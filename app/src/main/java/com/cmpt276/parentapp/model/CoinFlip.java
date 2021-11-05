@@ -2,8 +2,8 @@ package com.cmpt276.parentapp.model;
 
 import java.time.LocalDateTime;
 
-public class SingleFlipInformation {
-    private String childName;
+public class CoinFlip {
+    private int childNameIndex;
     private String choice;
     private boolean isWinner;
     private LocalDateTime flipTime;
@@ -20,13 +20,13 @@ public class SingleFlipInformation {
         this.flipTime = LocalDateTime.now();
     }
 
-    public String getChildName(){
-        return this.childName;
+    public int getChildNameIndex(){
+        return this.childNameIndex;
+    }
+    public void setChildNameIndex(int childNameIndex) {
+        this.childNameIndex = childNameIndex;
     }
 
-    public void setChildName(String childName) {
-        this.childName = childName;
-    }
     public boolean isWinner(){
         return this.isWinner;
     }

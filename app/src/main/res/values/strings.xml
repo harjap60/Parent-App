@@ -46,6 +46,7 @@
     <string name="default_name_flip_information">Name:</string>
     <string name="default_did_win_flip_information">win?</string>
     <string name="default_child_choice_flip_information">choice</string>
+    <string name="child_choice_for_flip">Chose: %1$s and %2$s</string>
     <!-- ================================= -->
 
 </resources>

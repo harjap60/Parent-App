@@ -13,67 +13,75 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.cmpt276.parentapp.R;
-import com.cmpt276.parentapp.model.HistoryOfFlips;
-import com.cmpt276.parentapp.model.SingleFlipInformation;
+import com.cmpt276.parentapp.model.ChildManager;
+import com.cmpt276.parentapp.model.FlipHistoryManager;
+import com.cmpt276.parentapp.model.CoinFlip;
 
 import java.time.format.DateTimeFormatter;
 
 public class FlipHistoryActivity extends AppCompatActivity {
 
-    HistoryOfFlips historyOfFlips;
+    FlipHistoryManager flipHistoryManager;
+    ChildManager childManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_flip_history);
 
-        historyOfFlips = HistoryOfFlips.getInstance();
+        flipHistoryManager = FlipHistoryManager.getInstance();
+        childManager = ChildManager.getInstance(this);
         populateListView();
     }
 
-    public static Intent getIntent(Context context){
+    public static Intent getIntent(Context context) {
         return new Intent(context, FlipHistoryActivity.class);
     }
 
-    private void populateListView(){
-        ArrayAdapter<SingleFlipInformation> adapter = new MyListAdapter();
+    private void populateListView() {
+        ArrayAdapter<CoinFlip> adapter = new MyListAdapter();
         ListView historyList = findViewById(R.id.flip_history_list);
         historyList.setAdapter(adapter);
     }
-    private class MyListAdapter extends  ArrayAdapter<SingleFlipInformation>{
-        public MyListAdapter(){
+
+    private class MyListAdapter extends ArrayAdapter<CoinFlip> {
+        public MyListAdapter() {
             super(
                     FlipHistoryActivity.this,
-                    R.layout.single_flip_information,
-                    historyOfFlips.getFullHistory()
+                    R.layout.flip_history_view,
+                    flipHistoryManager.getFullHistory()
             );
         }
-        public View getView(int position, View convertView, ViewGroup parent){
+
+        public View getView(int position, View convertView, ViewGroup parent) {
             View itemView = convertView;
-            if(itemView == null){
+            if (itemView == null) {
                 itemView = getLayoutInflater().inflate(
-                        R.layout.single_flip_information, parent ,false
+                        R.layout.flip_history_view, parent, false
                 );
             }
-            SingleFlipInformation currentFlip = historyOfFlips.getFlip(position);
+
+            CoinFlip currentFlip = flipHistoryManager.getFlip(position);
 
             TextView dateText = itemView.findViewById(R.id.game_date_flip_information_tv);
             String date = DateTimeFormatter.ofPattern("MMM-dd@KK:mma").format(currentFlip.getFlipTime());
             dateText.setText(date);
 
             TextView childNameText = itemView.findViewById(R.id.child_name_flip_information_tv);
-            childNameText.setText(currentFlip.getChildName());
-
+            int childNameIndex = currentFlip.getChildNameIndex();
+            if (childNameIndex == childManager.size()) {
+                childNameText.setText("");
+            } else {
+                childNameText.setText(childManager.retrieveChildByIndex(childNameIndex).getChildName());
+            }
             TextView childChoiceText = itemView.findViewById(R.id.child_choice_flip_information_tv);
-            childChoiceText.setText("Chose: "+ currentFlip.getChoice());
-
-            TextView isWinText = itemView.findViewById(R.id.did_win_flip_information_tv);
-            isWinText.setText(String.valueOf(currentFlip.isWinner()));
+            childChoiceText.setText(getString(R.string.child_choice_for_flip, currentFlip.getChoice(),
+                    currentFlip.isWinner() ? "won" : "lost"));
 
             ImageView guessImage = itemView.findViewById(R.id.child_guess_image_flip_information_iv);
-            if(currentFlip.isWinner()){
+            if (currentFlip.isWinner()) {
                 guessImage.setImageResource(R.drawable.child_guess_correct);
-            }else{
+            } else {
                 guessImage.setImageResource(R.drawable.child_guess_wrong);
             }
             return itemView;
