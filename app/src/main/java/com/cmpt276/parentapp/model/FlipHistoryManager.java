@@ -44,4 +44,14 @@ public class FlipHistoryManager {
     public ArrayList<CoinFlip> getFullHistory() {
         return history;
     }
+
+    public void updateChildNameIndexDeletedChild(int index){
+        history.remove(index);
+        for(int i = 0; i< history.size(); i++){
+            if(index <= i){
+                CoinFlip indexToDecrease = history.get(i);
+                indexToDecrease.setChildNameIndex(indexToDecrease.getChildNameIndex() - 1);
+            }
+        }
+    }
 }

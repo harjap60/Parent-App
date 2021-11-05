@@ -226,6 +226,8 @@ public class AddChildActivity extends AppCompatActivity {
                     history.setCurrentFlipIndex(history.getCurrentFlipIndex()-1);
                 }
 
+                history.updateChildNameIndexDeletedChild(positionForEditChild);
+
 
                 manager.removeChild(positionForEditChild);
                 saveChildListToSharedPrefs();
