@@ -1,6 +1,6 @@
 /**
  * Add Child Activity - This activity lets you add a new child to the list.
- *                      Or edit an existing child in the list.
+ * Or edit an existing child in the list.
  * The user sets the name of the child but has a restriction to it
  * - the name of the new/edit child cannot be empty
  */
@@ -37,15 +37,15 @@ public class AddChildActivity extends AppCompatActivity {
     private int positionForEditChild;
     private static final String EXTRA_FOR_INDEX =
             "com.cmpt276.parentapp.ui.AddChildActivity - the index";
-    private static final int DEFAULT_VALUE_FOR_ADD_CHILD_FOR_INTENT  = -1;
+    private static final int DEFAULT_VALUE_FOR_ADD_CHILD_FOR_INTENT = -1;
 
     private String initialString = "";
 
-    public static Intent makeIntentForAddChild(Context context){
+    public static Intent makeIntentForAddChild(Context context) {
         return makeIntentForEditChild(context, DEFAULT_VALUE_FOR_ADD_CHILD_FOR_INTENT);
     }
 
-    public static Intent makeIntentForEditChild(Context context, int index){
+    public static Intent makeIntentForEditChild(Context context, int index) {
         Intent intent = new Intent(context, AddChildActivity.class);
         intent.putExtra(EXTRA_FOR_INDEX, index);
         return intent;
@@ -69,10 +69,9 @@ public class AddChildActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // inflate the menu
-        if(addChild){
+        if (addChild) {
             getMenuInflater().inflate(R.menu.menu_add_child, menu);
-        }
-        else {
+        } else {
             getMenuInflater().inflate(R.menu.menu_edit_child, menu);
         }
         return true;
@@ -104,12 +103,12 @@ public class AddChildActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        if(changeHappened()){
+        if (changeHappened()) {
             AlertDialog.Builder builder = getAlertDialogBox();
             builder.setMessage(
                     addChild ?
-                        getString(R.string.warning_change_happened_for_add_child) :
-                        getString(R.string.warning_change_happened_for_edit_child)
+                            getString(R.string.warning_change_happened_for_add_child) :
+                            getString(R.string.warning_change_happened_for_edit_child)
             );
 
             builder.setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
@@ -122,19 +121,18 @@ public class AddChildActivity extends AppCompatActivity {
             AlertDialog alertDialog = builder.create();
             alertDialog.show();
 
-        }
-        else{
+        } else {
             finish();
         }
     }
 
-    private void extractDataFromIntent(){
+    private void extractDataFromIntent() {
         Intent intent = getIntent();
         positionForEditChild = intent.getIntExtra(EXTRA_FOR_INDEX, 0);
         addChild = positionForEditChild < 0;
     }
 
-    private void setUpEditTextChildName(){
+    private void setUpEditTextChildName() {
         childNameInput = findViewById(R.id.child_name_edit_text);
         childNameInput.setText(initialString);
     }
@@ -152,7 +150,7 @@ public class AddChildActivity extends AppCompatActivity {
         ab.setDisplayHomeAsUpEnabled(true);
     }
 
-    private void setupAddChildButton(){
+    private void setupAddChildButton() {
         addChildButton = findViewById(R.id.add_child_button);
         addChildButton.setText(
                 addChild ?
@@ -160,17 +158,16 @@ public class AddChildActivity extends AppCompatActivity {
                         getString(R.string.edit_child_button_text)
         );
 
-        if(addChild){
+        if (addChild) {
             addChildButton.setOnClickListener(view -> addOrDiscardChildName());
-        }
-        else{
+        } else {
             addChildButton.setOnClickListener(view -> editChildName());
         }
     }
 
-    private void editChildName(){
-        if(!childNameIsEmpty()){
-            if(changeHappened()){
+    private void editChildName() {
+        if (!childNameIsEmpty()) {
+            if (changeHappened()) {
                 // ----------change happened--------------
                 // set alert dialog box that confirms if the user really wants to change the name
                 AlertDialog.Builder builder = getAlertDialogBox();
@@ -189,8 +186,7 @@ public class AddChildActivity extends AppCompatActivity {
                 });
                 AlertDialog alertDialog = builder.create();
                 alertDialog.show();
-            }
-            else{
+            } else {
                 // ---------- change didn't happen -------------
                 Toast.makeText(AddChildActivity.this,
                         getString(R.string.did_not_change_name_text_for_dialog_box),
@@ -198,8 +194,7 @@ public class AddChildActivity extends AppCompatActivity {
                 ).show();
                 finish();
             }
-        }
-        else{
+        } else {
             // show a toast that says did not add name because child name was empty
             Toast.makeText(
                     AddChildActivity.this,
@@ -210,7 +205,7 @@ public class AddChildActivity extends AppCompatActivity {
         }
     }
 
-    private void deleteChild(){
+    private void deleteChild() {
         AlertDialog.Builder builder = getAlertDialogBox();
         builder.setMessage(getString(
                 R.string.confirm_delete_child_dialog_box_message,
@@ -222,7 +217,7 @@ public class AddChildActivity extends AppCompatActivity {
 
                 // first remove the flip history of that child
                 // and then remove the child from the manager
-                FlipHistoryManager historyManager = FlipHistoryManager.getInstance();
+                FlipHistoryManager historyManager = FlipHistoryManager.getInstance(AddChildActivity.this);
                 historyManager.deleteFlipHistoryOfChild(
                         manager.getChild(positionForEditChild));
 
@@ -237,12 +232,11 @@ public class AddChildActivity extends AppCompatActivity {
         alertDialog.show();
     }
 
-    private void addOrDiscardChildName(){
-        if(!childNameIsEmpty()){
+    private void addOrDiscardChildName() {
+        if (!childNameIsEmpty()) {
             addChildInfo();
             saveChildListToSharedPrefs();
-        }
-        else{
+        } else {
             // show a toast that says did not add name because it was empty
             Toast.makeText(
                     AddChildActivity.this,
@@ -253,7 +247,7 @@ public class AddChildActivity extends AppCompatActivity {
         finish();
     }
 
-    private boolean childNameIsEmpty(){
+    private boolean childNameIsEmpty() {
         return String.valueOf(childNameInput.getText()).equals("");
     }
 
@@ -268,32 +262,31 @@ public class AddChildActivity extends AppCompatActivity {
     }
 
 
-    private AlertDialog.Builder getAlertDialogBox(){
+    private AlertDialog.Builder getAlertDialogBox() {
         AlertDialog.Builder builder = new AlertDialog.Builder(AddChildActivity.this);
         builder.setTitle(R.string.warning_message);
-
         builder.setNegativeButton(R.string.no, null);
 
         return builder;
     }
 
-    private void changeChildName(){
+    private void changeChildName() {
         String childNameAfterChange = String.valueOf(childNameInput.getText());
         Child child = manager.getChild(positionForEditChild);
         child.setChildName(childNameAfterChange);
     }
 
-    private void setUpInitialString(){
-        if(!addChild){
+    private void setUpInitialString() {
+        if (!addChild) {
             initialString = manager.getChild(positionForEditChild).getChildName();
         }
     }
 
-    private boolean changeHappened(){
-        return !initialString.equals(String.valueOf(childNameInput.getText()));
+    private boolean changeHappened() {
+        return (!initialString.equals(String.valueOf(childNameInput.getText())));
     }
 
-    private void saveChildListToSharedPrefs(){
+    private void saveChildListToSharedPrefs() {
         PrefConfig.writeChildListInPref(getApplicationContext(), manager.getAllChildren());
     }
 }

@@ -29,7 +29,7 @@ public class FlipHistoryActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_flip_history);
 
-        flipHistoryManager = FlipHistoryManager.getInstance();
+        flipHistoryManager = FlipHistoryManager.getInstance(FlipHistoryActivity.this);
         childManager = ChildManager.getInstance(FlipHistoryActivity.this);
         populateListView();
     }
@@ -64,14 +64,13 @@ public class FlipHistoryActivity extends AppCompatActivity {
             CoinFlip currentFlip = flipHistoryManager.getFlip(position);
 
             TextView dateText = itemView.findViewById(R.id.game_date_flip_information_tv);
-            String date = DateTimeFormatter.ofPattern("MMM-dd@KK:mma").format(currentFlip.getFlipTime());
+            String date = DateTimeFormatter.ofPattern("MMM-dd @ KK:mma").format(currentFlip.getFlipTime());
             dateText.setText(date);
 
             TextView childNameText = itemView.findViewById(R.id.child_name_flip_information_tv);
-            if(currentFlip.getChild() == null){
+            if (currentFlip.getChild() == null) {
                 childNameText.setText("");
-            }
-            else {
+            } else {
                 childNameText.setText(currentFlip.getChild().getChildName());
             }
 

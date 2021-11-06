@@ -10,33 +10,33 @@ public class FlipHistoryManager {
 
     private static FlipHistoryManager instance;
 
-    private FlipHistoryManager(){
+    private FlipHistoryManager(Context context) {
 
-        /*// the following code reads the data from shared preferences
+        // the following code reads the data from shared preferences
         // which contains the history of flips
         history = PrefConfig.readFlipHistoryFromPref(context);
-        if(history == null) {
+        if (history == null) {
             // if the 'history' variable(list) is null, it means this is the first time that
             // the user is running the app and 'history' will have a value of null (empty list), so
             // - if the 'history' variable(list) is null, then make an empty list of flipsHistory
             // - if the 'children' variable(list) is not null, then the 'history' variable(list)
-            // now consists of the history of flips saved from the previous run*/
-        history = new ArrayList<>();
+            // now consists of the history of flips saved from the previous run
+            history = new ArrayList<>();
 
+        }
     }
 
-    public static FlipHistoryManager getInstance(){
-        if(instance == null){
-            instance = new FlipHistoryManager();
+    public static FlipHistoryManager getInstance(Context context) {
+        if (instance == null) {
+            instance = new FlipHistoryManager(context);
         }
         return instance;
     }
 
-    public void deleteFlipHistoryOfChild(Child child){
-        for(int i = 0; i < history.size(); i++){
-            if(getFlip(i).getChild() == child){
+    public void deleteFlipHistoryOfChild(Child child) {
+        for (int i = 0; i < history.size(); i++) {
+            if (getFlip(i).getChild() == child) {
                 history.remove(getFlip(i));
-
                 i--;
                 // i-- is done because once we remove an item from array list, all the elements
                 // after that index are shifted up by one and the size is also decreased, so to
@@ -47,21 +47,19 @@ public class FlipHistoryManager {
         //PrefConfig.writeFlipHistoryInPref(context, history);
     }
 
-    public int getCurrentFlipIndex(ChildManager childManager){
-        if(childManager.size() == 0){
+    public int getCurrentFlipIndex(ChildManager childManager) {
+        if (childManager.size() == 0) {
             return -1;
-        }
-        else {
-            if(size() == 0){    // No one has flipped a coin yet
+        } else {
+            if (size() == 0) {    // No one has flipped a coin yet
                 return 0;
-            }
-            else {
+            } else {
                 // get the last child to flip the coin
                 Child child = history.get(size() - 1).getChild();
 
                 // if a new child is added after a bunch of flips when no child was added,
                 // the round robin should start from 0
-                if(child == null){
+                if (child == null) {
                     return 0;
                 }
                 // get the index of the child from the childManager
@@ -76,38 +74,34 @@ public class FlipHistoryManager {
         }
     }
 
-    public int getPreviousFlipIndex(ChildManager childManager){
-        if(childManager.size() == 0){
+    public int getPreviousFlipIndex(ChildManager childManager) {
+        if (childManager.size() == 0) {
             return -1;
-        }
-        else {
-            if(size() == 0){    // No one has flipped a coin yet
+        } else {
+            if (size() == 0) {    // No one has flipped a coin yet
                 return -1;
-            }
-            else {
+            } else {
                 // get the last child to flip the coin
                 Child child = history.get(size() - 1).getChild();
 
                 // To handle null pointer exception when a new child is added after
                 // a bunch of flips when no child was added
-                if(child == null){
+                if (child == null) {
                     return -1;
                 }
 
                 // get the index of the child from the childManger
-                int index = childManager.getChildIndex(child);
-
                 // return the index of the child
-                return index;
+                return childManager.getChildIndex(child);
             }
         }
     }
 
-    public void addFlip(CoinFlip flip){
+    public void addFlip(CoinFlip flip) {
         history.add(flip);
     }
 
-    public CoinFlip getFlip(int i){
+    public CoinFlip getFlip(int i) {
         return history.get(i);
     }
 
@@ -115,11 +109,11 @@ public class FlipHistoryManager {
         return history;
     }
 
-    public void setHistory(List<CoinFlip> history){
+    public void setHistory(List<CoinFlip> history) {
         this.history = history;
     }
 
-    public int size(){
+    public int size() {
         return history.size();
     }
 }

@@ -22,17 +22,17 @@
         android:id="@+id/user_choice_heads_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="100dp"
-        android:layout_marginEnd="64dp"
+        android:layout_marginStart="-8dp"
+        android:layout_marginTop="60dp"
         android:text="@string/heads"
-        app:layout_constraintEnd_toStartOf="@+id/user_choice_tails_button"
+        app:layout_constraintStart_toStartOf="@+id/coin_image_view"
         app:layout_constraintTop_toBottomOf="@+id/coin_image_view" />
 
     <Button
         android:id="@+id/user_choice_tails_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="-5dp"
+        android:layout_marginEnd="-8dp"
         android:text="@string/tails"
         app:layout_constraintBottom_toBottomOf="@+id/user_choice_heads_button"
         app:layout_constraintEnd_toEndOf="@+id/coin_image_view"
@@ -42,10 +42,11 @@
         android:id="@+id/flip_history_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="101dp"
+        android:layout_marginBottom="52dp"
         android:text="@string/history_of_flips"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@+id/user_choice_tails_button"
+        app:layout_constraintHorizontal_bias="0.478"
         app:layout_constraintStart_toStartOf="@+id/user_choice_heads_button" />
 
     <TextView
@@ -64,7 +65,29 @@
         android:layout_height="wrap_content"
         android:text="@string/previous_child_tv_string"
         app:layout_constraintStart_toStartOf="@id/current_child_tv"
-        app:layout_constraintTop_toBottomOf="@id/current_child_tv"/>
+        app:layout_constraintTop_toBottomOf="@id/current_child_tv" />
+
+    <ImageButton
+        android:id="@+id/flip_coin_image_button"
+        android:layout_width="111dp"
+        android:layout_height="136dp"
+        android:layout_marginTop="16dp"
+        android:scaleType="fitCenter"
+        app:layout_constraintEnd_toEndOf="@+id/user_choice_tails_button"
+        app:layout_constraintStart_toStartOf="@+id/user_choice_heads_button"
+        app:layout_constraintTop_toBottomOf="@+id/user_choice_tails_button"
+        app:srcCompat="@drawable/coin_flip_image" />
+
+    <TextView
+        android:id="@+id/tell_user_choose_heads_tails"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="@string/which_side_do_you_think_it_will_land_on"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/coin_image_view" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

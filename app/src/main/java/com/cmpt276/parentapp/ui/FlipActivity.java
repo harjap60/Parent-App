@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.view.animation.DecelerateInterpolator;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -52,10 +53,11 @@ public class FlipActivity extends AppCompatActivity {
         setContentView(R.layout.activity_flip);
 
         childNames = ChildManager.getInstance(FlipActivity.this);
-        flipHistoryManager = FlipHistoryManager.getInstance();
+        flipHistoryManager = FlipHistoryManager.getInstance(FlipActivity.this);
 
         coinImage = findViewById(R.id.coin_image_view);
 
+        setupCoinFlipButton();
         setupHistoryButton();
         updateTextView();
         setChoiceButtons();
@@ -76,42 +78,36 @@ public class FlipActivity extends AppCompatActivity {
 
     //Break into 2 methods
     private void setChoiceButtons() {
-
         // Heads button
         userChoiceHeads = findViewById(R.id.user_choice_heads_button);
         userChoiceHeads.setOnClickListener(view -> {
-            flip = new CoinFlip();
-
-            if (childNames.size() == 0) {
-                flip.setChild(null);
-                //flip.setChildNameIndex(childNames.size());
-            } else {
-                flip.setChild(childNames.getChild(currChildIndex));
-                //flip.setChildNameIndex(currChildIndex);
-            }
-
-            flip.setChoice(userChoiceHeads.getText().toString());
+            setupChildAndChoice(userChoiceHeads);
             flip.startFlip();
             disableAllButtons();
-            flipCoin();
         });
 
         // Tails button
         userChoiceTails = findViewById(R.id.user_choice_tails_button);
         userChoiceTails.setOnClickListener(view -> {
-            flip = new CoinFlip();
-            if (childNames.size() == 0) {
-                flip.setChild(null);
-                //flip.setChildNameIndex(childNames.size());
-            } else {
-                flip.setChild(childNames.getChild(currChildIndex));
-                //flip.setChildNameIndex(currChildIndex);
-            }
-            flip.setChoice(userChoiceTails.getText().toString());
+            setupChildAndChoice(userChoiceTails);
             flip.startFlip();
             disableAllButtons();
-            flipCoin();
         });
+    }
+
+    private void setupChildAndChoice(Button userChoiceButton) {
+        flip = new CoinFlip();
+        if (childNames.size() == 0) {
+            flip.setChild(null);
+        } else {
+            flip.setChild(childNames.getChild(currChildIndex));
+        }
+        flip.setChoice(userChoiceButton.getText().toString());
+    }
+
+    private void setupCoinFlipButton() {
+        ImageButton coinFlipButton = findViewById(R.id.flip_coin_image_button);
+        coinFlipButton.setOnClickListener(view -> flipCoin());
     }
 
     private void disableAllButtons() {
@@ -144,13 +140,11 @@ public class FlipActivity extends AppCompatActivity {
                 super.onAnimationEnd(animation);
                 coinImage.setImageResource(determineSide());
                 secondAnimation.start();
-
                 checkWin();
 
                 flipHistoryManager.addFlip(flip);
                 saveFlipsHistoryToSharedPrefs();
                 updateTextView();
-                //incrementChildIndex();
                 enableAllButtons();
             }
         });
@@ -173,7 +167,6 @@ public class FlipActivity extends AppCompatActivity {
         } else if (!isHeads && flip.getChoice().equals("Tails")) {
             flip.setIsWinner(true);
         }
-
     }
 
     private void updateChildIndex() {
@@ -187,53 +180,31 @@ public class FlipActivity extends AppCompatActivity {
         TextView currentChildTextView = findViewById(R.id.current_child_tv);
         TextView previousChildTextView = findViewById(R.id.previous_child_tv);
 
-
-        if(currChildIndex == -1){
+        if (currChildIndex == -1) {
             currentChildTextView.setText(getString(
                     R.string.current_child_tv_string,
                     "---")
             );
-        }
-        else{
+        } else {
             currentChildTextView.setText(getString(
                     R.string.current_child_tv_string,
                     childNames.getChild(currChildIndex).getChildName())
             );
         }
-
-        if(prevChildIndex == -1){
+        if (prevChildIndex == -1) {
             previousChildTextView.setText(getString(
                     R.string.previous_child_tv_string,
                     "---")
             );
-        }
-        else{
+        } else {
             previousChildTextView.setText(getString(
                     R.string.previous_child_tv_string,
                     childNames.getChild(prevChildIndex).getChildName())
             );
         }
-
-        /*view.setText(getString(
-                R.string.print_child_name_current_previous_flip,
-                childNames.retrieveChildByIndex(currChildIndex).getChildName(),
-                childNames.retrieveChildByIndex(prevChildIndex).getChildName()
-        ));*/
     }
 
-    /*private void incrementChildIndex() {
-        prevChildIndex = currChildIndex;
-        currChildIndex++;
-        currChildIndex %= childNames.size();
-
-        flipHistoryManager.setCurrentFlipIndex(currChildIndex);
-        flipHistoryManager.setPreviousFlipIndex(prevChildIndex);
-
-        updateTextView();
-
-    }*/
-
-    private void saveFlipsHistoryToSharedPrefs(){
+    private void saveFlipsHistoryToSharedPrefs() {
         PrefConfig.writeFlipHistoryInPref(getApplicationContext(), flipHistoryManager.getFullHistory());
     }
 
@@ -242,8 +213,8 @@ public class FlipActivity extends AppCompatActivity {
         Random random = new Random();
         final int NUM_SIDES_COIN = 2;
         int randomNum = random.nextInt(NUM_SIDES_COIN);
-
         final int HEADS = 1;
+
         if (randomNum == HEADS) {
             isHeads = true;
             return R.drawable.heads;
