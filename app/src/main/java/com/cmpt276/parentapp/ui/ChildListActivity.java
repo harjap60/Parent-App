@@ -36,7 +36,7 @@ public class ChildListActivity extends AppCompatActivity {
         setContentView(R.layout.activity_child_list);
 
         // instantiating the manager
-        manager = ChildManager.getInstance(this);
+        manager = ChildManager.getInstance(ChildListActivity.this);
 
         setUpToolbar();
         enableUpOnToolbar();
@@ -136,7 +136,7 @@ public class ChildListActivity extends AppCompatActivity {
             }
 
             // Find the child to work with
-            Child currentChild = manager.retrieveChildByIndex(position);
+            Child currentChild = manager.getChild(position);
 
             // Fill the view
             TextView childNameText = itemView.findViewById(R.id.child_name_text_view);

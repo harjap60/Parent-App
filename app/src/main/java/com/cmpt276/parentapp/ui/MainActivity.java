@@ -4,6 +4,11 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import com.cmpt276.parentapp.R;
+import com.cmpt276.parentapp.model.Child;
+import com.cmpt276.parentapp.model.ChildManager;
+import com.cmpt276.parentapp.model.CoinFlip;
+import com.cmpt276.parentapp.model.FlipHistoryManager;
+import com.cmpt276.parentapp.model.PrefConfig;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -12,7 +17,12 @@ import androidx.appcompat.widget.Toolbar;
 import android.view.Menu;
 import android.widget.Button;
 
+import java.util.List;
+
 public class MainActivity extends AppCompatActivity {
+
+    ChildManager childManager;
+    FlipHistoryManager flipHistoryManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -21,11 +31,15 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        //childManager = ChildManager.getInstance();
+        //flipHistoryManager = FlipHistoryManager.getInstance();
+
         setupFlipButton();
         setupTimerButton();
         setupChildButton();
 
-
+        //readFlipsHistoryFromSharedPrefs();
+        //readChildListFromSharedPrefs();
     }
 
     private void setupChildButton() {
@@ -51,6 +65,20 @@ public class MainActivity extends AppCompatActivity {
             startActivity(intent);
         });
     }
+
+    /*private void readFlipsHistoryFromSharedPrefs(){
+        List<CoinFlip> history = PrefConfig.readFlipHistoryFromPref(this);
+        if(history != null){
+            flipHistoryManager.setHistory(history);
+        }
+    }
+
+    private void readChildListFromSharedPrefs(){
+        List<Child> children = PrefConfig.readChildListFromPref(this);
+        if(children != null){
+            childManager.setChildren(children);
+        }
+    }*/
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

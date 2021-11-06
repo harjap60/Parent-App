@@ -41,13 +41,21 @@
     <string name="did_not_change_name_text_for_dialog_box">Did not change name!!</string>
     <string name="heads">Heads</string>
     <string name="tails">Tails</string>
+    <!-- ================================= -->
+
+    <!-- String used for FLIP HISTORY ACTIVITY -->
     <string name="history_of_flips">History of Flips</string>
     <string name="default_date_flip_information">Date</string>
     <string name="default_name_flip_information">Name:</string>
     <string name="default_did_win_flip_information">win?</string>
     <string name="default_child_choice_flip_information">choice</string>
     <string name="child_choice_for_flip">Chose: %1$s and %2$s</string>
+    <!-- ===================================== -->
+
+    <!-- Strings used for FLIP ACTIVITY -->
     <string name="print_child_name_current_previous_flip">Current Child: %1$s \nPrevious Child: %2$s</string>
-    <!-- ================================= -->
+    <string name="previous_child_tv_string">Previous child: %1$s</string>
+    <string name="current_child_tv_string">Current child: %1$s</string>
+    <!-- ============================== -->
 
 </resources>

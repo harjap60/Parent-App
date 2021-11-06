@@ -57,7 +57,7 @@ public class AddChildActivity extends AppCompatActivity {
         setContentView(R.layout.activity_add_child);
 
         // instantiating the manager
-        manager = ChildManager.getInstance(this);
+        manager = ChildManager.getInstance(AddChildActivity.this);
 
         extractDataFromIntent();
         setUpInitialString();
@@ -219,15 +219,14 @@ public class AddChildActivity extends AppCompatActivity {
         builder.setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-                //For checking if the index of the current child that is going to do the coin flip
-                // has changed
-                FlipHistoryManager history = FlipHistoryManager.getInstance();
-                if(positionForEditChild < history.getCurrentFlipIndex()){
-                    history.setCurrentFlipIndex(history.getCurrentFlipIndex()-1);
-                }
 
-                history.updateChildNameIndexDeletedChild(positionForEditChild);
+                // first remove the flip history of that child
+                // and then remove the child from the manager
+                FlipHistoryManager historyManager = FlipHistoryManager.getInstance();
+                historyManager.deleteFlipHistoryOfChild(
+                        manager.getChild(positionForEditChild));
 
+                // TODO: save the history of flips in shared prefs
 
                 manager.removeChild(positionForEditChild);
                 saveChildListToSharedPrefs();
@@ -280,13 +279,13 @@ public class AddChildActivity extends AppCompatActivity {
 
     private void changeChildName(){
         String childNameAfterChange = String.valueOf(childNameInput.getText());
-        Child child = manager.retrieveChildByIndex(positionForEditChild);
+        Child child = manager.getChild(positionForEditChild);
         child.setChildName(childNameAfterChange);
     }
 
     private void setUpInitialString(){
         if(!addChild){
-            initialString = manager.retrieveChildByIndex(positionForEditChild).getChildName();
+            initialString = manager.getChild(positionForEditChild).getChildName();
         }
     }
 
@@ -295,6 +294,6 @@ public class AddChildActivity extends AppCompatActivity {
     }
 
     private void saveChildListToSharedPrefs(){
-        PrefConfig.writeListInPref(getApplicationContext(), manager.getAllChildren());
+        PrefConfig.writeChildListInPref(getApplicationContext(), manager.getAllChildren());
     }
 }

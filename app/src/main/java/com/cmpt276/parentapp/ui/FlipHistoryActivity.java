@@ -30,7 +30,7 @@ public class FlipHistoryActivity extends AppCompatActivity {
         setContentView(R.layout.activity_flip_history);
 
         flipHistoryManager = FlipHistoryManager.getInstance();
-        childManager = ChildManager.getInstance(this);
+        childManager = ChildManager.getInstance(FlipHistoryActivity.this);
         populateListView();
     }
 
@@ -68,12 +68,13 @@ public class FlipHistoryActivity extends AppCompatActivity {
             dateText.setText(date);
 
             TextView childNameText = itemView.findViewById(R.id.child_name_flip_information_tv);
-            int childNameIndex = currentFlip.getChildNameIndex();
-            if (childNameIndex == childManager.size()) {
+            if(currentFlip.getChild() == null){
                 childNameText.setText("");
-            } else {
-                childNameText.setText(childManager.retrieveChildByIndex(childNameIndex).getChildName());
             }
+            else {
+                childNameText.setText(currentFlip.getChild().getChildName());
+            }
+
             TextView childChoiceText = itemView.findViewById(R.id.child_choice_flip_information_tv);
             childChoiceText.setText(getString(R.string.child_choice_for_flip, currentFlip.getChoice(),
                     currentFlip.isWinner() ? "won" : "lost"));

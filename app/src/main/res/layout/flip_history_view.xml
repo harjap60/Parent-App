@@ -4,61 +4,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-<!--    <TextView-->
-<!--        android:id="@+id/game_date_flip_information_tv"-->
-<!--        android:layout_width="wrap_content"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:layout_marginStart="8dp"-->
-<!--        android:layout_marginTop="22dp"-->
-<!--        android:text="@string/default_date_flip_information"-->
-<!--        android:textSize="16sp"-->
-<!--        app:layout_constraintStart_toStartOf="parent"-->
-<!--        app:layout_constraintTop_toTopOf="parent" />-->
-
-<!--    <TextView-->
-<!--        android:id="@+id/child_name_flip_information_tv"-->
-<!--        android:layout_width="wrap_content"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:layout_marginStart="4dp"-->
-<!--        android:text="@string/default_name_flip_information"-->
-<!--        android:textSize="16sp"-->
-<!--        app:layout_constraintBottom_toBottomOf="@+id/game_date_flip_information_tv"-->
-<!--        app:layout_constraintStart_toEndOf="@+id/game_date_flip_information_tv"-->
-<!--        app:layout_constraintTop_toTopOf="@+id/game_date_flip_information_tv" />-->
-
-<!--    <TextView-->
-<!--        android:id="@+id/did_win_flip_information_tv"-->
-<!--        android:layout_width="wrap_content"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:layout_marginStart="8dp"-->
-<!--        android:text="@string/default_did_win_flip_information"-->
-<!--        android:textSize="16sp"-->
-<!--        app:layout_constraintBottom_toBottomOf="@+id/child_choice_flip_information_tv"-->
-<!--        app:layout_constraintStart_toEndOf="@+id/child_choice_flip_information_tv"-->
-<!--        app:layout_constraintTop_toTopOf="@+id/child_choice_flip_information_tv" />-->
-
-<!--    <ImageView-->
-<!--        android:id="@+id/child_guess_image_flip_information_iv"-->
-<!--        android:layout_width="wrap_content"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:layout_marginStart="8dp"-->
-<!--        app:layout_constraintBottom_toBottomOf="@+id/did_win_flip_information_tv"-->
-<!--        app:layout_constraintStart_toEndOf="@+id/did_win_flip_information_tv"-->
-<!--        app:layout_constraintTop_toTopOf="@+id/did_win_flip_information_tv"-->
-<!--        app:layout_constraintVertical_bias="0.0"-->
-<!--        app:srcCompat="@drawable/child_guess_correct" />-->
-
-<!--    <TextView-->
-<!--        android:id="@+id/child_choice_flip_information_tv"-->
-<!--        android:layout_width="wrap_content"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:layout_marginStart="8dp"-->
-<!--        android:textSize="16sp"-->
-<!--        android:text="@string/default_child_choice_flip_information"-->
-<!--        app:layout_constraintBottom_toBottomOf="@+id/child_name_flip_information_tv"-->
-<!--        app:layout_constraintStart_toEndOf="@+id/child_name_flip_information_tv"-->
-<!--        app:layout_constraintTop_toTopOf="@+id/child_name_flip_information_tv" /> -->
-
     <ImageView
         android:id="@+id/child_guess_image_flip_information_iv"
         android:layout_width="80dp"
@@ -76,10 +21,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/default_date_flip_information"
-        android:textSize="25sp"
+        android:textSize="20sp"
         app:layout_constraintStart_toEndOf="@+id/child_guess_image_flip_information_iv"
         android:layout_marginStart="15dp"
-        android:layout_marginTop="15dp"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
@@ -87,22 +31,23 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/default_name_flip_information"
-        android:textSize="25sp"
-        app:layout_constraintStart_toEndOf="@+id/game_date_flip_information_tv"
+        android:textSize="20sp"
+        app:layout_constraintStart_toEndOf="@+id/child_guess_image_flip_information_iv"
         android:layout_marginStart="15dp"
-        android:layout_marginTop="15dp"
-        app:layout_constraintTop_toTopOf="parent" />
+
+        android:layout_marginTop="5dp"
+        app:layout_constraintTop_toBottomOf="@+id/game_date_flip_information_tv" />
 
     <TextView
         android:id="@+id/child_choice_flip_information_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="15dp"
-        android:layout_marginTop="10dp"
         android:text="@string/child_choice_for_flip"
-        android:textSize="25sp"
-        app:layout_constraintBottom_toBottomOf="@id/child_guess_image_flip_information_iv"
+        android:textSize="20sp"
         app:layout_constraintStart_toEndOf="@+id/child_guess_image_flip_information_iv"
-        app:layout_constraintTop_toBottomOf="@+id/game_date_flip_information_tv" />
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="5dp"
+        app:layout_constraintTop_toBottomOf="@+id/child_name_flip_information_tv" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

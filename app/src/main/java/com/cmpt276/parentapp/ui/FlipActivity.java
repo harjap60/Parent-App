@@ -17,6 +17,7 @@ import com.cmpt276.parentapp.R;
 import com.cmpt276.parentapp.model.ChildManager;
 import com.cmpt276.parentapp.model.FlipHistoryManager;
 import com.cmpt276.parentapp.model.CoinFlip;
+import com.cmpt276.parentapp.model.PrefConfig;
 
 import java.util.Random;
 
@@ -57,7 +58,6 @@ public class FlipActivity extends AppCompatActivity {
 
         setupHistoryButton();
         updateTextView();
-        getChildIndex();
         setChoiceButtons();
     }
 
@@ -77,29 +77,35 @@ public class FlipActivity extends AppCompatActivity {
     //Break into 2 methods
     private void setChoiceButtons() {
 
-        //Heads
+        // Heads button
         userChoiceHeads = findViewById(R.id.user_choice_heads_button);
         userChoiceHeads.setOnClickListener(view -> {
             flip = new CoinFlip();
+
             if (childNames.size() == 0) {
-                flip.setChildNameIndex(childNames.size());
+                flip.setChild(null);
+                //flip.setChildNameIndex(childNames.size());
             } else {
-                flip.setChildNameIndex(currChildIndex);
+                flip.setChild(childNames.getChild(currChildIndex));
+                //flip.setChildNameIndex(currChildIndex);
             }
+
             flip.setChoice(userChoiceHeads.getText().toString());
             flip.startFlip();
             disableAllButtons();
             flipCoin();
         });
 
-        //For tails
+        // Tails button
         userChoiceTails = findViewById(R.id.user_choice_tails_button);
         userChoiceTails.setOnClickListener(view -> {
             flip = new CoinFlip();
             if (childNames.size() == 0) {
-                flip.setChildNameIndex(childNames.size());
+                flip.setChild(null);
+                //flip.setChildNameIndex(childNames.size());
             } else {
-                flip.setChildNameIndex(currChildIndex);
+                flip.setChild(childNames.getChild(currChildIndex));
+                //flip.setChildNameIndex(currChildIndex);
             }
             flip.setChoice(userChoiceTails.getText().toString());
             flip.startFlip();
@@ -138,9 +144,13 @@ public class FlipActivity extends AppCompatActivity {
                 super.onAnimationEnd(animation);
                 coinImage.setImageResource(determineSide());
                 secondAnimation.start();
+
                 checkWin();
+
                 flipHistoryManager.addFlip(flip);
-                incrementChildIndex();
+                saveFlipsHistoryToSharedPrefs();
+                updateTextView();
+                //incrementChildIndex();
                 enableAllButtons();
             }
         });
@@ -166,22 +176,52 @@ public class FlipActivity extends AppCompatActivity {
 
     }
 
-    private void getChildIndex() {
-        currChildIndex = flipHistoryManager.getCurrentFlipIndex();
-        prevChildIndex = flipHistoryManager.getPreviousFlipIndex();
+    private void updateChildIndex() {
+        currChildIndex = flipHistoryManager.getCurrentFlipIndex(childNames);
+        prevChildIndex = flipHistoryManager.getPreviousFlipIndex(childNames);
     }
 
     private void updateTextView() {
-        TextView view = findViewById(R.id.flip_index_tv);
+        updateChildIndex();
 
-        view.setText(getString(
+        TextView currentChildTextView = findViewById(R.id.current_child_tv);
+        TextView previousChildTextView = findViewById(R.id.previous_child_tv);
+
+
+        if(currChildIndex == -1){
+            currentChildTextView.setText(getString(
+                    R.string.current_child_tv_string,
+                    "---")
+            );
+        }
+        else{
+            currentChildTextView.setText(getString(
+                    R.string.current_child_tv_string,
+                    childNames.getChild(currChildIndex).getChildName())
+            );
+        }
+
+        if(prevChildIndex == -1){
+            previousChildTextView.setText(getString(
+                    R.string.previous_child_tv_string,
+                    "---")
+            );
+        }
+        else{
+            previousChildTextView.setText(getString(
+                    R.string.previous_child_tv_string,
+                    childNames.getChild(prevChildIndex).getChildName())
+            );
+        }
+
+        /*view.setText(getString(
                 R.string.print_child_name_current_previous_flip,
                 childNames.retrieveChildByIndex(currChildIndex).getChildName(),
                 childNames.retrieveChildByIndex(prevChildIndex).getChildName()
-        ));
+        ));*/
     }
 
-    private void incrementChildIndex() {
+    /*private void incrementChildIndex() {
         prevChildIndex = currChildIndex;
         currChildIndex++;
         currChildIndex %= childNames.size();
@@ -191,6 +231,10 @@ public class FlipActivity extends AppCompatActivity {
 
         updateTextView();
 
+    }*/
+
+    private void saveFlipsHistoryToSharedPrefs(){
+        PrefConfig.writeFlipHistoryInPref(getApplicationContext(), flipHistoryManager.getFullHistory());
     }
 
     //Determine the side of the coin which will be shown

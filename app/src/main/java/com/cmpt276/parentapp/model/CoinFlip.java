@@ -3,10 +3,18 @@ package com.cmpt276.parentapp.model;
 import java.time.LocalDateTime;
 
 public class CoinFlip {
-    private int childNameIndex;
+    private Child child;
     private String choice;
     private boolean isWinner;
     private LocalDateTime flipTime;
+
+    public void setChild(Child child){
+        this.child = child;
+    }
+
+    public Child getChild(){
+        return this.child;
+    }
 
     public String getChoice() {
         return this.choice;
@@ -18,13 +26,6 @@ public class CoinFlip {
 
     public void startFlip(){
         this.flipTime = LocalDateTime.now();
-    }
-
-    public int getChildNameIndex(){
-        return this.childNameIndex;
-    }
-    public void setChildNameIndex(int childNameIndex) {
-        this.childNameIndex = childNameIndex;
     }
 
     public boolean isWinner(){
