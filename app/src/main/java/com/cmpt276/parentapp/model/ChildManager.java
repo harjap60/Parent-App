@@ -43,7 +43,8 @@ public class ChildManager {
 
     public int getChildIndex(Child c){
         for(int i = 0; i < size(); i++){
-            if(getChild(i) == c){
+            Child child = getChild(i);
+            if(child.equals(c)){
                 return i;
             }
         }
@@ -57,6 +58,18 @@ public class ChildManager {
 
     public Child getChild(int index){
         return children.get(index);
+    }
+
+    public Child getChildFromName(String name){
+        if(name.equals("")){
+            return null;
+        }
+        for(Child c: children){
+            if(c.getChildName().equals(name)){
+                return c;
+            }
+        }
+        return null;
     }
 
     public List<Child> getAllChildren(){

@@ -34,7 +34,8 @@ public class FlipHistoryManager {
 
     public void deleteFlipHistoryOfChild(Child child) {
         for (int i = 0; i < history.size(); i++) {
-            if (getFlip(i).getChild() == child) {
+            if (getFlip(i).getChild().getChildName().equals(child.getChildName())) {
+                // TODO: might also need to change to getFlip(i).getChild().equals(child);
                 history.remove(getFlip(i));
                 i--;
                 // i-- is done because once we remove an item from array list, all the elements
@@ -46,7 +47,7 @@ public class FlipHistoryManager {
 //        PrefConfig.writeFlipHistoryInPref(context, history);
     }
 
-    public int getCurrentFlipIndex(ChildManager childManager) {
+    /*public int getCurrentFlipIndex(ChildManager childManager) {
         if (childManager.size() == 0) {
             return -1;
         } else {
@@ -71,9 +72,43 @@ public class FlipHistoryManager {
                 return index;
             }
         }
+    }*/
+
+    public String getCurrentChild(ChildManager childManager){
+        if(childManager.size() == 0){
+            return "";
+        }
+        else{
+            if(size() == 0){
+                return "";
+            }
+            else{
+                String name = history.get(size() - 1).getChild().getChildName();
+                for(int i = 0; i < childManager.size(); i++){
+                    Child child = childManager.getChild(i);
+                    if(child.getChildName().equals(name)){
+                        return childManager.getChild((i+1)% childManager.size()).getChildName();
+                    }
+                }
+                return "";
+            }
+        }
     }
 
-    public int getPreviousFlipIndex(ChildManager childManager) {
+    public String getPreviousChild(ChildManager childManager) {
+        if (childManager.size() == 0) {
+            return "";
+        } else {
+            if (size() == 0) {
+                return "";
+            } else {
+                String name = history.get(size() - 1).getChild().getChildName();
+                return name;
+            }
+        }
+    }
+
+    /*public int getPreviousFlipIndex(ChildManager childManager) {
         if (childManager.size() == 0) {
             return -1;
         } else {
@@ -94,7 +129,7 @@ public class FlipHistoryManager {
                 return childManager.getChildIndex(child);
             }
         }
-    }
+    }*/
 
     public void addFlip(CoinFlip flip) {
         history.add(flip);

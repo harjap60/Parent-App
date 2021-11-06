@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 
 public class CoinFlip {
     private Child child;
+    private String childName;
     private String choice;
     private boolean isWinner;
     private LocalDateTime flipTime;

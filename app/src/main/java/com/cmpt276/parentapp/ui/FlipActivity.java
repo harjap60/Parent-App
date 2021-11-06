@@ -28,6 +28,14 @@ import java.util.Random;
  * as the new side facing "up"
  */
 
+/**
+ * TODO: heads or tails text on the image of the coin
+ * move history button to toolbar
+ * change background of screen and toolbar
+ * textsize for textview
+ * check if need to add the history of the flip done by the user when there are no children added
+ */
+
 public class FlipActivity extends AppCompatActivity {
 
     private final int ANIMATION_REPEAT_COUNT = 100;
@@ -42,8 +50,11 @@ public class FlipActivity extends AppCompatActivity {
     ImageButton coinFlipButton;
 
     ChildManager childNames;
-    int currChildIndex;
-    int prevChildIndex;
+    //int currChildIndex;
+    //int prevChildIndex;
+
+    String prevChildName;
+    String currChildName;
 
     CoinFlip flip;
     FlipHistoryManager flipHistoryManager;
@@ -110,7 +121,7 @@ public class FlipActivity extends AppCompatActivity {
         if (childNames.size() == 0) {
             flip.setChild(null);
         } else {
-            flip.setChild(childNames.getChild(currChildIndex));
+            flip.setChild(childNames.getChildFromName(currChildName));
         }
         flip.setChoice(userChoiceButton.getText().toString());
     }
@@ -196,17 +207,49 @@ public class FlipActivity extends AppCompatActivity {
     }
 
     private void updateChildIndex() {
-        currChildIndex = flipHistoryManager.getCurrentFlipIndex(childNames);
-        prevChildIndex = flipHistoryManager.getPreviousFlipIndex(childNames);
+        //currChildIndex = flipHistoryManager.getCurrentFlipIndex(childNames);
+        //prevChildIndex = flipHistoryManager.getPreviousFlipIndex(childNames);
+    }
+
+    private void updateChildName(){
+        currChildName = flipHistoryManager.getCurrentChild(childNames);
+        prevChildName = flipHistoryManager.getPreviousChild(childNames);
     }
 
     private void updateTextView() {
-        updateChildIndex();
+        //updateChildIndex();
+        updateChildName();
 
         TextView currentChildTextView = findViewById(R.id.current_child_tv);
         TextView previousChildTextView = findViewById(R.id.previous_child_tv);
 
-        if (currChildIndex == -1) {
+        if(currChildName.equals("")){
+            currentChildTextView.setText(getString(
+                    R.string.current_child_tv_string,
+                    "---")
+            );
+        }
+        else{
+            currentChildTextView.setText(getString(
+                    R.string.current_child_tv_string,
+                    currChildName)
+            );
+        }
+
+        if(prevChildName.equals("")){
+            previousChildTextView.setText(getString(
+                    R.string.previous_child_tv_string,
+                    "---")
+            );
+        }
+        else{
+            previousChildTextView.setText(getString(
+                    R.string.previous_child_tv_string,
+                    prevChildName)
+            );
+        }
+
+        /*if (currChildIndex == -1) {
             currentChildTextView.setText(getString(
                     R.string.current_child_tv_string,
                     "---")
@@ -227,7 +270,7 @@ public class FlipActivity extends AppCompatActivity {
                     R.string.previous_child_tv_string,
                     childNames.getChild(prevChildIndex).getChildName())
             );
-        }
+        }*/
     }
 
     private void saveFlipsHistoryToSharedPrefs() {
