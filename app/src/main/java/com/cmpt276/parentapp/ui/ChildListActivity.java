@@ -43,7 +43,6 @@ public class ChildListActivity extends AppCompatActivity {
         setUpAddNewChildButton();
         populateListView();
         registerClickCallback();
-
     }
 
     @Override
@@ -70,7 +69,6 @@ public class ChildListActivity extends AppCompatActivity {
     @Override
     protected void onResume(){
         super.onResume();
-
         // updateUI
         populateListView();
     }
@@ -88,14 +86,9 @@ public class ChildListActivity extends AppCompatActivity {
 
     private void setUpAddNewChildButton() {
         FloatingActionButton addNewChildFabButton = findViewById(R.id.add_child_fab);
-        addNewChildFabButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(
-                        AddChildActivity.makeIntentForAddChild(ChildListActivity.this)
-                );
-            }
-        });
+        addNewChildFabButton.setOnClickListener(view -> startActivity(
+                AddChildActivity.makeIntentForAddChild(ChildListActivity.this)
+        ));
     }
 
     private void populateListView(){
@@ -109,15 +102,10 @@ public class ChildListActivity extends AppCompatActivity {
 
     private void registerClickCallback(){
         ListView list = (ListView) findViewById(R.id.child_list_view);
-        list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View viewClicked, int position, long id) {
-                startActivity(
-                        AddChildActivity.makeIntentForEditChild(
-                                ChildListActivity.this, position)
-                );
-            }
-        });
+        list.setOnItemClickListener((parent, viewClicked, position, id) -> startActivity(
+                AddChildActivity.makeIntentForEditChild(
+                        ChildListActivity.this, position)
+        ));
     }
 
     // MyListAdapter that will help make the complex list view

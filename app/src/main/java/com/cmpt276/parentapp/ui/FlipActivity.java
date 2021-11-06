@@ -39,6 +39,7 @@ public class FlipActivity extends AppCompatActivity {
     Button userChoiceHeads;
     Button userChoiceTails;
     Button historyButton;
+    ImageButton coinFlipButton;
 
     ChildManager childNames;
     int currChildIndex;
@@ -61,6 +62,8 @@ public class FlipActivity extends AppCompatActivity {
         setupHistoryButton();
         updateTextView();
         setChoiceButtons();
+        setupButtonEnableDisable();
+
     }
 
     @Override
@@ -69,12 +72,19 @@ public class FlipActivity extends AppCompatActivity {
         updateTextView();
     }
 
+    private void setupButtonEnableDisable(){
+        if(childNames.size() == 0){
+            setupButtonsNoChild();
+        }else{
+            setupButtonWithChild();
+        }
+    }
+
     private void setupHistoryButton() {
         historyButton = findViewById(R.id.flip_history_button);
         historyButton.setOnClickListener(view ->
                 startActivity(FlipHistoryActivity.getIntent(this)));
     }
-
 
     //Break into 2 methods
     private void setChoiceButtons() {
@@ -83,7 +93,7 @@ public class FlipActivity extends AppCompatActivity {
         userChoiceHeads.setOnClickListener(view -> {
             setupChildAndChoice(userChoiceHeads);
             flip.startFlip();
-            disableAllButtons();
+            enableFlipCoinButton();
         });
 
         // Tails button
@@ -91,7 +101,7 @@ public class FlipActivity extends AppCompatActivity {
         userChoiceTails.setOnClickListener(view -> {
             setupChildAndChoice(userChoiceTails);
             flip.startFlip();
-            disableAllButtons();
+            enableFlipCoinButton();
         });
     }
 
@@ -106,19 +116,29 @@ public class FlipActivity extends AppCompatActivity {
     }
 
     private void setupCoinFlipButton() {
-        ImageButton coinFlipButton = findViewById(R.id.flip_coin_image_button);
+        coinFlipButton = findViewById(R.id.flip_coin_image_button);
         coinFlipButton.setOnClickListener(view -> flipCoin());
     }
 
-    private void disableAllButtons() {
+    private void enableFlipCoinButton() {
         userChoiceHeads.setEnabled(false);
         userChoiceTails.setEnabled(false);
         historyButton.setEnabled(false);
+        coinFlipButton.setEnabled(true);
+
     }
 
-    private void enableAllButtons() {
+    private void setupButtonWithChild() {
         userChoiceHeads.setEnabled(true);
         userChoiceTails.setEnabled(true);
+        coinFlipButton.setEnabled(false);
+        historyButton.setEnabled(true);
+    }
+
+    private void setupButtonsNoChild(){
+        userChoiceHeads.setEnabled(false);
+        userChoiceTails.setEnabled(false);
+        coinFlipButton.setEnabled(true);
         historyButton.setEnabled(true);
     }
 
@@ -140,15 +160,21 @@ public class FlipActivity extends AppCompatActivity {
                 super.onAnimationEnd(animation);
                 coinImage.setImageResource(determineSide());
                 secondAnimation.start();
-                checkWin();
 
-                flipHistoryManager.addFlip(flip);
-                saveFlipsHistoryToSharedPrefs();
-                updateTextView();
-                enableAllButtons();
+                checkIfDataToBeStored();
             }
         });
         firstAnimation.start();
+    }
+
+    private void checkIfDataToBeStored(){
+        if (childNames.size() != 0) {
+            checkWin();
+            flipHistoryManager.addFlip(flip);
+            saveFlipsHistoryToSharedPrefs();
+            updateTextView();
+        }
+        setupButtonEnableDisable();
     }
 
     private void startCoinSound() {

@@ -16,7 +16,8 @@
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/heads" />
+        app:srcCompat="@drawable/heads"
+        tools:ignore="ImageContrastCheck" />
 
     <Button
         android:id="@+id/user_choice_heads_button"
@@ -72,11 +73,13 @@
         android:layout_width="111dp"
         android:layout_height="136dp"
         android:layout_marginTop="16dp"
-        android:scaleType="fitCenter"
+        android:padding="10dp"
+        android:scaleType="centerInside"
         app:layout_constraintEnd_toEndOf="@+id/user_choice_tails_button"
         app:layout_constraintStart_toStartOf="@+id/user_choice_heads_button"
         app:layout_constraintTop_toBottomOf="@+id/user_choice_tails_button"
-        app:srcCompat="@drawable/coin_flip_image" />
+        app:srcCompat="@drawable/coin_flip_image"
+        android:contentDescription="@string/image_of_coin_flip_to_start_animation" />
 
     <TextView
         android:id="@+id/tell_user_choose_heads_tails"

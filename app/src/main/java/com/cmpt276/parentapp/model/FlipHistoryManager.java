@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class FlipHistoryManager {
-    List<CoinFlip> history;
+    private List<CoinFlip> history;
 
     private static FlipHistoryManager instance;
 
@@ -22,7 +22,6 @@ public class FlipHistoryManager {
             // - if the 'children' variable(list) is not null, then the 'history' variable(list)
             // now consists of the history of flips saved from the previous run
             history = new ArrayList<>();
-
         }
     }
 
@@ -44,7 +43,7 @@ public class FlipHistoryManager {
                 // instances of that element have been deleted
             }
         }
-        //PrefConfig.writeFlipHistoryInPref(context, history);
+//        PrefConfig.writeFlipHistoryInPref(context, history);
     }
 
     public int getCurrentFlipIndex(ChildManager childManager) {
