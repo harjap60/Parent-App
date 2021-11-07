@@ -10,7 +10,6 @@ import android.os.Bundle;
 import android.os.IBinder;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.cmpt276.parentapp.R;
@@ -18,8 +17,6 @@ import com.cmpt276.parentapp.databinding.ActivityTimerBinding;
 
 public class TimerActivity extends AppCompatActivity {
 
-    public static final int SECONDS_IN_MINUTE = 60;
-    public static final int MINUTES_IN_HOUR = 60;
 
     public static final String TIMER_DURATION_TAG = "TIMER_DURATION_TAG";
     public static final String TIMER_RUNNING_TAG = "TIMER_RUNNING";
@@ -28,22 +25,23 @@ public class TimerActivity extends AppCompatActivity {
     private ActivityTimerBinding binding;
 
     private long initialMillisUntilFinished;
-    private long millisUntilFinished;
     private boolean isRunning;
 
     private BroadcastReceiver receiver;
     private TimerService service;
 
-    private ServiceConnection serviceConnection = new ServiceConnection() {
+    private final ServiceConnection serviceConnection = new ServiceConnection() {
         @Override
         public void onServiceConnected(ComponentName name, IBinder binder) {
             TimerService.LocalBinder localBinder = (TimerService.LocalBinder) binder;
             TimerActivity.this.service = localBinder.getService();
+            updateUI();
         }
 
         @Override
         public void onServiceDisconnected(ComponentName name) {
             TimerActivity.this.service = null;
+            updateUI();
         }
     };
 
@@ -52,7 +50,7 @@ public class TimerActivity extends AppCompatActivity {
         i.putExtra(
                 TIMER_DURATION_TAG,
                 (long) minutes *
-                        SECONDS_IN_MINUTE *
+                        TimerService.SECONDS_IN_MINUTE *
                         TimerService.COUNT_DOWN_INTERVAL
         );
 
@@ -94,11 +92,6 @@ public class TimerActivity extends AppCompatActivity {
         receiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
-                TimerActivity.this.millisUntilFinished = intent
-                        .getLongExtra(
-                                TimerService.TIMER_DURATION_TAG,
-                                0
-                        );
                 updateUI();
             }
         };
@@ -122,7 +115,7 @@ public class TimerActivity extends AppCompatActivity {
                 return;
             }
 
-            if(this.service.isRunning()){
+            if (this.service.isRunning()) {
                 this.service.pause();
             } else {
                 this.service.resume();
@@ -132,32 +125,31 @@ public class TimerActivity extends AppCompatActivity {
 
     private void updateUI() {
         int pauseButtonString = R.string.btn_timer_start;
-        if (initialMillisUntilFinished != millisUntilFinished) {
-            pauseButtonString = this.service != null && this.service.isRunning() ? R.string.btn_timer_resume : R.string.btn_timer_pause;
+
+        if (this.service != null) {
+            pauseButtonString = this.service.isRunning() ? R.string.btn_timer_resume : R.string.btn_timer_pause;
+            binding.timerLive.setText(this.service.getRemainingTimeString());
+            binding.timerBar.setProgress(this.service.getProgress());
         }
 
         binding.startPauseResumeButton.setText(getString(pauseButtonString));
-        binding.timerLive.setText(getRemainingTimeString(millisUntilFinished));
-        binding.timerBar.setProgress((int) ((millisUntilFinished * 100) / initialMillisUntilFinished));
     }
 
     private void extractDurationFromIntent() {
         isRunning = this.getIntent().getBooleanExtra(TIMER_RUNNING_TAG, false);
         initialMillisUntilFinished = this.getIntent().getLongExtra(TIMER_DURATION_TAG, 0);
-        millisUntilFinished = initialMillisUntilFinished;
     }
 
     private void setupTimerService() {
         Intent intent = TimerService.getIntentWithDuration(
                 this,
-                initialMillisUntilFinished,
-                millisUntilFinished
+                initialMillisUntilFinished
         );
         if (!isRunning) {
             stopService(intent);
             startService(intent);
         }
-        bindService(intent,serviceConnection,0);
+        bindService(intent, serviceConnection, 0);
     }
 
     @NonNull
