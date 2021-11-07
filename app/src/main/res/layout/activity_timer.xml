@@ -69,7 +69,6 @@
         android:layout_height="48dp"
         android:background="@drawable/custom_round_button"
         android:clickable="true"
-        android:contentDescription="rightImageButton"
         android:focusable="true"
         android:foreground="?attr/selectableItemBackgroundBorderless"
         app:layout_constraintBottom_toBottomOf="@+id/timerBar"
@@ -80,7 +79,7 @@
 
     <ProgressBar
         android:id="@+id/timerBar"
-        style="?android:attr/progressBarStyleHorizontal"
+        style="@style/Widget.AppCompat.ProgressBar.Horizontal"
         android:layout_width="230dp"
         android:layout_height="195dp"
         android:layout_marginTop="16dp"

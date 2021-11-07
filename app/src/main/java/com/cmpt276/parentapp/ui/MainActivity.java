@@ -1,41 +1,87 @@
 package com.cmpt276.parentapp.ui;
 
 import android.app.AlertDialog;
+import android.content.ComponentName;
 import android.content.Intent;
+import android.content.ServiceConnection;
 import android.os.Bundle;
-
-import com.cmpt276.parentapp.R;
-
-import androidx.appcompat.app.AppCompatActivity;
-
-import androidx.appcompat.widget.Toolbar;
-
+import android.os.IBinder;
 import android.view.Menu;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
+
+import com.cmpt276.parentapp.R;
+import com.cmpt276.parentapp.databinding.ActivityMainBinding;
 
 public class MainActivity extends AppCompatActivity {
+
+    ActivityMainBinding binding;
+
+    boolean isTimerServiceBound = false;
+    private final ServiceConnection serviceConnection = new ServiceConnection() {
+        @Override
+        public void onServiceConnected(ComponentName name, IBinder binder) {
+
+            TimerService service = ((TimerService.LocalBinder) binder).getService();
+            setupResumeTimerButton(service.getInitialDurationMillis());
+            isTimerServiceBound = true;
+            updateUI();
+        }
+
+        @Override
+        public void onServiceDisconnected(ComponentName name) {
+            isTimerServiceBound = false;
+            updateUI();
+        }
+    };
+
+    private void setupResumeTimerButton(long initialDurationMillis) {
+        binding.btnResumeTimer.setOnClickListener(v -> {
+            Intent i = TimerActivity.getIntentForRunningTimer(this,initialDurationMillis);
+            startActivity(i);
+        });
+    }
+
+    private void updateUI() {
+
+        binding.btnResumeTimer
+                .setVisibility(
+                        isTimerServiceBound ?
+                                View.VISIBLE :
+                                View.INVISIBLE);
+
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+        binding = ActivityMainBinding.inflate(this.getLayoutInflater());
+        setContentView(binding.getRoot());
+        setSupportActionBar(binding.toolbar);
 
         setupFlipButton();
         setupTimerButton();
         setupChildButton();
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        bindTimerService();
+        updateUI();
+    }
+
+    private void bindTimerService() {
+
+        Intent i = TimerService.getIntent(this);
+        bindService(i, serviceConnection, 0);
+    }
+
     private void setupChildButton() {
-        Button child = findViewById(R.id.start_child_list);
-        child.setOnClickListener(view ->
+        binding.startChildList.setOnClickListener(view ->
                 startActivity(
                         ChildListActivity.getIntent(this)
                 )
@@ -43,8 +89,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void setupTimerButton() {
-        Button timer = findViewById(R.id.create_timer);
-        timer.setOnClickListener(view -> showTimerDurationDialog());
+        binding.btnStartTimer.setOnClickListener(view -> showTimerDurationDialog());
     }
 
     private void showTimerDurationDialog() {
@@ -65,7 +110,7 @@ public class MainActivity extends AppCompatActivity {
                     String[] optionParts = selection.split(" ", 2);
                     int duration = Integer.parseInt(optionParts[0]);
 
-                    Intent i = TimerActivity.getIntentWithDurationMinutes(
+                    Intent i = TimerActivity.getIntentForNewTimer(
                             this,
                             duration
                     );
@@ -85,7 +130,7 @@ public class MainActivity extends AppCompatActivity {
                     try {
                         EditText tvTimerDuration = v.findViewById(R.id.tvTimerDuration);
                         int duration = Integer.parseInt(tvTimerDuration.getText().toString());
-                        Intent i = TimerActivity.getIntentWithDurationMinutes(
+                        Intent i = TimerActivity.getIntentForNewTimer(
                                 this,
                                 duration
                         );
@@ -104,8 +149,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void setupFlipButton() {
-        Button flip = findViewById(R.id.start_flip);
-        flip.setOnClickListener(view ->
+        binding.startFlip.setOnClickListener(view ->
                 startActivity(FlipActivity.getIntent(this))
         );
     }

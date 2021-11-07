@@ -1,10 +1,14 @@
 package com.cmpt276.parentapp.ui;
 
 import android.content.BroadcastReceiver;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.ServiceConnection;
 import android.os.Bundle;
+import android.os.IBinder;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -18,18 +22,50 @@ public class TimerActivity extends AppCompatActivity {
     public static final int MINUTES_IN_HOUR = 60;
 
     public static final String TIMER_DURATION_TAG = "TIMER_DURATION_TAG";
+    public static final String TIMER_RUNNING_TAG = "TIMER_RUNNING";
+    public static final String TAG = "TIMER_ACTIVITY";
 
     private ActivityTimerBinding binding;
-    private Intent timerServiceIntent;
 
     private long initialMillisUntilFinished;
     private long millisUntilFinished;
+    private boolean isRunning;
 
     private BroadcastReceiver receiver;
+    private TimerService service;
 
-    public static Intent getIntentWithDurationMinutes(Context context, int duration) {
+    private ServiceConnection serviceConnection = new ServiceConnection() {
+        @Override
+        public void onServiceConnected(ComponentName name, IBinder binder) {
+            TimerService.LocalBinder localBinder = (TimerService.LocalBinder) binder;
+            TimerActivity.this.service = localBinder.getService();
+        }
+
+        @Override
+        public void onServiceDisconnected(ComponentName name) {
+            TimerActivity.this.service = null;
+        }
+    };
+
+    public static Intent getIntentForNewTimer(Context context, int minutes) {
         Intent i = new Intent(context, TimerActivity.class);
-        i.putExtra(TIMER_DURATION_TAG, (long) duration * SECONDS_IN_MINUTE * TimerService.COUNT_DOWN_INTERVAL);
+        i.putExtra(
+                TIMER_DURATION_TAG,
+                (long) minutes *
+                        SECONDS_IN_MINUTE *
+                        TimerService.COUNT_DOWN_INTERVAL
+        );
+
+        return i;
+    }
+
+    public static Intent getIntentForRunningTimer(Context context, long millisUntilFinished) {
+        Intent i = new Intent(context, TimerActivity.class);
+        i.putExtra(
+                TIMER_DURATION_TAG,
+                millisUntilFinished
+        );
+        i.putExtra(TIMER_RUNNING_TAG, true);
         return i;
     }
 
@@ -43,7 +79,7 @@ public class TimerActivity extends AppCompatActivity {
         setupPauseResumeButton();
         setupResetTimerButton();
         setupBroadcastReceiver();
-        createAndStartTimer();
+        setupTimerService();
         updateUI();
     }
 
@@ -58,7 +94,11 @@ public class TimerActivity extends AppCompatActivity {
         receiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
-                TimerActivity.this.millisUntilFinished = intent.getLongExtra(TimerService.TIMER_DURATION_TAG, 0);
+                TimerActivity.this.millisUntilFinished = intent
+                        .getLongExtra(
+                                TimerService.TIMER_DURATION_TAG,
+                                0
+                        );
                 updateUI();
             }
         };
@@ -69,27 +109,31 @@ public class TimerActivity extends AppCompatActivity {
 
     private void setupResetTimerButton() {
         binding.rightImageButton.setOnClickListener(v -> {
-            pauseTimer();
-            millisUntilFinished = initialMillisUntilFinished;
-            updateUI();
+            if (this.service != null) {
+                this.service.reset();
+            }
         });
     }
 
     private void setupPauseResumeButton() {
         binding.startPauseResumeButton.setOnClickListener(v -> {
-            if (timerServiceIntent != null) {
-                pauseTimer();
-            } else {
-                createAndStartTimer();
+            if (this.service == null) {
+                setupTimerService();
+                return;
             }
-            updateUI();
+
+            if(this.service.isRunning()){
+                this.service.pause();
+            } else {
+                this.service.resume();
+            }
         });
     }
 
     private void updateUI() {
         int pauseButtonString = R.string.btn_timer_start;
         if (initialMillisUntilFinished != millisUntilFinished) {
-            pauseButtonString = timerServiceIntent == null ? R.string.btn_timer_resume : R.string.btn_timer_pause;
+            pauseButtonString = this.service != null && this.service.isRunning() ? R.string.btn_timer_resume : R.string.btn_timer_pause;
         }
 
         binding.startPauseResumeButton.setText(getString(pauseButtonString));
@@ -98,22 +142,22 @@ public class TimerActivity extends AppCompatActivity {
     }
 
     private void extractDurationFromIntent() {
+        isRunning = this.getIntent().getBooleanExtra(TIMER_RUNNING_TAG, false);
         initialMillisUntilFinished = this.getIntent().getLongExtra(TIMER_DURATION_TAG, 0);
         millisUntilFinished = initialMillisUntilFinished;
     }
 
-    private void createAndStartTimer() {
-        timerServiceIntent = TimerService.getIntentWithDuration(this, millisUntilFinished);
-        startService(timerServiceIntent);
-    }
-
-    private void pauseTimer() {
-        if (timerServiceIntent == null) {
-            return;
+    private void setupTimerService() {
+        Intent intent = TimerService.getIntentWithDuration(
+                this,
+                initialMillisUntilFinished,
+                millisUntilFinished
+        );
+        if (!isRunning) {
+            stopService(intent);
+            startService(intent);
         }
-
-        stopService(timerServiceIntent);
-        timerServiceIntent = null;
+        bindService(intent,serviceConnection,0);
     }
 
     @NonNull
