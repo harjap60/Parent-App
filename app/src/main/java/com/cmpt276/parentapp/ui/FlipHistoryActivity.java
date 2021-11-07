@@ -1,6 +1,8 @@
 package com.cmpt276.parentapp.ui;
 
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 import android.content.Context;
 import android.content.Intent;
@@ -32,6 +34,7 @@ public class FlipHistoryActivity extends AppCompatActivity {
         flipHistoryManager = FlipHistoryManager.getInstance(FlipHistoryActivity.this);
         childManager = ChildManager.getInstance(FlipHistoryActivity.this);
         populateListView();
+        setUpToolbar();
     }
 
     public static Intent getIntent(Context context) {
@@ -42,6 +45,16 @@ public class FlipHistoryActivity extends AppCompatActivity {
         ArrayAdapter<CoinFlip> adapter = new MyListAdapter();
         ListView historyList = findViewById(R.id.flip_history_list);
         historyList.setAdapter(adapter);
+    }
+
+    private void setUpToolbar(){
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setTitle(R.string.flip_history_activity_toolbar_label);
+
+        // set up "UP" button on toolbar
+        ActionBar ab = getSupportActionBar();
+        ab.setDisplayHomeAsUpEnabled(true);
     }
 
     private class MyListAdapter extends ArrayAdapter<CoinFlip> {

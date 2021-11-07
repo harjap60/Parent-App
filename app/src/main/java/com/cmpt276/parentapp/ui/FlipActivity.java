@@ -5,6 +5,8 @@ import android.animation.AnimatorListenerAdapter;
 import android.animation.ObjectAnimator;
 import android.media.MediaPlayer;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.view.animation.DecelerateInterpolator;
 import android.widget.Button;
@@ -12,7 +14,10 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 import com.cmpt276.parentapp.R;
 import com.cmpt276.parentapp.model.ChildManager;
@@ -50,8 +55,6 @@ public class FlipActivity extends AppCompatActivity {
     ImageButton coinFlipButton;
 
     ChildManager childNames;
-    //int currChildIndex;
-    //int prevChildIndex;
 
     String prevChildName;
     String currChildName;
@@ -69,6 +72,7 @@ public class FlipActivity extends AppCompatActivity {
 
         coinImage = findViewById(R.id.coin_image_view);
 
+        setUpToolbar();
         setupCoinFlipButton();
         setupHistoryButton();
         updateTextView();
@@ -81,6 +85,16 @@ public class FlipActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         updateTextView();
+    }
+
+    private void setUpToolbar(){
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setTitle(R.string.flip_activity_toolbar_label);
+
+        // set up "UP" button on toolbar
+        ActionBar ab = getSupportActionBar();
+        ab.setDisplayHomeAsUpEnabled(true);
     }
 
     private void setupButtonEnableDisable(){

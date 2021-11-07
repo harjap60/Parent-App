@@ -221,7 +221,7 @@ public class AddChildActivity extends AppCompatActivity {
                 historyManager.deleteFlipHistoryOfChild(
                         manager.getChild(positionForEditChild));
 
-                // TODO: save the history of flips in shared prefs
+                PrefConfig.writeFlipHistoryInPref(getApplicationContext(), historyManager.getFullHistory());
 
                 manager.removeChild(positionForEditChild);
                 saveChildListToSharedPrefs();

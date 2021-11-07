@@ -44,12 +44,13 @@
     <!-- ================================= -->
 
     <!-- String used for FLIP HISTORY ACTIVITY -->
-    <string name="history_of_flips">History of Flips</string>
+
     <string name="default_date_flip_information">Date</string>
     <string name="default_name_flip_information">Name:</string>
     <string name="default_did_win_flip_information">win?</string>
     <string name="default_child_choice_flip_information">choice</string>
     <string name="child_choice_for_flip">Chose %1$s and %2$s</string>
+    <string name="flip_history_activity_toolbar_label">Flip History</string>
     <!-- ===================================== -->
 
     <!-- Strings used for FLIP ACTIVITY -->
@@ -58,6 +59,8 @@
     <string name="current_child_tv_string">Current child: %1$s</string>
     <string name="which_side_do_you_think_it_will_land_on">Which side do you think it will land on?</string>
     <string name="image_of_coin_flip_to_start_animation">Image of coin flip to start animation</string>
+    <string name="flip_activity_toolbar_label">Coin Flip</string>
+    <string name="history_of_flips">Flips History</string>
     <!-- ============================== -->
 
 </resources>
