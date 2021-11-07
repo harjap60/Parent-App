@@ -56,4 +56,5 @@
     <string name="no">No</string>
     <string name="did_not_change_name_text_for_dialog_box">Did not change name!!</string>
     <string name="timeout_timer">Timeout Timer</string>
+    <string name="timer_reset_button">Timer Reset</string>
 </resources>
