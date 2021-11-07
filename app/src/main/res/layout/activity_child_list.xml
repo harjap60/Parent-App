@@ -5,6 +5,7 @@
     android:id="@+id/child_list_recycler_view"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="?colorPrimary"
     tools:context=".ui.ChildListActivity">
 
     <com.google.android.material.appbar.AppBarLayout
@@ -19,11 +20,11 @@
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            android:background="#E61936"
+            app:titleTextColor="?colorOnPrimary"
+            android:theme="@style/Theme.ParentApp.PopupOverlay"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            android:theme="@style/Theme.ParentApp.PopupOverlay"/>
+            app:layout_constraintTop_toTopOf="parent" />
 
     </com.google.android.material.appbar.AppBarLayout>
 
@@ -33,6 +34,7 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="25dp"
         android:layout_marginBottom="25dp"
+        android:backgroundTint="?colorPrimaryVariant"
         android:src="@drawable/ic_baseline_add_white_24"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
