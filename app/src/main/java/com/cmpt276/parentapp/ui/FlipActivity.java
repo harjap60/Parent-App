@@ -185,8 +185,13 @@ public class FlipActivity extends AppCompatActivity {
                 super.onAnimationEnd(animation);
                 coinImage.setImageResource(determineSide());
                 secondAnimation.start();
-
                 checkIfDataToBeStored();
+                TextView sideText = findViewById(R.id.heads_tails_text_after_flip);
+                if(isHeads){
+                    sideText.setText("Heads");
+                }else{
+                    sideText.setText("Tails");
+                }
             }
         });
         firstAnimation.start();
