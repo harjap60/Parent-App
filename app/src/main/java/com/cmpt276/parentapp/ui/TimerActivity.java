@@ -151,15 +151,4 @@ public class TimerActivity extends AppCompatActivity {
         }
         bindService(intent, serviceConnection, 0);
     }
-
-    @NonNull
-    private String getRemainingTimeString(long millis) {
-        long totalSeconds = millis / TimerService.COUNT_DOWN_INTERVAL;
-
-        long minutes = totalSeconds / SECONDS_IN_MINUTE;
-        long hours = minutes / MINUTES_IN_HOUR;
-        long seconds = totalSeconds % SECONDS_IN_MINUTE;
-
-        return String.format(getString(R.string.timer_activity_hh_mm_ss), hours, minutes, seconds);
-    }
 }

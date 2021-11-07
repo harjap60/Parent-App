@@ -1,9 +1,12 @@
 package com.cmpt276.parentapp.ui;
 
 import android.app.AlertDialog;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.content.ComponentName;
 import android.content.Intent;
 import android.content.ServiceConnection;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.view.Menu;
@@ -21,6 +24,7 @@ public class MainActivity extends AppCompatActivity {
     ActivityMainBinding binding;
 
     boolean isTimerServiceBound = false;
+
     private final ServiceConnection serviceConnection = new ServiceConnection() {
         @Override
         public void onServiceConnected(ComponentName name, IBinder binder) {
@@ -65,6 +69,7 @@ public class MainActivity extends AppCompatActivity {
         setupFlipButton();
         setupTimerButton();
         setupChildButton();
+        setupNotificationChannel();
     }
 
     @Override
@@ -90,6 +95,18 @@ public class MainActivity extends AppCompatActivity {
 
     private void setupTimerButton() {
         binding.btnStartTimer.setOnClickListener(view -> showTimerDurationDialog());
+    }
+
+    private void setupFlipButton() {
+        binding.startFlip.setOnClickListener(view ->
+                startActivity(FlipActivity.getIntent(this))
+        );
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        return true;
     }
 
     private void showTimerDurationDialog() {
@@ -120,6 +137,18 @@ public class MainActivity extends AppCompatActivity {
                 .show();
     }
 
+    private void setupNotificationChannel(){
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            CharSequence name = getString(R.string.channel_name);
+            String description = getString(R.string.channel_description);
+            int importance = NotificationManager.IMPORTANCE_DEFAULT;
+            NotificationChannel channel = new NotificationChannel(TimerService.NOTIFICATION_CHANNEL_ID, name, importance);
+            channel.setDescription(description);
+            NotificationManager notificationManager = getSystemService(NotificationManager.class);
+            notificationManager.createNotificationChannel(channel);
+        }
+    }
+
     private void showCustomDurationDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         View v = this.getLayoutInflater().inflate(R.layout.dialog_custom_duration, null);
@@ -148,15 +177,4 @@ public class MainActivity extends AppCompatActivity {
                 .show();
     }
 
-    private void setupFlipButton() {
-        binding.startFlip.setOnClickListener(view ->
-                startActivity(FlipActivity.getIntent(this))
-        );
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
-    }
 }

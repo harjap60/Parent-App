@@ -1,5 +1,7 @@
 package com.cmpt276.parentapp.ui;
 
+import android.app.Notification;
+import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
@@ -9,6 +11,10 @@ import android.os.IBinder;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
+
+import com.cmpt276.parentapp.R;
 
 public class TimerService extends Service {
 
@@ -63,15 +69,37 @@ public class TimerService extends Service {
             public void onTick(long millisUntilFinished) {
                 TimerService.this.millisUntilFinished = millisUntilFinished;
                 TimerService.this.broadcast();
+                updateNotification();
             }
 
             @Override
             public void onFinish() {
+                
+                playAlarmSound();
                 stopSelf();
             }
         }.start();
 
         this.isRunning = true;
+    }
+
+    private void playAlarmSound() {
+    }
+
+    public void updateNotification(){
+        Intent notificationIntent = TimerActivity.getIntentForRunningTimer(this, this.initialDurationMillis);
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, notificationIntent, PendingIntent.FLAG_IMMUTABLE);
+
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(this, NOTIFICATION_CHANNEL_ID)
+                .setSmallIcon(R.drawable.ic_baseline_add_white_24)
+                .setContentTitle("Timer")
+                .setContentText(this.getRemainingTimeString())
+                .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+                .setContentIntent(pendingIntent)
+                .setAutoCancel(true)
+                .setOnlyAlertOnce(true);
+
+        startForeground(NOTIFICATION_ID, builder.build());
     }
 
     private void broadcast() {
@@ -145,7 +173,6 @@ public class TimerService extends Service {
     public class LocalBinder extends Binder {
 
         public TimerService getService() {
-            TimerService.this.broadcast();
             return TimerService.this;
         }
 
