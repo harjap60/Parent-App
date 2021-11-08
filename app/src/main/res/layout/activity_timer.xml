@@ -39,14 +39,13 @@
         android:id="@+id/time_elapsed"
         android:layout_width="74dp"
         android:layout_height="42dp"
-        android:layout_marginStart="12dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="32dp"
         android:textAlignment="center"
         android:textColor="@android:color/white"
         android:textSize="16sp"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/timer_live"
-        app:layout_constraintVertical_bias="0.298" />
+        app:layout_constraintTop_toBottomOf="@+id/timer_live" />
 
     <TextView
         android:id="@+id/time_total"
@@ -56,15 +55,11 @@
         android:textAlignment="center"
         android:textColor="@android:color/white"
         android:textSize="16sp"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toEndOf="@+id/time_elapsed"
-        app:layout_constraintTop_toBottomOf="@+id/timer_live"
-        app:layout_constraintVertical_bias="0.3" />
+        app:layout_constraintTop_toTopOf="@+id/time_elapsed" />
 
     <ImageButton
-        android:id="@+id/right_image_button"
+        android:id="@+id/btnResetTimer"
         android:layout_width="48dp"
         android:layout_height="48dp"
         android:background="@drawable/round_button"
@@ -76,23 +71,22 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/timerBar"
         app:layout_constraintTop_toTopOf="@+id/timerBar"
-        app:srcCompat="@drawable/ic_baseline_replay_24" />
+        app:srcCompat="@drawable/ic_baseline_stop_24" />
 
-    <ProgressBar
-        android:id="@+id/timerBar"
-        style="@style/Widget.AppCompat.ProgressBar.Horizontal"
-        android:layout_width="230dp"
-        android:layout_height="195dp"
-        android:backgroundTint="#683A3131"
-        android:layoutDirection="ltr"
-        android:max="100"
-        android:progress="0"
-        android:progressDrawable="@drawable/timer_circle"
-        android:rotation="-90"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
+    <ImageButton
+        android:id="@+id/btnCancelTimer"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:background="@drawable/round_button"
+        android:clickable="true"
+        android:contentDescription="@string/timer_reset_button"
+        android:focusable="true"
+        android:foreground="@drawable/custom_round_button"
+        app:layout_constraintBottom_toBottomOf="@+id/btnResetTimer"
+        app:layout_constraintEnd_toStartOf="@+id/timerBar"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/time_elapsed" />
+        app:layout_constraintTop_toTopOf="@+id/btnResetTimer"
+        app:srcCompat="@drawable/ic_baseline_delete_24" />
 
     <Button
         android:id="@+id/start_pause_resume_button"
@@ -105,6 +99,25 @@
         app:layout_constraintStart_toStartOf="@+id/timerBar"
         app:layout_constraintTop_toTopOf="@+id/timerBar"
         tools:ignore="SpeakableTextPresentCheck" />
+
+    <ProgressBar
+        android:id="@+id/timerBar"
+        style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:layout_marginBottom="32dp"
+        android:background="@drawable/round_button"
+        android:backgroundTint="#683A3131"
+        android:foreground="@drawable/round_button"
+        android:layoutDirection="ltr"
+        android:max="100"
+        android:progress="0"
+        android:progressBackgroundTint="@color/black"
+        android:progressDrawable="@drawable/timer_circle"
+        android:rotation="-90"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

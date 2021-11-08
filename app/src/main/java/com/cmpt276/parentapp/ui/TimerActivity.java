@@ -17,7 +17,6 @@ import com.cmpt276.parentapp.databinding.ActivityTimerBinding;
 
 public class TimerActivity extends AppCompatActivity {
 
-
     public static final String TIMER_DURATION_TAG = "TIMER_DURATION_TAG";
     public static final String TIMER_RUNNING_TAG = "TIMER_RUNNING";
     public static final String TAG = "TIMER_ACTIVITY";
@@ -25,7 +24,7 @@ public class TimerActivity extends AppCompatActivity {
     private ActivityTimerBinding binding;
 
     private long initialMillisUntilFinished;
-    private boolean isRunning;
+    private boolean settingRunningService;
 
     private BroadcastReceiver receiver;
     private TimerService service;
@@ -77,6 +76,7 @@ public class TimerActivity extends AppCompatActivity {
         setupPauseResumeButton();
         setupResetTimerButton();
         setupBroadcastReceiver();
+        setupCancelTimerButton();
         setupTimerService();
         updateUI();
     }
@@ -101,10 +101,19 @@ public class TimerActivity extends AppCompatActivity {
     }
 
     private void setupResetTimerButton() {
-        binding.rightImageButton.setOnClickListener(v -> {
+        binding.btnResetTimer.setOnClickListener(v -> {
             if (this.service != null) {
                 this.service.reset();
             }
+        });
+    }
+
+    private void setupCancelTimerButton() {
+        binding.btnCancelTimer.setOnClickListener(v -> {
+            if (this.service != null) {
+                this.service.reset();
+            }
+            finish();
         });
     }
 
@@ -128,7 +137,11 @@ public class TimerActivity extends AppCompatActivity {
 
         if (this.service != null) {
             pauseButtonString = this.service.isRunning() ? R.string.btn_timer_pause : R.string.btn_timer_resume;
-            binding.rightImageButton.setVisibility(this.service.isRunning() ? View.INVISIBLE : View.VISIBLE);
+
+            int visibility = this.service.isRunning() ? View.INVISIBLE : View.VISIBLE;
+            binding.btnResetTimer.setVisibility(visibility);
+            binding.btnCancelTimer.setVisibility(visibility);
+
             binding.timerLive.setText(this.service.getRemainingTimeString());
             binding.timerBar.setProgress(this.service.getProgress());
         }
@@ -137,7 +150,7 @@ public class TimerActivity extends AppCompatActivity {
     }
 
     private void extractDurationFromIntent() {
-        isRunning = this.getIntent().getBooleanExtra(TIMER_RUNNING_TAG, false);
+        settingRunningService = this.getIntent().getBooleanExtra(TIMER_RUNNING_TAG, false);
         initialMillisUntilFinished = this.getIntent().getLongExtra(TIMER_DURATION_TAG, 0);
     }
 
@@ -146,10 +159,11 @@ public class TimerActivity extends AppCompatActivity {
                 this,
                 initialMillisUntilFinished
         );
-        if (!isRunning) {
+        if (!settingRunningService) {
             stopService(intent);
             startService(intent);
         }
+        settingRunningService = false;
         bindService(intent, serviceConnection, 0);
     }
 }
