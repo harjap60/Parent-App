@@ -22,6 +22,10 @@ import com.cmpt276.parentapp.model.CoinFlip;
 import java.time.format.DateTimeFormatter;
 import java.util.Objects;
 
+/**
+ * Activity to print list of all flips that have happened
+ */
+
 public class FlipHistoryActivity extends AppCompatActivity {
 
     FlipHistoryManager flipHistoryManager;
@@ -74,11 +78,12 @@ public class FlipHistoryActivity extends AppCompatActivity {
                         R.layout.flip_history_view, parent, false
                 );
             }
+            final String DATE_FORMAT = "MMM - dd @ KK:mma";
 
             CoinFlip currentFlip = flipHistoryManager.getFlip(position);
 
             TextView dateText = itemView.findViewById(R.id.game_date_flip_information_tv);
-            String date = DateTimeFormatter.ofPattern("MMM-dd @ KK:mma").format(currentFlip.getFlipTime());
+            String date = DateTimeFormatter.ofPattern(DATE_FORMAT).format(currentFlip.getFlipTime());
             dateText.setText(date);
 
             TextView childNameText = itemView.findViewById(R.id.child_name_flip_information_tv);
@@ -90,7 +95,7 @@ public class FlipHistoryActivity extends AppCompatActivity {
 
             TextView childChoiceText = itemView.findViewById(R.id.child_choice_flip_information_tv);
             childChoiceText.setText(getString(R.string.child_choice_for_flip, currentFlip.getChoice(),
-                    currentFlip.isWinner() ? "won" : "lost"));
+                    currentFlip.isWinner() ? getString(R.string.child_won) : getString(R.string.child_lost)));
 
             ImageView guessImage = itemView.findViewById(R.id.child_guess_image_flip_information_iv);
             if (currentFlip.isWinner()) {

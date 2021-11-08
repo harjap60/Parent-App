@@ -31,9 +31,10 @@ import java.util.Random;
  * as the new side facing "up"
  */
 
-
 public class FlipActivity extends AppCompatActivity {
 
+    public static final float SET_BUTTON_TO_ENABLE = 1f;
+    private final float SET_BUTTON_TO_DISABLE = .5f;
     private final int ANIMATION_REPEAT_COUNT = 100;
     //50 = 2.5 seconds
     private final int ANIMATION_DURATION = 50;
@@ -46,6 +47,7 @@ public class FlipActivity extends AppCompatActivity {
     ImageButton coinFlipButton;
     TextView coinSideText;
     ChildManager childNames;
+    MediaPlayer coinFlip;
 
     String prevChildName;
     String currChildName;
@@ -60,6 +62,7 @@ public class FlipActivity extends AppCompatActivity {
 
         childNames = ChildManager.getInstance(FlipActivity.this);
         flipHistoryManager = FlipHistoryManager.getInstance(FlipActivity.this);
+        coinFlip = MediaPlayer.create(this, R.raw.coinflip);
 
         coinImage = findViewById(R.id.coin_image_view);
         coinSideText = findViewById(R.id.heads_tails_text_after_flip);
@@ -77,6 +80,15 @@ public class FlipActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         updateTextView();
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        if (coinFlip != null) {
+            coinFlip.release();
+        }
+
     }
 
     private void setUpToolbar() {
@@ -144,66 +156,65 @@ public class FlipActivity extends AppCompatActivity {
     private void enableFlipCoinButton() {
         coinSideText.setText("");
         userChoiceHeads.setEnabled(false);
-        userChoiceHeads.setAlpha(.5f);
+        userChoiceHeads.setAlpha(SET_BUTTON_TO_DISABLE);
 
         userChoiceTails.setEnabled(false);
-        userChoiceTails.setAlpha(.5f);
+        userChoiceTails.setAlpha(SET_BUTTON_TO_DISABLE);
 
         historyButton.setEnabled(false);
-        historyButton.setAlpha(.5f);
+        historyButton.setAlpha(SET_BUTTON_TO_DISABLE);
 
         coinFlipButton.setEnabled(true);
-        coinFlipButton.setAlpha(1f);
+        coinFlipButton.setAlpha(SET_BUTTON_TO_ENABLE);
 
     }
 
     private void setupButtonWithChild() {
         userChoiceHeads.setEnabled(true);
-        userChoiceHeads.setAlpha(1f);
+        userChoiceHeads.setAlpha(SET_BUTTON_TO_ENABLE);
 
         userChoiceTails.setEnabled(true);
-        userChoiceTails.setAlpha(1f);
+        userChoiceTails.setAlpha(SET_BUTTON_TO_ENABLE);
 
         coinFlipButton.setEnabled(false);
-        coinFlipButton.setAlpha(0.5f);
+        coinFlipButton.setAlpha(SET_BUTTON_TO_DISABLE);
 
         historyButton.setEnabled(true);
-        historyButton.setAlpha(1f);
+        historyButton.setAlpha(SET_BUTTON_TO_ENABLE);
 
     }
 
     private void setupButtonsNoChild() {
         userChoiceHeads.setEnabled(false);
-        userChoiceHeads.setAlpha(.5f);
+        userChoiceHeads.setAlpha(SET_BUTTON_TO_DISABLE);
 
         userChoiceTails.setEnabled(false);
-        userChoiceTails.setAlpha(.5f);
+        userChoiceTails.setAlpha(SET_BUTTON_TO_DISABLE);
 
         coinFlipButton.setEnabled(true);
-        coinFlipButton.setAlpha(1f);
+        coinFlipButton.setAlpha(SET_BUTTON_TO_ENABLE);
 
         historyButton.setEnabled(true);
-        historyButton.setAlpha(1f);
+        historyButton.setAlpha(SET_BUTTON_TO_ENABLE);
 
     }
 
     private void disableAllButtons() {
         userChoiceHeads.setEnabled(false);
-        userChoiceHeads.setAlpha(.5f);
+        userChoiceHeads.setAlpha(SET_BUTTON_TO_DISABLE);
 
         userChoiceTails.setEnabled(false);
-        userChoiceTails.setAlpha(.5f);
+        userChoiceTails.setAlpha(SET_BUTTON_TO_DISABLE);
 
         coinFlipButton.setEnabled(false);
-        coinFlipButton.setAlpha(0.5f);
+        coinFlipButton.setAlpha(SET_BUTTON_TO_DISABLE);
 
         historyButton.setEnabled(false);
-        historyButton.setAlpha(0.5f);
+        historyButton.setAlpha(SET_BUTTON_TO_DISABLE);
     }
 
-
     private void flipCoin() {
-        startCoinSound();
+        coinFlip.start();
 
         //Source: https://stackoverflow.com/questions/46111262/card-flip-animation-in-android
         final ObjectAnimator firstAnimation = ObjectAnimator.ofFloat(coinImage, "scaleY", 1f, 0f);
@@ -244,11 +255,6 @@ public class FlipActivity extends AppCompatActivity {
         setupButtonEnableDisable();
     }
 
-    private void startCoinSound() {
-        final MediaPlayer coinFlip = MediaPlayer.create(this, R.raw.coinflip);
-        coinFlip.start();
-    }
-
     private void checkWin() {
         if (isHeads && flip.getChoice().equals("Heads")) {
             flip.setIsWinner(true);
@@ -276,7 +282,7 @@ public class FlipActivity extends AppCompatActivity {
         if (currChildName.equals("")) {
             currentChildTextView.setText(getString(
                     R.string.current_child_tv_string,
-                    "---")
+                    getString(R.string.no_child_string))
             );
         } else {
             currentChildTextView.setText(getString(
@@ -288,7 +294,7 @@ public class FlipActivity extends AppCompatActivity {
         if (prevChildName.equals("")) {
             previousChildTextView.setText(getString(
                     R.string.previous_child_tv_string,
-                    "---")
+                    getString(R.string.no_child_string))
             );
         } else {
             previousChildTextView.setText(getString(

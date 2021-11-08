@@ -1,9 +1,3 @@
-/**
- * Add Child Activity - This activity lets you add a new child to the list.
- * Or edit an existing child in the list.
- * The user sets the name of the child but has a restriction to it
- * - the name of the new/edit child cannot be empty
- */
 package com.cmpt276.parentapp.ui;
 
 import android.annotation.SuppressLint;
@@ -29,7 +23,12 @@ import com.cmpt276.parentapp.model.FlipHistoryManager;
 import com.cmpt276.parentapp.model.PrefConfig;
 
 import java.util.Objects;
-
+/**
+ * Add Child Activity - This activity lets you add a new child to the list.
+ * Or edit an existing child in the list.
+ * The user sets the name of the child but has a restriction to it
+ * - the name of the new/edit child cannot be empty
+ */
 public class AddChildActivity extends AppCompatActivity {
 
     private EditText childNameInput;
@@ -208,11 +207,8 @@ public class AddChildActivity extends AppCompatActivity {
         ));
         builder.setPositiveButton(R.string.yes, (dialogInterface, i) -> {
 
-            // first remove the flip history of that child
-            // and then remove the child from the manager
             FlipHistoryManager historyManager = FlipHistoryManager.getInstance(AddChildActivity.this);
-            historyManager.deleteFlipHistoryOfChild(
-                    manager.getChild(positionForEditChild));
+            historyManager.deleteFlipHistoryOfChild(manager.getChild(positionForEditChild));
 
             PrefConfig.writeFlipHistoryInPref(getApplicationContext(), historyManager.getFullHistory());
 

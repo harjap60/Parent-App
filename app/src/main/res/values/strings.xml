@@ -35,7 +35,7 @@
     <string name="warning_change_happened_for_edit_child">
         Are you sure you want to go back? This will not edit the name of the child!!
     </string>
-    <string name="warning_message">Warning...</string>
+    <string name="warning_message">Warning…</string>
     <string name="empty_name">Did not save because the name is empty!!</string>
     <string name="yes">Yes</string>
     <string name="no">No</string>
@@ -75,6 +75,9 @@
     <string name="history_of_flips">History</string>
     <string name="Heads">Heads</string>
     <string name="Tails">Tails</string>
+    <string name="no_child_string">---</string>
+    <string name="child_won">won</string>
+    <string name="child_lost">lost</string>
     <!-- ============================== -->
 
 </resources>

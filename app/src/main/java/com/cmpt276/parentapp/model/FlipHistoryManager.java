@@ -5,6 +5,11 @@ import android.content.Context;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Store history of all flips done.
+ * Contains list of CoinFlip objects
+ */
+
 public class FlipHistoryManager {
     private List<CoinFlip> history;
 
@@ -12,15 +17,12 @@ public class FlipHistoryManager {
 
     private FlipHistoryManager(Context context) {
 
-        // the following code reads the data from shared preferences
-        // which contains the history of flips
+        //Reads flip history data from shared preferences
         history = PrefConfig.readFlipHistoryFromPref(context);
+
+        //If history doesn't exist in shared preferences create new one
         if (history == null) {
-            // if the 'history' variable(list) is null, it means this is the first time that
-            // the user is running the app and 'history' will have a value of null (empty list), so
-            // - if the 'history' variable(list) is null, then make an empty list of flipsHistory
-            // - if the 'children' variable(list) is not null, then the 'history' variable(list)
-            // now consists of the history of flips saved from the previous run
+
             history = new ArrayList<>();
         }
     }
@@ -35,37 +37,30 @@ public class FlipHistoryManager {
     public void deleteFlipHistoryOfChild(Child child) {
         for (int i = 0; i < history.size(); i++) {
             if (getFlip(i).getChild().getChildName().equals(child.getChildName())) {
-                // TODO: might also need to change to getFlip(i).getChild().equals(child);
                 history.remove(getFlip(i));
                 i--;
-                // i-- is done because once we remove an item from array list, all the elements
-                // after that index are shifted up by one and the size is also decreased, so to
-                // overcome this problem, we check at the same index again to make sure all the
-                // instances of that element have been deleted
+                // i-- because once we remove an item list, all the elements are shifted up by one
+                // and the size decreased
             }
         }
     }
 
-    public String getCurrentChild(ChildManager childManager){
-        if(childManager.size() == 0){
+    public String getCurrentChild(ChildManager childManager) {
+        if (childManager.size() == 0) {
             return "";
         }
-        else{
-            if(size() == 0){
-                // if there are children but the flip history is empty
-                return childManager.getChild(0).getChildName();
-            }
-            else{
-                String name = history.get(size() - 1).getChild().getChildName();
-                for(int i = 0; i < childManager.size(); i++){
-                    Child child = childManager.getChild(i);
-                    if(child.getChildName().equals(name)){
-                        return childManager.getChild((i+1)% childManager.size()).getChildName();
-                    }
-                }
-                return "";
+        if (size() == 0) {
+            // if there are children but the flip history is empty
+            return childManager.getChild(0).getChildName();
+        }
+        String name = history.get(size() - 1).getChild().getChildName();
+        for (int i = 0; i < childManager.size(); i++) {
+            Child child = childManager.getChild(i);
+            if (child.getChildName().equals(name)) {
+                return childManager.getChild((i + 1) % childManager.size()).getChildName();
             }
         }
+        return "";
     }
 
     public String getPreviousChild(ChildManager childManager) {
@@ -75,8 +70,7 @@ public class FlipHistoryManager {
             if (size() == 0) {
                 return "";
             } else {
-                String name = history.get(size() - 1).getChild().getChildName();
-                return name;
+                return history.get(size() - 1).getChild().getChildName();
             }
         }
     }
