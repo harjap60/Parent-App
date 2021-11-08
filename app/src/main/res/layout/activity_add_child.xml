@@ -30,29 +30,111 @@
 
     </com.google.android.material.appbar.AppBarLayout>
 
+    <!--
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline_bottom_toolbar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.10" />
+    -->
+
+    <!-- CHILD NAME EDIT TEXT AND GUIDELINES -->
     <EditText
         android:id="@+id/child_name_edit_text"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+
+        android:autoSizeMaxTextSize="100sp"
+        android:autoSizeMinTextSize="24sp"
+        android:autoSizeStepGranularity="2sp"
+        android:autoSizeTextType="uniform"
+        android:gravity="center"
+
+        android:hint="@string/hint_enter_child_name"
+        android:inputType="textPersonName"
+        android:textColor="?colorOnPrimary"
+        app:layout_constraintBottom_toBottomOf="@id/guideline_bottom_edit_text_child_name"
+        app:layout_constraintEnd_toEndOf="@+id/guideline_end_edit_text_child_name"
+        app:layout_constraintStart_toStartOf="@+id/guideline_start_edit_text_child_name"
+        app:layout_constraintTop_toTopOf="@+id/guideline_top_edit_text_child_name" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline_top_edit_text_child_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="70dp"
-        android:ems="10"
-        android:hint="@string/hint_enter_child_name"
-        android:textColor="?colorOnPrimary"
-        android:inputType="textPersonName"
-        app:layout_constraintBottom_toTopOf="@+id/add_child_button"
-        app:layout_constraintEnd_toEndOf="@+id/add_child_button"
-        app:layout_constraintStart_toStartOf="@+id/add_child_button" />
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.30" />
 
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline_start_edit_text_child_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.25" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline_bottom_edit_text_child_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.40" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline_end_edit_text_child_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.75" />
+    <!-- =================================== -->
+
+
+    <!-- ADD CHILD BUTTON AND GUIDELINEs -->
     <Button
         android:id="@+id/add_child_button"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+
+        android:autoSizeMaxTextSize="100dp"
+        android:autoSizeMinTextSize="1dp"
+        android:autoSizeStepGranularity="1dp"
+        android:autoSizeTextType="uniform"
+        android:backgroundTint="?colorPrimaryVariant"
+        android:gravity="center"
+
+        android:text="@string/add_child_button_text"
+        app:layout_constraintStart_toStartOf="@id/guideline_start_button_add_child"
+        app:layout_constraintEnd_toEndOf="@id/guideline_end_button_add_child"
+        app:layout_constraintTop_toTopOf="@id/guideline_top_button_add_child"
+        app:layout_constraintBottom_toBottomOf="@id/guideline_bottom_button_add_child"/>
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline_top_button_add_child"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/add_child_button_text"
-        android:backgroundTint="?colorPrimaryVariant"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"/>
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.50" />
 
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline_start_button_add_child"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.35" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline_end_button_add_child"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.65" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline_bottom_button_add_child"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.60" />
+    <!-- =============================== -->
 
 </androidx.constraintlayout.widget.ConstraintLayout>

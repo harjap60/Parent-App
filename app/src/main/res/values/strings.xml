@@ -11,7 +11,8 @@
     <string name="image_of_a_coin">image of a coin</string>
 
     <!-- Strings used for ADD/EDIT CHILD ACTIVITY -->
-    <string name="add_child_button_text">Add Child</string>
+    <string name="add_child_button_text_for_toolbar">Add Child</string>
+    <string name="add_child_button_text">Add</string>
     <string name="hint_enter_child_name">Enter name</string>
     <string name="child_name">Child name</string>
     <string name="add_child_activity_toolbar_label">Add new child</string>

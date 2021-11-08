@@ -50,11 +50,13 @@
         android:id="@+id/previous_child_tv"
         android:layout_width="0dp"
         android:layout_height="0dp"
+
         android:autoSizeMaxTextSize="100dp"
         android:autoSizeMinTextSize="12dp"
         android:autoSizeStepGranularity="2dp"
         android:autoSizeTextType="uniform"
         android:gravity="center"
+
         android:text="@string/previous_child_tv_string"
         android:textColor="?colorOnPrimary"
         app:layout_constraintBottom_toBottomOf="@id/current_child_tv_bottom_guideline"

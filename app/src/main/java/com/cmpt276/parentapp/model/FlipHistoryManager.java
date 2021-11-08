@@ -52,6 +52,7 @@ public class FlipHistoryManager {
         }
         else{
             if(size() == 0){
+                // if there are children but the flip history is empty
                 return childManager.getChild(0).getChildName();
             }
             else{
