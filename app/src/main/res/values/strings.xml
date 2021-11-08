@@ -17,7 +17,7 @@
     <string name="child_name">Child name</string>
     <string name="add_child_activity_toolbar_label">Add new child</string>
 
-    <string name="edit_child_button_text">Edit Child</string>
+    <string name="edit_child_button_text">Edit</string>
     <string name="edit_child_activity_toolbar_label">Edit Child</string>
     <string name="confirm_edit_child_dialog_box_message">
         Are you sure you want the name from \"%1$s\" to \"%2$s\"?
