@@ -20,7 +20,10 @@ public class TimerService extends Service {
 
     public static final String TIMER_DURATION_TAG = "com.cmpt276.parentapp.TimerService.TIMER_DURATION";
     public static final String INITIAL_TIMER_DURATION_TAG = "com.cmpt276.parentapp.TimerService.INITIAL_DURATION";
-    public static final String BROADCAST_ACTION = "com.cmpt276.parent.TIMER_NOTIFICATION";
+    public static final String TIMER_TICK_BROADCAST_ACTION = "com.cmpt276.parent.TIMER_NOTIFICATION";
+    public static final String TIMER_RESUME_BROADCAST_ACTION = "com.cmpt276.parent.TIMER_RESUME";
+    public static final String TIMER_PAUSE_BROADCAST_ACTION = "com.cmpt276.parent.TIMER_PAUSE";
+    public static final String TIMER_STOP_BROADCAST_ACTION = "com.cmpt276.parent.TIMER_CANCEL";
     public static final String NOTIFICATION_CHANNEL_ID = "TIMER_SERVICE";
 
     public static final int NOTIFICATION_ID = 1;

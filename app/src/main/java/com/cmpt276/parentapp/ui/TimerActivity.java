@@ -8,7 +8,6 @@ import android.content.IntentFilter;
 import android.content.ServiceConnection;
 import android.os.Bundle;
 import android.os.IBinder;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -96,7 +95,7 @@ public class TimerActivity extends AppCompatActivity {
             }
         };
         IntentFilter filter = new IntentFilter();
-        filter.addAction(TimerService.BROADCAST_ACTION);
+        filter.addAction(TimerService.TIMER_TICK_BROADCAST_ACTION);
         registerReceiver(receiver, filter);
     }
 
@@ -127,7 +126,7 @@ public class TimerActivity extends AppCompatActivity {
         int pauseButtonString = R.string.btn_timer_start;
 
         if (this.service != null) {
-            pauseButtonString = this.service.isRunning() ? R.string.btn_timer_resume : R.string.btn_timer_pause;
+            pauseButtonString = this.service.isRunning() ? R.string.btn_timer_pause : R.string.btn_timer_resume;
             binding.timerLive.setText(this.service.getRemainingTimeString());
             binding.timerBar.setProgress(this.service.getProgress());
         }
