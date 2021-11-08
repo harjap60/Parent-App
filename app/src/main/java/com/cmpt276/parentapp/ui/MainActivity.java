@@ -6,7 +6,6 @@ import android.app.NotificationManager;
 import android.content.ComponentName;
 import android.content.Intent;
 import android.content.ServiceConnection;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.view.Menu;
@@ -138,15 +137,13 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void setupNotificationChannel(){
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            CharSequence name = getString(R.string.channel_name);
-            String description = getString(R.string.channel_description);
-            int importance = NotificationManager.IMPORTANCE_DEFAULT;
-            NotificationChannel channel = new NotificationChannel(TimerService.NOTIFICATION_CHANNEL_ID, name, importance);
-            channel.setDescription(description);
-            NotificationManager notificationManager = getSystemService(NotificationManager.class);
-            notificationManager.createNotificationChannel(channel);
-        }
+        CharSequence name = getString(R.string.channel_name);
+        String description = getString(R.string.channel_description);
+        int importance = NotificationManager.IMPORTANCE_DEFAULT;
+        NotificationChannel channel = new NotificationChannel(TimerService.NOTIFICATION_CHANNEL_ID, name, importance);
+        channel.setDescription(description);
+        NotificationManager notificationManager = getSystemService(NotificationManager.class);
+        notificationManager.createNotificationChannel(channel);
     }
 
     private void showCustomDurationDialog() {
@@ -155,7 +152,7 @@ public class MainActivity extends AppCompatActivity {
 
         builder.setView(v)
                 .setTitle(R.string.dialog_custom_duration_title)
-                .setPositiveButton(R.string.dialog_custom_duration_title, (dialog, id) -> {
+                .setPositiveButton(R.string.dialog_custom_duration_start_button, (dialog, id) -> {
                     try {
                         EditText tvTimerDuration = v.findViewById(R.id.tvTimerDuration);
                         int duration = Integer.parseInt(tvTimerDuration.getText().toString());
