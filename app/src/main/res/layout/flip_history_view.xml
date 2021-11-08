@@ -8,11 +8,11 @@
         android:id="@+id/child_guess_image_flip_information_iv"
         android:layout_width="80dp"
         android:layout_height="80dp"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="15dp"
         android:adjustViewBounds="true"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginTop="15dp"
-        android:layout_marginStart="15dp"
         app:srcCompat="@drawable/child_guess_correct" />
 
 
@@ -20,34 +20,52 @@
         android:id="@+id/game_date_flip_information_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/default_date_flip_information"
-        android:textSize="20sp"
-        app:layout_constraintStart_toEndOf="@+id/child_guess_image_flip_information_iv"
         android:layout_marginStart="15dp"
+        android:text="@string/default_date_flip_information"
+        android:textColor="?colorOnPrimary"
+        android:autoSizeMinTextSize="12dp"
+        android:autoSizeStepGranularity="2dp"
+        android:autoSizeTextType="uniform"
+        android:gravity="center"
+        app:layout_constraintStart_toEndOf="@+id/child_guess_image_flip_information_iv"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/child_name_flip_information_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/default_name_flip_information"
-        android:textSize="20sp"
-        app:layout_constraintStart_toEndOf="@+id/child_guess_image_flip_information_iv"
         android:layout_marginStart="15dp"
-
         android:layout_marginTop="5dp"
+        android:text="@string/default_name_flip_information"
+        android:textColor="?colorOnPrimary"
+        android:autoSizeMinTextSize="12dp"
+        android:autoSizeStepGranularity="2dp"
+        android:autoSizeTextType="uniform"
+        android:gravity="center"
+        app:layout_constraintStart_toEndOf="@+id/child_guess_image_flip_information_iv"
         app:layout_constraintTop_toBottomOf="@+id/game_date_flip_information_tv" />
 
     <TextView
         android:id="@+id/child_choice_flip_information_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/child_choice_for_flip"
-        android:textSize="20sp"
-        app:layout_constraintStart_toEndOf="@+id/child_guess_image_flip_information_iv"
         android:layout_marginStart="15dp"
         android:layout_marginTop="5dp"
+        android:text="@string/child_choice_for_flip"
+        android:textColor="?colorOnPrimary"
+        android:autoSizeMinTextSize="12dp"
+        android:autoSizeStepGranularity="2dp"
+        android:autoSizeTextType="uniform"
+        android:gravity="center"
+        app:layout_constraintStart_toEndOf="@+id/child_guess_image_flip_information_iv"
         app:layout_constraintTop_toBottomOf="@+id/child_name_flip_information_tv" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.27" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="?colorPrimary"
     tools:context=".ui.AddChildActivity">
 
     <com.google.android.material.appbar.AppBarLayout
@@ -19,8 +20,10 @@
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            android:background="#E61936"
             android:theme="@style/Theme.ParentApp.PopupOverlay"
+            app:titleTextColor="?colorOnPrimary"
+            app:subtitleTextColor="?colorOnPrimary"
+
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -34,6 +37,7 @@
         android:layout_marginBottom="70dp"
         android:ems="10"
         android:hint="@string/hint_enter_child_name"
+        android:textColor="?colorOnPrimary"
         android:inputType="textPersonName"
         app:layout_constraintBottom_toTopOf="@+id/add_child_button"
         app:layout_constraintEnd_toEndOf="@+id/add_child_button"
@@ -44,6 +48,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/add_child_button_text"
+        android:backgroundTint="?colorPrimaryVariant"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"

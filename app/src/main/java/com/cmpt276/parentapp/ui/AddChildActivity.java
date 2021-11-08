@@ -6,14 +6,8 @@
  */
 package com.cmpt276.parentapp.ui;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-
+import android.annotation.SuppressLint;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
@@ -22,11 +16,19 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+
 import com.cmpt276.parentapp.R;
 import com.cmpt276.parentapp.model.Child;
 import com.cmpt276.parentapp.model.ChildManager;
 import com.cmpt276.parentapp.model.FlipHistoryManager;
 import com.cmpt276.parentapp.model.PrefConfig;
+
+import java.util.Objects;
 
 public class AddChildActivity extends AppCompatActivity {
 
@@ -77,6 +79,7 @@ public class AddChildActivity extends AppCompatActivity {
         return true;
     }
 
+    @SuppressLint("NonConstantResourceId")
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
@@ -111,12 +114,7 @@ public class AddChildActivity extends AppCompatActivity {
                             getString(R.string.warning_change_happened_for_edit_child)
             );
 
-            builder.setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialogInterface, int i) {
-                    finish();
-                }
-            });
+            builder.setPositiveButton(R.string.yes, (dialogInterface, i) -> finish());
 
             AlertDialog alertDialog = builder.create();
             alertDialog.show();
@@ -140,7 +138,7 @@ public class AddChildActivity extends AppCompatActivity {
     private void setUpToolbar() {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setTitle(
+        Objects.requireNonNull(getSupportActionBar()).setTitle(
                 addChild ?
                         getString(R.string.add_child_activity_toolbar_label) :
                         getString(R.string.edit_child_activity_toolbar_label)
@@ -176,13 +174,10 @@ public class AddChildActivity extends AppCompatActivity {
                         initialString,
                         childNameInput.getText()
                 ));
-                builder.setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        changeChildName();
-                        saveChildListToSharedPrefs();
-                        finish();
-                    }
+                builder.setPositiveButton(R.string.yes, (dialogInterface, i) -> {
+                    changeChildName();
+                    saveChildListToSharedPrefs();
+                    finish();
                 });
                 AlertDialog alertDialog = builder.create();
                 alertDialog.show();
@@ -211,22 +206,19 @@ public class AddChildActivity extends AppCompatActivity {
                 R.string.confirm_delete_child_dialog_box_message,
                 childNameInput.getText()
         ));
-        builder.setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
+        builder.setPositiveButton(R.string.yes, (dialogInterface, i) -> {
 
-                // first remove the flip history of that child
-                // and then remove the child from the manager
-                FlipHistoryManager historyManager = FlipHistoryManager.getInstance(AddChildActivity.this);
-                historyManager.deleteFlipHistoryOfChild(
-                        manager.getChild(positionForEditChild));
+            // first remove the flip history of that child
+            // and then remove the child from the manager
+            FlipHistoryManager historyManager = FlipHistoryManager.getInstance(AddChildActivity.this);
+            historyManager.deleteFlipHistoryOfChild(
+                    manager.getChild(positionForEditChild));
 
-                PrefConfig.writeFlipHistoryInPref(getApplicationContext(), historyManager.getFullHistory());
+            PrefConfig.writeFlipHistoryInPref(getApplicationContext(), historyManager.getFullHistory());
 
-                manager.removeChild(positionForEditChild);
-                saveChildListToSharedPrefs();
-                finish();
-            }
+            manager.removeChild(positionForEditChild);
+            saveChildListToSharedPrefs();
+            finish();
         });
         AlertDialog alertDialog = builder.create();
         alertDialog.show();

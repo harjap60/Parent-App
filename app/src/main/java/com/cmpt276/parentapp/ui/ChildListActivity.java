@@ -6,12 +6,12 @@
  */
 package com.cmpt276.parentapp.ui;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -25,6 +25,8 @@ import com.cmpt276.parentapp.R;
 import com.cmpt276.parentapp.model.Child;
 import com.cmpt276.parentapp.model.ChildManager;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
+import java.util.Objects;
 
 public class ChildListActivity extends AppCompatActivity {
 
@@ -52,18 +54,16 @@ public class ChildListActivity extends AppCompatActivity {
         return true;
     }
 
+    @SuppressLint("NonConstantResourceId")
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        switch (item.getItemId()){
-            case R.id.action_add_child_button_for_child_list:
-                startActivity(
-                        AddChildActivity.makeIntentForAddChild(ChildListActivity.this)
-                );
-                return true;
-
-            default:
-                return super.onOptionsItemSelected(item);
+        if (item.getItemId() == R.id.action_add_child_button_for_child_list) {
+            startActivity(
+                    AddChildActivity.makeIntentForAddChild(ChildListActivity.this)
+            );
+            return true;
         }
+        return super.onOptionsItemSelected(item);
     }
 
     @Override
@@ -76,11 +76,12 @@ public class ChildListActivity extends AppCompatActivity {
     private void setUpToolbar() {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setTitle(getText(R.string.child_list_activity_toolbar_label));
+        Objects.requireNonNull(getSupportActionBar()).setTitle(getText(R.string.child_list_activity_toolbar_label));
     }
 
     private void enableUpOnToolbar(){
         ActionBar ab = getSupportActionBar();
+        assert ab != null;
         ab.setDisplayHomeAsUpEnabled(true);
     }
 
@@ -101,7 +102,7 @@ public class ChildListActivity extends AppCompatActivity {
     }
 
     private void registerClickCallback(){
-        ListView list = (ListView) findViewById(R.id.child_list_view);
+        ListView list = findViewById(R.id.child_list_view);
         list.setOnItemClickListener((parent, viewClicked, position, id) -> startActivity(
                 AddChildActivity.makeIntentForEditChild(
                         ChildListActivity.this, position)

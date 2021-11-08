@@ -105,9 +105,7 @@
         android:autoSizeStepGranularity="1dp"
         android:autoSizeTextType="uniform"
         android:backgroundTint="?colorPrimaryVariant"
-
         android:gravity="center"
-        android:maxLines="1"
 
         android:text="@string/heads"
         android:textColor="?colorOnPrimary"
@@ -173,11 +171,19 @@
 
     <TextView
         android:id="@+id/heads_tails_text_after_flip"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="32dp"
+        android:layout_marginEnd="32dp"
+        android:layout_marginBottom="32dp"
+        android:autoSizeMaxTextSize="100sp"
+        android:autoSizeMinTextSize="12sp"
+        android:autoSizeStepGranularity="2sp"
+        android:autoSizeTextType="uniform"
+        android:gravity="center"
         android:textColor="?colorPrimaryVariant"
-        android:textSize="35sp"
-        android:textStyle="bold"
+        android:maxLines="1"
         app:layout_constraintBottom_toBottomOf="@+id/coin_image_view"
         app:layout_constraintEnd_toEndOf="@+id/coin_image_view"
         app:layout_constraintStart_toStartOf="@+id/coin_image_view"
@@ -209,7 +215,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.858" />
+        app:layout_constraintGuide_percent="0.8578372" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/screen_center_guideline"

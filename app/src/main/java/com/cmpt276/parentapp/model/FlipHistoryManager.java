@@ -44,35 +44,7 @@ public class FlipHistoryManager {
                 // instances of that element have been deleted
             }
         }
-//        PrefConfig.writeFlipHistoryInPref(context, history);
     }
-
-    /*public int getCurrentFlipIndex(ChildManager childManager) {
-        if (childManager.size() == 0) {
-            return -1;
-        } else {
-            if (size() == 0) {    // No one has flipped a coin yet
-                return 0;
-            } else {
-                // get the last child to flip the coin
-                Child child = history.get(size() - 1).getChild();
-
-                // if a new child is added after a bunch of flips when no child was added,
-                // the round robin should start from 0
-                if (child == null) {
-                    return 0;
-                }
-                // get the index of the child from the childManager
-                int index = childManager.getChildIndex(child);
-
-                // increment the index and return it
-                index = (index + 1) % childManager.size();
-                // this is done to keep the round robin going for the coin flip
-
-                return index;
-            }
-        }
-    }*/
 
     public String getCurrentChild(ChildManager childManager){
         if(childManager.size() == 0){
@@ -80,7 +52,7 @@ public class FlipHistoryManager {
         }
         else{
             if(size() == 0){
-                return "";
+                return childManager.getChild(0).getChildName();
             }
             else{
                 String name = history.get(size() - 1).getChild().getChildName();
@@ -108,29 +80,6 @@ public class FlipHistoryManager {
         }
     }
 
-    /*public int getPreviousFlipIndex(ChildManager childManager) {
-        if (childManager.size() == 0) {
-            return -1;
-        } else {
-            if (size() == 0) {    // No one has flipped a coin yet
-                return -1;
-            } else {
-                // get the last child to flip the coin
-                Child child = history.get(size() - 1).getChild();
-
-                // To handle null pointer exception when a new child is added after
-                // a bunch of flips when no child was added
-                if (child == null) {
-                    return -1;
-                }
-
-                // get the index of the child from the childManger
-                // return the index of the child
-                return childManager.getChildIndex(child);
-            }
-        }
-    }*/
-
     public void addFlip(CoinFlip flip) {
         history.add(flip);
     }
@@ -141,10 +90,6 @@ public class FlipHistoryManager {
 
     public List<CoinFlip> getFullHistory() {
         return history;
-    }
-
-    public void setHistory(List<CoinFlip> history) {
-        this.history = history;
     }
 
     public int size() {

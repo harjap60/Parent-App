@@ -20,6 +20,7 @@ import com.cmpt276.parentapp.model.FlipHistoryManager;
 import com.cmpt276.parentapp.model.CoinFlip;
 
 import java.time.format.DateTimeFormatter;
+import java.util.Objects;
 
 public class FlipHistoryActivity extends AppCompatActivity {
 
@@ -50,7 +51,7 @@ public class FlipHistoryActivity extends AppCompatActivity {
     private void setUpToolbar(){
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setTitle(R.string.flip_history_activity_toolbar_label);
+        Objects.requireNonNull(getSupportActionBar()).setTitle(R.string.flip_history_activity_toolbar_label);
 
         // set up "UP" button on toolbar
         ActionBar ab = getSupportActionBar();

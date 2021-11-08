@@ -31,15 +31,10 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        //childManager = ChildManager.getInstance();
-        //flipHistoryManager = FlipHistoryManager.getInstance();
-
         setupFlipButton();
         setupTimerButton();
         setupChildButton();
 
-        //readFlipsHistoryFromSharedPrefs();
-        //readChildListFromSharedPrefs();
     }
 
     private void setupChildButton() {
@@ -65,21 +60,6 @@ public class MainActivity extends AppCompatActivity {
             startActivity(intent);
         });
     }
-
-    /*private void readFlipsHistoryFromSharedPrefs(){
-        List<CoinFlip> history = PrefConfig.readFlipHistoryFromPref(this);
-        if(history != null){
-            flipHistoryManager.setHistory(history);
-        }
-    }
-
-    private void readChildListFromSharedPrefs(){
-        List<Child> children = PrefConfig.readChildListFromPref(this);
-        if(children != null){
-            childManager.setChildren(children);
-        }
-    }*/
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_main, menu);
