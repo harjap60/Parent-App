@@ -42,6 +42,17 @@
     <string name="did_not_change_name_text_for_dialog_box">Did not change name!!</string>
     <string name="heads">Heads</string>
     <string name="tails">Tails</string>
+    <string name="timeout_timer">Timeout Timer</string>
+    <string name="timer_live_text">00:00:00</string>
+    <string name="start">START</string>
+    <string name="initial_selected">00:00:00 Selected</string>
+    <string name="initial_time_elapsed">00:00:00 Elapsed</string>
+    <string name="five_minutes">5 minutes</string>
+    <string name="one_minute">1 Minute</string>
+    <string name="three_minute">3 Minute</string>
+    <string name="two_minutes">2 Minutes</string>
+    <string name="ten_minutes">10 minutes</string>
+    <string name="custom_minutes">Custom Minutes</string>
     <!-- ================================= -->
 
     <!-- String used for FLIP HISTORY ACTIVITY -->
