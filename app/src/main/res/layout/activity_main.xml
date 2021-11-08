@@ -52,6 +52,7 @@
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:padding="0dp"
                 android:layout_gravity="center_vertical|center_horizontal"
                 android:gravity="center"
                 android:orientation="vertical">
@@ -59,6 +60,8 @@
                 <pl.droidsonroids.gif.GifImageView
                     android:layout_width="55dp"
                     android:layout_height="55dp"
+                    android:layout_weight="1"
+                    android:scaleType="centerInside"
                     android:src="@drawable/animated_coin" />
 
                 <TextView
@@ -66,6 +69,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/flip_a_coin"
+                    android:textAlignment="center"
+                    android:layout_weight="1"
                     android:textColor="@color/black"
                     android:textSize="16sp" />
             </LinearLayout>
@@ -99,6 +104,7 @@
                 <pl.droidsonroids.gif.GifImageView
                     android:layout_width="60dp"
                     android:layout_height="60dp"
+                    android:layout_weight="1"
                     android:src="@drawable/animated_timer" />
 
                 <TextView
@@ -106,6 +112,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/timeout_timer"
+                    android:textAlignment="center"
                     android:textColor="@color/black"
                     android:textSize="16sp" />
             </LinearLayout>
@@ -137,8 +144,9 @@
                 android:orientation="vertical">
 
                 <pl.droidsonroids.gif.GifImageView
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
+                    android:layout_width="44dp"
+                    android:layout_height="44dp"
+                    android:layout_weight="1"
                     android:src="@drawable/animated_add" />
 
                 <TextView
@@ -146,6 +154,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/configure_children"
+                    android:textAlignment="center"
                     android:textColor="@color/black"
                     android:textSize="16sp" />
             </LinearLayout>
@@ -156,72 +165,3 @@
     </GridLayout>
 
 </RelativeLayout>
-<!--    <androidx.appcompat.widget.Toolbar-->
-<!--        android:id="@+id/toolbar"-->
-<!--        android:layout_width="0dp"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:background="#199EE6"-->
-<!--        app:layout_constraintEnd_toEndOf="parent"-->
-<!--        app:layout_constraintStart_toStartOf="parent"-->
-<!--        app:layout_constraintTop_toTopOf="parent" />-->
-
-<!--    <Button-->
-<!--        android:id="@+id/start_child_list"-->
-<!--        android:layout_width="132dp"-->
-<!--        android:layout_height="61dp"-->
-<!--        android:layout_marginTop="150dp"-->
-<!--        android:backgroundTint="#7E1D5355"-->
-<!--        android:text="ChildList"-->
-<!--        android:textColor="#212121"-->
-<!--        app:layout_constraintBottom_toBottomOf="parent"-->
-<!--        app:layout_constraintEnd_toEndOf="@+id/start_timer"-->
-<!--        app:layout_constraintHorizontal_bias="1.0"-->
-<!--        app:layout_constraintStart_toStartOf="@+id/start_timer"-->
-<!--        app:layout_constraintTop_toBottomOf="@+id/start_timer"-->
-<!--        app:layout_constraintVertical_bias="0.554" />-->
-
-<!--    <Button-->
-<!--        android:id="@+id/start_flip"-->
-<!--        android:layout_width="110dp"-->
-<!--        android:layout_height="51dp"-->
-<!--        android:layout_marginEnd="220dp"-->
-<!--        android:layout_marginBottom="248dp"-->
-<!--        android:background="@drawable/child_image_icon"-->
-<!--        android:backgroundTint="#AC5959"-->
-<!--        android:gravity="center_vertical"-->
-<!--        android:radius="20dp"-->
-<!--        android:textAlignment="viewStart"-->
-<!--        android:textColor="#090909"-->
-<!--        android:textSize="20dp"-->
-<!--        app:layout_constraintBottom_toBottomOf="parent"-->
-<!--        app:layout_constraintEnd_toEndOf="parent" />-->
-
-<!--    <Button-->
-<!--        android:id="@+id/start_timer"-->
-<!--        android:layout_width="155dp"-->
-<!--        android:layout_height="73dp"-->
-<!--        android:layout_marginEnd="168dp"-->
-<!--        android:backgroundTint="#61A6C5"-->
-<!--        android:text="Timer"-->
-<!--        android:textColor="#212121"-->
-<!--        app:layout_constraintEnd_toEndOf="parent"-->
-<!--        tools:layout_editor_absoluteY="183dp" />-->
-
-<!--    <pl.droidsonroids.gif.GifImageView-->
-<!--        android:layout_width="50dp"-->
-<!--        android:layout_height="50dp"-->
-<!--        android:src="@drawable/animated_coin"-->
-<!--        app:layout_constraintBottom_toBottomOf="parent"-->
-<!--        app:layout_constraintEnd_toEndOf="parent"-->
-<!--        app:layout_constraintStart_toStartOf="parent"-->
-<!--        app:layout_constraintTop_toTopOf="parent" />-->
-
-<!--    <pl.droidsonroids.gif.GifImageView-->
-<!--        android:layout_width="50dp"-->
-<!--        android:layout_height="50dp"-->
-<!--        android:src="@drawable/animated_coin2"-->
-<!--        app:layout_constraintBottom_toBottomOf="parent"-->
-<!--        app:layout_constraintEnd_toEndOf="parent"-->
-<!--        app:layout_constraintHorizontal_bias="0.335"-->
-<!--        app:layout_constraintStart_toStartOf="parent"-->
-<!--        app:layout_constraintTop_toTopOf="parent" />-->
