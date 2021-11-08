@@ -22,37 +22,27 @@ public class MainActivity extends AppCompatActivity {
 
     ActivityMainBinding binding;
 
-    boolean isTimerServiceBound = false;
-
+    private TimerService service;
     private final ServiceConnection serviceConnection = new ServiceConnection() {
         @Override
         public void onServiceConnected(ComponentName name, IBinder binder) {
 
-            TimerService service = ((TimerService.LocalBinder) binder).getService();
-            setupResumeTimerButton(service.getInitialDurationMillis());
-            isTimerServiceBound = true;
+            MainActivity.this.service = ((TimerService.LocalBinder) binder).getService();
             updateUI();
         }
 
         @Override
         public void onServiceDisconnected(ComponentName name) {
-            isTimerServiceBound = false;
+            MainActivity.this.service = null;
             updateUI();
         }
     };
-
-    private void setupResumeTimerButton(long initialDurationMillis) {
-        binding.btnResumeTimer.setOnClickListener(v -> {
-            Intent i = TimerActivity.getIntentForRunningTimer(this,initialDurationMillis);
-            startActivity(i);
-        });
-    }
 
     private void updateUI() {
 
         binding.btnResumeTimer
                 .setVisibility(
-                        isTimerServiceBound ?
+                        service != null ?
                                 View.VISIBLE :
                                 View.INVISIBLE);
 
@@ -79,7 +69,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void bindTimerService() {
-
         Intent i = TimerService.getIntent(this);
         bindService(i, serviceConnection, 0);
     }
@@ -93,7 +82,13 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void setupTimerButton() {
-        binding.btnStartTimer.setOnClickListener(view -> showTimerDurationDialog());
+        binding.btnStartTimer.setOnClickListener(view -> {
+            if (service == null) {
+                showTimerDurationDialog();
+            } else {
+                startActivity(TimerActivity.getIntentForRunningTimer(this,service.getInitialDurationMillis()));
+            }
+        });
     }
 
     private void setupFlipButton() {
@@ -136,7 +131,7 @@ public class MainActivity extends AppCompatActivity {
                 .show();
     }
 
-    private void setupNotificationChannel(){
+    private void setupNotificationChannel() {
         CharSequence name = getString(R.string.channel_name);
         String description = getString(R.string.channel_description);
         int importance = NotificationManager.IMPORTANCE_DEFAULT;
