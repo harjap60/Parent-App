@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/blue_gradient"
+    android:orientation="vertical"
     tools:context=".ui.TimerActivity">
 
     <TextView
@@ -22,8 +23,8 @@
 
     <TextView
         android:id="@+id/timer_live"
-        android:layout_width="412dp"
-        android:layout_height="132dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:fontFamily="@font/roboto"
         android:text="@string/timer_live_text"
         android:textAlignment="center"
@@ -45,10 +46,10 @@
         android:textAlignment="center"
         android:textColor="@android:color/white"
         android:textSize="16sp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/left_image_button"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/timer_live"
-        app:layout_constraintVertical_bias="0.298" />
+        app:layout_constraintVertical_bias="0.55" />
 
     <TextView
         android:id="@+id/time_total"
@@ -59,12 +60,10 @@
         android:textAlignment="center"
         android:textColor="@android:color/white"
         android:textSize="16sp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/right_image_button"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toEndOf="@+id/time_elapsed"
         app:layout_constraintTop_toBottomOf="@+id/timer_live"
-        app:layout_constraintVertical_bias="0.3" />
+        app:layout_constraintVertical_bias="0.55" />
 
     <ImageButton
         android:id="@+id/right_image_button"
@@ -99,33 +98,63 @@
     <ProgressBar
         android:id="@+id/timerBar"
         style="?android:attr/progressBarStyleHorizontal"
-        android:layout_width="230dp"
-        android:layout_height="195dp"
-        android:layout_marginTop="16dp"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         android:backgroundTint="#683A3131"
         android:layoutDirection="ltr"
         android:max="100"
         android:progress="100"
         android:progressDrawable="@drawable/timer_circle"
         android:rotation="-90"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.486"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/time_elapsed" />
+        app:layout_constraintBottom_toTopOf="@+id/guideline2"
+        app:layout_constraintEnd_toEndOf="@+id/guideline5"
+        app:layout_constraintStart_toStartOf="@+id/guideline4"
+        app:layout_constraintTop_toTopOf="@+id/guideline3" />
 
     <Button
         android:id="@+id/start_pause_resume_button"
-        android:layout_width="174dp"
-        android:layout_height="161dp"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="24dp"
+        android:layout_marginBottom="16dp"
         android:background="@drawable/round_button"
         android:foreground="?attr/selectableItemBackgroundBorderless"
         android:text="@string/start"
         android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="@+id/timerBar"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/timerBar"
+        app:layout_constraintStart_toStartOf="@+id/timerBar"
         app:layout_constraintTop_toTopOf="@+id/timerBar" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.855" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.5822435" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.22" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.785" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
