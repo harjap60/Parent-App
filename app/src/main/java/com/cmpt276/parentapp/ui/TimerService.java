@@ -1,18 +1,22 @@
 package com.cmpt276.parentapp.ui;
 
-import android.app.Notification;
 import android.app.PendingIntent;
 import android.app.Service;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.media.AudioAttributes;
+import android.media.MediaPlayer;
 import android.os.Binder;
 import android.os.CountDownTimer;
 import android.os.IBinder;
+import android.os.VibrationEffect;
+import android.os.Vibrator;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.app.NotificationCompat;
-import androidx.core.app.NotificationManagerCompat;
 
 import com.cmpt276.parentapp.R;
 
@@ -30,13 +34,17 @@ public class TimerService extends Service {
     public static final int COUNT_DOWN_INTERVAL = 1000;
     public static final int SECONDS_IN_MINUTE = 60;
     public static final int MINUTES_IN_HOUR = 60;
-
+    private final LocalBinder binder = new LocalBinder();
     private long initialDurationMillis;
     private long millisUntilFinished;
     private boolean isRunning = false;
 
+    private MediaPlayer player;
+    private Vibrator vibrator;
+
+    private BroadcastReceiver stopTimerBroadcastReceiver;
+
     private CountDownTimer timer;
-    private final LocalBinder binder = new LocalBinder();
 
     public static Intent getIntentWithDuration(Context context, long initialDurationMillis) {
         Intent i = new Intent(context, TimerService.class);
@@ -52,6 +60,7 @@ public class TimerService extends Service {
     @Nullable
     @Override
     public IBinder onBind(Intent intent) {
+
         return binder;
     }
 
@@ -77,9 +86,10 @@ public class TimerService extends Service {
 
             @Override
             public void onFinish() {
-                
+                TimerService.this.millisUntilFinished = 0;
+                TimerService.this.broadcast();
+                updateNotification();
                 playAlarmSound();
-                stopSelf();
             }
         }.start();
 
@@ -87,6 +97,18 @@ public class TimerService extends Service {
     }
 
     private void playAlarmSound() {
+        Vibrator v = (Vibrator) this.getSystemService(Context.VIBRATOR_SERVICE);
+        long[] pattern = {0, 1000, 0};
+        v.vibrate(VibrationEffect.createWaveform(pattern, 0));
+
+        this.player = MediaPlayer.create(this, R.raw.alarm_sound);
+        this.player.setAudioAttributes(
+                new AudioAttributes.Builder()
+                        .setUsage(AudioAttributes.USAGE_ALARM)
+                        .build()
+        );
+
+        this.player.start();
     }
 
     public void updateNotification(){
@@ -107,18 +129,13 @@ public class TimerService extends Service {
 
     private void broadcast() {
         Intent i = new Intent();
-        i.setAction(BROADCAST_ACTION);
+        i.setAction(TIMER_TICK_BROADCAST_ACTION);
         i.putExtra(TIMER_DURATION_TAG, millisUntilFinished);
         sendBroadcast(i);
     }
 
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        this.pause();
-    }
-
     public long getInitialDurationMillis() {
+
         return TimerService.this.initialDurationMillis;
     }
 
@@ -132,6 +149,7 @@ public class TimerService extends Service {
         this.timer = null;
         this.isRunning = false;
         this.broadcast();
+        this.updateNotification();
     }
 
     public void resume() {
@@ -146,14 +164,29 @@ public class TimerService extends Service {
         this.isRunning = false;
 
         this.broadcast();
+
+        if (vibrator != null) {
+            vibrator.cancel();
+            vibrator = null;
+        }
+
+        if (player != null) {
+            player.stop();
+            player.release();
+            player = null;
+        }
+
+        unregisterReceiver(stopTimerBroadcastReceiver);
         this.stopSelf();
     }
 
     public int getProgress() {
-        return (int) ((millisUntilFinished * 100) / initialDurationMillis);
+        final long i = (millisUntilFinished * 100) / initialDurationMillis;
+        return (int) i;
     }
 
     public boolean isRunning() {
+
         return this.isRunning;
     }
 
