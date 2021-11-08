@@ -70,9 +70,41 @@ public class TimerService extends Service {
         this.initialDurationMillis = intent.getLongExtra(INITIAL_TIMER_DURATION_TAG, 0);
         this.millisUntilFinished = this.initialDurationMillis;
 
+        setupStopTimerBroadcastReceiver();
         this.startTimer();
 
         return START_STICKY;
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        this.pause();
+    }
+
+    private void setupStopTimerBroadcastReceiver() {
+        this.stopTimerBroadcastReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                switch (intent.getAction()) {
+                    case TIMER_RESUME_BROADCAST_ACTION:
+                        TimerService.this.resume();
+                        break;
+                    case TIMER_PAUSE_BROADCAST_ACTION:
+                        TimerService.this.pause();
+                        break;
+                    case TIMER_STOP_BROADCAST_ACTION:
+                    default:
+                        TimerService.this.reset();
+
+                }
+            }
+        };
+
+        IntentFilter intentFilter = new IntentFilter(TIMER_STOP_BROADCAST_ACTION);
+        intentFilter.addAction(TIMER_PAUSE_BROADCAST_ACTION);
+        intentFilter.addAction(TIMER_RESUME_BROADCAST_ACTION);
+        registerReceiver(stopTimerBroadcastReceiver, intentFilter);
     }
 
     private void startTimer() {
@@ -111,20 +143,40 @@ public class TimerService extends Service {
         this.player.start();
     }
 
-    public void updateNotification(){
-        Intent notificationIntent = TimerActivity.getIntentForRunningTimer(this, this.initialDurationMillis);
-        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, notificationIntent, PendingIntent.FLAG_IMMUTABLE);
+    private void updateNotification() {
+        Intent notificationIntent = TimerActivity.getIntentForRunningTimer(this,
+                this.initialDurationMillis);
+        PendingIntent pendingIntent = PendingIntent.getActivity(this,
+                0,
+                notificationIntent,
+                PendingIntent.FLAG_IMMUTABLE | PendingIntent.FLAG_UPDATE_CURRENT);
 
-        NotificationCompat.Builder builder = new NotificationCompat.Builder(this, NOTIFICATION_CHANNEL_ID)
+
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(this,
+                NOTIFICATION_CHANNEL_ID)
                 .setSmallIcon(R.drawable.ic_baseline_add_white_24)
                 .setContentTitle("Timer")
                 .setContentText(this.getRemainingTimeString())
                 .setPriority(NotificationCompat.PRIORITY_DEFAULT)
                 .setContentIntent(pendingIntent)
                 .setAutoCancel(true)
-                .setOnlyAlertOnce(true);
+                .setOnlyAlertOnce(true)
+                .addAction(R.drawable.ic_baseline_add_white_24, "Stop", getActionPendingIntent(TIMER_STOP_BROADCAST_ACTION));
+
+        if (this.isRunning) {
+            builder.addAction(R.drawable.ic_baseline_add_white_24, "Pause", getActionPendingIntent(TIMER_PAUSE_BROADCAST_ACTION));
+        } else {
+            builder.addAction(R.drawable.ic_baseline_add_white_24, "Resume", getActionPendingIntent(TIMER_RESUME_BROADCAST_ACTION));
+        }
 
         startForeground(NOTIFICATION_ID, builder.build());
+    }
+
+    private PendingIntent getActionPendingIntent(String action) {
+        return PendingIntent.getBroadcast(this,
+                0,
+                new Intent(action),
+                PendingIntent.FLAG_IMMUTABLE);
     }
 
     private void broadcast() {
