@@ -60,7 +60,7 @@
     <string name="which_side_do_you_think_it_will_land_on">Which side do you think it will land on?</string>
     <string name="image_of_coin_flip_to_start_animation">Image of coin flip to start animation</string>
     <string name="flip_activity_toolbar_label">Coin Flip</string>
-    <string name="history_of_flips">Flips History</string>
+    <string name="history_of_flips">History</string>
     <!-- ============================== -->
 
 </resources>
