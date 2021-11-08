@@ -34,6 +34,9 @@ public class TimerService extends Service {
     public static final int COUNT_DOWN_INTERVAL = 1000;
     public static final int SECONDS_IN_MINUTE = 60;
     public static final int MINUTES_IN_HOUR = 60;
+    public static final int VIBRATION_REPEAT_INDEX = 0;
+    public static final long[] PATTERN = {0, 1000, 500,2000};
+
     private final LocalBinder binder = new LocalBinder();
     private long initialDurationMillis;
     private long millisUntilFinished;
@@ -121,17 +124,16 @@ public class TimerService extends Service {
                 TimerService.this.millisUntilFinished = 0;
                 TimerService.this.broadcast();
                 updateNotification();
-                playAlarmSound();
+                playAlarmAlert();
             }
         }.start();
 
         this.isRunning = true;
     }
 
-    private void playAlarmSound() {
-        Vibrator v = (Vibrator) this.getSystemService(Context.VIBRATOR_SERVICE);
-        long[] pattern = {0, 1000, 0};
-        v.vibrate(VibrationEffect.createWaveform(pattern, 0));
+    private void playAlarmAlert() {
+        vibrator = (Vibrator) this.getSystemService(Context.VIBRATOR_SERVICE);
+        vibrator.vibrate(VibrationEffect.createWaveform(PATTERN, VIBRATION_REPEAT_INDEX));
 
         this.player = MediaPlayer.create(this, R.raw.alarm_sound);
         this.player.setAudioAttributes(
@@ -151,7 +153,6 @@ public class TimerService extends Service {
                 notificationIntent,
                 PendingIntent.FLAG_IMMUTABLE | PendingIntent.FLAG_UPDATE_CURRENT);
 
-
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this,
                 NOTIFICATION_CHANNEL_ID)
                 .setSmallIcon(R.drawable.ic_baseline_add_white_24)
@@ -161,12 +162,22 @@ public class TimerService extends Service {
                 .setContentIntent(pendingIntent)
                 .setAutoCancel(true)
                 .setOnlyAlertOnce(true)
-                .addAction(R.drawable.ic_baseline_add_white_24, "Stop", getActionPendingIntent(TIMER_STOP_BROADCAST_ACTION));
+                .addAction(
+                        R.drawable.ic_baseline_stop_24,
+                        "Stop",
+                        getActionPendingIntent(TIMER_STOP_BROADCAST_ACTION)
+                );
 
         if (this.isRunning) {
-            builder.addAction(R.drawable.ic_baseline_add_white_24, "Pause", getActionPendingIntent(TIMER_PAUSE_BROADCAST_ACTION));
+            builder.addAction(
+                    R.drawable.ic_baseline_pause_24,
+                    "Pause",
+                    getActionPendingIntent(TIMER_PAUSE_BROADCAST_ACTION));
         } else {
-            builder.addAction(R.drawable.ic_baseline_add_white_24, "Resume", getActionPendingIntent(TIMER_RESUME_BROADCAST_ACTION));
+            builder.addAction(
+                    R.drawable.ic_baseline_play_arrow_24,
+                    "Resume",
+                    getActionPendingIntent(TIMER_RESUME_BROADCAST_ACTION));
         }
 
         startForeground(NOTIFICATION_ID, builder.build());
@@ -213,9 +224,6 @@ public class TimerService extends Service {
         this.pause();
 
         this.millisUntilFinished = this.initialDurationMillis;
-        this.isRunning = false;
-
-        this.broadcast();
 
         if (vibrator != null) {
             vibrator.cancel();
@@ -229,6 +237,7 @@ public class TimerService extends Service {
         }
 
         unregisterReceiver(stopTimerBroadcastReceiver);
+        this.broadcast();
         this.stopSelf();
     }
 
@@ -261,6 +270,7 @@ public class TimerService extends Service {
     public class LocalBinder extends Binder {
 
         public TimerService getService() {
+
             return TimerService.this;
         }
 

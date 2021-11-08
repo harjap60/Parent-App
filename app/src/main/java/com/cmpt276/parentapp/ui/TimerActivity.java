@@ -8,6 +8,7 @@ import android.content.IntentFilter;
 import android.content.ServiceConnection;
 import android.os.Bundle;
 import android.os.IBinder;
+import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -127,6 +128,7 @@ public class TimerActivity extends AppCompatActivity {
 
         if (this.service != null) {
             pauseButtonString = this.service.isRunning() ? R.string.btn_timer_pause : R.string.btn_timer_resume;
+            binding.rightImageButton.setVisibility(this.service.isRunning() ? View.INVISIBLE : View.VISIBLE);
             binding.timerLive.setText(this.service.getRemainingTimeString());
             binding.timerBar.setProgress(this.service.getProgress());
         }
