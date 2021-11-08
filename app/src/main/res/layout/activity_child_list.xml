@@ -39,6 +39,7 @@
         android:backgroundTint="?colorPrimaryVariant"
         android:src="@drawable/ic_baseline_add_white_24"
         app:fabSize="normal"
+        app:rippleColor="@color/white"
 
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"/>

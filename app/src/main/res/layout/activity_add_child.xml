@@ -30,14 +30,6 @@
 
     </com.google.android.material.appbar.AppBarLayout>
 
-    <!--
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline_bottom_toolbar"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.10" />
-    -->
 
     <!-- CHILD NAME EDIT TEXT AND GUIDELINES -->
     <EditText
@@ -90,7 +82,7 @@
     <!-- =================================== -->
 
 
-    <!-- ADD CHILD BUTTON AND GUIDELINEs -->
+    <!-- ADD CHILD BUTTON AND GUIDELINES -->
     <Button
         android:id="@+id/add_child_button"
         android:layout_width="0dp"
@@ -102,6 +94,7 @@
         android:autoSizeTextType="uniform"
         android:backgroundTint="?colorPrimaryVariant"
         android:gravity="center"
+        android:maxLines="1"
 
         android:text="@string/add_child_button_text"
         app:layout_constraintStart_toStartOf="@id/guideline_start_button_add_child"
@@ -121,14 +114,14 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.35" />
+        app:layout_constraintGuide_percent="0.34" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline_end_button_add_child"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.65" />
+        app:layout_constraintGuide_percent="0.66" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline_bottom_button_add_child"
