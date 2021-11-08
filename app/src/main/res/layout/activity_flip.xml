@@ -85,11 +85,13 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginTop="8dp"
+
         android:autoSizeMaxTextSize="100dp"
         android:autoSizeMinTextSize="12dp"
         android:autoSizeStepGranularity="2dp"
         android:autoSizeTextType="uniform"
         android:gravity="center"
+
         android:text="@string/which_side_do_you_think_it_will_land_on"
         android:textColor="?colorOnPrimary"
         app:layout_constraintBottom_toTopOf="@+id/tell_user_choose_heads_tails_bottom_guideline"

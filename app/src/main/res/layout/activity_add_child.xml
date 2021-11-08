@@ -49,6 +49,7 @@
         android:autoSizeMinTextSize="24sp"
         android:autoSizeStepGranularity="2sp"
         android:autoSizeTextType="uniform"
+        android:textAlignment="center"
         android:gravity="center"
 
         android:hint="@string/hint_enter_child_name"
