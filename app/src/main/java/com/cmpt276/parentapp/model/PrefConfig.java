@@ -1,7 +1,3 @@
-/**
- * PrefConfig class - This class is a helper class to save the list of
- * children between runs.
- */
 package com.cmpt276.parentapp.model;
 
 import android.content.Context;
@@ -15,6 +11,10 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * PrefConfig class - This class is a helper class to save the list of
+ * children between runs.
+ */
 public class PrefConfig<T> {
 
     private static final String PREFS_STRING_FOR_LIST_OF_CHILDREN = "ChildList - Prefs String";
@@ -22,7 +22,7 @@ public class PrefConfig<T> {
     private static final String PREFS_DEFAULT_STRING_FOR_LIST_OF_CHILDREN = "";
     private static final String PREFS_DEFAULT_STRING_FOR_FLIPS_HISTORY = "";
 
-    public static void writeChildListInPref(Context context, List<Child> children){
+    public static void writeChildListInPref(Context context, List<Child> children) {
         Gson gson = new Gson();
         String jsonString = gson.toJson(children);
 
@@ -32,7 +32,7 @@ public class PrefConfig<T> {
         editor.apply();
     }
 
-    public static List<Child> readChildListFromPref(Context context){
+    public static List<Child> readChildListFromPref(Context context) {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
         String jsonString = prefs.getString(
                 PREFS_STRING_FOR_LIST_OF_CHILDREN,
@@ -40,12 +40,12 @@ public class PrefConfig<T> {
         );
 
         Gson gson = new Gson();
-        Type type = new TypeToken<ArrayList<Child>>() {}.getType();
-        List<Child> children = gson.fromJson(jsonString, type);
-        return children;
+        Type type = new TypeToken<ArrayList<Child>>() {
+        }.getType();
+        return gson.fromJson(jsonString, type);
     }
 
-    public static void writeFlipHistoryInPref(Context context, List<CoinFlip> flipsHistory){
+    public static void writeFlipHistoryInPref(Context context, List<CoinFlip> flipsHistory) {
         Gson gson = new Gson();
         String jsonString = gson.toJson(flipsHistory);
 
@@ -55,7 +55,7 @@ public class PrefConfig<T> {
         editor.apply();
     }
 
-    public static List<CoinFlip> readFlipHistoryFromPref(Context context){
+    public static List<CoinFlip> readFlipHistoryFromPref(Context context) {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
         String jsonString = prefs.getString(
                 PREFS_STRING_FOR_FLIPS_HISTORY,
@@ -63,8 +63,8 @@ public class PrefConfig<T> {
         );
 
         Gson gson = new Gson();
-        Type type = new TypeToken<ArrayList<CoinFlip>>() {}.getType();
-        List<CoinFlip> flipsHistory = gson.fromJson(jsonString, type);
-        return flipsHistory;
+        Type type = new TypeToken<ArrayList<CoinFlip>>() {
+        }.getType();
+        return gson.fromJson(jsonString, type);
     }
 }

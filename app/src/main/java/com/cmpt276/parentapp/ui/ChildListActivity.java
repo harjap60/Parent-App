@@ -1,9 +1,3 @@
-/**
- * Child List Activity - This activity will display a list of all the
- * children added by the user. The user will also have the ability to
- * - add more children to the list and
- * - edit an existing child in the list
- */
 package com.cmpt276.parentapp.ui;
 
 import android.annotation.SuppressLint;
@@ -28,6 +22,12 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.Objects;
 
+/**
+ * Child List Activity - This activity will display a list of all the
+ * children added by the user. The user will also have the ability to
+ * - add more children to the list and
+ * - edit an existing child in the list
+ */
 public class ChildListActivity extends AppCompatActivity {
 
     ChildManager manager;
