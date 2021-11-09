@@ -28,11 +28,8 @@ import java.util.Objects;
 import java.util.Random;
 
 /**
- * When the activity starts a coin will appear on the screen with the heads side.
- * When the coin is flipped, a side (heads or tails) will randomly be chosen
- * as the new side facing "up"
+ * Flip Activity provides the UI for the Coin Flip.
  */
-
 public class FlipActivity extends AppCompatActivity {
 
     public static final float SET_BUTTON_TO_ENABLE = 1f;
