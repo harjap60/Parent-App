@@ -243,6 +243,7 @@ public class TimerService extends Service {
         this.pause();
 
         this.millisUntilFinished = this.initialDurationMillis;
+        TimerService.this.isFinished = false;
 
         if (player != null) {
             player.stop();
