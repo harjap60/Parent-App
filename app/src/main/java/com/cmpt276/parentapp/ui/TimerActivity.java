@@ -35,6 +35,7 @@ public class TimerActivity extends AppCompatActivity {
             TimerService.LocalBinder localBinder = (TimerService.LocalBinder) binder;
             TimerActivity.this.service = localBinder.getService();
             updateUI();
+            setTotalTimeUI();
         }
 
         @Override
@@ -141,12 +142,18 @@ public class TimerActivity extends AppCompatActivity {
             int visibility = this.service.isRunning() ? View.INVISIBLE : View.VISIBLE;
             binding.btnResetTimer.setVisibility(visibility);
             binding.btnCancelTimer.setVisibility(visibility);
+            binding.btnPauseResume.setVisibility(this.service.isFinished()? View.INVISIBLE : View.VISIBLE);
 
             binding.timerLive.setText(this.service.getRemainingTimeString());
             binding.timerBar.setProgress(this.service.getProgress());
+            binding.timeElapsed.setText(String.format(getString(R.string.time_elapsed), this.service.getElapsedTimeString()));
         }
 
         binding.btnPauseResume.setText(getString(pauseButtonString));
+    }
+
+    private void setTotalTimeUI(){
+        binding.timeTotal.setText(String.format(getString(R.string.initial_time), this.service.getTotalTimeString()));
     }
 
     private void extractDurationFromIntent() {
