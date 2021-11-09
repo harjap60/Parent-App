@@ -1,5 +1,6 @@
 package com.cmpt276.parentapp.ui;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -43,14 +44,13 @@ public class ChildListActivity extends AppCompatActivity {
         setContentView(R.layout.activity_child_list);
 
         // instantiating the manager
-        manager = ChildManager.getInstance(this);
+        manager = ChildManager.getInstance(ChildListActivity.this);
 
         setUpToolbar();
         enableUpOnToolbar();
         setUpAddNewChildButton();
         populateListView();
         registerClickCallback();
-
     }
 
     @Override
@@ -60,6 +60,7 @@ public class ChildListActivity extends AppCompatActivity {
         return true;
     }
 
+    @SuppressLint("NonConstantResourceId")
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if (item.getItemId() == R.id.action_add_child_button_for_child_list) {
@@ -74,7 +75,6 @@ public class ChildListActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-
         // updateUI
         populateListView();
     }
@@ -133,7 +133,7 @@ public class ChildListActivity extends AppCompatActivity {
             }
 
             // Find the child to work with
-            Child currentChild = manager.retrieveChildByIndex(position);
+            Child currentChild = manager.getChild(position);
 
             // Fill the view
             TextView childNameText = itemView.findViewById(R.id.child_name_text_view);
