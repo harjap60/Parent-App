@@ -37,13 +37,13 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
 
-        android:autoSizeMaxTextSize="100sp"
-        android:autoSizeMinTextSize="24sp"
-        android:autoSizeStepGranularity="2sp"
+        android:autoSizeMaxTextSize="100dp"
+        android:autoSizeMinTextSize="10dp"
+        android:autoSizeStepGranularity="2dp"
         android:autoSizeTextType="uniform"
-        android:textAlignment="center"
         android:gravity="center"
-
+        android:padding="0dp"
+        android:layout_margin="0dp"
         android:hint="@string/hint_enter_child_name"
         android:inputType="textPersonName"
         android:textColor="?colorOnPrimary"

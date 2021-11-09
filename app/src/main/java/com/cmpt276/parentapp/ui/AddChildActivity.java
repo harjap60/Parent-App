@@ -3,11 +3,16 @@ package com.cmpt276.parentapp.ui;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.os.Bundle;
+import android.util.DisplayMetrics;
+import android.util.TypedValue;
+import android.view.Display;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -62,9 +67,9 @@ public class AddChildActivity extends AppCompatActivity {
 
         extractDataFromIntent();
         setUpInitialString();
+        setupAddChildButton();
         setUpEditTextChildName();
         setUpToolbar();
-        setupAddChildButton();
     }
 
     @Override
@@ -132,6 +137,9 @@ public class AddChildActivity extends AppCompatActivity {
     private void setUpEditTextChildName() {
         childNameInput = findViewById(R.id.child_name_edit_text);
         childNameInput.setText(initialString);
+        int deviceWidth = getResources().getDisplayMetrics().widthPixels;
+        childNameInput.setTextSize((deviceWidth/20f));
+
     }
 
     private void setUpToolbar() {
