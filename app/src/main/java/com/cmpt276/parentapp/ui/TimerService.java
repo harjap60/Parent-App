@@ -21,6 +21,17 @@ import androidx.core.app.NotificationCompat;
 
 import com.cmpt276.parentapp.R;
 
+/**
+ * Timer service runs a timer in a foreground service and
+ * allow it to run independent of the activity that starts it.
+ *
+ * It shows a persistent notification that can interact with the timer or start an activity for
+ * the timer.
+ *
+ * This service is dependant on notification channels not created by it.
+ *
+ * Plays a sound and vibrates the phone on end.
+ */
 public class TimerService extends Service {
 
     public static final String TIMER_TICK_BROADCAST_ACTION = "com.cmpt276.parent.TIMER_NOTIFICATION";

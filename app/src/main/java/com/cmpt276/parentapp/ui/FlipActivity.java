@@ -18,6 +18,9 @@ import com.cmpt276.parentapp.R;
 
 import java.util.Random;
 
+/**
+ * Flip Activity provides the UI for the Coin Flip.
+ */
 public class FlipActivity extends AppCompatActivity {
 
     private final int ANIMATION_REPEAT_COUNT = 100;

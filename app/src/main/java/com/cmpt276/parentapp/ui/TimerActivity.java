@@ -15,6 +15,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.cmpt276.parentapp.R;
 import com.cmpt276.parentapp.databinding.ActivityTimerBinding;
 
+/**
+ * Timer Activity provides the UI to start and update Timer Service. It can bind to an existing
+ * timer service and allow interactions with it.
+ */
 public class TimerActivity extends AppCompatActivity {
 
     public static final String TIMER_DURATION_TAG = "TIMER_DURATION_TAG";
