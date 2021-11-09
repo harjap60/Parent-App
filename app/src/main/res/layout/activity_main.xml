@@ -31,10 +31,9 @@
         android:columnCount="1"
         android:rowCount="3">
 
-
         <androidx.cardview.widget.CardView
             android:foreground="?attr/selectableItemBackgroundBorderless"
-            android:id="@+id/start_flip"
+            android:id="@+id/btn_start_flip"
             app:cardBackgroundColor="@color/white"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -56,7 +55,7 @@
                 android:gravity="center"
                 android:orientation="vertical">
 
-                <pl.droidsonroids.gif.GifImageView
+                <ImageView
                     android:id="@+id/gifImageView"
                     android:layout_width="0dp"
                     android:layout_height="0dp"
@@ -117,12 +116,11 @@
                     app:layout_constraintGuide_percent="0.61"/>
             </androidx.constraintlayout.widget.ConstraintLayout>
 
-
         </androidx.cardview.widget.CardView>
 
         <androidx.cardview.widget.CardView
             android:foreground="?attr/selectableItemBackgroundBorderless"
-            android:id="@+id/start_timer"
+            android:id="@+id/btn_start_timer"
             app:cardBackgroundColor="@color/white"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -144,7 +142,7 @@
                 android:gravity="center"
                 android:orientation="vertical">
 
-                <pl.droidsonroids.gif.GifImageView
+                <ImageView
                     android:id="@+id/gifImageView2"
                     android:layout_width="0dp"
                     android:layout_height="0dp"
@@ -201,11 +199,7 @@
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
                     app:layout_constraintGuide_percent="0.64"/>
-
-
             </androidx.constraintlayout.widget.ConstraintLayout>
-
-
         </androidx.cardview.widget.CardView>
 
         <androidx.cardview.widget.CardView
@@ -232,7 +226,7 @@
                 android:gravity="center"
                 android:orientation="vertical">
 
-                <pl.droidsonroids.gif.GifImageView
+                <ImageView
                     android:id="@+id/gifImageView3"
                     android:layout_width="0dp"
                     android:layout_height="0dp"
@@ -291,9 +285,6 @@
                     app:layout_constraintGuide_percent="0.66"/>
             </androidx.constraintlayout.widget.ConstraintLayout>
 
-
         </androidx.cardview.widget.CardView>
-
     </GridLayout>
-
 </RelativeLayout>

@@ -4,7 +4,6 @@
 
     <!-- Strings used for CHILD LIST ACTIVITY -->
     <string name="child_list_activity_toolbar_label">Child List</string>
-    <!-- ==================================== -->
 
     <string name="hello_first_fragment">Hello first fragment</string>
     <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
@@ -55,21 +54,12 @@
     <string name="yes">Yes</string>
     <string name="no">No</string>
     <string name="did_not_change_name_text_for_dialog_box">Did not change name!!</string>
-    <string name="timer_live_text">00:00:00</string>
     <string name="start">START</string>
-    <string name="initial_selected">00:00:00 Selected</string>
-    <string name="initial_time_elapsed">00:00:00 Elapsed</string>
-    <string name="five_minutes">5 minutes</string>
-    <string name="one_minute">1 Minute</string>
-    <string name="three_minute">3 Minute</string>
-    <string name="two_minutes">2 Minutes</string>
-    <string name="ten_minutes">10 minutes</string>
+    <string name="initial_time">Selected\n%s</string>
+    <string name="time_elapsed">Elapsed\n%s</string>
     <string name="custom_minutes">Custom Minutes</string>
     <string name="title_main_activity">Parental App</string>
-    <string name="flip_a_coin">Flip A Coin!</string>
-    <string name="timeout_timer">Timeout Timer</string>
     <string name="configure_children">Configure Children</string>
-    <!-- ================================= -->
 
     <string name="timeout_timer">Timeout Timer</string>
     <string name="timer_reset_button">Timer Reset</string>

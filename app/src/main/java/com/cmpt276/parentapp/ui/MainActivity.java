@@ -8,18 +8,10 @@ import android.content.Intent;
 import android.content.ServiceConnection;
 import android.os.Bundle;
 import android.os.IBinder;
-
-import com.cmpt276.parentapp.R;
-
-import androidx.appcompat.app.AppCompatActivity;
-
-import androidx.appcompat.widget.Toolbar;
-import androidx.cardview.widget.CardView;
-
 import android.view.Menu;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.Toast;startChildList
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -48,7 +40,6 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         binding = ActivityMainBinding.inflate(this.getLayoutInflater());
         setContentView(binding.getRoot());
-        setSupportActionBar(binding.toolbar);
 
         setupFlipButton();
         setupTimerButton();
@@ -81,13 +72,13 @@ public class MainActivity extends AppCompatActivity {
             if (service == null) {
                 showTimerDurationDialog();
             } else {
-                startActivity(TimerActivity.getIntentForRunningTimer(this,service.getInitialDurationMillis()));
+                startActivity(TimerActivity.getIntentForRunningTimer(this, service.getInitialDurationMillis()));
             }
         });
     }
 
     private void setupFlipButton() {
-        binding.startFlip.setOnClickListener(view ->
+        binding.btnStartFlip.setOnClickListener(view ->
                 startActivity(FlipActivity.getIntent(this))
         );
     }
