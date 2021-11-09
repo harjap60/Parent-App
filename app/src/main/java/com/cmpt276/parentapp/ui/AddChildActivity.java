@@ -36,14 +36,14 @@ import java.util.Objects;
  */
 public class AddChildActivity extends AppCompatActivity {
 
+    private static final String EXTRA_FOR_INDEX =
+            "com.cmpt276.parentapp.ui.AddChildActivity - the index";
+    private static final int DEFAULT_VALUE_FOR_ADD_CHILD_FOR_INTENT = -1;
     private EditText childNameInput;
     private Button addChildButton;
     private ChildManager manager;
     private boolean addChild;
     private int positionForEditChild;
-    private static final String EXTRA_FOR_INDEX =
-            "com.cmpt276.parentapp.ui.AddChildActivity - the index";
-    private static final int DEFAULT_VALUE_FOR_ADD_CHILD_FOR_INTENT = -1;
 
     private String initialString = "";
 

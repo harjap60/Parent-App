@@ -3,6 +3,8 @@ package com.cmpt276.parentapp.ui;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.ObjectAnimator;
+import android.content.Context;
+import android.content.Intent;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.view.animation.AccelerateDecelerateInterpolator;
@@ -31,6 +33,8 @@ import java.util.Random;
  * as the new side facing "up"
  */
 
+import java.util.Random;
+
 public class FlipActivity extends AppCompatActivity {
 
     public static final float SET_BUTTON_TO_ENABLE = 1f;
@@ -53,6 +57,10 @@ public class FlipActivity extends AppCompatActivity {
 
     CoinFlip flip;
     FlipHistoryManager flipHistoryManager;
+
+    public static Intent getIntent(Context context) {
+        return new Intent(context, FlipActivity.class);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

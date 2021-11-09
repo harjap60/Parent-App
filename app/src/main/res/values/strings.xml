@@ -4,10 +4,25 @@
 
     <!-- Strings used for CHILD LIST ACTIVITY -->
     <string name="child_list_activity_toolbar_label">Child List</string>
-    <!-- ==================================== -->
 
     <string name="hello_first_fragment">Hello first fragment</string>
     <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
+    <string name="timer_activity_end_message">Done</string>
+
+    <string name="dialog_duration_title">Select Duration</string>
+
+    <string name="dialog_custom_duration_title">Custom Duration</string>
+    <string name="dialog_custom_duration_invalid_input">Please send a valid number of minutes.</string>
+    <string name="dialog_custom_duration_start_button">Start</string>
+    <string name="dialog_custom_duration_dialog_cancel">Cancel</string>
+    <string name="dialog_custom_duration_hint">Minutes</string>
+    <string name="btn_timer_reset">Reset</string>
+    <string name="btn_timer_resume">Resume</string>
+    <string name="btn_timer_pause">Pause</string>
+    <string name="timer_activity_hh_mm_ss">%02d:%02d:%02d</string>
+    <string name="channel_name">Main_Channel</string>
+    <string name="channel_description">Main Channel to handle notifications from the parent app.</string>
+    <string name="btn_timer_start">Start</string>
     <string name="image_of_a_coin">image of a coin</string>
 
     <!-- Strings used for ADD/EDIT CHILD ACTIVITY -->
@@ -42,19 +57,21 @@
     <string name="did_not_change_name_text_for_dialog_box">Did not change name!!</string>
     <string name="heads">Heads</string>
     <string name="tails">Tails</string>
-    <string name="timeout_timer">Timeout Timer</string>
     <string name="timer_live_text">00:00:00</string>
     <string name="start">START</string>
-    <string name="initial_selected">00:00:00 Selected</string>
-    <string name="initial_time_elapsed">00:00:00 Elapsed</string>
-    <string name="five_minutes">5 minutes</string>
-    <string name="one_minute">1 Minute</string>
-    <string name="three_minute">3 Minute</string>
-    <string name="two_minutes">2 Minutes</string>
-    <string name="ten_minutes">10 minutes</string>
+    <string name="initial_time">Selected\n%s</string>
+    <string name="time_elapsed">Elapsed\n%s</string>
     <string name="custom_minutes">Custom Minutes</string>
-    <!-- ================================= -->
+    <string name="title_main_activity">Parental App</string>
+    <string name="configure_children">Configure Children</string>
 
+    <string name="timeout_timer">Timeout Timer</string>
+    <string name="timer_reset_button">Timer Reset</string>
+    <string name="alarm_channel_name">Timer Channel</string>
+    <string name="timer_channel_description">Channel to post Timer end notification</string>
+    <string name="activity_main_children">Children</string>
+    <string name="flip_a_coin">Flip a Coin</string>
+    <string name="activity_main_timer">Timer</string>
     <!-- String used for FLIP HISTORY ACTIVITY -->
 
     <string name="default_date_flip_information">Date</string>

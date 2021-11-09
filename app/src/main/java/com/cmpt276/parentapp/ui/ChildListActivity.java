@@ -1,6 +1,8 @@
 package com.cmpt276.parentapp.ui;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -31,6 +33,10 @@ import java.util.Objects;
 public class ChildListActivity extends AppCompatActivity {
 
     ChildManager manager;
+
+    public static Intent getIntent(Context context) {
+        return new Intent(context, ChildListActivity.class);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,7 +73,7 @@ public class ChildListActivity extends AppCompatActivity {
     }
 
     @Override
-    protected void onResume(){
+    protected void onResume() {
         super.onResume();
         // updateUI
         populateListView();
@@ -79,10 +85,11 @@ public class ChildListActivity extends AppCompatActivity {
         Objects.requireNonNull(getSupportActionBar()).setTitle(getText(R.string.child_list_activity_toolbar_label));
     }
 
-    private void enableUpOnToolbar(){
+    private void enableUpOnToolbar() {
         ActionBar ab = getSupportActionBar();
-        assert ab != null;
-        ab.setDisplayHomeAsUpEnabled(true);
+        if (ab != null) {
+            ab.setDisplayHomeAsUpEnabled(true);
+        }
     }
 
     private void setUpAddNewChildButton() {
@@ -92,7 +99,7 @@ public class ChildListActivity extends AppCompatActivity {
         ));
     }
 
-    private void populateListView(){
+    private void populateListView() {
         // Build the adapter
         ArrayAdapter<Child> adapter = new MyListAdapter();
 
@@ -110,16 +117,17 @@ public class ChildListActivity extends AppCompatActivity {
     }
 
     // MyListAdapter that will help make the complex list view
-    private class MyListAdapter extends  ArrayAdapter<Child>{
-        public MyListAdapter(){
+    private class MyListAdapter extends ArrayAdapter<Child> {
+        public MyListAdapter() {
             super(ChildListActivity.this,
                     R.layout.child_name_view, manager.getAllChildren());
         }
-        public View getView(int position, View convertView, ViewGroup parent){
+
+        public View getView(int position, View convertView, ViewGroup parent) {
 
             // make sure we have a view to work with (may have been given null)
             View itemView = convertView;
-            if(itemView == null){
+            if (itemView == null) {
                 itemView = getLayoutInflater()
                         .inflate(R.layout.child_name_view, parent, false);
             }
