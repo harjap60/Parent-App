@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ImageView
+        android:id="@+id/child_guess_image_flip_information_iv"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="15dp"
+        android:adjustViewBounds="true"
+        android:scaleType="centerCrop"
+        app:layout_constraintDimensionRatio="1:1"
+        app:layout_constraintEnd_toStartOf="@+id/image_end_guideline"
+        app:layout_constraintStart_toEndOf="@+id/image_start_guideline"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/child_guess_correct" />
+
+
+    <TextView
+        android:id="@+id/game_date_flip_information_tv"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="15dp"
+
+        android:autoSizeMaxTextSize="100dp"
+        android:autoSizeMinTextSize="12dp"
+        android:autoSizeStepGranularity="2dp"
+        android:autoSizeTextType="uniform"
+
+        android:text="@string/default_date_flip_information"
+        android:textColor="?colorOnPrimary"
+        app:layout_constraintBottom_toTopOf="@+id/date_bottom_guideline"
+        app:layout_constraintEnd_toStartOf="@+id/date_end_guideline"
+        app:layout_constraintStart_toEndOf="@+id/child_guess_image_flip_information_iv"
+        app:layout_constraintTop_toBottomOf="@+id/date_top_guideline" />
+
+    <TextView
+        android:id="@+id/child_name_flip_information_tv"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+
+        android:autoSizeMaxTextSize="100dp"
+        android:autoSizeMinTextSize="12dp"
+        android:autoSizeStepGranularity="2dp"
+        android:autoSizeTextType="uniform"
+
+        android:gravity="start"
+        android:text="@string/default_name_flip_information"
+        android:textColor="?colorOnPrimary"
+        app:layout_constraintBottom_toTopOf="@+id/child_name_bottom_guideline"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/game_date_flip_information_tv"
+        app:layout_constraintTop_toTopOf="@+id/date_bottom_guideline" />
+
+    <TextView
+        android:id="@+id/child_choice_flip_information_tv"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:autoSizeMaxTextSize="100dp"
+        android:autoSizeMinTextSize="12dp"
+        android:autoSizeStepGranularity="2dp"
+        android:autoSizeTextType="uniform"
+        android:gravity="start"
+        android:text="@string/child_choice_for_flip"
+        android:textColor="?colorOnPrimary"
+        app:layout_constraintBottom_toTopOf="@+id/child_choice_flip_bottom_guideline"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/child_name_flip_information_tv"
+        app:layout_constraintTop_toTopOf="@+id/child_name_bottom_guideline" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/image_start_guideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.04" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/image_end_guideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.23" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/date_end_guideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.8" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/date_bottom_guideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.3" />
+
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/date_top_guideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.018226003" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/child_name_bottom_guideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.65" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/child_choice_flip_bottom_guideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="1.0" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

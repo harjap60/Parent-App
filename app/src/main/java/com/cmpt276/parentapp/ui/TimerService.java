@@ -79,7 +79,6 @@ public class TimerService extends Service {
     @Nullable
     @Override
     public IBinder onBind(Intent intent) {
-
         return binder;
     }
 
@@ -209,7 +208,6 @@ public class TimerService extends Service {
                         getActionPendingIntent(TIMER_RESUME_BROADCAST_ACTION));
             }
         }
-
         return builder.build();
     }
 
@@ -228,7 +226,6 @@ public class TimerService extends Service {
     }
 
     public long getInitialDurationMillis() {
-
         return TimerService.this.initialDurationMillis;
     }
 
@@ -261,12 +258,10 @@ public class TimerService extends Service {
             player.release();
             player = null;
         }
-
         if (vibrator != null) {
             vibrator.cancel();
             vibrator = null;
         }
-
         unregisterReceiver(stopTimerBroadcastReceiver);
         this.broadcast();
         this.stopSelf();
@@ -305,6 +300,7 @@ public class TimerService extends Service {
 
         long minutes = totalSeconds / SECONDS_IN_MINUTE;
         long hours = minutes / MINUTES_IN_HOUR;
+        minutes = minutes % MINUTES_IN_HOUR;
         long seconds = totalSeconds % SECONDS_IN_MINUTE;
 
         return String.format(
@@ -316,11 +312,8 @@ public class TimerService extends Service {
     }
 
     public class LocalBinder extends Binder {
-
         public TimerService getService() {
-
             return TimerService.this;
         }
-
     }
 }

@@ -1,0 +1,1 @@
+- Our app does not handle duplicate names

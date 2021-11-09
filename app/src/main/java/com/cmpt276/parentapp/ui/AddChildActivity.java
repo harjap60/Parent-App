@@ -1,9 +1,7 @@
-
 package com.cmpt276.parentapp.ui;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
@@ -21,6 +19,7 @@ import androidx.appcompat.widget.Toolbar;
 import com.cmpt276.parentapp.R;
 import com.cmpt276.parentapp.model.Child;
 import com.cmpt276.parentapp.model.ChildManager;
+import com.cmpt276.parentapp.model.FlipHistoryManager;
 import com.cmpt276.parentapp.model.PrefConfig;
 
 import java.util.Objects;
@@ -41,6 +40,7 @@ public class AddChildActivity extends AppCompatActivity {
     private ChildManager manager;
     private boolean addChild;
     private int positionForEditChild;
+
     private String initialString = "";
 
     public static Intent makeIntentForAddChild(Context context) {
@@ -59,13 +59,13 @@ public class AddChildActivity extends AppCompatActivity {
         setContentView(R.layout.activity_add_child);
 
         // instantiating the manager
-        manager = ChildManager.getInstance(this);
+        manager = ChildManager.getInstance(AddChildActivity.this);
 
         extractDataFromIntent();
         setUpInitialString();
+        setupAddChildButton();
         setUpEditTextChildName();
         setUpToolbar();
-        setupAddChildButton();
     }
 
     @Override
@@ -133,6 +133,9 @@ public class AddChildActivity extends AppCompatActivity {
     private void setUpEditTextChildName() {
         childNameInput = findViewById(R.id.child_name_edit_text);
         childNameInput.setText(initialString);
+        int deviceWidth = getResources().getDisplayMetrics().widthPixels;
+        childNameInput.setTextSize((deviceWidth / 25f));
+
     }
 
     private void setUpToolbar() {
@@ -175,8 +178,14 @@ public class AddChildActivity extends AppCompatActivity {
                         childNameInput.getText()
                 ));
                 builder.setPositiveButton(R.string.yes, (dialogInterface, i) -> {
+
+                    FlipHistoryManager historyManager = FlipHistoryManager.getInstance(AddChildActivity.this);
+                    historyManager.updateHistoryName(initialString, String.valueOf(childNameInput.getText()));
+                    PrefConfig.writeFlipHistoryInPref(getApplicationContext(), historyManager.getFullHistory());
+
                     changeChildName();
                     saveChildListToSharedPrefs();
+
                     finish();
                 });
                 AlertDialog alertDialog = builder.create();
@@ -207,6 +216,11 @@ public class AddChildActivity extends AppCompatActivity {
                 childNameInput.getText()
         ));
         builder.setPositiveButton(R.string.yes, (dialogInterface, i) -> {
+
+            FlipHistoryManager historyManager = FlipHistoryManager.getInstance(AddChildActivity.this);
+            historyManager.deleteFlipHistoryOfChild(manager.getChild(positionForEditChild));
+            PrefConfig.writeFlipHistoryInPref(getApplicationContext(), historyManager.getFullHistory());
+
             manager.removeChild(positionForEditChild);
             saveChildListToSharedPrefs();
             finish();
@@ -231,7 +245,7 @@ public class AddChildActivity extends AppCompatActivity {
     }
 
     private boolean childNameIsEmpty() {
-        return String.valueOf(childNameInput.getText()).isEmpty();
+        return String.valueOf(childNameInput.getText()).equals("");
     }
 
     private void addChildInfo() {
@@ -248,7 +262,6 @@ public class AddChildActivity extends AppCompatActivity {
     private AlertDialog.Builder getAlertDialogBox() {
         AlertDialog.Builder builder = new AlertDialog.Builder(AddChildActivity.this);
         builder.setTitle(R.string.warning_message);
-
         builder.setNegativeButton(R.string.no, null);
 
         return builder;
@@ -256,21 +269,21 @@ public class AddChildActivity extends AppCompatActivity {
 
     private void changeChildName() {
         String childNameAfterChange = String.valueOf(childNameInput.getText());
-        Child child = manager.retrieveChildByIndex(positionForEditChild);
+        Child child = manager.getChild(positionForEditChild);
         child.setChildName(childNameAfterChange);
     }
 
     private void setUpInitialString() {
         if (!addChild) {
-            initialString = manager.retrieveChildByIndex(positionForEditChild).getChildName();
+            initialString = manager.getChild(positionForEditChild).getChildName();
         }
     }
 
     private boolean changeHappened() {
-        return !initialString.equals(String.valueOf(childNameInput.getText()));
+        return (!initialString.equals(String.valueOf(childNameInput.getText())));
     }
 
     private void saveChildListToSharedPrefs() {
-        PrefConfig.writeListInPref(getApplicationContext(), manager.getAllChildren());
+        PrefConfig.writeChildListInPref(getApplicationContext(), manager.getAllChildren());
     }
 }

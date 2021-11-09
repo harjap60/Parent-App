@@ -23,7 +23,6 @@ public class TimerActivity extends AppCompatActivity {
 
     public static final String TIMER_DURATION_TAG = "TIMER_DURATION_TAG";
     public static final String TIMER_RUNNING_TAG = "TIMER_RUNNING";
-    public static final String TAG = "TIMER_ACTIVITY";
 
     private ActivityTimerBinding binding;
 
@@ -89,7 +88,6 @@ public class TimerActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-
         unregisterReceiver(receiver);
     }
 
@@ -128,7 +126,6 @@ public class TimerActivity extends AppCompatActivity {
                 setupTimerService();
                 return;
             }
-
             if (this.service.isRunning()) {
                 this.service.pause();
             } else {
@@ -146,17 +143,16 @@ public class TimerActivity extends AppCompatActivity {
             int visibility = this.service.isRunning() ? View.INVISIBLE : View.VISIBLE;
             binding.btnResetTimer.setVisibility(visibility);
             binding.btnCancelTimer.setVisibility(visibility);
-            binding.btnPauseResume.setVisibility(this.service.isFinished()? View.INVISIBLE : View.VISIBLE);
+            binding.btnPauseResume.setVisibility(this.service.isFinished() ? View.INVISIBLE : View.VISIBLE);
 
             binding.timerLive.setText(this.service.getRemainingTimeString());
             binding.timerBar.setProgress(this.service.getProgress());
             binding.timeElapsed.setText(String.format(getString(R.string.time_elapsed), this.service.getElapsedTimeString()));
         }
-
         binding.btnPauseResume.setText(getString(pauseButtonString));
     }
 
-    private void setTotalTimeUI(){
+    private void setTotalTimeUI() {
         binding.timeTotal.setText(String.format(getString(R.string.initial_time), this.service.getTotalTimeString()));
     }
 
