@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/blue_gradient"
+    android:orientation="vertical"
     tools:context=".ui.TimerActivity">
 
     <TextView
@@ -32,8 +33,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.178" />
+        app:layout_constraintTop_toTopOf="parent"/>
 
     <TextView
         android:id="@+id/time_elapsed"
@@ -102,22 +102,49 @@
 
     <ProgressBar
         android:id="@+id/timer_bar"
-        style="@style/Widget.AppCompat.ProgressBar.Horizontal"
         android:layout_width="200dp"
         android:layout_height="200dp"
         android:layout_marginBottom="32dp"
         android:background="@drawable/round_button"
+        style="?android:attr/progressBarStyleHorizontal"
         android:backgroundTint="#683A3131"
         android:foreground="@drawable/round_button"
         android:layoutDirection="ltr"
         android:max="100"
         android:progress="0"
-        android:progressBackgroundTint="@color/black"
         android:progressDrawable="@drawable/timer_circle"
         android:rotation="-90"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.855" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.5822435" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.22" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.785" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
