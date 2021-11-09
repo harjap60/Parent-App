@@ -18,6 +18,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.cmpt276.parentapp.R;
 import com.cmpt276.parentapp.databinding.ActivityMainBinding;
 
+/**
+ * Main activity handles the navigation to Coin Flip, Child List and Timer Activities
+ */
 public class MainActivity extends AppCompatActivity {
 
     ActivityMainBinding binding;
