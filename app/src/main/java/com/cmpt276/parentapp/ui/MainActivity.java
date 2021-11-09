@@ -8,6 +8,7 @@ import com.cmpt276.parentapp.R;
 import androidx.appcompat.app.AppCompatActivity;
 
 import androidx.appcompat.widget.Toolbar;
+import androidx.cardview.widget.CardView;
 
 import android.view.Menu;
 import android.widget.Button;
@@ -29,7 +30,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void setupChildButton() {
-        Button child = (Button) findViewById(R.id.start_child_list);
+        CardView child = (CardView) findViewById(R.id.start_child_list);
         child.setOnClickListener(view -> {
             Intent intent = new Intent(MainActivity.this, ChildListActivity.class);
             startActivity(intent);
@@ -37,7 +38,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void setupTimerButton() {
-        Button timer = (Button) findViewById(R.id.start_timer);
+        CardView timer = (CardView) findViewById(R.id.start_timer);
         timer.setOnClickListener(view -> {
             Intent intent = new Intent(MainActivity.this, TimerActivity.class);
             startActivity(intent);
@@ -45,7 +46,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void setupFlipButton() {
-        Button flip = (Button) findViewById(R.id.start_flip);
+        CardView flip = (CardView) findViewById(R.id.start_flip);
         flip.setOnClickListener(view -> {
             Intent intent = new Intent(MainActivity.this, FlipActivity.class);
             startActivity(intent);
