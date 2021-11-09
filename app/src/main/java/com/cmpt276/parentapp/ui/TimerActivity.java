@@ -1,109 +1,176 @@
 package com.cmpt276.parentapp.ui;
 
+import android.content.BroadcastReceiver;
+import android.content.ComponentName;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
+import android.content.ServiceConnection;
+import android.os.Bundle;
+import android.os.IBinder;
+import android.view.View;
+
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.content.Intent;
-import android.os.Bundle;
-import android.os.CountDownTimer;
-import android.view.WindowManager;
-import android.widget.Button;
-import android.widget.ImageButton;
-import android.widget.ProgressBar;
-import android.widget.TextView;
 import com.cmpt276.parentapp.R;
+import com.cmpt276.parentapp.databinding.ActivityTimerBinding;
 
 public class TimerActivity extends AppCompatActivity {
-    public static final int STARTING_MILLI_SECONDS = 100000;
-    public static final int MILLISECONDS_IN_HOUR = 3600000;
-    public static final int MILLISECOND_TO_SECOND = 1000;
-    CountDownTimer timer;
-    long timeRemaining = 0;
-    Button startButton;
+
+    public static final String TIMER_DURATION_TAG = "TIMER_DURATION_TAG";
+    public static final String TIMER_RUNNING_TAG = "TIMER_RUNNING";
+    public static final String TAG = "TIMER_ACTIVITY";
+
+    private ActivityTimerBinding binding;
+
+    private long initialMillisUntilFinished;
+    private boolean settingRunningService;
+
+    private BroadcastReceiver receiver;
+    private TimerService service;
+
+    private final ServiceConnection serviceConnection = new ServiceConnection() {
+        @Override
+        public void onServiceConnected(ComponentName name, IBinder binder) {
+            TimerService.LocalBinder localBinder = (TimerService.LocalBinder) binder;
+            TimerActivity.this.service = localBinder.getService();
+            updateUI();
+            setTotalTimeUI();
+        }
+
+        @Override
+        public void onServiceDisconnected(ComponentName name) {
+            TimerActivity.this.service = null;
+            updateUI();
+        }
+    };
+
+    public static Intent getIntentForNewTimer(Context context, int minutes) {
+        Intent i = new Intent(context, TimerActivity.class);
+        i.putExtra(
+                TIMER_DURATION_TAG,
+                (long) minutes *
+                        TimerService.SECONDS_IN_MINUTE *
+                        TimerService.COUNT_DOWN_INTERVAL
+        );
+
+        return i;
+    }
+
+    public static Intent getIntentForRunningTimer(Context context, long millisUntilFinished) {
+        Intent i = new Intent(context, TimerActivity.class);
+        i.putExtra(
+                TIMER_DURATION_TAG,
+                millisUntilFinished
+        );
+        i.putExtra(TIMER_RUNNING_TAG, true);
+        return i;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_timer);
+        binding = ActivityTimerBinding.inflate(this.getLayoutInflater());
+        setContentView(binding.getRoot());
 
-        setupStartButton();
-
-
-        //// Testing ImageButton connected to TimerOptionsActivity ////
-        ImageButton lockButton = findViewById(R.id.left_image_button);
-        lockButton.setOnClickListener(view -> {
-            WindowManager.LayoutParams lp = getWindow().getAttributes();
-            lp.dimAmount=1.0f;
-            getWindow().setAttributes(lp);
-            Intent intent = new Intent(TimerActivity.this, TimerOptionsActivity.class);
-            startActivity(intent);
-        });
+        extractDurationFromIntent();
+        setupPauseResumeButton();
+        setupResetTimerButton();
+        setupBroadcastReceiver();
+        setupCancelTimerButton();
+        setupTimerService();
+        updateUI();
     }
 
-    private void setupStartButton() {
-        startButton = findViewById(R.id.start_pause_resume_button);
-        startButton.setOnClickListener(view -> {
-            if (startButton.getText().equals("START")) {
-                startButton.setText("PAUSE");
-                testCircle(STARTING_MILLI_SECONDS);
-                timer.start();
-            } else if (startButton.getText().equals("PAUSE")) {
-                startButton.setText("RESUME");
-                timer.cancel();
-            } else {
-                testCircle(timeRemaining);
-                timer.start();
-                startButton.setText("PAUSE");
-            }
-        });
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+
+        unregisterReceiver(receiver);
     }
 
-    /** +
-     * @param milliseconds - Sets up the countdown timer for the specified milliseconds.
-     * Updates progress bar alongside the UI timer
-     */
-    private void testCircle(long milliseconds) {
-        final double[] counter = {0};
-        ProgressBar circle = findViewById(R.id.timerBar);
-        circle.setMax(100); // May change later on to see smaller increments in the circular progress bar
-
-        TextView timerText = findViewById(R.id.timer_live);
-        timer = new CountDownTimer(milliseconds, 1000) { // testing 1 minute and 30 seconds
+    private void setupBroadcastReceiver() {
+        receiver = new BroadcastReceiver() {
             @Override
-            public void onTick(long millisUntilFinished) {
-                timeRemaining = millisUntilFinished;
-                setTimerTime(millisUntilFinished, timerText);
-                counter[0]++;
-                circle.setProgress((int) (100 - (counter[0] * 100 / milliseconds * 1000)));
-            }
-
-            @Override
-            public void onFinish() {
-                //TODO: notification and alarm sound/vibrate
-                counter[0]++;
-                circle.setProgress(0);
-                startButton.setText("START");
+            public void onReceive(Context context, Intent intent) {
+                updateUI();
             }
         };
+        IntentFilter filter = new IntentFilter();
+        filter.addAction(TimerService.TIMER_TICK_BROADCAST_ACTION);
+        registerReceiver(receiver, filter);
     }
 
-    /** +
-     * @param milliseconds - Calculates correct text based on milliseconds
-     * @param text - Changes text in UI
-     */
-    private void setTimerTime(long milliseconds, TextView text) {
-        long hour = (milliseconds / MILLISECOND_TO_SECOND)/ 60 / 60;
-        long min = ((milliseconds - hour * MILLISECONDS_IN_HOUR) / MILLISECOND_TO_SECOND) / 60;
-        long sec = (milliseconds / MILLISECOND_TO_SECOND) % 60;
-        if (hour == 0) {
-            if (sec < 10) {
-                text.setText("" + min + ":0" + sec);
-            } else text.setText("" + min + ":" + sec);
-        } else {
-            if (sec < 10) {
-                text.setText(hour + ":" + min + ":0" + sec);
-            } else {
-                text.setText(hour + ":" + min + ":" + sec);
+    private void setupResetTimerButton() {
+        binding.btnResetTimer.setOnClickListener(v -> {
+            if (this.service != null) {
+                this.service.reset();
             }
+        });
+    }
+
+    private void setupCancelTimerButton() {
+        binding.btnCancelTimer.setOnClickListener(v -> {
+            if (this.service != null) {
+                this.service.reset();
+            }
+            finish();
+        });
+    }
+
+    private void setupPauseResumeButton() {
+        binding.btnPauseResume.setOnClickListener(v -> {
+            if (this.service == null) {
+                setupTimerService();
+                return;
+            }
+
+            if (this.service.isRunning()) {
+                this.service.pause();
+            } else {
+                this.service.resume();
+            }
+        });
+    }
+
+    private void updateUI() {
+        int pauseButtonString = R.string.btn_timer_start;
+
+        if (this.service != null) {
+            pauseButtonString = this.service.isRunning() ? R.string.btn_timer_pause : R.string.btn_timer_resume;
+
+            int visibility = this.service.isRunning() ? View.INVISIBLE : View.VISIBLE;
+            binding.btnResetTimer.setVisibility(visibility);
+            binding.btnCancelTimer.setVisibility(visibility);
+            binding.btnPauseResume.setVisibility(this.service.isFinished()? View.INVISIBLE : View.VISIBLE);
+
+            binding.timerLive.setText(this.service.getRemainingTimeString());
+            binding.timerBar.setProgress(this.service.getProgress());
+            binding.timeElapsed.setText(String.format(getString(R.string.time_elapsed), this.service.getElapsedTimeString()));
         }
+
+        binding.btnPauseResume.setText(getString(pauseButtonString));
+    }
+
+    private void setTotalTimeUI(){
+        binding.timeTotal.setText(String.format(getString(R.string.initial_time), this.service.getTotalTimeString()));
+    }
+
+    private void extractDurationFromIntent() {
+        settingRunningService = this.getIntent().getBooleanExtra(TIMER_RUNNING_TAG, false);
+        initialMillisUntilFinished = this.getIntent().getLongExtra(TIMER_DURATION_TAG, 0);
+    }
+
+    private void setupTimerService() {
+        Intent intent = TimerService.getIntentWithDuration(
+                this,
+                initialMillisUntilFinished
+        );
+        if (!settingRunningService) {
+            stopService(intent);
+            startService(intent);
+        }
+        settingRunningService = false;
+        bindService(intent, serviceConnection, 0);
     }
 }

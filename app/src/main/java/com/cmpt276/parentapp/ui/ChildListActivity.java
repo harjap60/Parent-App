@@ -1,17 +1,12 @@
-/**
- * Child List Activity - This activity will display a list of all the
- * children added by the user. The user will also have the ability to
- * - add more children to the list and
- * - edit an existing child in the list
- */
 package com.cmpt276.parentapp.ui;
 
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -26,9 +21,21 @@ import com.cmpt276.parentapp.model.Child;
 import com.cmpt276.parentapp.model.ChildManager;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import java.util.Objects;
+
+/**
+ * Child List Activity - This activity will display a list of all the
+ * children added by the user. The user will also have the ability to
+ * - add more children to the list and
+ * - edit an existing child in the list
+ */
 public class ChildListActivity extends AppCompatActivity {
 
     ChildManager manager;
+
+    public static Intent getIntent(Context context) {
+        return new Intent(context, ChildListActivity.class);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,20 +62,17 @@ public class ChildListActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        switch (item.getItemId()){
-            case R.id.action_add_child_button_for_child_list:
-                startActivity(
-                        AddChildActivity.makeIntentForAddChild(ChildListActivity.this)
-                );
-                return true;
-
-            default:
-                return super.onOptionsItemSelected(item);
+        if (item.getItemId() == R.id.action_add_child_button_for_child_list) {
+            startActivity(
+                    AddChildActivity.makeIntentForAddChild(ChildListActivity.this)
+            );
+            return true;
         }
+        return super.onOptionsItemSelected(item);
     }
 
     @Override
-    protected void onResume(){
+    protected void onResume() {
         super.onResume();
 
         // updateUI
@@ -78,27 +82,24 @@ public class ChildListActivity extends AppCompatActivity {
     private void setUpToolbar() {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setTitle(getText(R.string.child_list_activity_toolbar_label));
+        Objects.requireNonNull(getSupportActionBar()).setTitle(getText(R.string.child_list_activity_toolbar_label));
     }
 
-    private void enableUpOnToolbar(){
+    private void enableUpOnToolbar() {
         ActionBar ab = getSupportActionBar();
-        ab.setDisplayHomeAsUpEnabled(true);
+        if (ab != null) {
+            ab.setDisplayHomeAsUpEnabled(true);
+        }
     }
 
     private void setUpAddNewChildButton() {
         FloatingActionButton addNewChildFabButton = findViewById(R.id.add_child_fab);
-        addNewChildFabButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(
-                        AddChildActivity.makeIntentForAddChild(ChildListActivity.this)
-                );
-            }
-        });
+        addNewChildFabButton.setOnClickListener(view -> startActivity(
+                AddChildActivity.makeIntentForAddChild(ChildListActivity.this)
+        ));
     }
 
-    private void populateListView(){
+    private void populateListView() {
         // Build the adapter
         ArrayAdapter<Child> adapter = new MyListAdapter();
 
@@ -107,30 +108,26 @@ public class ChildListActivity extends AppCompatActivity {
         childList.setAdapter(adapter);
     }
 
-    private void registerClickCallback(){
-        ListView list = (ListView) findViewById(R.id.child_list_view);
-        list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View viewClicked, int position, long id) {
-                startActivity(
-                        AddChildActivity.makeIntentForEditChild(
-                                ChildListActivity.this, position)
-                );
-            }
-        });
+    private void registerClickCallback() {
+        ListView list = findViewById(R.id.child_list_view);
+        list.setOnItemClickListener((parent, viewClicked, position, id) -> startActivity(
+                AddChildActivity.makeIntentForEditChild(
+                        ChildListActivity.this, position)
+        ));
     }
 
     // MyListAdapter that will help make the complex list view
-    private class MyListAdapter extends  ArrayAdapter<Child>{
-        public MyListAdapter(){
+    private class MyListAdapter extends ArrayAdapter<Child> {
+        public MyListAdapter() {
             super(ChildListActivity.this,
                     R.layout.child_name_view, manager.getAllChildren());
         }
-        public View getView(int position, View convertView, ViewGroup parent){
+
+        public View getView(int position, View convertView, ViewGroup parent) {
 
             // make sure we have a view to work with (may have been given null)
             View itemView = convertView;
-            if(itemView == null){
+            if (itemView == null) {
                 itemView = getLayoutInflater()
                         .inflate(R.layout.child_name_view, parent, false);
             }

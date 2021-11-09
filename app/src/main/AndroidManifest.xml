@@ -2,29 +2,29 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.cmpt276.parentapp">
 
+    <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+
     <application
         android:allowBackup="true"
+        android:fullBackupOnly="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.ParentApp">
         <activity
-            android:name=".ui.TimerOptionsActivity"
-            android:theme="@android:style/Theme.Translucent.NoTitleBar.Fullscreen"
-            android:exported="false" />
-        <activity
             android:name=".ui.AddChildActivity"
             android:exported="false"
-            android:theme="@style/Theme.ParentApp.NoActionBar"
+            android:parentActivityName=".ui.MainActivity"
             android:screenOrientation="portrait"
-            android:parentActivityName=".ui.MainActivity"/>
+            android:theme="@style/Theme.ParentApp.NoActionBar" />
         <activity
             android:name=".ui.ChildListActivity"
             android:exported="false"
-            android:theme="@style/Theme.ParentApp.NoActionBar"
+            android:parentActivityName=".ui.MainActivity"
             android:screenOrientation="portrait"
-            android:parentActivityName=".ui.MainActivity"/>
+            android:theme="@style/Theme.ParentApp.NoActionBar" />
         <activity
             android:name=".ui.TimerActivity"
             android:exported="false"
@@ -32,8 +32,8 @@
             android:theme="@style/Theme.AppCompat.NoActionBar" />
         <activity
             android:name=".ui.FlipActivity"
-            android:screenOrientation="portrait"
-            android:exported="false" />
+            android:exported="false"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".ui.MainActivity"
             android:exported="true"
@@ -50,6 +50,8 @@
         <meta-data
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />
+
+        <service android:name=".ui.TimerService" />
     </application>
 
 </manifest>
