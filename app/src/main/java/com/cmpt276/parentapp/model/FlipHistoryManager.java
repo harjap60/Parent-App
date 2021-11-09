@@ -61,7 +61,6 @@ public class FlipHistoryManager {
             // if there are children but the flip history is empty
             return childManager.getChild(0).getChildName();
         }
-        //String name = history.get(size() - 1).getChild().getChildName();
         String name = getPreviousChild(childManager);
         for (int i = 0; i < childManager.size(); i++) {
             Child child = childManager.getChild(i);

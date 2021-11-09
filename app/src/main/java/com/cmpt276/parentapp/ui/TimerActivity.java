@@ -88,7 +88,6 @@ public class TimerActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-
         unregisterReceiver(receiver);
     }
 
@@ -127,7 +126,6 @@ public class TimerActivity extends AppCompatActivity {
                 setupTimerService();
                 return;
             }
-
             if (this.service.isRunning()) {
                 this.service.pause();
             } else {
@@ -151,7 +149,6 @@ public class TimerActivity extends AppCompatActivity {
             binding.timerBar.setProgress(this.service.getProgress());
             binding.timeElapsed.setText(String.format(getString(R.string.time_elapsed), this.service.getElapsedTimeString()));
         }
-
         binding.btnPauseResume.setText(getString(pauseButtonString));
     }
 

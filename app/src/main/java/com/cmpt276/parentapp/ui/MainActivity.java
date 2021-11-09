@@ -115,7 +115,6 @@ public class MainActivity extends AppCompatActivity {
                             duration
                     );
                     this.startActivity(i);
-
                 }).create()
                 .show();
     }
@@ -167,5 +166,4 @@ public class MainActivity extends AppCompatActivity {
                 .create()
                 .show();
     }
-
 }

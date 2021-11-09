@@ -231,7 +231,6 @@ public class FlipActivity extends AppCompatActivity {
     private void playCoinFlipSound() {
         MediaPlayer coinFlip = MediaPlayer.create(FlipActivity.this, R.raw.coinflip);
         coinFlip.start();
-
     }
 
     private void printHeadsOrTailsOnCoin() {

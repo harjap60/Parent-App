@@ -186,9 +186,6 @@ public class AddChildActivity extends AppCompatActivity {
                     changeChildName();
                     saveChildListToSharedPrefs();
 
-
-
-
                     finish();
                 });
                 AlertDialog alertDialog = builder.create();
