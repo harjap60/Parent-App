@@ -138,7 +138,7 @@ public class AddChildActivity extends AppCompatActivity {
         childNameInput = findViewById(R.id.child_name_edit_text);
         childNameInput.setText(initialString);
         int deviceWidth = getResources().getDisplayMetrics().widthPixels;
-        childNameInput.setTextSize((deviceWidth/20f));
+        childNameInput.setTextSize((deviceWidth/25f));
 
     }
 

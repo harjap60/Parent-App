@@ -94,11 +94,10 @@
         android:autoSizeTextType="uniform"
         android:backgroundTint="?colorPrimaryVariant"
         android:gravity="center"
-        android:maxLines="1"
-
+        android:padding="5dp"
         android:text="@string/add_child_button_text"
-        app:layout_constraintStart_toStartOf="@id/guideline_start_button_add_child"
-        app:layout_constraintEnd_toEndOf="@id/guideline_end_button_add_child"
+        app:layout_constraintStart_toEndOf="@id/guideline_start_button_add_child"
+        app:layout_constraintEnd_toStartOf="@id/guideline_end_button_add_child"
         app:layout_constraintTop_toTopOf="@id/guideline_top_button_add_child"
         app:layout_constraintBottom_toBottomOf="@id/guideline_bottom_button_add_child"/>
 
@@ -114,7 +113,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.34" />
+        app:layout_constraintGuide_percent="0.33" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline_end_button_add_child"

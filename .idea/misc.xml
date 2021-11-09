@@ -18,9 +18,9 @@
         <entry key="app/src/main/res/drawable/ic_baseline_add_white_24.xml" value="0.4083333333333333" />
         <entry key="app/src/main/res/drawable/round_button.xml" value="0.18072916666666666" />
         <entry key="app/src/main/res/drawable/timer_circle.xml" value="0.18072916666666666" />
-        <entry key="app/src/main/res/layout/activity_add_child.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/activity_add_child.xml" value="0.25" />
         <entry key="app/src/main/res/layout/activity_child_list.xml" value="0.22" />
-        <entry key="app/src/main/res/layout/activity_flip.xml" value="0.2665036674816626" />
+        <entry key="app/src/main/res/layout/activity_flip.xml" value="0.22" />
         <entry key="app/src/main/res/layout/activity_flip_history.xml" value="0.18072916666666666" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.30512820512820515" />
         <entry key="app/src/main/res/layout/activity_timer.xml" value="0.28125" />
