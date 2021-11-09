@@ -17,8 +17,8 @@ import java.util.List;
  */
 public class PrefConfig<T> {
 
-    private static final String PREFS_STRING_FOR_LIST_OF_CHILDREN = "ChildList - Prefs String";
-    private static final String PREFS_STRING_FOR_FLIPS_HISTORY = "FlipHistory - Prefs String";
+    private static final String PREFS_STRING_FOR_LIST_OF_CHILDREN = "SP - ChildList - Shared Preferences String";
+    private static final String PREFS_STRING_FOR_FLIPS_HISTORY = "SP - FlipHistory - Shared Preferences String";
     private static final String PREFS_DEFAULT_STRING_FOR_LIST_OF_CHILDREN = "";
     private static final String PREFS_DEFAULT_STRING_FOR_FLIPS_HISTORY = "";
 

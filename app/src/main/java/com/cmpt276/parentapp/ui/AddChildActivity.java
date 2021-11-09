@@ -178,8 +178,17 @@ public class AddChildActivity extends AppCompatActivity {
                         childNameInput.getText()
                 ));
                 builder.setPositiveButton(R.string.yes, (dialogInterface, i) -> {
+
+                    FlipHistoryManager historyManager = FlipHistoryManager.getInstance(AddChildActivity.this);
+                    historyManager.updateHistoryName(initialString, String.valueOf(childNameInput.getText()));
+                    PrefConfig.writeFlipHistoryInPref(getApplicationContext(), historyManager.getFullHistory());
+
                     changeChildName();
                     saveChildListToSharedPrefs();
+
+
+
+
                     finish();
                 });
                 AlertDialog alertDialog = builder.create();
@@ -213,7 +222,6 @@ public class AddChildActivity extends AppCompatActivity {
 
             FlipHistoryManager historyManager = FlipHistoryManager.getInstance(AddChildActivity.this);
             historyManager.deleteFlipHistoryOfChild(manager.getChild(positionForEditChild));
-
             PrefConfig.writeFlipHistoryInPref(getApplicationContext(), historyManager.getFullHistory());
 
             manager.removeChild(positionForEditChild);
