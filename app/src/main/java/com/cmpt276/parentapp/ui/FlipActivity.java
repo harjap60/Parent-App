@@ -47,7 +47,6 @@ public class FlipActivity extends AppCompatActivity {
     ImageButton coinFlipButton;
     TextView coinSideText;
     ChildManager childNames;
-    MediaPlayer coinFlip;
 
     String prevChildName;
     String currChildName;
@@ -62,8 +61,6 @@ public class FlipActivity extends AppCompatActivity {
 
         childNames = ChildManager.getInstance(FlipActivity.this);
         flipHistoryManager = FlipHistoryManager.getInstance(FlipActivity.this);
-        coinFlip = MediaPlayer.create(this, R.raw.coinflip);
-
         coinImage = findViewById(R.id.coin_image_view);
         coinSideText = findViewById(R.id.heads_tails_text_after_flip);
 
@@ -80,15 +77,6 @@ public class FlipActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         updateTextView();
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-        if (coinFlip != null) {
-            coinFlip.release();
-        }
-
     }
 
     private void setUpToolbar() {
@@ -214,7 +202,7 @@ public class FlipActivity extends AppCompatActivity {
     }
 
     private void flipCoin() {
-        coinFlip.start();
+        playCoinFlipSound();
 
         //Source: https://stackoverflow.com/questions/46111262/card-flip-animation-in-android
         final ObjectAnimator firstAnimation = ObjectAnimator.ofFloat(coinImage, "scaleY", 1f, 0f);
@@ -235,6 +223,12 @@ public class FlipActivity extends AppCompatActivity {
             }
         });
         firstAnimation.start();
+    }
+
+    private void playCoinFlipSound(){
+        MediaPlayer coinFlip = MediaPlayer.create(FlipActivity.this, R.raw.coinflip);
+        coinFlip.start();
+
     }
 
     private void printHeadsOrTailsOnCoin() {
