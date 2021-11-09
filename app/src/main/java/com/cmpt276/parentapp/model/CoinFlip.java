@@ -5,10 +5,10 @@ import java.time.LocalDateTime;
 /**
  * Store information about a flip
  * Stores:
- *      name of child
- *      the choice they made
- *      Whether or not they won
- *      The time the flip happened
+ * name of child
+ * the choice they made
+ * Whether or not they won
+ * The time the flip happened
  */
 public class CoinFlip {
     private Child child;

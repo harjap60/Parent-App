@@ -52,7 +52,7 @@ public class FlipHistoryActivity extends AppCompatActivity {
         historyList.setAdapter(adapter);
     }
 
-    private void setUpToolbar(){
+    private void setUpToolbar() {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         Objects.requireNonNull(getSupportActionBar()).setTitle(R.string.flip_history_activity_toolbar_label);

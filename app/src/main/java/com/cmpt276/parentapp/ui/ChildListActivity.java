@@ -108,7 +108,7 @@ public class ChildListActivity extends AppCompatActivity {
         childList.setAdapter(adapter);
     }
 
-    private void registerClickCallback(){
+    private void registerClickCallback() {
         ListView list = findViewById(R.id.child_list_view);
         list.setOnItemClickListener((parent, viewClicked, position, id) -> startActivity(
                 AddChildActivity.makeIntentForEditChild(

@@ -33,8 +33,6 @@ import java.util.Random;
  * as the new side facing "up"
  */
 
-import java.util.Random;
-
 public class FlipActivity extends AppCompatActivity {
 
     public static final float SET_BUTTON_TO_ENABLE = 1f;
@@ -233,7 +231,7 @@ public class FlipActivity extends AppCompatActivity {
         firstAnimation.start();
     }
 
-    private void playCoinFlipSound(){
+    private void playCoinFlipSound() {
         MediaPlayer coinFlip = MediaPlayer.create(FlipActivity.this, R.raw.coinflip);
         coinFlip.start();
 

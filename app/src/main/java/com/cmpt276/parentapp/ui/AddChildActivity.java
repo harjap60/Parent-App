@@ -3,16 +3,11 @@ package com.cmpt276.parentapp.ui;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
-import android.content.res.Resources;
 import android.os.Bundle;
-import android.util.DisplayMetrics;
-import android.util.TypedValue;
-import android.view.Display;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -28,6 +23,7 @@ import com.cmpt276.parentapp.model.FlipHistoryManager;
 import com.cmpt276.parentapp.model.PrefConfig;
 
 import java.util.Objects;
+
 /**
  * Add Child Activity - This activity lets you add a new child to the list.
  * Or edit an existing child in the list.
@@ -138,7 +134,7 @@ public class AddChildActivity extends AppCompatActivity {
         childNameInput = findViewById(R.id.child_name_edit_text);
         childNameInput.setText(initialString);
         int deviceWidth = getResources().getDisplayMetrics().widthPixels;
-        childNameInput.setTextSize((deviceWidth/25f));
+        childNameInput.setTextSize((deviceWidth / 25f));
 
     }
 
