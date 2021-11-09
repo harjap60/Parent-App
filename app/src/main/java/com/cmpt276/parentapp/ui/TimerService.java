@@ -300,6 +300,7 @@ public class TimerService extends Service {
 
         long minutes = totalSeconds / SECONDS_IN_MINUTE;
         long hours = minutes / MINUTES_IN_HOUR;
+        minutes = minutes % MINUTES_IN_HOUR;
         long seconds = totalSeconds % SECONDS_IN_MINUTE;
 
         return String.format(
