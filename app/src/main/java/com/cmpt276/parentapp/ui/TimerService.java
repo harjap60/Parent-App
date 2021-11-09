@@ -23,28 +23,29 @@ import com.cmpt276.parentapp.R;
 
 public class TimerService extends Service {
 
-    public static final String TIMER_DURATION_TAG = "com.cmpt276.parentapp.TimerService.TIMER_DURATION";
-    public static final String INITIAL_TIMER_DURATION_TAG = "com.cmpt276.parentapp.TimerService.INITIAL_DURATION";
     public static final String TIMER_TICK_BROADCAST_ACTION = "com.cmpt276.parent.TIMER_NOTIFICATION";
-    public static final String TIMER_RESUME_BROADCAST_ACTION = "com.cmpt276.parent.TIMER_RESUME";
-    public static final String TIMER_PAUSE_BROADCAST_ACTION = "com.cmpt276.parent.TIMER_PAUSE";
-    public static final String TIMER_STOP_BROADCAST_ACTION = "com.cmpt276.parent.TIMER_CANCEL";
     public static final String NOTIFICATION_CHANNEL_ID = "TIMER_SERVICE";
     public static final String TIMER_END_NOTIFICATION_CHANNEL_ID = "TIMER_SERVICE_END";
-
-    public static final int NOTIFICATION_ID = 1;
     public static final int COUNT_DOWN_INTERVAL = 1000;
     public static final int SECONDS_IN_MINUTE = 60;
-    public static final int MINUTES_IN_HOUR = 60;
-    public static final int VIBRATION_REPEAT_INDEX = 0;
-    public static final long[] PATTERN = {0, 1000, 500,2000};
-    public static final int PROGRESS_MULTIPLIER = 100;
-    public static final int MILLIS_AT_FINISHED = 0;
+
+    private static final String TIMER_DURATION_TAG = "com.cmpt276.parentapp.TimerService.TIMER_DURATION";
+    private static final String INITIAL_TIMER_DURATION_TAG = "com.cmpt276.parentapp.TimerService.INITIAL_DURATION";
+    private static final String TIMER_RESUME_BROADCAST_ACTION = "com.cmpt276.parent.TIMER_RESUME";
+    private static final String TIMER_PAUSE_BROADCAST_ACTION = "com.cmpt276.parent.TIMER_PAUSE";
+    private static final String TIMER_STOP_BROADCAST_ACTION = "com.cmpt276.parent.TIMER_CANCEL";
+    private static final int NOTIFICATION_ID = 1;
+    private static final int MINUTES_IN_HOUR = 60;
+    private static final int VIBRATION_REPEAT_INDEX = 0;
+    private static final long[] PATTERN = {0, 1000, 500, 2000};
+    private static final int PROGRESS_MULTIPLIER = 100;
+    private static final int MILLIS_AT_FINISHED = 0;
 
     private final LocalBinder binder = new LocalBinder();
     private long initialDurationMillis;
     private long millisUntilFinished;
     private boolean isRunning = false;
+    private boolean isFinished = false;
 
     private MediaPlayer player;
     private Vibrator vibrator;
@@ -125,6 +126,8 @@ public class TimerService extends Service {
 
             @Override
             public void onFinish() {
+                TimerService.this.isRunning = false;
+                TimerService.this.isFinished = true;
                 TimerService.this.millisUntilFinished = MILLIS_AT_FINISHED;
                 TimerService.this.broadcast();
                 startTimerEndNotification();
@@ -133,6 +136,7 @@ public class TimerService extends Service {
         }.start();
 
         this.isRunning = true;
+        this.isFinished = false;
     }
 
     private void playAlarmAlert() {
@@ -153,12 +157,12 @@ public class TimerService extends Service {
         startForeground(NOTIFICATION_ID, notification);
     }
 
-    private void startTimerEndNotification(){
+    private void startTimerEndNotification() {
         Notification notification = getNotification("Time Up", TIMER_END_NOTIFICATION_CHANNEL_ID);
         startForeground(NOTIFICATION_ID, notification);
     }
 
-    private Notification getNotification(String text, String channel){
+    private Notification getNotification(String text, String channel) {
         Intent notificationIntent = TimerActivity.getIntentForRunningTimer(this,
                 this.initialDurationMillis);
         PendingIntent pendingIntent = PendingIntent.getActivity(this,
@@ -181,17 +185,20 @@ public class TimerService extends Service {
                         getActionPendingIntent(TIMER_STOP_BROADCAST_ACTION)
                 );
 
-        if (this.isRunning) {
-            builder.addAction(
-                    R.drawable.ic_baseline_pause_24,
-                    "Pause",
-                    getActionPendingIntent(TIMER_PAUSE_BROADCAST_ACTION));
-        } else {
-            builder.addAction(
-                    R.drawable.ic_baseline_play_arrow_24,
-                    "Resume",
-                    getActionPendingIntent(TIMER_RESUME_BROADCAST_ACTION));
+        if (!this.isFinished) {
+            if (this.isRunning) {
+                builder.addAction(
+                        R.drawable.ic_baseline_pause_24,
+                        "Pause",
+                        getActionPendingIntent(TIMER_PAUSE_BROADCAST_ACTION));
+            } else {
+                builder.addAction(
+                        R.drawable.ic_baseline_play_arrow_24,
+                        "Resume",
+                        getActionPendingIntent(TIMER_RESUME_BROADCAST_ACTION));
+            }
         }
+
         return builder.build();
     }
 
@@ -259,13 +266,30 @@ public class TimerService extends Service {
     }
 
     public boolean isRunning() {
-
         return this.isRunning;
+    }
+
+    public boolean isFinished() {
+        return isFinished;
     }
 
     @NonNull
     public String getRemainingTimeString() {
-        long totalSeconds = millisUntilFinished / TimerService.COUNT_DOWN_INTERVAL;
+        return getTimerString(millisUntilFinished);
+    }
+
+    @NonNull
+    public String getTotalTimeString() {
+        return getTimerString(initialDurationMillis);
+    }
+
+    @NonNull
+    public String getElapsedTimeString() {
+        return getTimerString(initialDurationMillis - millisUntilFinished);
+    }
+
+    private String getTimerString(long millisSeconds) {
+        long totalSeconds = millisSeconds / TimerService.COUNT_DOWN_INTERVAL;
 
         long minutes = totalSeconds / SECONDS_IN_MINUTE;
         long hours = minutes / MINUTES_IN_HOUR;
