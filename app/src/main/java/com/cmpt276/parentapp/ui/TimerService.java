@@ -243,6 +243,11 @@ public class TimerService extends Service {
             player = null;
         }
 
+        if (vibrator != null) {
+            vibrator.cancel();
+            vibrator = null;
+        }
+
         unregisterReceiver(stopTimerBroadcastReceiver);
         this.broadcast();
         this.stopSelf();
