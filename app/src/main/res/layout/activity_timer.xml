@@ -59,7 +59,7 @@
         app:layout_constraintTop_toTopOf="@+id/time_elapsed" />
 
     <ImageButton
-        android:id="@+id/btnResetTimer"
+        android:id="@+id/btn_reset_timer"
         android:layout_width="48dp"
         android:layout_height="48dp"
         android:background="@drawable/round_button"
@@ -67,14 +67,14 @@
         android:contentDescription="@string/timer_reset_button"
         android:focusable="true"
         android:foreground="@drawable/custom_round_button"
-        app:layout_constraintBottom_toBottomOf="@+id/timerBar"
+        app:layout_constraintBottom_toBottomOf="@+id/timer_bar"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/timerBar"
-        app:layout_constraintTop_toTopOf="@+id/timerBar"
+        app:layout_constraintStart_toEndOf="@+id/timer_bar"
+        app:layout_constraintTop_toTopOf="@+id/timer_bar"
         app:srcCompat="@drawable/ic_baseline_stop_24" />
 
     <ImageButton
-        android:id="@+id/btnCancelTimer"
+        android:id="@+id/btn_cancel_timer"
         android:layout_width="48dp"
         android:layout_height="48dp"
         android:background="@drawable/round_button"
@@ -82,26 +82,26 @@
         android:contentDescription="@string/timer_reset_button"
         android:focusable="true"
         android:foreground="@drawable/custom_round_button"
-        app:layout_constraintBottom_toBottomOf="@+id/btnResetTimer"
-        app:layout_constraintEnd_toStartOf="@+id/timerBar"
+        app:layout_constraintBottom_toBottomOf="@+id/btn_reset_timer"
+        app:layout_constraintEnd_toStartOf="@+id/timer_bar"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/btnResetTimer"
+        app:layout_constraintTop_toTopOf="@+id/btn_reset_timer"
         app:srcCompat="@drawable/ic_baseline_delete_24" />
 
     <Button
-        android:id="@+id/start_pause_resume_button"
+        android:id="@+id/btn_pause_resume"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:background="@drawable/round_button"
         android:textSize="20sp"
-        app:layout_constraintBottom_toBottomOf="@+id/timerBar"
-        app:layout_constraintEnd_toEndOf="@+id/timerBar"
-        app:layout_constraintStart_toStartOf="@+id/timerBar"
-        app:layout_constraintTop_toTopOf="@+id/timerBar"
+        app:layout_constraintBottom_toBottomOf="@+id/timer_bar"
+        app:layout_constraintEnd_toEndOf="@+id/timer_bar"
+        app:layout_constraintStart_toStartOf="@+id/timer_bar"
+        app:layout_constraintTop_toTopOf="@+id/timer_bar"
         tools:ignore="SpeakableTextPresentCheck" />
 
     <ProgressBar
-        android:id="@+id/timerBar"
+        android:id="@+id/timer_bar"
         style="@style/Widget.AppCompat.ProgressBar.Horizontal"
         android:layout_width="200dp"
         android:layout_height="200dp"

@@ -57,4 +57,9 @@
     <string name="did_not_change_name_text_for_dialog_box">Did not change name!!</string>
     <string name="timeout_timer">Timeout Timer</string>
     <string name="timer_reset_button">Timer Reset</string>
+    <string name="alarm_channel_name">Timer Channel</string>
+    <string name="timer_channel_description">Channel to post Timer end notification</string>
+    <string name="activity_main_children">Children</string>
+    <string name="flip_a_coin">Flip a Coin</string>
+    <string name="activity_main_timer">Timer</string>
 </resources>

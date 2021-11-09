@@ -118,7 +118,7 @@ public class TimerActivity extends AppCompatActivity {
     }
 
     private void setupPauseResumeButton() {
-        binding.startPauseResumeButton.setOnClickListener(v -> {
+        binding.btnPauseResume.setOnClickListener(v -> {
             if (this.service == null) {
                 setupTimerService();
                 return;
@@ -146,7 +146,7 @@ public class TimerActivity extends AppCompatActivity {
             binding.timerBar.setProgress(this.service.getProgress());
         }
 
-        binding.startPauseResumeButton.setText(getString(pauseButtonString));
+        binding.btnPauseResume.setText(getString(pauseButtonString));
     }
 
     private void extractDurationFromIntent() {

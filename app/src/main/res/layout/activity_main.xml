@@ -12,13 +12,13 @@
         android:layout_height="61dp"
         android:layout_marginTop="150dp"
         android:backgroundTint="#7EE42828"
-        android:text="ChildList"
+        android:text="@string/activity_main_children"
         android:textColor="#212121"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@+id/btnStartTimer"
+        app:layout_constraintEnd_toEndOf="@+id/btn_start_timer"
         app:layout_constraintHorizontal_bias="0.555"
-        app:layout_constraintStart_toStartOf="@+id/btnStartTimer"
-        app:layout_constraintTop_toBottomOf="@+id/btnStartTimer" />
+        app:layout_constraintStart_toStartOf="@+id/btn_start_timer"
+        app:layout_constraintTop_toBottomOf="@+id/btn_start_timer" />
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
@@ -35,7 +35,7 @@
         android:layout_height="93dp"
         android:backgroundTint="#E61936"
         android:radius="20dp"
-        android:text="Flip a Coin"
+        android:text="@string/flip_a_coin"
         android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -44,25 +44,15 @@
         app:layout_constraintVertical_bias="0.137" />
 
     <Button
-        android:id="@+id/btnStartTimer"
+        android:id="@+id/btn_start_timer"
         android:layout_width="134dp"
         android:layout_height="62dp"
         android:layout_marginTop="8dp"
         android:backgroundTint="#7EE42828"
-        android:text="Start Timer"
+        android:text="@string/activity_main_timer"
         android:textColor="#212121"
         app:layout_constraintEnd_toEndOf="@+id/start_flip"
         app:layout_constraintStart_toStartOf="@+id/start_flip"
         app:layout_constraintTop_toBottomOf="@+id/start_flip" />
-
-    <Button
-        android:id="@+id/btnResumeTimer"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:text="Resume Timer"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btnStartTimer" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

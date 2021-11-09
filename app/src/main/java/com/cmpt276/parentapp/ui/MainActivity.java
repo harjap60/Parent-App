@@ -26,27 +26,14 @@ public class MainActivity extends AppCompatActivity {
     private final ServiceConnection serviceConnection = new ServiceConnection() {
         @Override
         public void onServiceConnected(ComponentName name, IBinder binder) {
-
             MainActivity.this.service = ((TimerService.LocalBinder) binder).getService();
-            updateUI();
         }
 
         @Override
         public void onServiceDisconnected(ComponentName name) {
             MainActivity.this.service = null;
-            updateUI();
         }
     };
-
-    private void updateUI() {
-
-        binding.btnResumeTimer
-                .setVisibility(
-                        service != null ?
-                                View.VISIBLE :
-                                View.INVISIBLE);
-
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,13 +46,13 @@ public class MainActivity extends AppCompatActivity {
         setupTimerButton();
         setupChildButton();
         setupNotificationChannel();
+        setupTimerNotificationChannel();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
         bindTimerService();
-        updateUI();
     }
 
     private void bindTimerService() {
@@ -141,6 +128,16 @@ public class MainActivity extends AppCompatActivity {
         notificationManager.createNotificationChannel(channel);
     }
 
+    private void setupTimerNotificationChannel() {
+        CharSequence name = getString(R.string.alarm_channel_name);
+        String description = getString(R.string.timer_channel_description);
+        int importance = NotificationManager.IMPORTANCE_HIGH;
+        NotificationChannel channel = new NotificationChannel(TimerService.TIMER_END_NOTIFICATION_CHANNEL_ID, name, importance);
+        channel.setDescription(description);
+        NotificationManager notificationManager = getSystemService(NotificationManager.class);
+        notificationManager.createNotificationChannel(channel);
+    }
+
     private void showCustomDurationDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         View v = this.getLayoutInflater().inflate(R.layout.dialog_custom_duration, null);
@@ -149,7 +146,7 @@ public class MainActivity extends AppCompatActivity {
                 .setTitle(R.string.dialog_custom_duration_title)
                 .setPositiveButton(R.string.dialog_custom_duration_start_button, (dialog, id) -> {
                     try {
-                        EditText tvTimerDuration = v.findViewById(R.id.tvTimerDuration);
+                        EditText tvTimerDuration = v.findViewById(R.id.tv_timer_duration);
                         int duration = Integer.parseInt(tvTimerDuration.getText().toString());
                         Intent i = TimerActivity.getIntentForNewTimer(
                                 this,

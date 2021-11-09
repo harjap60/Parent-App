@@ -1,5 +1,6 @@
 package com.cmpt276.parentapp.ui;
 
+import android.app.Notification;
 import android.app.PendingIntent;
 import android.app.Service;
 import android.content.BroadcastReceiver;
@@ -29,6 +30,7 @@ public class TimerService extends Service {
     public static final String TIMER_PAUSE_BROADCAST_ACTION = "com.cmpt276.parent.TIMER_PAUSE";
     public static final String TIMER_STOP_BROADCAST_ACTION = "com.cmpt276.parent.TIMER_CANCEL";
     public static final String NOTIFICATION_CHANNEL_ID = "TIMER_SERVICE";
+    public static final String TIMER_END_NOTIFICATION_CHANNEL_ID = "TIMER_SERVICE_END";
 
     public static final int NOTIFICATION_ID = 1;
     public static final int COUNT_DOWN_INTERVAL = 1000;
@@ -36,6 +38,8 @@ public class TimerService extends Service {
     public static final int MINUTES_IN_HOUR = 60;
     public static final int VIBRATION_REPEAT_INDEX = 0;
     public static final long[] PATTERN = {0, 1000, 500,2000};
+    public static final int PROGRESS_MULTIPLIER = 100;
+    public static final int MILLIS_AT_FINISHED = 0;
 
     private final LocalBinder binder = new LocalBinder();
     private long initialDurationMillis;
@@ -116,14 +120,14 @@ public class TimerService extends Service {
             public void onTick(long millisUntilFinished) {
                 TimerService.this.millisUntilFinished = millisUntilFinished;
                 TimerService.this.broadcast();
-                updateNotification();
+                updateForeGroundNotification();
             }
 
             @Override
             public void onFinish() {
-                TimerService.this.millisUntilFinished = 0;
+                TimerService.this.millisUntilFinished = MILLIS_AT_FINISHED;
                 TimerService.this.broadcast();
-                updateNotification();
+                startTimerEndNotification();
                 playAlarmAlert();
             }
         }.start();
@@ -141,24 +145,33 @@ public class TimerService extends Service {
                         .setUsage(AudioAttributes.USAGE_ALARM)
                         .build()
         );
-
         this.player.start();
     }
 
-    private void updateNotification() {
+    private void updateForeGroundNotification() {
+        Notification notification = getNotification(TimerService.this.getRemainingTimeString(), NOTIFICATION_CHANNEL_ID);
+        startForeground(NOTIFICATION_ID, notification);
+    }
+
+    private void startTimerEndNotification(){
+        Notification notification = getNotification("Time Up", TIMER_END_NOTIFICATION_CHANNEL_ID);
+        startForeground(NOTIFICATION_ID, notification);
+    }
+
+    private Notification getNotification(String text, String channel){
         Intent notificationIntent = TimerActivity.getIntentForRunningTimer(this,
                 this.initialDurationMillis);
         PendingIntent pendingIntent = PendingIntent.getActivity(this,
                 0,
                 notificationIntent,
-                PendingIntent.FLAG_IMMUTABLE | PendingIntent.FLAG_UPDATE_CURRENT);
+                PendingIntent.FLAG_IMMUTABLE | PendingIntent.FLAG_CANCEL_CURRENT);
 
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this,
-                NOTIFICATION_CHANNEL_ID)
+                channel)
                 .setSmallIcon(R.drawable.ic_baseline_add_white_24)
                 .setContentTitle("Timer")
-                .setContentText(this.getRemainingTimeString())
-                .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+                .setContentText(text)
+                .setDefaults(Notification.DEFAULT_ALL)
                 .setContentIntent(pendingIntent)
                 .setAutoCancel(true)
                 .setOnlyAlertOnce(true)
@@ -179,8 +192,7 @@ public class TimerService extends Service {
                     "Resume",
                     getActionPendingIntent(TIMER_RESUME_BROADCAST_ACTION));
         }
-
-        startForeground(NOTIFICATION_ID, builder.build());
+        return builder.build();
     }
 
     private PendingIntent getActionPendingIntent(String action) {
@@ -212,7 +224,7 @@ public class TimerService extends Service {
         this.timer = null;
         this.isRunning = false;
         this.broadcast();
-        this.updateNotification();
+        this.updateForeGroundNotification();
     }
 
     public void resume() {
@@ -224,11 +236,6 @@ public class TimerService extends Service {
         this.pause();
 
         this.millisUntilFinished = this.initialDurationMillis;
-
-        if (vibrator != null) {
-            vibrator.cancel();
-            vibrator = null;
-        }
 
         if (player != null) {
             player.stop();
@@ -242,7 +249,7 @@ public class TimerService extends Service {
     }
 
     public int getProgress() {
-        final long i = (millisUntilFinished * 100) / initialDurationMillis;
+        final long i = (millisUntilFinished * PROGRESS_MULTIPLIER) / initialDurationMillis;
         return (int) i;
     }
 
