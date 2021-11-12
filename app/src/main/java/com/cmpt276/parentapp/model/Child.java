@@ -12,15 +12,15 @@ import androidx.room.PrimaryKey;
 @Entity
 public class Child {
 
-    @PrimaryKey
+    @PrimaryKey(autoGenerate = true)
     public int uid;
 
     @ColumnInfo(name = "name")
     private String name;
 
-    public Child(String childName) {
+    public Child(String name) {
 
-        this.name = childName;
+        this.name = name;
     }
 
     public String getName() {
@@ -31,6 +31,10 @@ public class Child {
     public void setName(String name) {
 
         this.name = name;
+    }
+
+    public int getUid() {
+        return uid;
     }
 }
 
