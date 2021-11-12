@@ -66,10 +66,9 @@ public class ChildActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(
-                child == null ?
-                        R.menu.menu_add_child :
-                        R.menu.menu_edit_child, menu);
+        if (child != null) {
+            getMenuInflater().inflate(R.menu.menu_edit_child, menu);
+        }
 
         return true;
     }

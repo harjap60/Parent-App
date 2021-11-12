@@ -2,14 +2,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
-        android:id="@+id/action_edit_child_button"
-        android:icon="@drawable/ic_baseline_edit_white"
-        android:title="@string/edit_child_button_text"
-        app:showAsAction="always"/>
-
-    <item
         android:id="@+id/action_delete_child_button"
         android:title="@string/delete_child_button_text"
         android:icon="@drawable/ic_baseline_delete_forever"
-        app:showAsAction="always"/>
+        app:showAsAction="ifRoom"/>
 </menu>
