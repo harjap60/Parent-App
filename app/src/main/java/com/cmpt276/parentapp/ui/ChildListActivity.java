@@ -4,25 +4,29 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.ListView;
-import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.cmpt276.parentapp.R;
+import com.cmpt276.parentapp.databinding.ActivityChildListBinding;
+import com.cmpt276.parentapp.databinding.ChildListItemBinding;
 import com.cmpt276.parentapp.model.Child;
-import com.cmpt276.parentapp.model.ChildManager;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.cmpt276.parentapp.model.ChildDao;
+import com.cmpt276.parentapp.model.ParentAppDatabase;
 
-import java.util.Objects;
+import java.util.List;
+
+import io.reactivex.rxjava3.schedulers.Schedulers;
 
 /**
  * Child List Activity - This activity will display a list of all the
@@ -32,7 +36,7 @@ import java.util.Objects;
  */
 public class ChildListActivity extends AppCompatActivity {
 
-    ChildManager manager;
+    ActivityChildListBinding binding;
 
     public static Intent getIntent(Context context) {
         return new Intent(context, ChildListActivity.class);
@@ -41,16 +45,11 @@ public class ChildListActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_child_list);
-
-        // instantiating the manager
-        manager = ChildManager.getInstance(ChildListActivity.this);
+        binding = ActivityChildListBinding.inflate(this.getLayoutInflater());
+        setContentView(binding.getRoot());
 
         setUpToolbar();
         enableUpOnToolbar();
-        setUpAddNewChildButton();
-        populateListView();
-        registerClickCallback();
     }
 
     @Override
@@ -65,7 +64,7 @@ public class ChildListActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if (item.getItemId() == R.id.action_add_child_button_for_child_list) {
             startActivity(
-                    AddChildActivity.makeIntentForAddChild(ChildListActivity.this)
+                    ChildActivity.getIntentForNewChild(ChildListActivity.this)
             );
             return true;
         }
@@ -75,14 +74,12 @@ public class ChildListActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        // updateUI
         populateListView();
     }
 
     private void setUpToolbar() {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        Objects.requireNonNull(getSupportActionBar()).setTitle(getText(R.string.child_list_activity_toolbar_label));
     }
 
     private void enableUpOnToolbar() {
@@ -92,54 +89,84 @@ public class ChildListActivity extends AppCompatActivity {
         }
     }
 
-    private void setUpAddNewChildButton() {
-        FloatingActionButton addNewChildFabButton = findViewById(R.id.add_child_fab);
-        addNewChildFabButton.setOnClickListener(view -> startActivity(
-                AddChildActivity.makeIntentForAddChild(ChildListActivity.this)
-        ));
-    }
-
     private void populateListView() {
-        // Build the adapter
-        ArrayAdapter<Child> adapter = new MyListAdapter();
 
-        // Configure the list view
-        ListView childList = findViewById(R.id.child_list_view);
-        childList.setAdapter(adapter);
+        ChildDao childDao = ParentAppDatabase.getInstance(this).childDao();
+
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
+        binding.listChildren.setLayoutManager(layoutManager);
+
+        childDao.getAll().subscribeOn(Schedulers.newThread())
+                .subscribe((List<Child> list) -> {
+
+                    if (list.size() == 0) {
+                        return;
+                    }
+                    ChildListAdapter adapter = new ChildListAdapter(list);
+                    binding.listChildren.setAdapter(adapter);
+                });
+
     }
 
-    private void registerClickCallback() {
-        ListView list = findViewById(R.id.child_list_view);
-        list.setOnItemClickListener((parent, viewClicked, position, id) -> startActivity(
-                AddChildActivity.makeIntentForEditChild(
-                        ChildListActivity.this, position)
-        ));
-    }
+    /**
+     * Implemented Adapter with help from https://developer.android.com/guide/topics/ui/layout/recyclerview
+     */
+    public class ChildListAdapter extends RecyclerView.Adapter<ChildListAdapter.ViewHolder> {
 
-    // MyListAdapter that will help make the complex list view
-    private class MyListAdapter extends ArrayAdapter<Child> {
-        public MyListAdapter() {
-            super(ChildListActivity.this,
-                    R.layout.child_name_view, manager.getAllChildren());
+        private final List<Child> list;
+
+        public ChildListAdapter(List<Child> list) {
+
+            this.list = list;
         }
 
-        public View getView(int position, View convertView, ViewGroup parent) {
+        @NonNull
+        @Override
+        public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+            ChildListItemBinding binding = ChildListItemBinding.inflate(
+                    LayoutInflater.from(parent.getContext()), parent, false);
+            return new ViewHolder(binding);
+        }
 
-            // make sure we have a view to work with (may have been given null)
-            View itemView = convertView;
-            if (itemView == null) {
-                itemView = getLayoutInflater()
-                        .inflate(R.layout.child_name_view, parent, false);
+        @Override
+        public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+            Child child = list.get(position);
+            holder.setChild(child);
+
+        }
+
+        @Override
+        public int getItemCount() {
+
+            return list.size();
+        }
+
+        public class ViewHolder extends RecyclerView.ViewHolder {
+
+            private final ChildListItemBinding binding;
+            private Child child;
+
+            public ViewHolder(ChildListItemBinding binding) {
+                super(binding.getRoot());
+
+                itemView.setOnClickListener(view -> {
+                    if (child == null) {
+                        Toast.makeText(ChildListActivity.this, "Clicked", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+
+                    Intent i = ChildActivity.getIntentForExistingChild(ChildListActivity.this, child.getUid());
+                    startActivity(i);
+                });
+
+                this.binding = binding;
             }
 
-            // Find the child to work with
-            Child currentChild = manager.getChild(position);
-
-            // Fill the view
-            TextView childNameText = itemView.findViewById(R.id.child_name_text_view);
-            childNameText.setText(currentChild.getChildName());
-
-            return itemView;
+            public void setChild(Child child) {
+                this.child = child;
+                binding.childNameTextView.setText(child.getName());
+            }
         }
     }
+
 }
