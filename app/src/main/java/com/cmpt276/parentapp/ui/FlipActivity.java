@@ -2,56 +2,54 @@ package com.cmpt276.parentapp.ui;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
+import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.content.Intent;
 import android.media.MediaPlayer;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.view.animation.DecelerateInterpolator;
-import android.widget.Button;
-import android.widget.ImageButton;
-import android.widget.ImageView;
-import android.widget.TextView;
 
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
+import androidx.room.rxjava3.EmptyResultSetException;
 
 import com.cmpt276.parentapp.R;
-import com.cmpt276.parentapp.model.ChildManager;
+import com.cmpt276.parentapp.databinding.ActivityFlipBinding;
+import com.cmpt276.parentapp.model.Child;
+import com.cmpt276.parentapp.model.ChildCoinFlip;
+import com.cmpt276.parentapp.model.ChildDao;
 import com.cmpt276.parentapp.model.CoinFlip;
-import com.cmpt276.parentapp.model.FlipHistoryManager;
-import com.cmpt276.parentapp.model.PrefConfig;
+import com.cmpt276.parentapp.model.CoinFlipDao;
+import com.cmpt276.parentapp.model.ParentAppDatabase;
 
-import java.util.Objects;
+import java.time.LocalDateTime;
 import java.util.Random;
+
+import io.reactivex.rxjava3.annotations.NonNull;
+import io.reactivex.rxjava3.core.SingleObserver;
+import io.reactivex.rxjava3.disposables.Disposable;
+import io.reactivex.rxjava3.schedulers.Schedulers;
 
 /**
  * Flip Activity provides the UI for the Coin Flip.
  */
 public class FlipActivity extends AppCompatActivity {
 
-    public static final float SET_BUTTON_TO_ENABLE = 1f;
-    private final float SET_BUTTON_TO_DISABLE = .5f;
-    private final int ANIMATION_REPEAT_COUNT = 100;
-    //50 = 2.5 seconds
-    private final int ANIMATION_DURATION = 50;
+    public static final String TAG = "FLIP_ACTIVITY";
+    private static final float SET_BUTTON_TO_ENABLE = 1f;
+    private ActivityFlipBinding binding;
 
-    ImageView coinImage;
-    boolean isHeads;
-    Button userChoiceHeads;
-    Button userChoiceTails;
-    Button historyButton;
-    ImageButton coinFlipButton;
-    TextView coinSideText;
-    ChildManager childNames;
+    private CoinFlip.Choice userChoice;
 
-    String prevChildName;
-    String currChildName;
+    private Child currentChild;
+    private AnimatorSet animatorSet;
 
-    CoinFlip flip;
-    FlipHistoryManager flipHistoryManager;
+    private CoinFlipDao coinFlipDao;
+    private ChildDao childDao;
 
     public static Intent getIntent(Context context) {
         return new Intent(context, FlipActivity.class);
@@ -60,172 +58,159 @@ public class FlipActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_flip);
+        binding = ActivityFlipBinding.inflate(this.getLayoutInflater());
+        setContentView(binding.getRoot());
 
-        childNames = ChildManager.getInstance(FlipActivity.this);
-        flipHistoryManager = FlipHistoryManager.getInstance(FlipActivity.this);
-        coinImage = findViewById(R.id.coin_image_view);
-        coinSideText = findViewById(R.id.heads_tails_text_after_flip);
+        coinFlipDao = ParentAppDatabase
+                .getInstance(this)
+                .coinFlipDao();
 
-        setUpToolbar();
-        setupCoinFlipButton();
+        childDao = ParentAppDatabase
+                .getInstance(this)
+                .childDao();
+
+        setupToolbar();
+        setupPreviousChild();
+        setupCurrentChild();
         setupHistoryButton();
-        updateTextView();
-        setChoiceButtons();
-        setupButtonEnableDisable();
-
+        setupChoiceButtons();
+        setupCoinFlipButton();
     }
 
     @Override
-    protected void onResume() {
-        super.onResume();
-        updateTextView();
+    protected void onPause() {
+        super.onPause();
+
+        if (animatorSet != null && animatorSet.isRunning()) {
+            animatorSet.cancel();
+        }
     }
 
-    private void setUpToolbar() {
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        Objects.requireNonNull(getSupportActionBar()).setTitle(R.string.flip_activity_toolbar_label);
+    private void setupToolbar() {
+        setSupportActionBar(binding.toolbar);
 
-        // set up "UP" button on toolbar
         ActionBar ab = getSupportActionBar();
-        ab.setDisplayHomeAsUpEnabled(true);
-    }
-
-    private void setupButtonEnableDisable() {
-        if (childNames.size() == 0) {
-            setupButtonsNoChild();
-        } else {
-            setupButtonWithChild();
+        if (ab != null) {
+            ab.setTitle(R.string.flip_activity_toolbar_label);
+            ab.setDisplayHomeAsUpEnabled(true);
         }
     }
 
     private void setupHistoryButton() {
-        historyButton = findViewById(R.id.flip_history_button);
-        historyButton.setOnClickListener(view ->
+        binding.flipHistoryButton.setOnClickListener(view ->
                 startActivity(FlipHistoryActivity.getIntent(this)));
     }
 
-    //Break into 2 methods
-    private void setChoiceButtons() {
-        // Heads button
-        userChoiceHeads = findViewById(R.id.user_choice_heads_button);
-        userChoiceHeads.setOnClickListener(view -> {
-            setupChildAndChoice(userChoiceHeads);
-            flip.startFlip();
+    private void setupChoiceButtons() {
+        binding.userChoiceHeadsButton.setOnClickListener(view -> {
+            userChoice = CoinFlip.Choice.HEADS;
             enableFlipCoinButton();
         });
 
-        // Tails button
-        userChoiceTails = findViewById(R.id.user_choice_tails_button);
-        userChoiceTails.setOnClickListener(view -> {
-            setupChildAndChoice(userChoiceTails);
-            flip.startFlip();
+        binding.userChoiceTailsButton.setOnClickListener(view -> {
+            userChoice = CoinFlip.Choice.TAILS;
             enableFlipCoinButton();
         });
-    }
-
-    private void setupChildAndChoice(Button userChoiceButton) {
-        flip = new CoinFlip();
-        if (childNames.size() == 0) {
-            flip.setChild(null);
-        } else {
-            flip.setChild(childNames.getChildFromName(currChildName));
-        }
-        flip.setChoice(userChoiceButton.getText().toString());
     }
 
     private void setupCoinFlipButton() {
-        coinFlipButton = findViewById(R.id.flip_coin_image_button);
-        coinFlipButton.setOnClickListener(view -> {
-            coinSideText.setText("");
+        binding.flipCoinImageButton.setOnClickListener(view -> {
+            binding.headsTailsTextAfterFlip.setVisibility(View.INVISIBLE);
+
+            setButtonState(binding.userChoiceHeadsButton, false);
+            setButtonState(binding.userChoiceTailsButton, false);
+            setButtonState(binding.flipCoinImageButton, false);
+
             flipCoin();
-            disableAllButtons();
         });
     }
 
     private void enableFlipCoinButton() {
-        coinSideText.setText("");
-        userChoiceHeads.setEnabled(false);
-        userChoiceHeads.setAlpha(SET_BUTTON_TO_DISABLE);
-
-        userChoiceTails.setEnabled(false);
-        userChoiceTails.setAlpha(SET_BUTTON_TO_DISABLE);
-
-        historyButton.setEnabled(false);
-        historyButton.setAlpha(SET_BUTTON_TO_DISABLE);
-
-        coinFlipButton.setEnabled(true);
-        coinFlipButton.setAlpha(SET_BUTTON_TO_ENABLE);
-
+        binding.headsTailsTextAfterFlip.setVisibility(View.INVISIBLE);
+        setButtonState(binding.flipCoinImageButton, true);
     }
 
     private void setupButtonWithChild() {
-        userChoiceHeads.setEnabled(true);
-        userChoiceHeads.setAlpha(SET_BUTTON_TO_ENABLE);
-
-        userChoiceTails.setEnabled(true);
-        userChoiceTails.setAlpha(SET_BUTTON_TO_ENABLE);
-
-        coinFlipButton.setEnabled(false);
-        coinFlipButton.setAlpha(SET_BUTTON_TO_DISABLE);
-
-        historyButton.setEnabled(true);
-        historyButton.setAlpha(SET_BUTTON_TO_ENABLE);
-
+        setButtonState(binding.userChoiceHeadsButton, true);
+        setButtonState(binding.userChoiceTailsButton, true);
+        setButtonState(binding.flipCoinImageButton, false);
     }
 
     private void setupButtonsNoChild() {
-        userChoiceHeads.setEnabled(false);
-        userChoiceHeads.setAlpha(SET_BUTTON_TO_DISABLE);
-
-        userChoiceTails.setEnabled(false);
-        userChoiceTails.setAlpha(SET_BUTTON_TO_DISABLE);
-
-        coinFlipButton.setEnabled(true);
-        coinFlipButton.setAlpha(SET_BUTTON_TO_ENABLE);
-
-        historyButton.setEnabled(true);
-        historyButton.setAlpha(SET_BUTTON_TO_ENABLE);
-
+        setButtonState(binding.userChoiceHeadsButton, false);
+        setButtonState(binding.userChoiceTailsButton, false);
+        setButtonState(binding.flipCoinImageButton, true);
     }
 
-    private void disableAllButtons() {
-        userChoiceHeads.setEnabled(false);
-        userChoiceHeads.setAlpha(SET_BUTTON_TO_DISABLE);
-
-        userChoiceTails.setEnabled(false);
-        userChoiceTails.setAlpha(SET_BUTTON_TO_DISABLE);
-
-        coinFlipButton.setEnabled(false);
-        coinFlipButton.setAlpha(SET_BUTTON_TO_DISABLE);
-
-        historyButton.setEnabled(false);
-        historyButton.setAlpha(SET_BUTTON_TO_DISABLE);
+    private void setButtonState(View btn, boolean isEnabled) {
+        btn.setEnabled(isEnabled);
+        float SET_BUTTON_TO_DISABLE = .5f;
+        btn.setAlpha(isEnabled ? SET_BUTTON_TO_ENABLE : SET_BUTTON_TO_DISABLE);
     }
 
     private void flipCoin() {
         playCoinFlipSound();
 
         //Source: https://stackoverflow.com/questions/46111262/card-flip-animation-in-android
-        final ObjectAnimator firstAnimation = ObjectAnimator.ofFloat(coinImage, "scaleY", 1f, 0f);
-        final ObjectAnimator secondAnimation = ObjectAnimator.ofFloat(coinImage, "scaleY", 0f, 1f);
 
+        animatorSet = new AnimatorSet();
+
+        final ObjectAnimator firstAnimation = ObjectAnimator.ofFloat(binding.coinImageView, "scaleY", 1f, 0f);
+        final ObjectAnimator secondAnimation = ObjectAnimator.ofFloat(binding.coinImageView, "scaleY", 0f, 1f);
+        secondAnimation.setInterpolator(new AccelerateDecelerateInterpolator());
+
+        int ANIMATION_DURATION = 50;
         firstAnimation.setDuration(ANIMATION_DURATION);
+        int ANIMATION_REPEAT_COUNT = 100;
         firstAnimation.setRepeatCount(ANIMATION_REPEAT_COUNT);
         firstAnimation.setInterpolator(new DecelerateInterpolator());
-        secondAnimation.setInterpolator(new AccelerateDecelerateInterpolator());
         firstAnimation.addListener(new AnimatorListenerAdapter() {
             @Override
             public void onAnimationEnd(Animator animation) {
                 super.onAnimationEnd(animation);
-                coinImage.setImageResource(determineSide());
-                secondAnimation.start();
-                checkIfDataToBeStored();
-                printHeadsOrTailsOnCoin();
+                CoinFlip.Choice winningChoice = determineSide();
+
+                binding.coinImageView.setImageResource(
+                        winningChoice == CoinFlip.Choice.HEADS ?
+                                R.drawable.heads :
+                                R.drawable.tails
+                );
+
+                binding.headsTailsTextAfterFlip.setText(winningChoice.toString());
+                binding.headsTailsTextAfterFlip.setVisibility(View.VISIBLE);
+
+                saveFlip(winningChoice);
             }
         });
-        firstAnimation.start();
+
+        animatorSet.playSequentially(firstAnimation, secondAnimation);
+        animatorSet.start();
+    }
+
+    private void saveFlip(CoinFlip.Choice choice) {
+        if (currentChild != null) {
+            Thread thread = new Thread(() -> {
+
+                CoinFlip flip = new CoinFlip(
+                        currentChild.getUid(),
+                        userChoice,
+                        userChoice == choice,
+                        LocalDateTime.now()
+                );
+
+                coinFlipDao.insertAll(flip).blockingAwait();
+
+                Integer order = childDao.getNextCoinFlipOrder().blockingGet();
+                currentChild.setCoinFlipOrder(order);
+
+                childDao.update(currentChild).blockingAwait();
+                childDao.decrementCoinFlipOrder().blockingAwait();
+
+                setupCurrentChild();
+                setupPreviousChild();
+            });
+            thread.start();
+        }
     }
 
     private void playCoinFlipSound() {
@@ -233,90 +218,72 @@ public class FlipActivity extends AppCompatActivity {
         coinFlip.start();
     }
 
-    private void printHeadsOrTailsOnCoin() {
-        if (isHeads) {
-            coinSideText.setText(getString(R.string.heads));
-        } else {
-            coinSideText.setText(getString(R.string.tails));
-        }
+    private void setupCurrentChild() {
+        binding.currentChildTv.setText(getString(
+                R.string.current_child_tv_string,
+                getString(R.string.no_child_string)));
+
+        childDao.getChildForNextFlip()
+                .subscribeOn(Schedulers.newThread())
+                .subscribe(new SingleObserver<Child>() {
+                    @Override
+                    public void onSubscribe(@NonNull Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onSuccess(@NonNull Child child) {
+                        currentChild = child;
+                        binding.currentChildTv.setText(currentChild.getName());
+
+                        runOnUiThread(() -> setupButtonWithChild());
+                    }
+
+                    @Override
+                    public void onError(@NonNull Throwable e) {
+                        runOnUiThread(() -> setupButtonsNoChild());
+                    }
+                });
     }
 
-    private void checkIfDataToBeStored() {
-        if (childNames.size() != 0) {
-            checkWin();
-            flipHistoryManager.addFlip(flip);
-            saveFlipsHistoryToSharedPrefs();
-            updateTextView();
-        }
-        setupButtonEnableDisable();
+    private void setupPreviousChild() {
+        coinFlipDao.getLastFlip()
+                .subscribeOn(Schedulers.io())
+                .subscribe(new SingleObserver<ChildCoinFlip>() {
+                    @Override
+                    public void onSubscribe(@NonNull Disposable d) {
+                        Log.i(TAG, "Subscribed");
+
+                    }
+
+                    @Override
+                    public void onSuccess(@NonNull ChildCoinFlip childCoinFlip) {
+                        binding.previousChildTv.setText(getString(
+                                R.string.current_child_tv_string,
+                                childCoinFlip.getChild().getName()));
+                        Log.i(TAG, "SUCCESS" + childCoinFlip.toString());
+                    }
+
+                    @Override
+                    public void onError(@NonNull Throwable e) {
+                        if (e.getClass() == EmptyResultSetException.class) {
+                            binding.previousChildTv.setText(getString(
+                                    R.string.current_child_tv_string,
+                                    getString(R.string.no_child_string)));
+                        }
+                        Log.e(TAG, "ERROR: " + e.getMessage());
+                    }
+                });
     }
 
-    private void checkWin() {
-        if (isHeads && flip.getChoice().equals("Heads")) {
-            flip.setIsWinner(true);
-        } else if (isHeads && flip.getChoice().equals("Tails")) {
-            flip.setIsWinner(false);
-        }
-        if (!isHeads && flip.getChoice().equals("Heads")) {
-            flip.setIsWinner(false);
-        } else if (!isHeads && flip.getChoice().equals("Tails")) {
-            flip.setIsWinner(true);
-        }
-    }
-
-    private void updateChildName() {
-        currChildName = flipHistoryManager.getCurrentChild(childNames);
-        prevChildName = flipHistoryManager.getPreviousChild(childNames);
-    }
-
-    private void updateTextView() {
-        updateChildName();
-
-        TextView currentChildTextView = findViewById(R.id.current_child_tv);
-        TextView previousChildTextView = findViewById(R.id.previous_child_tv);
-
-        if (currChildName.equals("")) {
-            currentChildTextView.setText(getString(
-                    R.string.current_child_tv_string,
-                    getString(R.string.no_child_string))
-            );
-        } else {
-            currentChildTextView.setText(getString(
-                    R.string.current_child_tv_string,
-                    currChildName)
-            );
-        }
-
-        if (prevChildName.equals("")) {
-            previousChildTextView.setText(getString(
-                    R.string.previous_child_tv_string,
-                    getString(R.string.no_child_string))
-            );
-        } else {
-            previousChildTextView.setText(getString(
-                    R.string.previous_child_tv_string,
-                    prevChildName)
-            );
-        }
-    }
-
-    private void saveFlipsHistoryToSharedPrefs() {
-        PrefConfig.writeFlipHistoryInPref(getApplicationContext(), flipHistoryManager.getFullHistory());
-    }
 
     //Determine the side of the coin which will be shown
-    private int determineSide() {
+    private CoinFlip.Choice determineSide() {
         Random random = new Random();
-        final int NUM_SIDES_COIN = 2;
-        int randomNum = random.nextInt(NUM_SIDES_COIN);
-        final int HEADS = 1;
 
-        if (randomNum == HEADS) {
-            isHeads = true;
-            return R.drawable.heads;
-        } else {
-            isHeads = false;
-            return R.drawable.tails;
-        }
+        CoinFlip.Choice[] choices = CoinFlip.Choice.values();
+        int randomNum = random.nextInt(choices.length);
+
+        return choices[randomNum];
     }
 }
