@@ -13,10 +13,12 @@ import androidx.room.PrimaryKey;
 public class Child {
 
     @PrimaryKey(autoGenerate = true)
-    public int uid;
+    private int uid;
 
     @ColumnInfo(name = "name")
     private String name;
+
+    private int coinFlipOrder;
 
     public Child(String name) {
 
@@ -33,8 +35,20 @@ public class Child {
         this.name = name;
     }
 
+    public void setCoinFlipOrder(int coinFlipOrder) {
+        this.coinFlipOrder = coinFlipOrder;
+    }
+
+    public int getCoinFlipOrder() {
+        return coinFlipOrder;
+    }
+
     public int getUid() {
         return uid;
+    }
+
+    public void setUid(int uid) {
+        this.uid = uid;
     }
 }
 
