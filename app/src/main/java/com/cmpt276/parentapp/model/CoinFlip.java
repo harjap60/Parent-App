@@ -1,5 +1,13 @@
 package com.cmpt276.parentapp.model;
 
+import static androidx.room.ForeignKey.CASCADE;
+import static androidx.room.ForeignKey.SET_NULL;
+
+import androidx.room.Delete;
+import androidx.room.Entity;
+import androidx.room.ForeignKey;
+import androidx.room.PrimaryKey;
+
 import java.time.LocalDateTime;
 
 /**
@@ -10,42 +18,57 @@ import java.time.LocalDateTime;
  * Whether or not they won
  * The time the flip happened
  */
+@Entity
 public class CoinFlip {
-    private Child child;
-    private String choice;
-    private boolean isWinner;
-    private LocalDateTime flipTime;
 
-    public void setChild(Child child) {
-        this.child = child;
+    @PrimaryKey(autoGenerate = true)
+    private int uid;
+
+//    @ForeignKey(entity = Child.class,
+//            parentColumns = "uid",
+//            childColumns = "childId",
+//            onDelete = CASCADE)
+    private final int childId;
+
+    private final Choice choice;
+
+    private final boolean isWinner;
+
+    private final LocalDateTime date;
+
+    public CoinFlip(int childId, Choice choice, boolean isWinner, LocalDateTime date) {
+        this.childId = childId;
+        this.choice = choice;
+        this.isWinner = isWinner;
+        this.date = date;
     }
 
-    public Child getChild() {
-        return this.child;
+    public int getChildId() {
+        return this.childId;
     }
 
-    public String getChoice() {
+    public Choice getChoice() {
         return this.choice;
     }
 
-    public void setChoice(String choice) {
-        this.choice = choice;
-    }
-
-    public void startFlip() {
-        this.flipTime = LocalDateTime.now();
-    }
-
     public boolean isWinner() {
+
         return this.isWinner;
     }
 
-    public void setIsWinner(boolean winner) {
-        this.isWinner = winner;
+    public LocalDateTime getDate() {
+
+        return this.date;
     }
 
-    public LocalDateTime getFlipTime() {
-        return this.flipTime;
+    public int getUid() {
+        return uid;
     }
+
+    public void setUid(int uid) {
+        this.uid = uid;
+    }
+
+    public enum Choice {HEADS, TAILS}
+
 }
-
