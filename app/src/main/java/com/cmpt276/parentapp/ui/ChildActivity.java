@@ -20,7 +20,6 @@ import com.cmpt276.parentapp.model.ParentAppDatabase;
 
 import java.util.Objects;
 
-import io.reactivex.rxjava3.core.Completable;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 
 /**
@@ -182,18 +181,19 @@ public class ChildActivity extends AppCompatActivity {
     }
 
     private void saveChild() {
-        String name = this.binding.txtName.getText().toString();
-        Completable completable;
+        new Thread(() -> {
 
-        if (child == null) {
-            completable = childDao.insertAll(new Child(name));
-        } else {
-            child.setName(name);
-            completable = childDao.update(child);
-        }
+            String name = this.binding.txtName.getText().toString();
 
-        completable.subscribeOn(Schedulers.newThread())
-                .subscribe(this::finish);
+            if (child == null) {
+                int coinFlipOrder = childDao.getNextCoinFlipOrder().blockingGet();
+                childDao.insertAll(new Child(name, coinFlipOrder)).blockingAwait();
+            } else {
+                child.setName(name);
+                childDao.update(child).blockingAwait();
+            }
+            runOnUiThread(this::finish);
+        }).start();
     }
 
     private void deleteChild() {

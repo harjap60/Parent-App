@@ -20,9 +20,10 @@ public class Child {
 
     private int coinFlipOrder;
 
-    public Child(String name) {
+    public Child(String name, int coinFlipOrder) {
 
         this.name = name;
+        this.coinFlipOrder = coinFlipOrder;
     }
 
     public String getName() {
@@ -49,6 +50,15 @@ public class Child {
 
     public void setUid(int uid) {
         this.uid = uid;
+    }
+
+    @Override
+    public String toString() {
+        return "Child{" +
+                "uid=" + uid +
+                ", name='" + name + '\'' +
+                ", coinFlipOrder=" + coinFlipOrder +
+                '}';
     }
 }
 
