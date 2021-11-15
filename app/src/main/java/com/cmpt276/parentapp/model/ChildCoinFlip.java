@@ -1,42 +1,25 @@
 package com.cmpt276.parentapp.model;
 
-import androidx.room.DatabaseView;
+import androidx.room.Embedded;
 
-import java.time.LocalDateTime;
-
-@DatabaseView("SELECT cf.date, cf.choice, cf.isWinner, c.name as childName, cf.uid as coinFlipUid from CoinFlip cf LEFT OUTER JOIN Child c on c.uid = cf.childId")
 public class ChildCoinFlip {
-    private int coinFlipUid;
-    private LocalDateTime date;
-    private CoinFlip.Choice choice;
-    private Boolean isWinner;
-    private String childName;
 
-    public ChildCoinFlip(int coinFlipUid, LocalDateTime date, CoinFlip.Choice choice, Boolean isWinner, String childName) {
-        this.coinFlipUid = coinFlipUid;
-        this.date = date;
-        this.choice = choice;
-        this.isWinner = isWinner;
-        this.childName = childName;
+    @Embedded
+    private Child child;
+
+    @Embedded(prefix = "cf_")
+    private CoinFlip coinFlip;
+
+    public ChildCoinFlip(Child child, CoinFlip coinFlip) {
+        this.child = child;
+        this.coinFlip = coinFlip;
     }
 
-    public int getCoinFlipUid() {
-        return coinFlipUid;
+    public CoinFlip getCoinFlip() {
+        return coinFlip;
     }
 
-    public LocalDateTime getDate() {
-        return date;
-    }
-
-    public CoinFlip.Choice getChoice() {
-        return choice;
-    }
-
-    public Boolean isWinner() {
-        return isWinner;
-    }
-
-    public String getChildName() {
-        return childName;
+    public Child getChild() {
+        return child;
     }
 }

@@ -14,7 +14,9 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.cmpt276.parentapp.R;
 import com.cmpt276.parentapp.databinding.ActivityFlipHistoryBinding;
+import com.cmpt276.parentapp.model.Child;
 import com.cmpt276.parentapp.model.ChildCoinFlip;
+import com.cmpt276.parentapp.model.CoinFlip;
 import com.cmpt276.parentapp.model.CoinFlipDao;
 import com.cmpt276.parentapp.model.ParentAppDatabase;
 
@@ -89,7 +91,8 @@ public class FlipHistoryActivity extends AppCompatActivity {
             }
             final String DATE_FORMAT = "MMM - dd @ KK:mma";
 
-            ChildCoinFlip coinFlip = list.get(position);
+            CoinFlip coinFlip = list.get(position).getCoinFlip();
+            Child child = list.get(position).getChild();
 
             TextView dateText = itemView.findViewById(R.id.game_date_flip_information_tv);
             dateText.setText(
@@ -99,7 +102,7 @@ public class FlipHistoryActivity extends AppCompatActivity {
             );
 
             TextView childNameText = itemView.findViewById(R.id.child_name_flip_information_tv);
-            childNameText.setText(coinFlip.getChildName());
+            childNameText.setText(child.getName());
 
             TextView childChoiceText = itemView.findViewById(R.id.child_choice_flip_information_tv);
             childChoiceText.setText(

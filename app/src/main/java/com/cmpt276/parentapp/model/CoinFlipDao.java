@@ -18,11 +18,27 @@ import io.reactivex.rxjava3.core.Single;
 public interface CoinFlipDao {
 
     @Transaction
-    @Query("SELECT * from ChildCoinFlip")
+    @Query("SELECT " +
+            "cf.uid as cf_uid, " +
+            "cf.childId as cf_childId, " +
+            "cf.isWinner as cf_isWinner, " +
+            "cf.date as cf_date, " +
+            "cf.choice as cf_choice, " +
+            "c.* FROM CoinFlip cf " +
+            "LEFT OUTER JOIN child c ON c.uid = cf.childId " +
+            "ORDER BY cf.uid")
     Single<List<ChildCoinFlip>> GetAllChildCoinFlips();
 
     @Transaction
-    @Query("SELECT * from ChildCoinFlip ORDER BY coinFlipUid DESC LIMIT 1")
+    @Query("SELECT " +
+            "cf.uid as cf_uid, " +
+            "cf.childId as cf_childId, " +
+            "cf.isWinner as cf_isWinner, " +
+            "cf.date as cf_date, " +
+            "cf.choice as cf_choice, " +
+            "c.* FROM CoinFlip cf " +
+            "LEFT OUTER JOIN child c ON c.uid = cf.childId " +
+            "ORDER BY cf.uid DESC LIMIT 1")
     Single<ChildCoinFlip> getLastFlip();
 
     @Query("SELECT * FROM CoinFlip")
