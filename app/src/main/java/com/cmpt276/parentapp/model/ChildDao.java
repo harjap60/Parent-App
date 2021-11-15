@@ -23,7 +23,7 @@ public interface ChildDao {
     @Query("SELECT * FROM child ORDER BY coinFlipOrder LIMIT 1")
     Single<Child> getChildForNextFlip();
 
-    @Query("UPDATE child set coinFlipOrder = coinFlipOrder - 1")
+    @Query("UPDATE child set coinFlipOrder = coinFlipOrder - 1 WHERE coinFlipOrder > 0")
     Completable decrementCoinFlipOrder();
 
     @Query("SELECT IFNULL(MAX(coinFlipOrder) + 1, 0) FROM child")
