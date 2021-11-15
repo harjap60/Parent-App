@@ -8,7 +8,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.media.MediaPlayer;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.view.animation.DecelerateInterpolator;
@@ -210,6 +209,9 @@ public class FlipActivity extends AppCompatActivity {
                 setupPreviousChild();
             });
             thread.start();
+        } else {
+            setupCurrentChild();
+            setupPreviousChild();
         }
     }
 
@@ -219,9 +221,6 @@ public class FlipActivity extends AppCompatActivity {
     }
 
     private void setupCurrentChild() {
-        binding.currentChildTv.setText(getString(
-                R.string.current_child_tv_string,
-                getString(R.string.no_child_string)));
 
         childDao.getChildForNextFlip()
                 .subscribeOn(Schedulers.newThread())
@@ -234,13 +233,20 @@ public class FlipActivity extends AppCompatActivity {
                     @Override
                     public void onSuccess(@NonNull Child child) {
                         currentChild = child;
-                        binding.currentChildTv.setText(currentChild.getName());
+
+                        binding.currentChildTv.setText(getString(
+                                R.string.current_child_tv_string,
+                                child.getName()));
 
                         runOnUiThread(() -> setupButtonWithChild());
                     }
 
                     @Override
                     public void onError(@NonNull Throwable e) {
+                        binding.currentChildTv.setText(getString(
+                                R.string.current_child_tv_string,
+                                getString(R.string.no_child_string)));
+
                         runOnUiThread(() -> setupButtonsNoChild());
                     }
                 });
@@ -252,16 +258,13 @@ public class FlipActivity extends AppCompatActivity {
                 .subscribe(new SingleObserver<ChildCoinFlip>() {
                     @Override
                     public void onSubscribe(@NonNull Disposable d) {
-                        Log.i(TAG, "Subscribed");
-
                     }
 
                     @Override
                     public void onSuccess(@NonNull ChildCoinFlip childCoinFlip) {
                         binding.previousChildTv.setText(getString(
-                                R.string.current_child_tv_string,
-                                childCoinFlip.getChild().getName()));
-                        Log.i(TAG, "SUCCESS" + childCoinFlip.toString());
+                                R.string.previous_child_tv_string,
+                                childCoinFlip.getChildName()));
                     }
 
                     @Override
@@ -271,7 +274,6 @@ public class FlipActivity extends AppCompatActivity {
                                     R.string.current_child_tv_string,
                                     getString(R.string.no_child_string)));
                         }
-                        Log.e(TAG, "ERROR: " + e.getMessage());
                     }
                 });
     }
