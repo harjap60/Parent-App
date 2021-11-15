@@ -5,6 +5,7 @@ import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
+import androidx.room.SkipQueryVerification;
 import androidx.room.Transaction;
 import androidx.room.Update;
 
@@ -17,11 +18,11 @@ import io.reactivex.rxjava3.core.Single;
 public interface CoinFlipDao {
 
     @Transaction
-    @Query("SELECT * from CoinFlip cf LEFT OUTER JOIN Child c on c.uid = cf.childId")
+    @Query("SELECT * from ChildCoinFlip")
     Single<List<ChildCoinFlip>> GetAllChildCoinFlips();
 
     @Transaction
-    @Query("SELECT * from CoinFlip cf LEFT OUTER JOIN Child c on c.uid = cf.childId ORDER BY cf.uid DESC LIMIT 1")
+    @Query("SELECT * from ChildCoinFlip ORDER BY coinFlipUid DESC LIMIT 1")
     Single<ChildCoinFlip> getLastFlip();
 
     @Query("SELECT * FROM CoinFlip")

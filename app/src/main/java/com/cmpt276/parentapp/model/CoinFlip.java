@@ -1,9 +1,7 @@
 package com.cmpt276.parentapp.model;
 
 import static androidx.room.ForeignKey.CASCADE;
-import static androidx.room.ForeignKey.SET_NULL;
 
-import androidx.room.Delete;
 import androidx.room.Entity;
 import androidx.room.ForeignKey;
 import androidx.room.PrimaryKey;
@@ -18,23 +16,24 @@ import java.time.LocalDateTime;
  * Whether or not they won
  * The time the flip happened
  */
-@Entity
+@Entity(foreignKeys = {
+        @ForeignKey(
+                entity = Child.class,
+                parentColumns = "uid",
+                childColumns = "childId",
+                onDelete = CASCADE
+        )
+})
 public class CoinFlip {
 
-    @PrimaryKey(autoGenerate = true)
-    private int uid;
 
-//    @ForeignKey(entity = Child.class,
-//            parentColumns = "uid",
-//            childColumns = "childId",
-//            onDelete = CASCADE)
-    private final int childId;
+    final int childId;
 
     private final Choice choice;
-
     private final boolean isWinner;
-
     private final LocalDateTime date;
+    @PrimaryKey(autoGenerate = true)
+    private int uid;
 
     public CoinFlip(int childId, Choice choice, boolean isWinner, LocalDateTime date) {
         this.childId = childId;
@@ -52,12 +51,10 @@ public class CoinFlip {
     }
 
     public boolean isWinner() {
-
         return this.isWinner;
     }
 
     public LocalDateTime getDate() {
-
         return this.date;
     }
 
@@ -67,6 +64,17 @@ public class CoinFlip {
 
     public void setUid(int uid) {
         this.uid = uid;
+    }
+
+    @Override
+    public String toString() {
+        return "CoinFlip{" +
+                "uid=" + uid +
+                ", childId=" + childId +
+                ", choice=" + choice +
+                ", isWinner=" + isWinner +
+                ", date=" + date +
+                '}';
     }
 
     public enum Choice {HEADS, TAILS}

@@ -3,7 +3,6 @@ package com.cmpt276.parentapp.ui;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
@@ -15,9 +14,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.cmpt276.parentapp.R;
 import com.cmpt276.parentapp.databinding.ActivityFlipHistoryBinding;
-import com.cmpt276.parentapp.model.Child;
 import com.cmpt276.parentapp.model.ChildCoinFlip;
-import com.cmpt276.parentapp.model.CoinFlip;
 import com.cmpt276.parentapp.model.CoinFlipDao;
 import com.cmpt276.parentapp.model.ParentAppDatabase;
 
@@ -32,6 +29,7 @@ import io.reactivex.rxjava3.schedulers.Schedulers;
 
 public class FlipHistoryActivity extends AppCompatActivity {
 
+    private static String TAG = "FLIP_HISTORY_ACTIVITY";
     private ActivityFlipHistoryBinding binding;
 
     public static Intent getIntent(Context context) {
@@ -51,10 +49,9 @@ public class FlipHistoryActivity extends AppCompatActivity {
     private void populateListView() {
         CoinFlipDao dao = ParentAppDatabase.getInstance(this).coinFlipDao();
         dao.GetAllChildCoinFlips()
-                .subscribeOn(Schedulers.newThread())
+                .subscribeOn(Schedulers.io())
                 .subscribe((list) -> {
                     FlipHistoryAdaptor adaptor = new FlipHistoryAdaptor(list);
-
                     binding.flipHistoryList.setAdapter(adaptor);
                 });
     }
@@ -70,7 +67,7 @@ public class FlipHistoryActivity extends AppCompatActivity {
     }
 
     private class FlipHistoryAdaptor extends ArrayAdapter<ChildCoinFlip> {
-        private List<ChildCoinFlip> list;
+        private final List<ChildCoinFlip> list;
 
         public FlipHistoryAdaptor(List<ChildCoinFlip> list) {
             super(FlipHistoryActivity.this,
@@ -83,7 +80,8 @@ public class FlipHistoryActivity extends AppCompatActivity {
         public View getView(int position, View convertView, ViewGroup parent) {
             View itemView = convertView;
             if (itemView == null) {
-                itemView = getLayoutInflater().inflate(
+                itemView = getLayoutInflater()
+                        .inflate(
                         R.layout.flip_history_view,
                         parent,
                         false
@@ -91,8 +89,7 @@ public class FlipHistoryActivity extends AppCompatActivity {
             }
             final String DATE_FORMAT = "MMM - dd @ KK:mma";
 
-            CoinFlip coinFlip = list.get(position).getCoinFlip();
-            Child child = list.get(position).getChild();
+            ChildCoinFlip coinFlip = list.get(position);
 
             TextView dateText = itemView.findViewById(R.id.game_date_flip_information_tv);
             dateText.setText(
@@ -102,7 +99,7 @@ public class FlipHistoryActivity extends AppCompatActivity {
             );
 
             TextView childNameText = itemView.findViewById(R.id.child_name_flip_information_tv);
-            childNameText.setText(child.getName());
+            childNameText.setText(coinFlip.getChildName());
 
             TextView childChoiceText = itemView.findViewById(R.id.child_choice_flip_information_tv);
             childChoiceText.setText(
@@ -119,7 +116,8 @@ public class FlipHistoryActivity extends AppCompatActivity {
             guessImage.setImageResource(
                     coinFlip.isWinner()
                             ? R.drawable.child_guess_correct
-                            : R.drawable.child_guess_wrong);
+                            : R.drawable.child_guess_wrong
+            );
 
             return itemView;
         }

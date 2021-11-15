@@ -13,7 +13,8 @@ import java.time.format.DateTimeFormatter;
 
 @Database(
         entities = {Child.class, CoinFlip.class},
-        version = 4
+        views = {ChildCoinFlip.class},
+        version = 10
 )
 @TypeConverters({Converters.class})
 public abstract class ParentAppDatabase extends RoomDatabase {

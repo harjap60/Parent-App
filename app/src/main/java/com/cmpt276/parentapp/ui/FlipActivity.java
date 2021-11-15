@@ -261,10 +261,10 @@ public class FlipActivity extends AppCompatActivity {
                     }
 
                     @Override
-                    public void onSuccess(@NonNull ChildCoinFlip childCoinFlip) {
+                    public void onSuccess(@NonNull ChildCoinFlip flip) {
                         binding.previousChildTv.setText(getString(
                                 R.string.previous_child_tv_string,
-                                childCoinFlip.getChildName()));
+                               flip.getChildName()));
                     }
 
                     @Override
