@@ -14,6 +14,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.ParentApp">
         <activity
+            android:name=".ui.TaskListActivity"
+            android:exported="true" />
+        <activity
             android:name=".ui.FlipHistoryActivity"
             android:exported="false"
             android:parentActivityName=".ui.FlipActivity"
@@ -21,28 +24,25 @@
         <activity
             android:name=".ui.AddChildActivity"
             android:exported="false"
-            android:theme="@style/Theme.ParentApp.NoActionBar"
             android:parentActivityName=".ui.MainActivity"
-            android:screenOrientation="portrait"/>
-
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.ParentApp.NoActionBar" />
         <activity
             android:name=".ui.ChildListActivity"
             android:exported="false"
             android:parentActivityName=".ui.MainActivity"
-            android:theme="@style/Theme.ParentApp.NoActionBar"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.ParentApp.NoActionBar" />
         <activity
             android:name=".ui.TimerActivity"
             android:exported="false"
-
             android:theme="@style/Theme.AppCompat.NoActionBar" />
         <activity
             android:name=".ui.FlipActivity"
             android:exported="false"
             android:parentActivityName=".ui.MainActivity"
-            android:theme="@style/Theme.ParentApp.NoActionBar"
-            android:screenOrientation="portrait" />
-
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.ParentApp.NoActionBar" />
         <activity
             android:name=".ui.MainActivity"
             android:exported="true"

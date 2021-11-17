@@ -97,6 +97,7 @@
     <string name="child_lost">lost</string>
     <string name="add_task_btn_title">Add Task</string>
     <string name="task_child_image">Child\'s Image</string>
+    <string name="main_activity_task_list_btn">Task List</string>
     <!-- ============================== -->
 
 </resources>

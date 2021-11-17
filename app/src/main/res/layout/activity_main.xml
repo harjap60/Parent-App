@@ -1,21 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#4954B5"
-    tools:context=".ui.MainActivity"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    tools:context=".ui.MainActivity">
 
     <TextView
         android:id="@+id/main_title"
+        style="@style/Theme.ParentApp.NoActionBar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="12dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="0dp"
         android:layout_marginTop="12dp"
+        android:layout_marginEnd="0dp"
         android:layout_marginBottom="12dp"
         android:text="@string/title_main_activity"
-        android:textColor="#000000"
+        android:textAlignment="center"
         android:textSize="45sp"
         android:textStyle="bold" />
 
@@ -29,12 +33,10 @@
         android:layout_marginEnd="20dp"
         android:layout_marginBottom="20dp"
         android:columnCount="1"
-        android:rowCount="3">
+        android:rowCount="4">
 
         <androidx.cardview.widget.CardView
-            android:foreground="?attr/selectableItemBackgroundBorderless"
             android:id="@+id/btn_start_flip"
-            app:cardBackgroundColor="@color/white"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_row="0"
@@ -42,10 +44,12 @@
             android:layout_column="0"
             android:layout_columnWeight="1"
             android:layout_gravity="fill"
+            android:focusable="true"
+            android:foreground="?attr/selectableItemBackgroundBorderless"
+            app:cardBackgroundColor="@color/white"
             app:cardCornerRadius="50dp"
             app:cardElevation="8dp"
-            app:cardUseCompatPadding="true"
-            android:focusable="true">
+            app:cardUseCompatPadding="true">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/linearLayout"
@@ -75,11 +79,11 @@
                     android:autoSizeMinTextSize="12sp"
                     android:autoSizeStepGranularity="2sp"
                     android:autoSizeTextType="uniform"
+                    android:maxLines="1"
                     android:text="@string/flip_a_coin"
                     android:textAlignment="center"
                     android:textColor="@color/black"
                     android:textSize="16sp"
-                    android:maxLines="1"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="@id/guideline21"
                     app:layout_constraintHorizontal_bias="0.5"
@@ -92,36 +96,34 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
-                    app:layout_constraintGuide_percent="0.25"/>
+                    app:layout_constraintGuide_percent="0.25" />
 
                 <androidx.constraintlayout.widget.Guideline
                     android:id="@+id/guideline7"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
-                    app:layout_constraintGuide_percent="0.65"/>
+                    app:layout_constraintGuide_percent="0.65" />
 
                 <androidx.constraintlayout.widget.Guideline
                     android:id="@+id/guideline20"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    app:layout_constraintGuide_percent="0.39"/>
+                    app:layout_constraintGuide_percent="0.39" />
 
                 <androidx.constraintlayout.widget.Guideline
                     android:id="@+id/guideline21"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    app:layout_constraintGuide_percent="0.61"/>
+                    app:layout_constraintGuide_percent="0.61" />
             </androidx.constraintlayout.widget.ConstraintLayout>
 
         </androidx.cardview.widget.CardView>
 
         <androidx.cardview.widget.CardView
-            android:foreground="?attr/selectableItemBackgroundBorderless"
             android:id="@+id/btn_start_timer"
-            app:cardBackgroundColor="@color/white"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_row="1"
@@ -129,10 +131,12 @@
             android:layout_column="0"
             android:layout_columnWeight="1"
             android:layout_gravity="fill"
+            android:focusable="true"
+            android:foreground="?attr/selectableItemBackgroundBorderless"
+            app:cardBackgroundColor="@color/white"
             app:cardCornerRadius="50dp"
             app:cardElevation="8dp"
-            app:cardUseCompatPadding="true"
-            android:focusable="true">
+            app:cardUseCompatPadding="true">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/linearLayout2"
@@ -150,7 +154,7 @@
                     app:layout_constraintBottom_toBottomOf="@id/guideline9"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="@id/guideline8"/>
+                    app:layout_constraintTop_toTopOf="@id/guideline8" />
 
                 <TextView
                     android:id="@+id/timeout_timer_text"
@@ -177,35 +181,33 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
-                    app:layout_constraintGuide_percent="0.20"/>
+                    app:layout_constraintGuide_percent="0.20" />
 
                 <androidx.constraintlayout.widget.Guideline
                     android:id="@+id/guideline9"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
-                    app:layout_constraintGuide_percent="0.65"/>
+                    app:layout_constraintGuide_percent="0.65" />
 
                 <androidx.constraintlayout.widget.Guideline
                     android:id="@+id/guideline23"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    app:layout_constraintGuide_percent="0.36"/>
+                    app:layout_constraintGuide_percent="0.36" />
 
                 <androidx.constraintlayout.widget.Guideline
                     android:id="@+id/guideline24"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    app:layout_constraintGuide_percent="0.64"/>
+                    app:layout_constraintGuide_percent="0.64" />
             </androidx.constraintlayout.widget.ConstraintLayout>
         </androidx.cardview.widget.CardView>
 
         <androidx.cardview.widget.CardView
-            android:foreground="?attr/selectableItemBackgroundBorderless"
             android:id="@+id/start_child_list"
-            app:cardBackgroundColor="@color/white"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_row="2"
@@ -213,10 +215,12 @@
             android:layout_column="0"
             android:layout_columnWeight="1"
             android:layout_gravity="fill"
+            android:focusable="true"
+            android:foreground="?attr/selectableItemBackgroundBorderless"
+            app:cardBackgroundColor="@color/white"
             app:cardCornerRadius="55dp"
             app:cardElevation="8dp"
-            app:cardUseCompatPadding="true"
-            android:focusable="true">
+            app:cardUseCompatPadding="true">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/linearLayout3"
@@ -234,7 +238,7 @@
                     app:layout_constraintBottom_toBottomOf="@id/guideline11"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="@id/guideline10"/>
+                    app:layout_constraintTop_toTopOf="@id/guideline10" />
 
                 <TextView
                     android:id="@+id/configure_child_text"
@@ -261,30 +265,39 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
-                    app:layout_constraintGuide_percent="0.25"/>
+                    app:layout_constraintGuide_percent="0.25" />
 
                 <androidx.constraintlayout.widget.Guideline
                     android:id="@+id/guideline11"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
-                    app:layout_constraintGuide_percent="0.65"/>
+                    app:layout_constraintGuide_percent="0.65" />
 
                 <androidx.constraintlayout.widget.Guideline
                     android:id="@+id/guideline25"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    app:layout_constraintGuide_percent="0.34"/>
+                    app:layout_constraintGuide_percent="0.34" />
 
                 <androidx.constraintlayout.widget.Guideline
                     android:id="@+id/guideline26"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    app:layout_constraintGuide_percent="0.66"/>
+                    app:layout_constraintGuide_percent="0.66" />
             </androidx.constraintlayout.widget.ConstraintLayout>
 
         </androidx.cardview.widget.CardView>
+
+        <Button
+            android:id="@+id/btn_task_list"
+            style="@style/Theme.ParentApp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:backgroundTint="#FFFFFF"
+            android:text="@string/main_activity_task_list_btn"
+            android:textColor="@color/black" />
     </GridLayout>
 </RelativeLayout>
