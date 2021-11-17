@@ -30,7 +30,6 @@ import io.reactivex.rxjava3.schedulers.Schedulers;
  */
 public class ChildActivity extends AppCompatActivity {
 
-    public static final String TAG = "CHILD_ACTIVITY";
     private static final String EXTRA_FOR_INDEX =
             "com.cmpt276.parentapp.ui.AddChildActivity.childId";
     private static final int NEW_CHILD_INDEX = -1;

@@ -38,7 +38,6 @@ import io.reactivex.rxjava3.schedulers.Schedulers;
  */
 public class FlipActivity extends AppCompatActivity {
 
-    public static final String TAG = "FLIP_ACTIVITY";
     private static final float SET_BUTTON_TO_ENABLE = 1f;
     private ActivityFlipBinding binding;
 

@@ -36,7 +36,7 @@ import io.reactivex.rxjava3.schedulers.Schedulers;
  */
 public class ChildListActivity extends AppCompatActivity {
 
-    ActivityChildListBinding binding;
+    private ActivityChildListBinding binding;
 
     public static Intent getIntent(Context context) {
         return new Intent(context, ChildListActivity.class);

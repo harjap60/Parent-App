@@ -31,7 +31,6 @@ import io.reactivex.rxjava3.schedulers.Schedulers;
 
 public class FlipHistoryActivity extends AppCompatActivity {
 
-    private static String TAG = "FLIP_HISTORY_ACTIVITY";
     private ActivityFlipHistoryBinding binding;
 
     public static Intent getIntent(Context context) {
