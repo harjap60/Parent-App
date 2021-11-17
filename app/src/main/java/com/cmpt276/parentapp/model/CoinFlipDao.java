@@ -14,6 +14,9 @@ import java.util.List;
 import io.reactivex.rxjava3.core.Completable;
 import io.reactivex.rxjava3.core.Single;
 
+/**
+ * This is a Database Access Object that handles interactions with the coinFlip table.
+ */
 @Dao
 public interface CoinFlipDao {
 
@@ -41,15 +44,6 @@ public interface CoinFlipDao {
             "ORDER BY cf.uid DESC LIMIT 1")
     Single<ChildCoinFlip> getLastFlip();
 
-    @Query("SELECT * FROM CoinFlip")
-    Single<List<CoinFlip>> getAll();
-
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     Completable insertAll(CoinFlip... coinFlips);
-
-    @Delete
-    Completable delete(CoinFlip... coinFlips);
-
-    @Update
-    Completable update(CoinFlip coinFlip);
 }

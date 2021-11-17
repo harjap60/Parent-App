@@ -11,6 +11,14 @@ import androidx.room.TypeConverters;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
+/**
+ * The main database class that is used by Room to create a concrete class that creates and manages
+ * the app database.
+ *
+ * This is a singleton as it is expensive to keep creating these database connection instances.
+ *
+ * This class needs to have methods to return DAOs for each entity we have.
+ */
 @Database(
         entities = {Child.class, CoinFlip.class},
         version = 11

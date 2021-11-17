@@ -2,6 +2,7 @@ package com.cmpt276.parentapp.model;
 
 import static androidx.room.ForeignKey.CASCADE;
 
+import androidx.annotation.NonNull;
 import androidx.room.Entity;
 import androidx.room.ForeignKey;
 import androidx.room.PrimaryKey;
@@ -11,10 +12,15 @@ import java.time.LocalDateTime;
 /**
  * Store information about a flip
  * Stores:
- * name of child
- * the choice they made
+ * Child ID
+ * the choice (enum)
  * Whether or not they won
  * The time the flip happened
+ * <p>
+ * This class represents an entity in the Room database. It represents the structure of the
+ * CoinFlip table in Room.
+ * <p>
+ * The ChildId represents a reference to a child.
  */
 @Entity(foreignKeys = {
         @ForeignKey(
@@ -27,13 +33,14 @@ import java.time.LocalDateTime;
 public class CoinFlip {
 
 
-    final int childId;
+    @PrimaryKey(autoGenerate = true)
+    private int uid;
 
+    private final int childId;
     private final Choice choice;
     private final boolean isWinner;
     private final LocalDateTime date;
-    @PrimaryKey(autoGenerate = true)
-    private int uid;
+
 
     public CoinFlip(int childId, Choice choice, boolean isWinner, LocalDateTime date) {
         this.childId = childId;
@@ -66,6 +73,7 @@ public class CoinFlip {
         this.uid = uid;
     }
 
+    @NonNull
     @Override
     public String toString() {
         return "CoinFlip{" +
@@ -78,5 +86,4 @@ public class CoinFlip {
     }
 
     public enum Choice {HEADS, TAILS}
-
 }

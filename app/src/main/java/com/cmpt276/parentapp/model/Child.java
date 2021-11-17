@@ -1,14 +1,19 @@
 package com.cmpt276.parentapp.model;
 
+import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
 /**
  * Child class - This will store the information of the child
- * currently it's just the name
+ * currently it's just the name.
+ *
+ * This is an entity for the room database and reflects the structure of the child table.
+ *
+ * Room assigns a unique value to UID for the child that can be used to find the
+ * child in the database.
  */
-
 @Entity
 public class Child {
 
@@ -52,6 +57,7 @@ public class Child {
         this.uid = uid;
     }
 
+    @NonNull
     @Override
     public String toString() {
         return "Child{" +

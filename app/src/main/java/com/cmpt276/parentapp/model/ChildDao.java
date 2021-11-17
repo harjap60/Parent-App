@@ -12,6 +12,10 @@ import java.util.List;
 import io.reactivex.rxjava3.core.Completable;
 import io.reactivex.rxjava3.core.Single;
 
+/**
+ * This is a Database Access Object that handles interactions with the child table in the
+ * room database.
+ */
 @Dao
 public interface ChildDao {
     @Query("SELECT * FROM child")
