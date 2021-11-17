@@ -201,10 +201,12 @@ public class FlipActivity extends AppCompatActivity {
 
                 int currentOrder = currentChild.getCoinFlipOrder();
 
+                //Pushing child to end of the list
                 int order = childDao.getNextCoinFlipOrder().blockingGet();
                 currentChild.setCoinFlipOrder(order);
                 childDao.update(currentChild).blockingAwait();
 
+                //Moving everyone behind this child up by one.
                 childDao.decrementCoinFlipOrder(currentOrder).blockingAwait();
 
                 setupCurrentChild();
@@ -266,7 +268,7 @@ public class FlipActivity extends AppCompatActivity {
                     public void onSuccess(@NonNull ChildCoinFlip flip) {
                         binding.previousChildTv.setText(getString(
                                 R.string.previous_child_tv_string,
-                               flip.getChild().getName()));
+                                flip.getChild().getName()));
                     }
 
                     @Override
