@@ -23,17 +23,11 @@ public interface ChildDao {
     @Query("SELECT * FROM child ORDER BY coinFlipOrder LIMIT 1")
     Single<Child> getChildForNextFlip();
 
-    @Query("UPDATE child set coinFlipOrder = coinFlipOrder - 1 WHERE coinFlipOrder > 0")
-    Completable decrementCoinFlipOrder();
+    @Query("UPDATE child set coinFlipOrder = coinFlipOrder - 1 WHERE coinFlipOrder > :min")
+    Completable decrementCoinFlipOrder(int min);
 
     @Query("SELECT IFNULL(MAX(coinFlipOrder) + 1, 0) FROM child")
     Single<Integer> getNextCoinFlipOrder();
-
-    @Query("SELECT * FROM child WHERE uid IN (:userIds)")
-    Single<List<Child>> getAllWithId(int[] userIds);
-
-    @Query("SELECT * FROM Child WHERE name LIKE :name")
-    Single<List<Child>> findByName(String name);
 
     @Query("SELECT COUNT(*) > 0 FROM Child")
     Single<Boolean> hasChildren();

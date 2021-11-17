@@ -199,11 +199,13 @@ public class FlipActivity extends AppCompatActivity {
 
                 coinFlipDao.insertAll(flip).blockingAwait();
 
-                Integer order = childDao.getNextCoinFlipOrder().blockingGet();
-                currentChild.setCoinFlipOrder(order);
+                int currentOrder = currentChild.getCoinFlipOrder();
 
+                int order = childDao.getNextCoinFlipOrder().blockingGet();
+                currentChild.setCoinFlipOrder(order);
                 childDao.update(currentChild).blockingAwait();
-                childDao.decrementCoinFlipOrder().blockingAwait();
+
+                childDao.decrementCoinFlipOrder(currentOrder).blockingAwait();
 
                 setupCurrentChild();
                 setupPreviousChild();
