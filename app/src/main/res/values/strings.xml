@@ -95,6 +95,8 @@
     <string name="no_child_string">---</string>
     <string name="child_won">won</string>
     <string name="child_lost">lost</string>
+    <string name="add_task_btn_title">Add Task</string>
+    <string name="task_child_image">Child\'s Image</string>
     <!-- ============================== -->
 
 </resources>
