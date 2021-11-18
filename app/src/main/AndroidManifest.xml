@@ -22,15 +22,17 @@
             android:parentActivityName=".ui.FlipActivity"
             android:theme="@style/Theme.ParentApp.NoActionBar" />
         <activity
-            android:name=".ui.AddChildActivity"
+            android:name=".ui.ChildActivity"
             android:exported="false"
-            android:parentActivityName=".ui.MainActivity"
+            android:theme="@style/Theme.ParentApp.NoActionBar"
+            android:parentActivityName=".ui.MainActivity" />
+
             android:screenOrientation="portrait"
-            android:theme="@style/Theme.ParentApp.NoActionBar" />
         <activity
             android:name=".ui.ChildListActivity"
             android:exported="false"
             android:parentActivityName=".ui.MainActivity"
+            android:theme="@style/Theme.ParentApp.NoActionBar"/>
             android:screenOrientation="portrait"
             android:theme="@style/Theme.ParentApp.NoActionBar" />
         <activity
