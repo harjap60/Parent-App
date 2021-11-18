@@ -42,5 +42,5 @@ public interface CoinFlipDao {
     Single<ChildCoinFlip> getLastFlip();
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    Completable insertAll(CoinFlip... coinFlips);
+    Completable insert(CoinFlip... coinFlips);
 }

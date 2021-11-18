@@ -196,7 +196,7 @@ public class FlipActivity extends AppCompatActivity {
                         LocalDateTime.now()
                 );
 
-                coinFlipDao.insertAll(flip).blockingAwait();
+                coinFlipDao.insert(flip).blockingAwait();
 
                 int currentOrder = currentChild.getCoinFlipOrder();
 
