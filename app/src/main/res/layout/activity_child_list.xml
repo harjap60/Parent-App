@@ -32,7 +32,7 @@
 
     </com.google.android.material.appbar.AppBarLayout>
 
-    <androidx.recyclerview.widget.RecyclerView
+    <ListView
         android:id="@+id/list_children"
         android:layout_width="0dp"
         android:layout_height="0dp"
