@@ -28,18 +28,18 @@
     <!-- Strings used for ADD/EDIT CHILD ACTIVITY -->
     <string name="add_child_button_text_for_toolbar">Add Child</string>
     <string name="add_child_button_text">Add</string>
+    <string name="child_name_label">Name:</string>
     <string name="hint_enter_child_name">Name</string>
-    <string name="child_name">Child name</string>
-    <string name="add_child_activity_toolbar_label">Add new child</string>
+    <string name="add_child_title">Add Child</string>
 
     <string name="edit_child_button_text">Edit</string>
-    <string name="edit_child_activity_toolbar_label">Edit Child</string>
+    <string name="edit_child_title">Edit Child</string>
     <string name="confirm_edit_child_dialog_box_message">
         Are you sure you want the name from \"%1$s\" to \"%2$s\"?
     </string>
     <string name="delete_child_button_text">Delete child</string>
     <string name="confirm_delete_child_dialog_box_message">
-        Are you sure you want to delete \"%1$s\" from you list?
+        Are you sure you want to delete \"%1$s\" from your list?
     </string>
     <string name="toast_has_been_added_to_list">
         \"%1$s\" has been added to the list
@@ -95,6 +95,8 @@
     <string name="no_child_string">---</string>
     <string name="child_won">won</string>
     <string name="child_lost">lost</string>
+    <string name="save_button_description">Save Button</string>
+    <string name="child_image_description">Child Image</string>
     <!-- ============================== -->
 
 </resources>
