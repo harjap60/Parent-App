@@ -35,6 +35,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+import androidx.core.content.FileProvider;
 
 import com.cmpt276.parentapp.R;
 import com.cmpt276.parentapp.model.Child;
@@ -48,6 +49,8 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Objects;
 
 /**
@@ -81,10 +84,13 @@ public class AddChildActivity extends AppCompatActivity {
     private final int REQUEST_READ_EXTERNAL_STORAGE = 111;
     private final int REQUEST_CAMERA = 222;
     private final int REQUEST_WRITE_EXTERNAL_STORAGE = 333;
-    private Uri imageUri;
+    private Uri imageUri, photoUri;
     private String stringPath;
     private Intent intentData;
     private File myFilesDir;
+
+    private File photoFile = null;
+    private String mCurrentPhotoPath = "";
 
     Child child;
 
@@ -110,8 +116,8 @@ public class AddChildActivity extends AppCompatActivity {
         manager = ChildManager.getInstance(AddChildActivity.this);
 
         //--------------------------------
-        myFilesDir = new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/Android/data/com.example.project/files");
-        myFilesDir.mkdirs();
+        /*myFilesDir = new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/Android/data/com.example.project/files");
+        myFilesDir.mkdirs();*/
         //--------------------------------
 
         extractDataFromIntent();
@@ -279,15 +285,75 @@ public class AddChildActivity extends AppCompatActivity {
             @Override
             public void onClick(DialogInterface dialogInterface, int item) {
                 if (IMAGE_OPTIONS[item].equals(getString(R.string.take_photo))){
+                    captureImage();
+                }
+                else if (IMAGE_OPTIONS[item].equals(getString(R.string.choose_from_gallery))) {
+                    chooseImageFromGallery();
+                }
+                else if (IMAGE_OPTIONS[item].equals(getString(R.string.cancel))) {
+                    dialogInterface.dismiss();
+                }
+            }
+        });
+        builder.show();
+    }
 
-                    // TODO: check for the permission for the camera
-                    // if we do not have permission
-                    if (ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
-                        // then ask the permission from the user
-                        ActivityCompat.requestPermissions(AddChildActivity.this, new String[]{Manifest.permission.CAMERA}, REQUEST_CAMERA);
+    private void captureImage() {
+        if (ContextCompat.checkSelfPermission(AddChildActivity.this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+            // then ask the permission from the user
+            // todo: make separate columns for the following lines as it asks two permission in one single thing
+            ActivityCompat.requestPermissions(AddChildActivity.this, new String[]{Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE}, 11);
+        }
+        else {
+            Intent takePicture = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+
+            if (takePicture.resolveActivity(getPackageManager()) != null) {
+                // Create the File where the photo should go
+                try {
+                    photoFile = createImageFile();
+                    Toast.makeText(AddChildActivity.this, photoFile.getAbsolutePath() + "", Toast.LENGTH_SHORT).show();
+
+                    // Continue only if the file was successfully created
+                    if (photoFile != null) {
+                        photoUri = FileProvider.getUriForFile(AddChildActivity.this, "com.cmpt276.parentapp", photoFile);
+                        takePicture.putExtra(MediaStore.EXTRA_OUTPUT, photoUri);
+                        startActivityForResult(takePicture, REQUEST_CODE_FOR_TAKE_PHOTO);
                     }
+                }
+                catch (IOException e) {
+                    // Error occurred
+                    Toast.makeText(AddChildActivity.this, "Error Occurred", Toast.LENGTH_SHORT).show();
+                }
+            }
+        }
+    }
 
-                    /*int PERMISSION_REQUEST_CODE = 1;
+    private File createImageFile() throws IOException {
+        // Create an image file name
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+        String imageFileName = "JPEG_" + timeStamp + "_";
+        File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+        File image = File.createTempFile(
+                imageFileName,  // prefix
+                ".jpg",   // suffix
+                storageDir     // directory
+        );
+
+        // Save a file: path for use with ACTION_VIEW intents
+        mCurrentPhotoPath = image.getAbsolutePath();
+        return image;
+    }
+
+    /*private void captureImage() {
+        // TODO: check for the permission for the camera
+        // if we do not have permission
+        if (ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+            // then ask the permission from the user
+            ActivityCompat.requestPermissions(AddChildActivity.this, new String[]{Manifest.permission.CAMERA}, REQUEST_CAMERA);
+        }
+
+                    */
+    /*int PERMISSION_REQUEST_CODE = 1;
 
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
 
@@ -302,37 +368,46 @@ public class AddChildActivity extends AppCompatActivity {
 
                         }
                     }*/
+    /*
 
-                    //---------------------------------------------
-                    ContentValues values = new ContentValues();
-                    values.put(MediaStore.Images.Media.TITLE, "New Picture");
-                    values.put(MediaStore.Images.Media.DESCRIPTION, "From your Camera");
-                    imageUri = getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
-                    Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                    intent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
-                    startActivityForResult(intent, REQUEST_CODE_FOR_TAKE_PHOTO);
-                    //---------------------------------------------
+        //---------------------------------------------
+        ContentValues values = new ContentValues();
+        values.put(MediaStore.Images.Media.TITLE, "New Picture");
+        values.put(MediaStore.Images.Media.DESCRIPTION, "From your Camera");
+        imageUri = getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
+        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        intent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
+        startActivityForResult(intent, REQUEST_CODE_FOR_TAKE_PHOTO);
+        //---------------------------------------------
+    }*/
 
-                }
-                else if (IMAGE_OPTIONS[item].equals(getString(R.string.choose_from_gallery))) {
-                    // if we do not have permission
-                    if (ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-                        // then ask the permission from the user
-                        ActivityCompat.requestPermissions(AddChildActivity.this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, REQUEST_READ_EXTERNAL_STORAGE);
-                    }
+    private void chooseImageFromGallery() {
+        // if we do not have permission
+        if (ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+            // then ask the permission from the user
+            ActivityCompat.requestPermissions(AddChildActivity.this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, REQUEST_READ_EXTERNAL_STORAGE);
+        }
 
-                    // todo: might need to put the code below in the else block
-                    // permission has been granted
-                    Intent pickPhoto = new Intent(Intent.ACTION_PICK);
-                    pickPhoto.setType("image/*");
-                    startActivityForResult(pickPhoto, REQUEST_CODE_FOR_CHOOSE_FROM_GALLERY);
-                }
-                else if (IMAGE_OPTIONS[item].equals(getString(R.string.cancel))) {
-                    dialogInterface.dismiss();
-                }
+        // todo: might need to put the code below in the else block
+        // permission has been granted
+        Intent pickPhoto = new Intent(Intent.ACTION_PICK);
+        pickPhoto.setType("image/*");
+        startActivityForResult(pickPhoto, REQUEST_CODE_FOR_CHOOSE_FROM_GALLERY);
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+
+        if (requestCode == 11) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED && grantResults[1] == PackageManager.PERMISSION_GRANTED) {
+                captureImage();
             }
-        });
-        builder.show();
+            else {
+                Toast.makeText(AddChildActivity.this, "You need to grant camera permission to take photo of the child", Toast.LENGTH_LONG).show();
+            }
+        }
+
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
     }
 
     private int getOrientation(Context context, Uri selectedImage) {
@@ -368,7 +443,7 @@ public class AddChildActivity extends AppCompatActivity {
         if (resultCode != RESULT_CANCELED) {
             switch (requestCode) {
                 case REQUEST_CODE_FOR_TAKE_PHOTO:
-                    if (resultCode == RESULT_OK) {
+                    /*if (resultCode == RESULT_OK) {
 
                         try {
                             Bitmap thumbnail = MediaStore.Images.Media.getBitmap(getContentResolver(), imageUri);
@@ -385,6 +460,20 @@ public class AddChildActivity extends AppCompatActivity {
                         }
 
                         Log.e("TAG", "Reached here");
+                    }*/
+
+                    /*Bundle extras = data.getExtras();
+                    Bitmap imageBitmap = (Bitmap) extras.get("data");
+                    childImage.setImageBitmap(imageBitmap);*/
+
+                    if (data != null) {
+                        Bitmap myBitmap = BitmapFactory.decodeFile(photoFile.getAbsolutePath());
+
+                        //Uri imageUriFromCamera = data.getData();
+                        //myBitmap = rotateImage(AddChildActivity.this, myBitmap, imageUriFromCamera);
+                        //myBitmap = rotateImageIfRequired(AddChildActivity.this, myBitmap, photoUri);
+
+                        childImage.setImageBitmap(myBitmap);
                     }
                     break;
 
