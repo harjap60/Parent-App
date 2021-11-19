@@ -17,7 +17,7 @@ public class ChildManager {
     private ChildManager(Context context) {
 
         //reads the list of children from shared preferences
-        children = PrefConfig.readChildListFromPref(context);
+        //children = PrefConfig.readChildListFromPref(context);
 
         //If list null create one
         if (children == null) {

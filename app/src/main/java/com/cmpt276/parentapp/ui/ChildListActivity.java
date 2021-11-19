@@ -9,6 +9,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -136,6 +137,16 @@ public class ChildListActivity extends AppCompatActivity {
             Child currentChild = manager.getChild(position);
 
             // Fill the view
+
+            // Child Image
+            ImageView childImage = itemView.findViewById(R.id.item_icon_child);
+            // if the user has specified a picture for the child, then set the image of the child
+            // otherwise just display the default image for the child
+            if (currentChild.getChildImageBitmap() != null) {
+                childImage.setImageBitmap(currentChild.getChildImageBitmap());
+            }
+
+            // Child Name
             TextView childNameText = itemView.findViewById(R.id.child_name_text_view);
             childNameText.setText(currentChild.getChildName());
 
