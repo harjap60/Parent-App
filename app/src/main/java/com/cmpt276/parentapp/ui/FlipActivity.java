@@ -118,6 +118,8 @@ public class FlipActivity extends AppCompatActivity {
             setButtonState(binding.userChoiceHeadsButton, false);
             setButtonState(binding.userChoiceTailsButton, false);
             setButtonState(binding.flipCoinImageButton, false);
+            setButtonState(binding.flipHistoryButton, false);
+
 
             flipCoin();
         });
@@ -126,11 +128,14 @@ public class FlipActivity extends AppCompatActivity {
     private void enableFlipCoinButton() {
         binding.headsTailsTextAfterFlip.setVisibility(View.INVISIBLE);
         setButtonState(binding.flipCoinImageButton, true);
+        setButtonState(binding.userChoiceHeadsButton, false);
+        setButtonState(binding.userChoiceTailsButton, false);
     }
 
     private void setupButtonWithChild() {
         setButtonState(binding.userChoiceHeadsButton, true);
         setButtonState(binding.userChoiceTailsButton, true);
+        setButtonState(binding.flipHistoryButton, true);
         setButtonState(binding.flipCoinImageButton, false);
     }
 
@@ -138,6 +143,7 @@ public class FlipActivity extends AppCompatActivity {
         setButtonState(binding.userChoiceHeadsButton, false);
         setButtonState(binding.userChoiceTailsButton, false);
         setButtonState(binding.flipCoinImageButton, true);
+        setButtonState(binding.flipHistoryButton, true);
     }
 
     private void setButtonState(View btn, boolean isEnabled) {
@@ -274,7 +280,7 @@ public class FlipActivity extends AppCompatActivity {
                     public void onError(@NonNull Throwable e) {
                         if (e.getClass() == EmptyResultSetException.class) {
                             binding.previousChildTv.setText(getString(
-                                    R.string.current_child_tv_string,
+                                    R.string.previous_child_tv_string,
                                     getString(R.string.no_child_string)));
                         }
                     }
