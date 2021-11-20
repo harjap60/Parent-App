@@ -3,19 +3,17 @@ package com.cmpt276.parentapp.ui;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.Menu;
+import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import com.cmpt276.parentapp.R;
 import com.cmpt276.parentapp.databinding.ActivityTaskListBinding;
-import com.cmpt276.parentapp.databinding.TaskListItemBinding;
 import com.cmpt276.parentapp.model.Task;
 
 import java.util.ArrayList;
@@ -47,9 +45,6 @@ public class TaskListActivity extends AppCompatActivity {
         taskList.add(new Task("Jump"));
         taskList.add(new Task("Run"));
 
-        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
-        binding.rvTaskList.setLayoutManager(layoutManager);
-
         TaskListAdapter adapter = new TaskListAdapter(taskList);
         binding.rvTaskList.setAdapter(adapter);
     }
@@ -60,54 +55,40 @@ public class TaskListActivity extends AppCompatActivity {
         return true;
     }
 
-    class TaskListAdapter extends RecyclerView.Adapter<TaskListAdapter.TaskHolder> {
+    class TaskListAdapter extends ArrayAdapter<Task> {
 
         List<Task> taskList;
 
         public TaskListAdapter(List<Task> taskList) {
+            super(TaskListActivity.this,
+                    R.layout.task_list_item,
+                    taskList);
             this.taskList = taskList;
         }
 
-        @NonNull
-        @Override
-        public TaskHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-            return new TaskHolder(TaskListItemBinding.inflate(
-                    LayoutInflater.from(
-                            parent.getContext()
-                    ),
-                    parent,
-                    false
-            ));
-        }
-
-        @Override
-        public void onBindViewHolder(@NonNull TaskHolder holder, int position) {
-            holder.setName(taskList.get(position).getName());
-        }
-
-        @Override
-        public int getItemCount() {
-            return taskList.size();
-        }
-
-        class TaskHolder extends RecyclerView.ViewHolder {
-
-            TaskListItemBinding binding;
-
-            public TaskHolder(TaskListItemBinding binding) {
-                super(binding.getRoot());
-                this.binding = binding;
-
-                this.binding.getRoot().setOnClickListener(v -> Toast.makeText(
-                        TaskListActivity.this,
-                        "Clicked",
-                        Toast.LENGTH_SHORT
-                ).show());
+        public View getView(int position, View convertView, ViewGroup parent) {
+            View itemView = convertView;
+            if (itemView == null) {
+                itemView = getLayoutInflater()
+                        .inflate(
+                                R.layout.task_list_item,
+                                parent,
+                                false
+                        );
             }
 
-            public void setName(String name) {
-                this.binding.tvTaskName.setText(name);
-            }
+            itemView.setOnClickListener(v -> Toast.makeText(
+                    TaskListActivity.this,
+                    "Clicked",
+                    Toast.LENGTH_SHORT
+            ).show());
+
+            Task task = taskList.get(position);
+
+            TextView childNameText = itemView.findViewById(R.id.tv_task_name);
+            childNameText.setText(task.getName());
+
+            return itemView;
         }
     }
 }
