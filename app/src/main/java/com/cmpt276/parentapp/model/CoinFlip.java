@@ -25,7 +25,7 @@ import java.time.LocalDateTime;
 @Entity(foreignKeys = {
         @ForeignKey(
                 entity = Child.class,
-                parentColumns = "uid",
+                parentColumns = "childId",
                 childColumns = "childId",
                 onDelete = CASCADE
         )
@@ -34,7 +34,7 @@ public class CoinFlip {
 
 
     @PrimaryKey(autoGenerate = true)
-    private int uid;
+    private int coinFlipId;
 
     private final int childId;
     private final Choice choice;
@@ -50,34 +50,40 @@ public class CoinFlip {
     }
 
     public int getChildId() {
+
         return this.childId;
     }
 
     public Choice getChoice() {
+
         return this.choice;
     }
 
     public boolean isWinner() {
+
         return this.isWinner;
     }
 
     public LocalDateTime getDate() {
+
         return this.date;
     }
 
-    public int getUid() {
-        return uid;
+    public int getCoinFlipId() {
+
+        return coinFlipId;
     }
 
-    public void setUid(int uid) {
-        this.uid = uid;
+    public void setCoinFlipId(int coinFlipId) {
+
+        this.coinFlipId = coinFlipId;
     }
 
     @NonNull
     @Override
     public String toString() {
         return "CoinFlip{" +
-                "uid=" + uid +
+                "uid=" + coinFlipId +
                 ", childId=" + childId +
                 ", choice=" + choice +
                 ", isWinner=" + isWinner +
