@@ -15,14 +15,14 @@ import io.reactivex.rxjava3.core.Single;
 @Dao
 public interface TaskDao {
 
-    @Query("SELECT IFNULL(MAX(`order`) + 1, 0) FROM ChildTaskCrossRef where taskId = :taskId")
+    @Query("SELECT IFNULL(MAX(`order`) + 1, 0) FROM ChildTaskCrossRef WHERE taskId = :taskId")
     Single<Integer> getNextOrder(int taskId);
 
     @Query("UPDATE ChildTaskCrossRef SET `order` = `order` - 1 " +
             "WHERE taskId = :taskId and `order` > :minOrder")
     Completable decrementOrder(int taskId, int minOrder);
 
-    @Query("SELECT * FROM Task WHERE uid = :taskId")
+    @Query("SELECT * FROM Task WHERE taskId = :taskId")
     Single<TaskWithChildren> getTaskWithChildren(int taskId);
 
     @Query("SELECT * FROM task")

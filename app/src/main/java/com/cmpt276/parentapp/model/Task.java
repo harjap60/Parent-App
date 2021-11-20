@@ -8,11 +8,12 @@ import androidx.room.PrimaryKey;
 public class Task {
 
     @PrimaryKey(autoGenerate = true)
-    private int uid;
+    private int taskId;
 
     private String name;
 
     public Task(String name) {
+
         this.setName(name);
     }
 
@@ -25,6 +26,7 @@ public class Task {
     }
 
     public String getName() {
+
         return name;
     }
 
@@ -36,11 +38,13 @@ public class Task {
         this.name = name;
     }
 
-    public int getUid() {
-        return uid;
+    public int getTaskId() {
+
+        return taskId;
     }
 
-    public void setUid(int uid) {
-        this.uid = uid;
+    public void setTaskId(int taskId) {
+
+        this.taskId = taskId;
     }
 }

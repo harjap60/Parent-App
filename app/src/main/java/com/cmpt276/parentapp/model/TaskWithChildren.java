@@ -11,8 +11,8 @@ public class TaskWithChildren {
     public Task task;
 
     @Relation(
-            parentColumn = "playlistId",
-            entityColumn = "songId",
+            parentColumn = "taskId",
+            entityColumn = "childId",
             associateBy = @Junction(ChildTaskCrossRef.class)
     )
     public List<Child> children;
