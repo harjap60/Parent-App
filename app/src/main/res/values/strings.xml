@@ -95,6 +95,7 @@
     <string name="no_child_string">---</string>
     <string name="child_won">won</string>
     <string name="child_lost">lost</string>
+    <string name="help_button">Help button</string>
     <!-- ============================== -->
 
 </resources>
