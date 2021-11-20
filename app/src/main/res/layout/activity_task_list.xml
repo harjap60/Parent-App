@@ -7,7 +7,7 @@
     android:theme="@style/Theme.ParentApp.AppBarOverlay"
     tools:context=".ui.TaskListActivity">
 
-    <androidx.recyclerview.widget.RecyclerView
+    <ListView
         android:id="@+id/rv_task_list"
         android:layout_width="0dp"
         android:layout_height="0dp"
