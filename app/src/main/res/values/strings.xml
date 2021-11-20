@@ -97,6 +97,8 @@
     <string name="child_lost">lost</string>
     <string name="save_button_description">Save Button</string>
     <string name="child_image_description">Child Image</string>
+    <string name="image_of_current_child">Image of current child</string>
+    <string name="image_of_previous_child">Image of previous child</string>
     <!-- ============================== -->
 
 </resources>

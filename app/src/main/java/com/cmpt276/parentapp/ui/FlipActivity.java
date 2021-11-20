@@ -120,7 +120,6 @@ public class FlipActivity extends AppCompatActivity {
             setButtonState(binding.flipCoinImageButton, false);
             setButtonState(binding.flipHistoryButton, false);
 
-
             flipCoin();
         });
     }
@@ -273,7 +272,8 @@ public class FlipActivity extends AppCompatActivity {
                     public void onSuccess(@NonNull ChildCoinFlip flip) {
                         binding.previousChildTv.setText(getString(
                                 R.string.previous_child_tv_string,
-                                flip.getChild().getName()));
+                                flip.getChild().getName()
+                        ));
                     }
 
                     @Override
