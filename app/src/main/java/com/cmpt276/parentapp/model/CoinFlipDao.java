@@ -19,26 +19,26 @@ public interface CoinFlipDao {
 
     @Transaction
     @Query("SELECT " +
-            "cf.uid as cf_uid, " +
+            "cf.coinFlipId as cf_coinFlipId, " +
             "cf.childId as cf_childId, " +
             "cf.isWinner as cf_isWinner, " +
             "cf.date as cf_date, " +
             "cf.choice as cf_choice, " +
             "c.* FROM CoinFlip cf " +
-            "LEFT OUTER JOIN child c ON c.uid = cf.childId " +
-            "ORDER BY cf.uid")
+            "LEFT OUTER JOIN child c ON c.childId = cf.childId " +
+            "ORDER BY cf.coinFlipId")
     Single<List<ChildCoinFlip>> GetAllChildCoinFlips();
 
     @Transaction
     @Query("SELECT " +
-            "cf.uid as cf_uid, " +
+            "cf.coinFlipId as cf_coinFlipId, " +
             "cf.childId as cf_childId, " +
             "cf.isWinner as cf_isWinner, " +
             "cf.date as cf_date, " +
             "cf.choice as cf_choice, " +
             "c.* FROM CoinFlip cf " +
-            "LEFT OUTER JOIN child c ON c.uid = cf.childId " +
-            "ORDER BY cf.uid DESC LIMIT 1")
+            "LEFT OUTER JOIN child c ON c.childId = cf.childId " +
+            "ORDER BY cf.coinFlipId DESC LIMIT 1")
     Single<ChildCoinFlip> getLastFlip();
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)

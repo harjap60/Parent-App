@@ -190,7 +190,7 @@ public class FlipActivity extends AppCompatActivity {
             Thread thread = new Thread(() -> {
 
                 CoinFlip flip = new CoinFlip(
-                        currentChild.getUid(),
+                        currentChild.getChildId(),
                         userChoice,
                         userChoice == choice,
                         LocalDateTime.now()

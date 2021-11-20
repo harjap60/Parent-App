@@ -24,8 +24,6 @@ import com.cmpt276.parentapp.model.ParentAppDatabase;
 
 import java.util.List;
 
-import io.reactivex.rxjava3.schedulers.Schedulers;
-
 /**
  * Child List Activity - This activity will display a list of all the
  * children added by the user. The user will also have the ability to
@@ -131,7 +129,7 @@ public class ChildListActivity extends AppCompatActivity {
             childNameTextView.setText(child.getName());
 
             itemView.setOnClickListener(v -> {
-                Intent i = ChildActivity.getIntentForExistingChild(ChildListActivity.this, child.getUid());
+                Intent i = ChildActivity.getIntentForExistingChild(ChildListActivity.this, child.getChildId());
                 startActivity(i);
             });
 
