@@ -83,14 +83,6 @@ public class AddChildActivity extends AppCompatActivity {
 
     private final int REQUEST_READ_EXTERNAL_STORAGE = 111;
     private final int REQUEST_CAMERA = 222;
-    private final int REQUEST_WRITE_EXTERNAL_STORAGE = 333;
-    private Uri imageUri, photoUri;
-    private String stringPath;
-    private Intent intentData;
-    private File myFilesDir;
-
-    private File photoFile = null;
-    private String mCurrentPhotoPath = "";
 
     Child child;
 
@@ -114,11 +106,6 @@ public class AddChildActivity extends AppCompatActivity {
 
         // instantiating the manager
         manager = ChildManager.getInstance(AddChildActivity.this);
-
-        //--------------------------------
-        /*myFilesDir = new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/Android/data/com.example.project/files");
-        myFilesDir.mkdirs();*/
-        //--------------------------------
 
         extractDataFromIntent();
         setUpChild();
@@ -194,48 +181,6 @@ public class AddChildActivity extends AppCompatActivity {
         }
     }
 
-    private Bitmap rotateImageIfRequired(Context context, Bitmap img, Uri selectedImage) {
-
-        // Detect Rotation
-        int rotation = getRotation(context, selectedImage);
-        if (rotation != 0){
-            Matrix matrix = new Matrix();
-            matrix.postRotate(rotation);
-            Bitmap rotatedImg = Bitmap.createBitmap(img, 0, 0, img.getWidth(), img.getHeight(), matrix, true);
-            img.recycle();
-            return rotatedImg;
-        }
-        else {
-            return img;
-        }
-    }
-
-    private int getRotation(Context context, Uri selectedImage) {
-        int rotation = 0;
-        ContentResolver content = context.getContentResolver();
-
-        Cursor mediaCursor = content.query(MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
-                new String[] { "orientation", "date_added" },
-                null, null, "date_added desc");
-
-        if (mediaCursor != null && mediaCursor.getCount() != 0) {
-            while (mediaCursor.moveToNext()) {
-                rotation = mediaCursor.getInt(0);
-                break;
-            }
-        }
-        mediaCursor.close();
-        return rotation;
-    }
-
-    private String getRealPathFromURI(Uri contentUri) {
-        String[] proj = {MediaStore.Images.Media.DATA};
-        Cursor cursor = managedQuery(contentUri, proj, null, null, null);
-        int columnIndex = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
-        cursor.moveToFirst();
-        return cursor.getString(columnIndex);
-    }
-
     private void extractDataFromIntent() {
         Intent intent = getIntent();
         positionForEditChild = intent.getIntExtra(EXTRA_FOR_INDEX, 0);
@@ -263,22 +208,16 @@ public class AddChildActivity extends AppCompatActivity {
         fabEditChildImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
                 selectImage();
-
-                //selectImage();
-                //ImagePicker.Companion.with(AddChildActivity.this).start();
-                        /*.crop()                 //Crop image(Optional), Check Customization for more option
-                        .compress(1024)			//Final image size will be less than 1 MB(Optional)
-                        .maxResultSize(1080, 1080)	//Final image resolution will be less than 1080 x 1080(Optional)
-                        .start();*/
-
             }
         });
     }
 
     private void selectImage(){
-
+        // create a dialog box that will let the user choose from three options
+        // - take a photo using camera
+        // - choose an image from gallery
+        // - cancel
         AlertDialog.Builder builder = new AlertDialog.Builder(AddChildActivity.this);
         builder.setTitle("Choose picture");Log.e("TAG", "Reached the select image");
         builder.setItems(IMAGE_OPTIONS, new DialogInterface.OnClickListener() {
@@ -299,107 +238,37 @@ public class AddChildActivity extends AppCompatActivity {
     }
 
     private void captureImage() {
-        if (ContextCompat.checkSelfPermission(AddChildActivity.this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
-            // then ask the permission from the user
-            // todo: make separate columns for the following lines as it asks two permission in one single thing
-            ActivityCompat.requestPermissions(AddChildActivity.this, new String[]{Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE}, 11);
-        }
-        else {
-            Intent takePicture = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-
-            if (takePicture.resolveActivity(getPackageManager()) != null) {
-                // Create the File where the photo should go
-                try {
-                    photoFile = createImageFile();
-                    Toast.makeText(AddChildActivity.this, photoFile.getAbsolutePath() + "", Toast.LENGTH_SHORT).show();
-
-                    // Continue only if the file was successfully created
-                    if (photoFile != null) {
-                        photoUri = FileProvider.getUriForFile(AddChildActivity.this, "com.cmpt276.parentapp", photoFile);
-                        takePicture.putExtra(MediaStore.EXTRA_OUTPUT, photoUri);
-                        startActivityForResult(takePicture, REQUEST_CODE_FOR_TAKE_PHOTO);
-                    }
-                }
-                catch (IOException e) {
-                    // Error occurred
-                    Toast.makeText(AddChildActivity.this, "Error Occurred", Toast.LENGTH_SHORT).show();
-                }
-            }
-        }
-    }
-
-    private File createImageFile() throws IOException {
-        // Create an image file name
-        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
-        String imageFileName = "JPEG_" + timeStamp + "_";
-        File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
-        File image = File.createTempFile(
-                imageFileName,  // prefix
-                ".jpg",   // suffix
-                storageDir     // directory
-        );
-
-        // Save a file: path for use with ACTION_VIEW intents
-        mCurrentPhotoPath = image.getAbsolutePath();
-        return image;
-    }
-
-    /*private void captureImage() {
-        // TODO: check for the permission for the camera
-        // if we do not have permission
+        // if we do not have the permission for the camera
         if (ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
             // then ask the permission from the user
             ActivityCompat.requestPermissions(AddChildActivity.this, new String[]{Manifest.permission.CAMERA}, REQUEST_CAMERA);
         }
-
-                    */
-    /*int PERMISSION_REQUEST_CODE = 1;
-
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
-
-                        if (checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                                == PackageManager.PERMISSION_DENIED) {
-
-                            Log.d("permission", "permission denied to SEND_SMS - requesting it");
-                            Toast.makeText(AddChildActivity.this, "Requesting permission", Toast.LENGTH_SHORT).show();
-                            String[] permissions = {Manifest.permission.WRITE_EXTERNAL_STORAGE};
-
-                            requestPermissions(permissions, PERMISSION_REQUEST_CODE);
-
-                        }
-                    }*/
-    /*
-
-        //---------------------------------------------
-        ContentValues values = new ContentValues();
-        values.put(MediaStore.Images.Media.TITLE, "New Picture");
-        values.put(MediaStore.Images.Media.DESCRIPTION, "From your Camera");
-        imageUri = getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
-        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        intent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
-        startActivityForResult(intent, REQUEST_CODE_FOR_TAKE_PHOTO);
-        //---------------------------------------------
-    }*/
+        else {
+            // permission has been granted
+            Intent takePicture = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+            startActivityForResult(takePicture, REQUEST_CODE_FOR_TAKE_PHOTO);
+        }
+    }
 
     private void chooseImageFromGallery() {
-        // if we do not have permission
+        // if we do not have permission to read external storage
         if (ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
             // then ask the permission from the user
             ActivityCompat.requestPermissions(AddChildActivity.this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, REQUEST_READ_EXTERNAL_STORAGE);
         }
-
-        // todo: might need to put the code below in the else block
-        // permission has been granted
-        Intent pickPhoto = new Intent(Intent.ACTION_PICK);
-        pickPhoto.setType("image/*");
-        startActivityForResult(pickPhoto, REQUEST_CODE_FOR_CHOOSE_FROM_GALLERY);
+        else {
+            // permission has been granted
+            Intent pickPhoto = new Intent(Intent.ACTION_PICK);
+            pickPhoto.setType("image/*");
+            startActivityForResult(pickPhoto, REQUEST_CODE_FOR_CHOOSE_FROM_GALLERY);
+        }
     }
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
 
-        if (requestCode == 11) {
-            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED && grantResults[1] == PackageManager.PERMISSION_GRANTED) {
+        if (requestCode == REQUEST_CAMERA) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 captureImage();
             }
             else {
@@ -407,35 +276,16 @@ public class AddChildActivity extends AppCompatActivity {
             }
         }
 
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-    }
-
-    private int getOrientation(Context context, Uri selectedImage) {
-        int orientation = 0;
-        final String[] projection = new String[]{MediaStore.Images.Media.ORIENTATION};
-        final Cursor cursor = context.getContentResolver().query(selectedImage, projection, null, null, null);
-        if(cursor != null) {
-            final int orientationColumnIndex = cursor.getColumnIndex(MediaStore.Images.Media.ORIENTATION);
-            if(cursor.moveToFirst()) {
-                orientation = cursor.isNull(orientationColumnIndex) ? 0 : cursor.getInt(orientationColumnIndex);
+        if (requestCode == REQUEST_READ_EXTERNAL_STORAGE) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                chooseImageFromGallery();
             }
-            cursor.close();
-        }
-        return orientation;
-    }
-
-    private Bitmap rotateImage(Context context, Bitmap bitmapImg, Uri uriImg){
-
-        int orientation = getOrientation(context, uriImg);
-        if (orientation != 0) {
-            Matrix matrix = new Matrix();
-            matrix.postRotate(orientation);
-            Bitmap rotatedImg = Bitmap.createBitmap(bitmapImg, 0, 0, bitmapImg.getWidth(), bitmapImg.getHeight(), matrix, true);
-            bitmapImg.recycle();
-            return rotatedImg;
+            else {
+                Toast.makeText(AddChildActivity.this, "You need to grant read external storage permission to choose a photo of the child", Toast.LENGTH_LONG).show();
+            }
         }
 
-        return bitmapImg;
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
     }
 
     @Override
@@ -443,59 +293,31 @@ public class AddChildActivity extends AppCompatActivity {
         if (resultCode != RESULT_CANCELED) {
             switch (requestCode) {
                 case REQUEST_CODE_FOR_TAKE_PHOTO:
-                    /*if (resultCode == RESULT_OK) {
-
-                        try {
-                            Bitmap thumbnail = MediaStore.Images.Media.getBitmap(getContentResolver(), imageUri);
-
-                            thumbnail = rotateImage(AddChildActivity.this, thumbnail, imageUri);
-
-                            child.setChildImageBitmap(thumbnail);
-
-                            childImage.setImageBitmap(thumbnail);
-                            //String imageUrl = getRealPathFromURI(imageUri);
-
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
-
-                        Log.e("TAG", "Reached here");
-                    }*/
-
-                    /*Bundle extras = data.getExtras();
-                    Bitmap imageBitmap = (Bitmap) extras.get("data");
-                    childImage.setImageBitmap(imageBitmap);*/
-
-                    if (data != null) {
-                        Bitmap myBitmap = BitmapFactory.decodeFile(photoFile.getAbsolutePath());
-
-                        //Uri imageUriFromCamera = data.getData();
-                        //myBitmap = rotateImage(AddChildActivity.this, myBitmap, imageUriFromCamera);
-                        //myBitmap = rotateImageIfRequired(AddChildActivity.this, myBitmap, photoUri);
-
-                        childImage.setImageBitmap(myBitmap);
+                    if (resultCode == RESULT_OK && data != null) {
+                        Bitmap selectedImage = (Bitmap) data.getExtras().get("data");
+                        child.setChildImageBitmap(selectedImage);
+                        childImage.setImageBitmap(selectedImage);
                     }
                     break;
 
                 case REQUEST_CODE_FOR_CHOOSE_FROM_GALLERY:
-
                     if (resultCode == RESULT_OK && data != null) {
+                        Uri selectedImage =  data.getData();
+                        String[] filePathColumn = {MediaStore.Images.Media.DATA};
+                        if (selectedImage != null) {
+                            Cursor cursor = getContentResolver().query(selectedImage, filePathColumn, null, null, null);
+                            if (cursor != null) {
+                                cursor.moveToFirst();
 
-                        Uri selectedImageUri = data.getData();
-                        try {
-                            InputStream imageStream = getContentResolver().openInputStream(selectedImageUri);
-                            Bitmap selectedImageBitmap = BitmapFactory.decodeStream(imageStream);
+                                int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
+                                String picturePath = cursor.getString(columnIndex);
 
-                            //selectedImageBitmap = rotateImageIfRequired(AddChildActivity.this, selectedImageBitmap, selectedImageUri);
-                            selectedImageBitmap = rotateImage(AddChildActivity.this, selectedImageBitmap, selectedImageUri);
-
-                            child.setChildImageBitmap(selectedImageBitmap);
-                            childImage.setImageBitmap(selectedImageBitmap);
-                        } catch (FileNotFoundException e) {
-                            e.printStackTrace();
-                            Toast.makeText(AddChildActivity.this, "Something went wrong", Toast.LENGTH_LONG).show();
+                                Bitmap imageBitmap = BitmapFactory.decodeFile(picturePath);
+                                child.setChildImageBitmap(imageBitmap);
+                                childImage.setImageBitmap(imageBitmap);
+                                cursor.close();
+                            }
                         }
-
 
                     }
                     break;
@@ -637,7 +459,6 @@ public class AddChildActivity extends AppCompatActivity {
 
     private void changeChildName() {
         String childNameAfterChange = String.valueOf(childNameInput.getText());
-//        Child child = manager.getChild(positionForEditChild);
         child.setChildName(childNameAfterChange);
     }
 
