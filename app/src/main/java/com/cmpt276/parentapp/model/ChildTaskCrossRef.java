@@ -4,6 +4,11 @@ import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.ForeignKey;
 
+/**
+ * Cross reference object to represent many to many relationship between Task and Child tables
+ *
+ * It has the childId, taskId and order the child holds for the task.
+ */
 @Entity(primaryKeys = {"taskId", "childId"},
         foreignKeys = {
                 @ForeignKey(entity = Child.class, parentColumns = "childId", childColumns = "childId"),

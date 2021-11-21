@@ -6,6 +6,9 @@ import androidx.room.Relation;
 
 import java.util.List;
 
+/**
+ * This object represents a task with a list of children from the room database.
+ */
 public class TaskWithChildren {
     @Embedded
     public Task task;

@@ -5,6 +5,10 @@ import androidx.room.Insert;
 
 import io.reactivex.rxjava3.core.Completable;
 
+/**
+ * Database Access Object for ChildTaskCrossRef. This handles  insertion and deletion of the
+ * relation between task and child objects.
+ */
 public interface ChildTaskCrossRefDao {
 
     @Insert

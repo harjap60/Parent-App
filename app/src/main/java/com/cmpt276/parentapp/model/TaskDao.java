@@ -12,6 +12,11 @@ import java.util.List;
 import io.reactivex.rxjava3.core.Completable;
 import io.reactivex.rxjava3.core.Single;
 
+/**
+ * Database Access Object to manage task objects in the database.
+ *
+ * This has all the queries and method required to handle interaction with the database.
+ */
 @Dao
 public interface TaskDao {
 
