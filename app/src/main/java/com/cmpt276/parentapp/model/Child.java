@@ -18,7 +18,7 @@ import androidx.room.PrimaryKey;
 public class Child {
 
     @PrimaryKey(autoGenerate = true)
-    private int uid;
+    private int childId;
 
     @ColumnInfo(name = "name")
     private String name;
@@ -42,26 +42,30 @@ public class Child {
     }
 
     public void setCoinFlipOrder(int coinFlipOrder) {
+
         this.coinFlipOrder = coinFlipOrder;
     }
 
     public int getCoinFlipOrder() {
+
         return coinFlipOrder;
     }
 
-    public int getUid() {
-        return uid;
+    public int getChildId() {
+
+        return childId;
     }
 
-    public void setUid(int uid) {
-        this.uid = uid;
+    public void setChildId(int childId) {
+
+        this.childId = childId;
     }
 
     @NonNull
     @Override
     public String toString() {
         return "Child{" +
-                "uid=" + uid +
+                "uid=" + childId +
                 ", name='" + name + '\'' +
                 ", coinFlipOrder=" + coinFlipOrder +
                 '}';

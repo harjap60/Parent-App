@@ -186,7 +186,7 @@ public class ChildActivity extends AppCompatActivity {
 
             if (child == null) {
                 int coinFlipOrder = childDao.getNextCoinFlipOrder().blockingGet();
-                childDao.insertAll(new Child(name, coinFlipOrder)).blockingAwait();
+                childDao.insert(new Child(name, coinFlipOrder)).blockingAwait();
             } else {
                 child.setName(name);
                 childDao.update(child).blockingAwait();
