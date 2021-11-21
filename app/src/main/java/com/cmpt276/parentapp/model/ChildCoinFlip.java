@@ -20,10 +20,12 @@ public class ChildCoinFlip {
     }
 
     public CoinFlip getCoinFlip() {
+
         return coinFlip;
     }
 
     public Child getChild() {
+
         return child;
     }
 }
