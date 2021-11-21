@@ -5,7 +5,9 @@ import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
 /**
- * Entity to represent Tasks
+ * Entity to represent Tasks in the room database.
+ *
+ * This just has the name of the task and a unique id
  */
 @Entity
 public class Task {
