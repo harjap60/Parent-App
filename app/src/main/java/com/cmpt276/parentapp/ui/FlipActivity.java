@@ -111,7 +111,7 @@ public class FlipActivity extends AppCompatActivity {
 
         public MySpinnerListAdapter(List<Child> children){
             super(FlipActivity.this,
-                    R.layout.current_child_flip_view,
+                    R.layout.child_list_item,
                     children
             );
             this.children = children;
@@ -121,12 +121,13 @@ public class FlipActivity extends AppCompatActivity {
         public View getDropDownView(int position, View convertView, @androidx.annotation.NonNull ViewGroup parent) {
             return getView(position, convertView, parent);
         }
+
         @Override
         public View getView(int position, @Nullable View convertView, @androidx.annotation.NonNull ViewGroup parent) {
            View itemView = convertView;
            if(itemView == null){
                itemView = getLayoutInflater().inflate(
-                       R.layout.current_child_flip_view,
+                       R.layout.child_list_item,
                        parent,
                        false
                );
@@ -134,10 +135,10 @@ public class FlipActivity extends AppCompatActivity {
 
            Child currentChild = children.get(position);
 
-            TextView childName = itemView.findViewById(R.id.current_child_text);
+            TextView childName = itemView.findViewById(R.id.child_name_text_view);
             childName.setText(currentChild.getName());
 
-            ImageView childImage = itemView.findViewById(R.id.current_flip_child_image);
+            ImageView childImage = itemView.findViewById(R.id.item_icon_child);
             childImage.setImageResource(R.drawable.child_image_icon);
 
             return itemView;

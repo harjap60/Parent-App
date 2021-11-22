@@ -274,11 +274,12 @@
     <LinearLayout
         android:layout_width="0dp"
         android:layout_height="0dp"
+        android:layout_marginTop="16dp"
         android:orientation="vertical"
+        android:weightSum="2"
         app:layout_constraintBottom_toBottomOf="@id/current_child_tv_bottom_guideline"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        android:weightSum="2"
         app:layout_constraintTop_toBottomOf="@+id/current_child_tv_top_guideline">
 
 
@@ -293,21 +294,22 @@
                 android:id="@+id/current_child_text"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
+                android:layout_weight="0.5"
                 android:autoSizeMaxTextSize="100dp"
                 android:autoSizeMinTextSize="12dp"
                 android:autoSizeStepGranularity="2dp"
                 android:autoSizeTextType="uniform"
-                android:textColor="?colorOnPrimary"
                 android:gravity="center"
-                android:layout_weight="0.6"
-                android:text="Current Child:" />
+                android:text="Current Child:"
+                android:textColor="?colorOnPrimary" />
 
             <Spinner
                 android:id="@+id/choose_child_flip_spinner"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_weight="0.4"
+                android:layout_weight="0.5"
                 android:background="?colorPrimary"
+                android:dropDownSelector="@drawable/drop_down_arrow"
                 android:popupBackground="?colorPrimaryVariant" />
         </LinearLayout>
 
@@ -330,16 +332,16 @@
                 android:gravity="center"
 
                 android:text="@string/previous_child_tv_string"
-                android:textColor="?colorOnPrimary"
-                 />
+                android:textColor="?colorOnPrimary" />
+
             <ImageView
                 android:id="@+id/previous_child_flip_image"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:foregroundGravity="left"
                 android:layout_weight="0.1"
-                app:srcCompat="@drawable/child_image_icon"
-                android:contentDescription="@string/image_of_previous_child" />
+                android:contentDescription="@string/image_of_previous_child"
+                android:foregroundGravity="left"
+                app:srcCompat="@drawable/child_image_icon" />
         </LinearLayout>
     </LinearLayout>
 
