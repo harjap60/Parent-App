@@ -21,8 +21,8 @@ public interface ChildDao {
     @Query("SELECT * FROM child")
     Single<List<Child>> getAll();
 
-    @Query("SELECT * FROM child WHERE uid = :userid")
-    Single<Child> get(int userid);
+    @Query("SELECT * FROM child WHERE childId = :childId")
+    Single<Child> get(int childId);
 
     @Query("SELECT * FROM child ORDER BY coinFlipOrder LIMIT 1")
     Single<Child> getChildForNextFlip();
@@ -37,11 +37,11 @@ public interface ChildDao {
     Single<Boolean> hasChildren();
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    Completable insertAll(Child... children);
+    Completable insert(Child... children);
 
     @Delete
-    Completable delete(Child child);
+    Completable delete(Child... children);
 
     @Update
-    Completable update(Child child);
+    Completable update(Child... children);
 }

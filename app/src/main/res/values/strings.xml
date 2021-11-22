@@ -95,10 +95,14 @@
     <string name="no_child_string">---</string>
     <string name="child_won">won</string>
     <string name="child_lost">lost</string>
+    <string name="add_task_btn_title">Add Task</string>
+    <string name="task_child_image">Child\'s Image</string>
+    <string name="main_activity_task_list_btn">Task List</string>
+    <string name="help_button">Help button</string>
     <string name="save_button_description">Save Button</string>
     <string name="child_image_description">Child Image</string>
-    <string name="image_of_current_child">Image of current child</string>
-    <string name="image_of_previous_child">Image of previous child</string>
+    <string name="title_main">Parental App</string>
+    <string name="manage_tasks_text">Manage Tasks</string>
     <!-- ============================== -->
 
 </resources>
