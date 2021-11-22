@@ -27,8 +27,16 @@ public interface TaskDao {
             "WHERE taskId = :taskId and `order` > :minOrder")
     Completable decrementOrder(int taskId, int minOrder);
 
-    @Query("SELECT * FROM Task WHERE taskId = :taskId")
-    Single<TaskWithChildren> getTaskWithChildren(int taskId);
+    @Query("SELECT " +
+            "t.taskId as t_taskId," +
+            "t.name as t_name, " +
+            "c.*, " +
+            "ref.`order` " +
+            "FROM Task t " +
+            "LEFT OUTER JOIN childtaskcrossref ref ON t.taskId = ref.taskId " +
+            "LEFT OUTER JOIN child c ON c.childId = ref.childId WHERE t.taskId = :taskId " +
+            "ORDER BY ref.`order` LIMIT 1")
+    Single<TaskWithChild> getTaskWithNextChild(int taskId);
 
     @Query("SELECT * FROM task")
     Single<List<Task>> getAll();
