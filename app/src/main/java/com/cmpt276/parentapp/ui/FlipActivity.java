@@ -8,6 +8,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.media.MediaPlayer;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AccelerateDecelerateInterpolator;
@@ -55,6 +56,8 @@ public class FlipActivity extends AppCompatActivity implements AdapterView.OnIte
 
     private CoinFlipDao coinFlipDao;
     private ChildDao childDao;
+
+    private int currentChildIndex;
 
     List<Child> coinFlipOrderList;
 
@@ -110,12 +113,14 @@ public class FlipActivity extends AppCompatActivity implements AdapterView.OnIte
             ArrayAdapter<Child> myAdapter = new MySpinnerListAdapter(coinFlipOrderList);
             runOnUiThread(() -> binding.chooseChildFlipSpinner.setAdapter(myAdapter));
         }).start();
+        binding.chooseChildFlipSpinner.setOnItemSelectedListener(this);
 
     }
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
         if (parent.getId() == R.id.choose_child_flip_spinner) {
-            String currentChildIndex = parent.getItemAtPosition(position).toString();
+            currentChildIndex = parent.getSelectedItemPosition();
+            currentChild = (Child) parent.getItemAtPosition(currentChildIndex);
         }
     }
 
