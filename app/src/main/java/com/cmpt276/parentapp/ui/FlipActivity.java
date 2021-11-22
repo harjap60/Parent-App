@@ -9,9 +9,14 @@ import android.content.Intent;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.view.animation.DecelerateInterpolator;
+import android.widget.ArrayAdapter;
+import android.widget.ImageView;
+import android.widget.TextView;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.room.rxjava3.EmptyResultSetException;
@@ -26,6 +31,7 @@ import com.cmpt276.parentapp.model.CoinFlipDao;
 import com.cmpt276.parentapp.model.ParentAppDatabase;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Random;
 
 import io.reactivex.rxjava3.annotations.NonNull;
@@ -73,6 +79,7 @@ public class FlipActivity extends AppCompatActivity {
         setupHistoryButton();
         setupChoiceButtons();
         setupCoinFlipButton();
+        setupChildChoiceSpinner();
     }
 
     @Override
@@ -81,6 +88,59 @@ public class FlipActivity extends AppCompatActivity {
 
         if (animatorSet != null && animatorSet.isRunning()) {
             animatorSet.cancel();
+        }
+    }
+
+    private void setupChildChoiceSpinner(){
+        new Thread(()->{
+            ChildDao childDao = ParentAppDatabase.getInstance(this).childDao();
+
+            List<Child> list = childDao.getAll().blockingGet();
+
+            if(list.size() == 0){
+                return;
+            }
+
+            ArrayAdapter<Child> myAdapter = new MySpinnerListAdapter(list);
+            runOnUiThread(()-> binding.chooseChildFlipSpinner.setAdapter(myAdapter));
+        }).start();
+    }
+
+    public class MySpinnerListAdapter extends ArrayAdapter<Child>{
+        private final List<Child> children;
+
+        public MySpinnerListAdapter(List<Child> children){
+            super(FlipActivity.this,
+                    R.layout.current_child_flip_view,
+                    children
+            );
+            this.children = children;
+        }
+
+        @Override
+        public View getDropDownView(int position, View convertView, @androidx.annotation.NonNull ViewGroup parent) {
+            return getView(position, convertView, parent);
+        }
+        @Override
+        public View getView(int position, @Nullable View convertView, @androidx.annotation.NonNull ViewGroup parent) {
+           View itemView = convertView;
+           if(itemView == null){
+               itemView = getLayoutInflater().inflate(
+                       R.layout.current_child_flip_view,
+                       parent,
+                       false
+               );
+           }
+
+           Child currentChild = children.get(position);
+
+            TextView childName = itemView.findViewById(R.id.current_child_text);
+            childName.setText(currentChild.getName());
+
+            ImageView childImage = itemView.findViewById(R.id.current_flip_child_image);
+            childImage.setImageResource(R.drawable.child_image_icon);
+
+            return itemView;
         }
     }
 
@@ -242,18 +302,18 @@ public class FlipActivity extends AppCompatActivity {
                     public void onSuccess(@NonNull Child child) {
                         currentChild = child;
 
-                        binding.currentChildTv.setText(getString(
-                                R.string.current_child_tv_string,
-                                child.getName()));
+//                        binding.currentChildTv.setText(getString(
+//                                R.string.current_child_tv_string,
+//                                child.getName()));
 
                         runOnUiThread(() -> setupButtonWithChild());
                     }
 
                     @Override
                     public void onError(@NonNull Throwable e) {
-                        binding.currentChildTv.setText(getString(
-                                R.string.current_child_tv_string,
-                                getString(R.string.no_child_string)));
+//                        binding.currentChildTv.setText(getString(
+//                                R.string.current_child_tv_string,
+//                                getString(R.string.no_child_string)));
 
                         runOnUiThread(() -> setupButtonsNoChild());
                     }
