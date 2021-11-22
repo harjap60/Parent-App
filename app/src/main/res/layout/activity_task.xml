@@ -17,7 +17,7 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <androidx.appcompat.widget.Toolbar
-            android:id="@+id/toolbar"
+            android:id="@+id/toolbar2"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             android:theme="@style/Theme.ParentApp.PopupOverlay"
@@ -36,8 +36,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_margin="0dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="20dp"
+        android:layout_marginTop="32dp"
         android:autoSizeMaxTextSize="100dp"
         android:autoSizeMinTextSize="10dp"
         android:autoSizeStepGranularity="2dp"
@@ -49,10 +48,9 @@
         android:padding="4dp"
         android:textColor="?colorOnPrimary"
         android:textSize="34sp"
-        app:layout_constraintBottom_toBottomOf="@+id/name_text"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/name_text"
-        app:layout_constraintTop_toTopOf="@+id/name_text" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/appBarLayout" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/btn_save"
@@ -69,15 +67,32 @@
         tools:ignore="SpeakableTextPresentCheck"
         android:contentDescription="@string/save_button_description" />
 
-    <TextView
-        android:id="@+id/name_text"
+    <ImageView
+        android:id="@+id/imageView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="64dp"
-        android:text="@string/task_name"
-        android:textSize="24sp"
+        android:layout_marginTop="39dp"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/appBarLayout" />
+        app:layout_constraintTop_toBottomOf="@+id/txt_name"
+        app:srcCompat="@drawable/child_image_icon" />
+
+    <Button
+        android:id="@+id/confirm_turn_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="64dp"
+        android:text="Confirm Turn"
+        app:layout_constraintStart_toStartOf="@+id/imageView"
+        app:layout_constraintTop_toBottomOf="@+id/imageView" />
+
+    <Button
+        android:id="@+id/cancel_task_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="64dp"
+        android:text="Cancel"
+        app:layout_constraintEnd_toEndOf="@+id/imageView"
+        app:layout_constraintTop_toBottomOf="@+id/imageView" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

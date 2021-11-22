@@ -15,10 +15,12 @@
         android:theme="@style/Theme.ParentApp">
         <activity
             android:name=".ui.TaskActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:theme="@style/Theme.ParentApp.NoActionBar"/>
         <activity
             android:name=".ui.TaskListActivity"
-            android:exported="true" />
+            android:exported="true"
+            android:theme="@style/Theme.ParentApp.NoActionBar"/>
         <activity
             android:name=".ui.FlipHistoryActivity"
             android:exported="false"
