@@ -255,7 +255,7 @@
             android:weightSum="1">
 
             <TextView
-                android:id="@+id/current_child_text"
+                android:id="@+id/current_child_tv"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="0.6"
@@ -264,7 +264,7 @@
                 android:autoSizeStepGranularity="2dp"
                 android:autoSizeTextType="uniform"
                 android:gravity="center"
-                android:text="Current Child:"
+                android:text="Current Child: "
                 android:textColor="?colorOnPrimary" />
 
             <Spinner
@@ -275,6 +275,7 @@
                 android:background="?colorPrimary"
                 android:dropDownSelector="@drawable/drop_down_arrow"
                 android:popupBackground="?colorPrimaryVariant" />
+
         </LinearLayout>
 
         <LinearLayout
@@ -287,7 +288,7 @@
                 android:id="@+id/previous_child_tv"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_weight="0.6"
+                android:layout_weight="0.9"
 
                 android:autoSizeMaxTextSize="100dp"
                 android:autoSizeMinTextSize="12dp"
@@ -302,7 +303,7 @@
                 android:id="@+id/previous_child_flip_image"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_weight="0.3"
+                android:layout_weight="0.1"
                 android:contentDescription="@string/previous_child_image"
                 android:foregroundGravity="left"
                 app:srcCompat="@drawable/child_image_icon" />

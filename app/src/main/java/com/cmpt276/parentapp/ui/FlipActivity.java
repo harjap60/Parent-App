@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.view.animation.DecelerateInterpolator;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -42,7 +43,7 @@ import io.reactivex.rxjava3.schedulers.Schedulers;
 /**
  * Flip Activity provides the UI for the Coin Flip.
  */
-public class FlipActivity extends AppCompatActivity {
+public class FlipActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
 
     private static final float SET_BUTTON_TO_ENABLE = 1f;
     private ActivityFlipBinding binding;
@@ -54,6 +55,9 @@ public class FlipActivity extends AppCompatActivity {
 
     private CoinFlipDao coinFlipDao;
     private ChildDao childDao;
+
+    List<Child> coinFlipOrderList;
+
 
     public static Intent getIntent(Context context) {
         return new Intent(context, FlipActivity.class);
@@ -73,9 +77,11 @@ public class FlipActivity extends AppCompatActivity {
                 .getInstance(this)
                 .childDao();
 
+
         setupToolbar();
         setupPreviousChild();
         setupCurrentChild();
+
         setupHistoryButton();
         setupChoiceButtons();
         setupCoinFlipButton();
@@ -91,30 +97,42 @@ public class FlipActivity extends AppCompatActivity {
         }
     }
 
-    private void setupChildChoiceSpinner(){
-        new Thread(()->{
+    private void setupChildChoiceSpinner() {
+        new Thread(() -> {
+
             ChildDao childDao = ParentAppDatabase.getInstance(this).childDao();
+            coinFlipOrderList = childDao.getChildrenForFlip().blockingGet();
 
-            List<Child> list = childDao.getAll().blockingGet();
-
-            if(list.size() == 0){
+            if (coinFlipOrderList.size() == 0) {
                 return;
             }
 
-            ArrayAdapter<Child> myAdapter = new MySpinnerListAdapter(list);
-            runOnUiThread(()-> binding.chooseChildFlipSpinner.setAdapter(myAdapter));
+            ArrayAdapter<Child> myAdapter = new MySpinnerListAdapter(coinFlipOrderList);
+            runOnUiThread(() -> binding.chooseChildFlipSpinner.setAdapter(myAdapter));
         }).start();
+
+    }
+    @Override
+    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+        if (parent.getId() == R.id.choose_child_flip_spinner) {
+            String currentChildIndex = parent.getItemAtPosition(position).toString();
+        }
     }
 
-    public class MySpinnerListAdapter extends ArrayAdapter<Child>{
-        private final List<Child> children;
+    @Override
+    public void onNothingSelected(AdapterView<?> parent) {
 
-        public MySpinnerListAdapter(List<Child> children){
+    }
+
+    public class MySpinnerListAdapter extends ArrayAdapter<Child> {
+        private final List<Child> flipOrder;
+
+        public MySpinnerListAdapter(List<Child> order) {
             super(FlipActivity.this,
                     R.layout.child_list_item,
-                    children
+                    order
             );
-            this.children = children;
+            this.flipOrder = order;
         }
 
         @Override
@@ -124,16 +142,16 @@ public class FlipActivity extends AppCompatActivity {
 
         @Override
         public View getView(int position, @Nullable View convertView, @androidx.annotation.NonNull ViewGroup parent) {
-           View itemView = convertView;
-           if(itemView == null){
-               itemView = getLayoutInflater().inflate(
-                       R.layout.child_list_item,
-                       parent,
-                       false
-               );
-           }
+            View itemView = convertView;
+            if (itemView == null) {
+                itemView = getLayoutInflater().inflate(
+                        R.layout.child_list_item,
+                        parent,
+                        false
+                );
+            }
 
-           Child currentChild = children.get(position);
+            Child currentChild = flipOrder.get(position);
 
             TextView childName = itemView.findViewById(R.id.child_name_text_view);
             childName.setText(currentChild.getName());
@@ -274,12 +292,15 @@ public class FlipActivity extends AppCompatActivity {
                 //Moving everyone behind this child up by one.
                 childDao.decrementCoinFlipOrder(currentOrder).blockingAwait();
 
+
                 setupCurrentChild();
+                setupChildChoiceSpinner();
                 setupPreviousChild();
             });
             thread.start();
         } else {
             setupCurrentChild();
+            setupChildChoiceSpinner();
             setupPreviousChild();
         }
     }
@@ -302,20 +323,11 @@ public class FlipActivity extends AppCompatActivity {
                     @Override
                     public void onSuccess(@NonNull Child child) {
                         currentChild = child;
-
-//                        binding.currentChildTv.setText(getString(
-//                                R.string.current_child_tv_string,
-//                                child.getName()));
-
                         runOnUiThread(() -> setupButtonWithChild());
                     }
 
                     @Override
                     public void onError(@NonNull Throwable e) {
-//                        binding.currentChildTv.setText(getString(
-//                                R.string.current_child_tv_string,
-//                                getString(R.string.no_child_string)));
-
                         runOnUiThread(() -> setupButtonsNoChild());
                     }
                 });
