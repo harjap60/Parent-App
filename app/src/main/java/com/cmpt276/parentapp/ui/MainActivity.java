@@ -48,8 +48,15 @@ public class MainActivity extends AppCompatActivity {
         setupTimerButton();
         setupChildButton();
         setupTaskListButton();
+        setupHelpButton();
         setupNotificationChannel();
         setupTimerNotificationChannel();
+    }
+
+    private void setupHelpButton() {
+        binding.helpButton.setOnClickListener(view -> {
+            startActivity(HelpActivity.getIntent(this));
+        });
     }
 
     private void setupTaskListButton() {
