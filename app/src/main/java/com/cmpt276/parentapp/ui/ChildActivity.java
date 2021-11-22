@@ -6,10 +6,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.Menu;
@@ -24,13 +23,21 @@ import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
+import androidx.core.content.FileProvider;
 
+import com.bumptech.glide.Glide;
 import com.cmpt276.parentapp.R;
 import com.cmpt276.parentapp.databinding.ActivityChildBinding;
 import com.cmpt276.parentapp.model.Child;
 import com.cmpt276.parentapp.model.ChildDao;
 import com.cmpt276.parentapp.model.ParentAppDatabase;
 
+import java.io.File;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.Date;
 import java.util.Objects;
 
 import io.reactivex.rxjava3.schedulers.Schedulers;
@@ -54,7 +61,7 @@ public class ChildActivity extends AppCompatActivity {
     private Child child;
     private ChildDao childDao;
     private ActivityChildBinding binding;
-    private Bitmap image;
+    private String imagePath;
 
     private ActivityResultLauncher<String> requestCameraPermissionLauncher;
     private ActivityResultLauncher<String> requestStoragePermissionLauncher;
@@ -135,46 +142,33 @@ public class ChildActivity extends AppCompatActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        if (resultCode != RESULT_CANCELED) {
-            switch (requestCode) {
-                case REQUEST_CODE_FOR_TAKE_PHOTO:
-                    if (resultCode == RESULT_OK && data != null) {
-                        image = (Bitmap) data.getExtras().get("data");
-                    }
-                    break;
+        if (requestCode == REQUEST_CODE_FOR_CHOOSE_FROM_GALLERY
+                && resultCode == RESULT_OK
+                && data != null) {
+            Uri selectedImage = data.getData();
+            String[] filePathColumn = {MediaStore.Images.Media.DATA};
+            if (selectedImage != null) {
+                Cursor cursor = getContentResolver()
+                        .query(
+                                selectedImage,
+                                filePathColumn,
+                                null,
+                                null,
+                                null
+                        );
 
-                case REQUEST_CODE_FOR_CHOOSE_FROM_GALLERY:
-                    if (resultCode == RESULT_OK && data != null) {
-                        Uri selectedImage = data.getData();
-                        String[] filePathColumn = {MediaStore.Images.Media.DATA};
-                        if (selectedImage != null) {
-                            Cursor cursor = getContentResolver()
-                                    .query(
-                                            selectedImage,
-                                            filePathColumn,
-                                            null,
-                                            null,
-                                            null
-                                    );
+                if (cursor != null) {
+                    cursor.moveToFirst();
 
-                            if (cursor != null) {
-                                cursor.moveToFirst();
-
-                                int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
-                                String picturePath = cursor.getString(columnIndex);
-
-                                image = (Bitmap) BitmapFactory.decodeFile(picturePath);
-                                cursor.close();
-                            }
-                        }
-                    }
-                    break;
-
-                default:
-                    super.onActivityResult(requestCode, resultCode, data);
+                    int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
+                    imagePath = cursor.getString(columnIndex);
+                    cursor.close();
+                }
             }
-            updateUI();
+        } else {
+            super.onActivityResult(requestCode, resultCode, data);
         }
+        updateUI();
     }
 
 
@@ -192,8 +186,8 @@ public class ChildActivity extends AppCompatActivity {
                 .subscribeOn(Schedulers.newThread())
                 .subscribe((Child child) -> {
                     this.child = child;
-                    this.image = child.getImage();
-                    updateUI();
+                    this.imagePath = child.getImagePath();
+                    runOnUiThread(this::updateUI);
                 });
     }
 
@@ -248,8 +242,13 @@ public class ChildActivity extends AppCompatActivity {
         int deviceWidth = getResources().getDisplayMetrics().widthPixels;
         binding.txtName.setTextSize((deviceWidth / 25f));
 
-        if (image != null) {
-            binding.imageViewChildImage.setImageBitmap(image);
+        if (imagePath != null) {
+            Glide.with(this)
+                    .load(imagePath)
+                    .centerCrop()
+                    .placeholder(R.drawable.child_image_icon)
+                    .into(binding.imageViewChildImage);
+//            binding.imageViewChildImage.setImageBitmap();
         }
 
         if (child != null) {
@@ -291,10 +290,10 @@ public class ChildActivity extends AppCompatActivity {
 
             if (child == null) {
                 int coinFlipOrder = childDao.getNextCoinFlipOrder().blockingGet();
-                childDao.insert(new Child(name, coinFlipOrder, image)).blockingAwait();
+                childDao.insert(new Child(name, coinFlipOrder, imagePath)).blockingAwait();
             } else {
                 child.setName(name);
-                child.setImage(image);
+                child.setImagePath(imagePath);
                 childDao.update(child).blockingAwait();
             }
             runOnUiThread(this::finish);
@@ -319,10 +318,6 @@ public class ChildActivity extends AppCompatActivity {
     }
 
     private void selectImage() {
-        // create a dialog box that will let the user choose from three options
-        // - take a photo using camera
-        // - choose an image from gallery
-        // - cancel
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Choose picture");
         Log.e("TAG", "Reached the select image");
@@ -339,17 +334,31 @@ public class ChildActivity extends AppCompatActivity {
     }
 
     private void captureImage() {
-        // if we do not have the permission for the camera
         if (isGranted(Manifest.permission.CAMERA)
         ) {
-            requestCameraPermissionLauncher.launch(Manifest.permission.CAMERA);
+            Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+            // Ensure that there's a camera activity to handle the intent
+            // Create the File where the photo should go
+            File photoFile = null;
+            try {
+                photoFile = createImageFile();
+            } catch (IOException ex) {
+                Toast.makeText(
+                        this,
+                        "Could not create a file.",
+                        Toast.LENGTH_SHORT
+                ).show();
+            }
+            // Continue only if the File was successfully created
+            if (photoFile != null) {
+                Uri photoURI = FileProvider.getUriForFile(this,
+                        "com.cmpt276.parentapp",
+                        photoFile);
+                takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
+                startActivityForResult(takePictureIntent, REQUEST_CODE_FOR_TAKE_PHOTO);
+            }
         } else {
-            // permission has been granted
-            Intent takePicture = new Intent(
-                    android.provider.MediaStore.ACTION_IMAGE_CAPTURE
-            );
-
-            startActivityForResult(takePicture, REQUEST_CODE_FOR_TAKE_PHOTO);
+            requestCameraPermissionLauncher.launch(Manifest.permission.CAMERA);
         }
     }
 
@@ -357,13 +366,28 @@ public class ChildActivity extends AppCompatActivity {
         // if we do not have permission to read external storage
         if (isGranted(Manifest.permission.READ_EXTERNAL_STORAGE)
         ) {
-            requestStoragePermissionLauncher.launch(Manifest.permission.READ_EXTERNAL_STORAGE);
-        } else {
             // permission has been granted
             Intent pickPhoto = new Intent(Intent.ACTION_PICK);
             pickPhoto.setType("image/*");
             startActivityForResult(pickPhoto, REQUEST_CODE_FOR_CHOOSE_FROM_GALLERY);
+        } else {
+            requestStoragePermissionLauncher.launch(Manifest.permission.READ_EXTERNAL_STORAGE);
         }
+    }
+
+    private File createImageFile() throws IOException {
+
+        String timeStamp = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMdd_HHmmss"));
+        String imageFileName = "JPEG_" + timeStamp + "_";
+        File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+        File image = File.createTempFile(
+                imageFileName,
+                ".jpg",
+                storageDir
+        );
+
+        imagePath = image.getAbsolutePath();
+        return image;
     }
 
     private boolean isGranted(String permission) {
@@ -371,7 +395,7 @@ public class ChildActivity extends AppCompatActivity {
                 .checkSelfPermission(
                         this,
                         permission
-                ) != PackageManager.PERMISSION_GRANTED;
+                ) == PackageManager.PERMISSION_GRANTED;
     }
 
     private boolean isClean() {

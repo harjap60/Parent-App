@@ -17,6 +17,7 @@ import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import com.bumptech.glide.Glide;
 import com.cmpt276.parentapp.R;
 import com.cmpt276.parentapp.databinding.ActivityChildListBinding;
 import com.cmpt276.parentapp.model.Child;
@@ -50,7 +51,7 @@ public class ChildListActivity extends AppCompatActivity {
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
+    public boolean onCreateOptionsMenu(@NonNull Menu menu) {
         // inflate the menu:
         getMenuInflater().inflate(R.menu.menu_child_list, menu);
         return true;
@@ -87,7 +88,7 @@ public class ChildListActivity extends AppCompatActivity {
     }
 
     private void populateListView() {
-        new Thread(()->{
+        new Thread(() -> {
             ChildDao childDao = ParentAppDatabase.getInstance(this).childDao();
 
             List<Child> list = childDao.getAll().blockingGet();
@@ -134,8 +135,12 @@ public class ChildListActivity extends AppCompatActivity {
 
             // if the user has specified a picture for the child, then set the image of the child
             // otherwise just display the default image for the child
-            if (child.getImage() != null) {
-                childImage.setImageBitmap(child.getImage());
+            if (child.getImagePath() != null) {
+                Glide.with(ChildListActivity.this)
+                        .load(child.getImagePath())
+                        .centerCrop()
+                        .placeholder(R.drawable.child_image_icon)
+                        .into(childImage);
             }
 
             itemView.setOnClickListener(v -> {

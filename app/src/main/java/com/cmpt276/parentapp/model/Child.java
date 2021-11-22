@@ -5,7 +5,6 @@ import android.graphics.Bitmap;
 import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
-import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
 /**
@@ -28,12 +27,12 @@ public class Child {
 
     private int coinFlipOrder;
 
-    private Bitmap image;
+    private String imagePath;
 
-    public Child(String name, int coinFlipOrder, Bitmap image) {
+    public Child(String name, int coinFlipOrder, String imagePath) {
         this.name = name;
         this.coinFlipOrder = coinFlipOrder;
-        this.image = image;
+        this.imagePath = imagePath;
     }
 
     public String getName() {
@@ -70,18 +69,19 @@ public class Child {
     @Override
     public String toString() {
         return "Child{" +
-                "uid=" + childId +
+                "childId=" + childId +
                 ", name='" + name + '\'' +
                 ", coinFlipOrder=" + coinFlipOrder +
+                ", imagePath='" + imagePath + '\'' +
                 '}';
     }
 
-    public Bitmap getImage() {
-        return image;
+    public String getImagePath() {
+        return imagePath;
     }
 
-    public void setImage(Bitmap childImageBitmap) {
-        this.image = childImageBitmap;
+    public void setImagePath(String imagePath) {
+        this.imagePath = imagePath;
     }
 }
 

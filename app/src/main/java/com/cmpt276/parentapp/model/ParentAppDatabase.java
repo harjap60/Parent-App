@@ -30,7 +30,7 @@ import java.time.format.DateTimeFormatter;
                 Task.class,
                 ChildTaskCrossRef.class
         },
-        version = 14
+        version = 15
 )
 @TypeConverters({Converters.class})
 public abstract class ParentAppDatabase extends RoomDatabase {
@@ -69,36 +69,5 @@ class Converters {
     @TypeConverter
     public static String dateToTimestamp(LocalDateTime date) {
         return date == null ? null : date.format(DateTimeFormatter.ofPattern(PATTERN));
-    }
-
-    /**
-     * Copied from the URL below.
-     *
-     * Converts String to Bitmap
-     * https://stackoverflow.com/questions/4989182/converting-java-bitmap-to-byte-array
-     *
-     * @param value The image encoded in base64
-     * @return Bitmap The Bitmap image from base64 encoded image
-     */
-    @TypeConverter
-    public static Bitmap fromString(String value) {
-        byte[] decodedByte = Base64.decode(value, 0);
-        return BitmapFactory.decodeByteArray(decodedByte, 0, decodedByte.length);
-    }
-
-    /**
-     * Copied from the URL below.
-     *
-     * Converts Bitmap to String
-     * https://stackoverflow.com/questions/4989182/converting-java-bitmap-to-byte-array
-     * @param image The Bitmap image to be encoded to base64
-     * @return String The base64 encoded image as a string
-     */
-    @TypeConverter
-    public static String fromBitmap(Bitmap image) {
-        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-        image.compress(Bitmap.CompressFormat.PNG, 90, byteArrayOutputStream);
-        byte[] b = byteArrayOutputStream.toByteArray();
-        return Base64.encodeToString(b, Base64.DEFAULT);
     }
 }

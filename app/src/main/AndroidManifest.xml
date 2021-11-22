@@ -74,6 +74,16 @@
             android:resource="@array/preloaded_fonts" />
 
         <service android:name=".ui.TimerService" />
+
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="com.cmpt276.parentapp"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_paths" />
+        </provider>
     </application>
 
 </manifest>
