@@ -27,6 +27,9 @@ public interface ChildDao {
     @Query("SELECT * FROM child ORDER BY coinFlipOrder LIMIT 1")
     Single<Child> getChildForNextFlip();
 
+    @Query("SELECT * FROM child ORDER BY coinFlipOrder")
+    Single<List<Child>> getChildrenForFlip();
+
     @Query("UPDATE child set coinFlipOrder = coinFlipOrder - 1 WHERE coinFlipOrder > :min")
     Completable decrementCoinFlipOrder(int min);
 
