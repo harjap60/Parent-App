@@ -3,11 +3,14 @@ package com.cmpt276.parentapp.ui;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.cmpt276.parentapp.R;
 import com.cmpt276.parentapp.databinding.ActivityTaskDetailBinding;
 import com.cmpt276.parentapp.model.ParentAppDatabase;
 import com.cmpt276.parentapp.model.TaskDao;
@@ -22,9 +25,9 @@ public class TaskDetailActivity extends AppCompatActivity {
     private TaskWithChildren taskWithChildren;
 
     public static Intent getIntent(Context context, int taskId) {
-        Intent i = new Intent(context, TaskListActivity.class);
+        Intent i = new Intent(context, TaskDetailActivity.class);
         i.putExtra(TASK_ID_EXTRA, taskId);
-        return new Intent(context, TaskListActivity.class);
+        return i;
     }
 
     @Override
@@ -56,6 +59,20 @@ public class TaskDetailActivity extends AppCompatActivity {
         }
 
         Toast.makeText(this, "Updated", Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if (item.getItemId() == R.id.btn_task_edit) {
+            Toast.makeText(this, "Edit", Toast.LENGTH_LONG).show();
+            return true;
+        } else if (item.getItemId() == R.id.btn_task_delete) {
+            Toast.makeText(this, "Delete", Toast.LENGTH_LONG).show();
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
+
     }
 
     private void setupToolbar() {
