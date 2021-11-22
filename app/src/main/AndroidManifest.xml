@@ -19,7 +19,8 @@
             android:theme="@style/Theme.ParentApp.NoActionBar"/>
         <activity
             android:name=".ui.TaskListActivity"
-            android:exported="true" />
+            android:exported="true"
+            android:theme="@style/Theme.ParentApp.NoActionBar"/>
         <activity
             android:name=".ui.FlipHistoryActivity"
             android:exported="false"
@@ -34,6 +35,8 @@
             android:name=".ui.ChildListActivity"
             android:exported="false"
             android:parentActivityName=".ui.MainActivity"
+            android:theme="@style/Theme.ParentApp.NoActionBar"/>
+            android:screenOrientation="portrait"
             android:theme="@style/Theme.ParentApp.NoActionBar" />
         <activity
             android:name=".ui.TimerActivity"
