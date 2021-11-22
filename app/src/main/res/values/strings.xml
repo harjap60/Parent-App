@@ -111,5 +111,6 @@
     <string name="choose_from_gallery">Choose from Gallery</string>
     <string name="cancel">Cancel</string>
     <string name="choose_picture">Choose picture</string>
+    <string name="set_image_btn_label">Set Image</string>
 
 </resources>

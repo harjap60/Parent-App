@@ -10,7 +10,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
-import android.widget.ListView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -135,8 +134,8 @@ public class ChildListActivity extends AppCompatActivity {
 
             // if the user has specified a picture for the child, then set the image of the child
             // otherwise just display the default image for the child
-            if (child.getImageBitmap() != null) {
-                childImage.setImageBitmap(child.getChildImageBitmap());
+            if (child.getImage() != null) {
+                childImage.setImageBitmap(child.getImage());
             }
 
             itemView.setOnClickListener(v -> {
