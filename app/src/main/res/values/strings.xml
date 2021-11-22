@@ -103,6 +103,7 @@
     <string name="child_image_description">Child Image</string>
     <string name="title_main">Parental App</string>
     <string name="manage_tasks_text">Manage Tasks</string>
+    <string name="previous_child_image">Previous child image</string>
     <!-- ============================== -->
 
 </resources>

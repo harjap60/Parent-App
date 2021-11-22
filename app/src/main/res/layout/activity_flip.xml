@@ -28,42 +28,6 @@
 
     </com.google.android.material.appbar.AppBarLayout>
 
-<!--    <TextView-->
-<!--        android:id="@+id/current_child_tv"-->
-<!--        android:layout_width="0dp"-->
-<!--        android:layout_height="0dp"-->
-<!--        android:autoSizeMaxTextSize="100dp"-->
-<!--        android:autoSizeMinTextSize="12dp"-->
-<!--        android:autoSizeStepGranularity="2dp"-->
-<!--        android:autoSizeTextType="uniform"-->
-<!--        android:gravity="center"-->
-<!--        android:text="@string/current_child_tv_string"-->
-<!--        android:drawablePadding="10dp"-->
-<!--        android:textColor="?colorOnPrimary"-->
-<!--        app:layout_constraintBottom_toTopOf="@+id/previous_child_tv"-->
-<!--        app:layout_constraintEnd_toEndOf="parent"-->
-<!--        app:layout_constraintStart_toStartOf="parent"-->
-<!--        app:layout_constraintTop_toBottomOf="@+id/current_child_tv_top_guideline" />-->
-
-
-<!--    <TextView-->
-<!--        android:id="@+id/previous_child_tv"-->
-<!--        android:layout_width="0dp"-->
-<!--        android:layout_height="0dp"-->
-
-<!--        android:autoSizeMaxTextSize="100dp"-->
-<!--        android:autoSizeMinTextSize="12dp"-->
-<!--        android:autoSizeStepGranularity="2dp"-->
-<!--        android:autoSizeTextType="uniform"-->
-<!--        android:gravity="center"-->
-
-<!--        android:text="@string/previous_child_tv_string"-->
-<!--        android:textColor="?colorOnPrimary"-->
-<!--        app:layout_constraintBottom_toBottomOf="@id/current_child_tv_bottom_guideline"-->
-<!--        app:layout_constraintEnd_toEndOf="@+id/current_child_tv"-->
-<!--        app:layout_constraintStart_toStartOf="@id/current_child_tv"-->
-<!--        app:layout_constraintTop_toBottomOf="@id/current_child_tv" />-->
-
     <ImageView
         android:id="@+id/coin_image_view"
         android:layout_width="0dp"
@@ -339,7 +303,7 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="0.3"
-                android:contentDescription="@string/image_of_previous_child"
+                android:contentDescription="@string/previous_child_image"
                 android:foregroundGravity="left"
                 app:srcCompat="@drawable/child_image_icon" />
         </LinearLayout>
