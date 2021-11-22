@@ -23,6 +23,11 @@ import com.cmpt276.parentapp.model.TaskDao;
 
 import java.util.List;
 
+/** +
+ * Activity lists all created tasks
+ * Redirects to create new task screen and confirm child for a task when appropriate
+ */
+
 public class TaskListActivity extends AppCompatActivity {
 
     private ActivityTaskListBinding binding;
