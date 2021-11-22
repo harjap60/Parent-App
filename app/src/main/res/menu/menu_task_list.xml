@@ -2,9 +2,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
-        android:id="@+id/action_add_child_button"
+        android:id="@+id/btn_add_task"
         android:icon="@drawable/ic_baseline_add_box_24"
-        android:title="@string/add_child_button_text_for_toolbar"
+        android:title="@string/add_task_btn_title"
         app:showAsAction="always"/>
-
 </menu>

@@ -19,11 +19,12 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import com.cmpt276.parentapp.R;
+import com.cmpt276.parentapp.databinding.ActivityChildListBinding;
 import com.cmpt276.parentapp.model.Child;
-import com.cmpt276.parentapp.model.ChildManager;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.cmpt276.parentapp.model.ChildDao;
+import com.cmpt276.parentapp.model.ParentAppDatabase;
 
-import java.util.Objects;
+import java.util.List;
 
 /**
  * Child List Activity - This activity will display a list of all the
@@ -33,7 +34,7 @@ import java.util.Objects;
  */
 public class ChildListActivity extends AppCompatActivity {
 
-    ChildManager manager;
+    private ActivityChildListBinding binding;
 
     public static Intent getIntent(Context context) {
         return new Intent(context, ChildListActivity.class);
@@ -42,16 +43,11 @@ public class ChildListActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_child_list);
-
-        // instantiating the manager
-        manager = ChildManager.getInstance(ChildListActivity.this);
+        binding = ActivityChildListBinding.inflate(this.getLayoutInflater());
+        setContentView(binding.getRoot());
 
         setUpToolbar();
         enableUpOnToolbar();
-        setUpAddNewChildButton();
-        populateListView();
-        registerClickCallback();
     }
 
     @Override
@@ -66,7 +62,7 @@ public class ChildListActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if (item.getItemId() == R.id.action_add_child_button_for_child_list) {
             startActivity(
-                    AddChildActivity.makeIntentForAddChild(ChildListActivity.this)
+                    ChildActivity.getIntentForNewChild(ChildListActivity.this)
             );
             return true;
         }
@@ -76,14 +72,12 @@ public class ChildListActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        // updateUI
         populateListView();
     }
 
     private void setUpToolbar() {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        Objects.requireNonNull(getSupportActionBar()).setTitle(getText(R.string.child_list_activity_toolbar_label));
     }
 
     private void enableUpOnToolbar() {
@@ -93,64 +87,65 @@ public class ChildListActivity extends AppCompatActivity {
         }
     }
 
-    private void setUpAddNewChildButton() {
-        FloatingActionButton addNewChildFabButton = findViewById(R.id.add_child_fab);
-        addNewChildFabButton.setOnClickListener(view -> startActivity(
-                AddChildActivity.makeIntentForAddChild(ChildListActivity.this)
-        ));
-    }
-
     private void populateListView() {
-        // Build the adapter
-        ArrayAdapter<Child> adapter = new MyListAdapter();
+        new Thread(()->{
+            ChildDao childDao = ParentAppDatabase.getInstance(this).childDao();
 
-        // Configure the list view
-        ListView childList = findViewById(R.id.child_list_view);
-        childList.setAdapter(adapter);
+            List<Child> list = childDao.getAll().blockingGet();
+
+            if (list.size() == 0) {
+                return;
+            }
+
+            ChildListAdapter adapter = new ChildListAdapter(list);
+            runOnUiThread(() -> binding.listChildren.setAdapter(adapter));
+        }).start();
+
     }
 
-    private void registerClickCallback() {
-        ListView list = findViewById(R.id.child_list_view);
-        list.setOnItemClickListener((parent, viewClicked, position, id) -> startActivity(
-                AddChildActivity.makeIntentForEditChild(
-                        ChildListActivity.this, position)
-        ));
-    }
+    public class ChildListAdapter extends ArrayAdapter<Child> {
 
-    // MyListAdapter that will help make the complex list view
-    private class MyListAdapter extends ArrayAdapter<Child> {
-        public MyListAdapter() {
+        private final List<Child> children;
+
+        public ChildListAdapter(List<Child> children) {
             super(ChildListActivity.this,
-                    R.layout.child_name_view, manager.getAllChildren());
+                    R.layout.child_list_item,
+                    children
+            );
+            this.children = children;
         }
 
         public View getView(int position, View convertView, ViewGroup parent) {
-
-            // make sure we have a view to work with (may have been given null)
             View itemView = convertView;
             if (itemView == null) {
                 itemView = getLayoutInflater()
-                        .inflate(R.layout.child_name_view, parent, false);
+                        .inflate(
+                                R.layout.child_list_item,
+                                parent,
+                                false
+                        );
             }
+            Child child = children.get(position);
 
-            // Find the child to work with
-            Child currentChild = manager.getChild(position);
-
-            // Fill the view
+            TextView childNameTextView = itemView.findViewById(R.id.child_name_text_view);
+            childNameTextView.setText(child.getName());
 
             // Child Image
             ImageView childImage = itemView.findViewById(R.id.item_icon_child);
+
             // if the user has specified a picture for the child, then set the image of the child
             // otherwise just display the default image for the child
-            if (currentChild.getChildImageBitmap() != null) {
-                childImage.setImageBitmap(currentChild.getChildImageBitmap());
+            if (child.getImageBitmap() != null) {
+                childImage.setImageBitmap(child.getChildImageBitmap());
             }
 
-            // Child Name
-            TextView childNameText = itemView.findViewById(R.id.child_name_text_view);
-            childNameText.setText(currentChild.getChildName());
+            itemView.setOnClickListener(v -> {
+                Intent i = ChildActivity.getIntentForExistingChild(ChildListActivity.this, child.getChildId());
+                startActivity(i);
+            });
 
             return itemView;
         }
     }
+
 }

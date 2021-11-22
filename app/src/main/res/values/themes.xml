@@ -12,6 +12,7 @@
         <!-- Status bar color. -->
         <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
         <!-- Customize your theme here. -->
+        <item name="android:textColor">?colorOnPrimary</item>
     </style>
 
     <style name="Theme.ParentApp.NoActionBar">
@@ -21,11 +22,9 @@
 
     <style name="Theme.ParentApp.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" >
         <item name="android:background">?colorPrimaryVariant</item>
-        <item name="android:textColor">?colorOnPrimary</item>
     </style>
 
     <style name="Theme.ParentApp.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" >
         <item name="colorControlNormal">?colorOnPrimary</item>
-        <item name="android:textColor">?colorOnPrimary</item>
     </style>
 </resources>

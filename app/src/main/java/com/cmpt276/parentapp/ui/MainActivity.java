@@ -47,8 +47,16 @@ public class MainActivity extends AppCompatActivity {
         setupFlipButton();
         setupTimerButton();
         setupChildButton();
+        setupTaskListButton();
         setupNotificationChannel();
         setupTimerNotificationChannel();
+    }
+
+    private void setupTaskListButton() {
+        this.binding.btnStartTasks.setOnClickListener(v -> {
+            Intent i = TaskListActivity.getIntent(this);
+            startActivity(i);
+        });
     }
 
     @Override
