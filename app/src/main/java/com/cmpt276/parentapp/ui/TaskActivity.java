@@ -1,10 +1,5 @@
 package com.cmpt276.parentapp.ui;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
@@ -13,31 +8,47 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.cmpt276.parentapp.R;
 import com.cmpt276.parentapp.databinding.ActivityTaskBinding;
 import com.cmpt276.parentapp.model.Child;
+import com.cmpt276.parentapp.model.ChildDao;
+import com.cmpt276.parentapp.model.ChildTaskCrossRef;
 import com.cmpt276.parentapp.model.ParentAppDatabase;
 import com.cmpt276.parentapp.model.Task;
 import com.cmpt276.parentapp.model.TaskDao;
-import com.cmpt276.parentapp.model.TaskWithChildren;
+import com.cmpt276.parentapp.model.TaskWithChild;
 
 import java.util.List;
 import java.util.Objects;
 
-import io.reactivex.rxjava3.core.Single;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 
 public class TaskActivity extends AppCompatActivity {
 
-    private Task task;
-    private TaskDao taskDao;
-    private ActivityTaskBinding binding;
+    public static final int MIN_ORDER = 0;
     private static final String EXTRA_FOR_INDEX =
             "com.cmpt276.parentapp.ui.AddChildActivity.childId";
     private static final int NEW_TASK_INDEX = -1;
+    private Task task;
+    private Child child;
+    private TaskDao taskDao;
+    private ActivityTaskBinding binding;
 
+    public static Intent getIntentForNewTask(Context context) {
+        return getIntentForExistingTask(context, NEW_TASK_INDEX);
+    }
+
+    public static Intent getIntentForExistingTask(Context context, int index) {
+        Intent intent = new Intent(context, TaskActivity.class);
+        intent.putExtra(EXTRA_FOR_INDEX, index);
+        return intent;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,7 +63,6 @@ public class TaskActivity extends AppCompatActivity {
         setUpToolbar(id);
         setupSaveButton();
         setupCancelButton();
-        updateUI();
         configureUI(id);
     }
 
@@ -62,30 +72,16 @@ public class TaskActivity extends AppCompatActivity {
     }
 
     private void configureUI(int id) {
-        if(id == NEW_TASK_INDEX){
+        if (id == NEW_TASK_INDEX) {
             binding.confirmTurnBtn.setVisibility(View.GONE);
             binding.cancelTaskBtn.setVisibility(View.GONE);
             binding.btnSave.setVisibility(View.VISIBLE);
             binding.childTaskImage.setVisibility(View.GONE);
-        }
-        else {
+        } else {
             binding.taskEditName.setEnabled(false);
             binding.taskEditName.setClickable(false);
-            binding.btnSave.setVisibility(View.VISIBLE);
-            binding.btnSave.setVisibility(View.VISIBLE);
             binding.btnSave.setVisibility(View.GONE);
-           // setupConfirmButton(); // !----------BROKEN---------!
         }
-    }
-
-    public static Intent getIntentForNewTask(Context context) {
-        return getIntentForExistingTask(context, NEW_TASK_INDEX);
-    }
-
-    public static Intent getIntentForExistingTask(Context context, int index) {
-        Intent intent = new Intent(context, TaskActivity.class);
-        intent.putExtra(EXTRA_FOR_INDEX, index);
-        return intent;
     }
 
     @Override
@@ -136,7 +132,6 @@ public class TaskActivity extends AppCompatActivity {
 
     private void setupDB() {
         taskDao = ParentAppDatabase.getInstance(this).taskDao();
-
     }
 
     private void setupTask(int id) {
@@ -145,15 +140,18 @@ public class TaskActivity extends AppCompatActivity {
             return;
         }
 
-        taskDao.getTaskWithChildren(id)
+        taskDao.getTaskWithNextChild(id)
                 .subscribeOn(Schedulers.newThread())
-                .subscribe((TaskWithChildren taskWithChildren) -> {
-                    this.task = taskWithChildren.task;
+                .subscribe((TaskWithChild task) -> {
+                    this.task = task.task;
+                    this.child = task.child;
                     updateUI();
+                    setupConfirmButton();
                 });
     }
 
     private void setupSaveButton() {
+
         binding.btnSave.setOnClickListener(view -> saveTask());
     }
 
@@ -176,6 +174,9 @@ public class TaskActivity extends AppCompatActivity {
         }
 
         binding.taskEditName.setText(task.getName());
+        if (child != null) {
+            binding.nameNextChild.setText(child.getName());
+        }
     }
 
     private void handleUnsavedChanges() {
@@ -211,8 +212,23 @@ public class TaskActivity extends AppCompatActivity {
             String name = this.binding.taskEditName.getText().toString();
 
             if (task == null) {
-                ////int coinFlipOrder = taskDao.getNextCoinFlipOrder().blockingGet();
-                taskDao.insert(new Task(name)).blockingAwait();
+                ChildDao childDao = ParentAppDatabase
+                        .getInstance(TaskActivity.this)
+                        .childDao();
+
+                Long id = taskDao.insert(new Task(name)).blockingGet();
+
+                List<Child> children = childDao.getAll().blockingGet();
+
+                for (int i = 0; i < children.size(); i++) {
+                    ChildTaskCrossRef ref = new ChildTaskCrossRef(
+                            id.intValue(),
+                            children.get(i).getChildId(),
+                            i
+                    );
+
+                    taskDao.insertRef(ref).blockingAwait();
+                }
             } else {
                 task.setName(name);
                 taskDao.update(task).blockingAwait();
@@ -232,15 +248,17 @@ public class TaskActivity extends AppCompatActivity {
     }
 
     private void setupConfirmButton() {
-        List<Child> childList = taskDao.getTaskWithChildren(task.getTaskId()).blockingGet().children;
-        int nextChild = taskDao.getNextOrder(task.getTaskId()).blockingGet();
-        Button btn = binding.confirmTurnBtn;
+        binding.confirmTurnBtn.setOnClickListener((v) -> {
+            new Thread(() -> {
+                int taskId = task.getTaskId();
+                int order = taskDao.getNextOrder(taskId).blockingGet();
 
-        btn.setOnClickListener(view -> {
-            TextView childsTurn = binding.nameNextChild;
-            childsTurn.setText("Current Child" + childList.get(nextChild).getName());
+                taskDao.updateOrder(taskId, child.getChildId(), order).blockingAwait();
+                taskDao.decrementOrder(taskId, MIN_ORDER).blockingAwait();
+
+                setupTask(taskId);
+            }).start();
         });
-
     }
 
     private AlertDialog.Builder getAlertDialogBox() {
