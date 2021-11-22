@@ -26,7 +26,8 @@ import java.time.format.DateTimeFormatter;
                 Task.class,
                 ChildTaskCrossRef.class
         },
-        version = 13
+        version = 14,
+        exportSchema = false
 )
 @TypeConverters({Converters.class})
 public abstract class ParentAppDatabase extends RoomDatabase {
@@ -51,6 +52,8 @@ public abstract class ParentAppDatabase extends RoomDatabase {
     public abstract CoinFlipDao coinFlipDao();
 
     public abstract TaskDao taskDao();
+
+    public abstract ChildTaskCrossRefDao childTaskCrossRefDao();
 }
 
 class Converters {
