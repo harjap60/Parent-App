@@ -74,7 +74,7 @@
         android:layout_marginTop="39dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/txt_name"
+        app:layout_constraintTop_toBottomOf="@+id/task_edit_name"
         app:srcCompat="@drawable/child_image_icon" />
 
     <Button

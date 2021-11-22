@@ -61,6 +61,7 @@ public class TaskActivity extends AppCompatActivity {
         setupDB();
         setupTask(id);
         setUpToolbar(id);
+        enableUpOnToolbar();
         setupSaveButton();
         setupCancelButton();
         configureUI(id);
@@ -166,6 +167,13 @@ public class TaskActivity extends AppCompatActivity {
 
         ActionBar ab = getSupportActionBar();
         Objects.requireNonNull(ab).setDisplayHomeAsUpEnabled(true);
+    }
+
+    private void enableUpOnToolbar() {
+        ActionBar ab = getSupportActionBar();
+        if (ab != null) {
+            ab.setDisplayHomeAsUpEnabled(true);
+        }
     }
 
     private void updateUI() {
