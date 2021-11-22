@@ -38,15 +38,27 @@ public interface TaskDao {
             "ORDER BY ref.`order` LIMIT 1")
     Single<TaskWithChild> getTaskWithNextChild(int taskId);
 
-    @Query("SELECT * FROM task")
+    @Query("SELECT * FROM task ORDER BY taskId")
     Single<List<Task>> getAll();
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    Completable insert(Task... tasks);
+    Single<Long> insert(Task task);
 
     @Update
     Completable update(Task... tasks);
 
     @Delete
     Completable delete(Task... tasks);
+
+    @Query("UPDATE ChildTaskCrossRef set `order` = :order WHERE taskId = :taskId and childId = :childId")
+    Completable updateOrder(int taskId, int childId, int order);
+
+    @Insert
+    Completable insertRef(ChildTaskCrossRef... crossRef);
+
+    @Insert
+    Completable updateRef(ChildTaskCrossRef... crossRef);
+
+    @Delete
+    Completable DeleteRef(ChildTaskCrossRef... crossRef);
 }
