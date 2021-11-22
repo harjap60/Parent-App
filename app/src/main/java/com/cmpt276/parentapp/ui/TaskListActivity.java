@@ -1,16 +1,21 @@
 package com.cmpt276.parentapp.ui;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 import com.cmpt276.parentapp.R;
 import com.cmpt276.parentapp.databinding.ActivityTaskListBinding;
@@ -32,8 +37,27 @@ public class TaskListActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         binding = ActivityTaskListBinding.inflate(this.getLayoutInflater());
         setContentView(binding.getRoot());
-
         populateTaskRecyclerView();
+
+        setupToolbar();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_task_list, menu);
+        return true;
+    }
+
+    @SuppressLint("NonConstantResourceId")
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if (item.getItemId() == R.id.btn_add_task) {
+            startActivity(
+                    TaskActivity.getIntentForNewTask(this)
+            );
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     private void populateTaskRecyclerView() {
@@ -49,10 +73,14 @@ public class TaskListActivity extends AppCompatActivity {
         binding.rvTaskList.setAdapter(adapter);
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_task_list, menu);
-        return true;
+    private void setupToolbar() {
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
+        ActionBar ab = getSupportActionBar();
+        if (ab != null) {
+            ab.setDisplayHomeAsUpEnabled(true);
+        }
     }
 
     class TaskListAdapter extends ArrayAdapter<Task> {
