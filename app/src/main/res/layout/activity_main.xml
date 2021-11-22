@@ -1,39 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#4954B5"
-    tools:context=".ui.MainActivity">
+    tools:context=".ui.MainActivity"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <TextView
         android:id="@+id/main_title"
-        style="@style/Theme.ParentApp.NoActionBar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentEnd="true"
-        android:layout_marginStart="0dp"
+        android:layout_marginStart="12dp"
         android:layout_marginTop="12dp"
-        android:layout_marginEnd="0dp"
         android:layout_marginBottom="12dp"
-        android:text="@string/title_main_activity"
-        android:textAlignment="center"
+        android:text="@string/title_main"
+        android:textColor="#000000"
         android:textSize="45sp"
         android:textStyle="bold" />
 
     <GridLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_width="762dp"
+        android:layout_height="wrap_content"
         android:layout_below="@id/main_title"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
         android:layout_marginStart="20dp"
         android:layout_marginTop="15dp"
         android:layout_marginEnd="20dp"
-        android:layout_marginBottom="20dp"
-        android:columnCount="1"
-        android:rowCount="4">
+        android:layout_marginBottom="19dp"
+        android:columnCount="2"
+        android:rowCount="3">
 
         <androidx.cardview.widget.CardView
             android:id="@+id/btn_start_flip"
@@ -48,11 +46,11 @@
             android:foreground="?attr/selectableItemBackgroundBorderless"
             app:cardBackgroundColor="@color/white"
             app:cardCornerRadius="50dp"
-            app:cardElevation="8dp"
+            app:cardElevation="0dp"
             app:cardUseCompatPadding="true">
 
             <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/linearLayout"
+                android:id="@+id/linear_layout"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_gravity="center_vertical|center_horizontal"
@@ -60,7 +58,7 @@
                 android:orientation="vertical">
 
                 <pl.droidsonroids.gif.GifImageView
-                    android:id="@+id/gifImageView"
+                    android:id="@+id/gif_image_view"
                     android:layout_width="0dp"
                     android:layout_height="0dp"
                     android:scaleType="centerInside"
@@ -76,19 +74,19 @@
                     android:layout_height="0dp"
                     android:layout_marginTop="2dp"
                     android:autoSizeMaxTextSize="100sp"
-                    android:autoSizeMinTextSize="12sp"
+                    android:autoSizeMinTextSize="6sp"
                     android:autoSizeStepGranularity="2sp"
                     android:autoSizeTextType="uniform"
                     android:maxLines="1"
                     android:text="@string/flip_a_coin"
                     android:textAlignment="center"
                     android:textColor="@color/black"
-                    android:textSize="16sp"
+                    android:textSize="11sp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="@id/guideline21"
                     app:layout_constraintHorizontal_bias="0.5"
                     app:layout_constraintStart_toStartOf="@id/guideline20"
-                    app:layout_constraintTop_toBottomOf="@+id/gifImageView"
+                    app:layout_constraintTop_toBottomOf="@+id/gif_image_view"
                     app:layout_constraintVertical_bias="0.060000002" />
 
                 <androidx.constraintlayout.widget.Guideline
@@ -110,14 +108,14 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    app:layout_constraintGuide_percent="0.39" />
+                    app:layout_constraintGuide_percent="0.35" />
 
                 <androidx.constraintlayout.widget.Guideline
                     android:id="@+id/guideline21"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    app:layout_constraintGuide_percent="0.61" />
+                    app:layout_constraintGuide_percent="0.65" />
             </androidx.constraintlayout.widget.ConstraintLayout>
 
         </androidx.cardview.widget.CardView>
@@ -126,20 +124,20 @@
             android:id="@+id/btn_start_timer"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_row="1"
+            android:layout_row="0"
             android:layout_rowWeight="1"
-            android:layout_column="0"
+            android:layout_column="1"
             android:layout_columnWeight="1"
             android:layout_gravity="fill"
             android:focusable="true"
             android:foreground="?attr/selectableItemBackgroundBorderless"
             app:cardBackgroundColor="@color/white"
             app:cardCornerRadius="50dp"
-            app:cardElevation="8dp"
+            app:cardElevation="0dp"
             app:cardUseCompatPadding="true">
 
             <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/linearLayout2"
+                android:id="@+id/linear_layout2"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_gravity="center_vertical|center_horizontal"
@@ -147,7 +145,7 @@
                 android:orientation="vertical">
 
                 <pl.droidsonroids.gif.GifImageView
-                    android:id="@+id/gifImageView2"
+                    android:id="@+id/gif_image_view2"
                     android:layout_width="0dp"
                     android:layout_height="0dp"
                     android:src="@drawable/animated_timer"
@@ -162,7 +160,7 @@
                     android:layout_height="0dp"
                     android:layout_marginTop="2dp"
                     android:autoSizeMaxTextSize="100sp"
-                    android:autoSizeMinTextSize="12sp"
+                    android:autoSizeMinTextSize="6sp"
                     android:autoSizeStepGranularity="2sp"
                     android:autoSizeTextType="uniform"
                     android:maxLines="1"
@@ -174,7 +172,7 @@
                     app:layout_constraintEnd_toEndOf="@id/guideline24"
                     app:layout_constraintHorizontal_bias="0.5"
                     app:layout_constraintStart_toStartOf="@id/guideline23"
-                    app:layout_constraintTop_toBottomOf="@+id/gifImageView2" />
+                    app:layout_constraintTop_toBottomOf="@+id/gif_image_view2" />
 
                 <androidx.constraintlayout.widget.Guideline
                     android:id="@+id/guideline8"
@@ -195,14 +193,14 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    app:layout_constraintGuide_percent="0.36" />
+                    app:layout_constraintGuide_percent="0.28" />
 
                 <androidx.constraintlayout.widget.Guideline
                     android:id="@+id/guideline24"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    app:layout_constraintGuide_percent="0.64" />
+                    app:layout_constraintGuide_percent="0.72" />
             </androidx.constraintlayout.widget.ConstraintLayout>
         </androidx.cardview.widget.CardView>
 
@@ -210,8 +208,8 @@
             android:id="@+id/start_child_list"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_row="2"
-            android:layout_rowWeight="0.8"
+            android:layout_row="1"
+            android:layout_rowWeight="1"
             android:layout_column="0"
             android:layout_columnWeight="1"
             android:layout_gravity="fill"
@@ -219,11 +217,11 @@
             android:foreground="?attr/selectableItemBackgroundBorderless"
             app:cardBackgroundColor="@color/white"
             app:cardCornerRadius="55dp"
-            app:cardElevation="8dp"
+            app:cardElevation="0dp"
             app:cardUseCompatPadding="true">
 
             <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/linearLayout3"
+                android:id="@+id/linear_layout3"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_gravity="center_vertical|center_horizontal"
@@ -231,7 +229,7 @@
                 android:orientation="vertical">
 
                 <pl.droidsonroids.gif.GifImageView
-                    android:id="@+id/gifImageView3"
+                    android:id="@+id/gif_image_view3"
                     android:layout_width="0dp"
                     android:layout_height="0dp"
                     android:src="@drawable/animated_add"
@@ -246,7 +244,7 @@
                     android:layout_height="0dp"
                     android:layout_marginTop="2dp"
                     android:autoSizeMaxTextSize="100sp"
-                    android:autoSizeMinTextSize="12sp"
+                    android:autoSizeMinTextSize="6sp"
                     android:autoSizeStepGranularity="2sp"
                     android:autoSizeTextType="uniform"
                     android:maxLines="1"
@@ -258,7 +256,7 @@
                     app:layout_constraintEnd_toEndOf="@id/guideline26"
                     app:layout_constraintHorizontal_bias="0.5"
                     app:layout_constraintStart_toStartOf="@id/guideline25"
-                    app:layout_constraintTop_toBottomOf="@+id/gifImageView3" />
+                    app:layout_constraintTop_toBottomOf="@+id/gif_image_view3" />
 
                 <androidx.constraintlayout.widget.Guideline
                     android:id="@+id/guideline10"
@@ -279,25 +277,121 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    app:layout_constraintGuide_percent="0.34" />
+                    app:layout_constraintGuide_percent="0.23" />
 
                 <androidx.constraintlayout.widget.Guideline
                     android:id="@+id/guideline26"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    app:layout_constraintGuide_percent="0.66" />
+                    app:layout_constraintGuide_percent="0.77" />
             </androidx.constraintlayout.widget.ConstraintLayout>
 
         </androidx.cardview.widget.CardView>
 
-        <Button
-            android:id="@+id/btn_task_list"
-            style="@style/Theme.ParentApp"
-            android:layout_width="match_parent"
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/btn_start_tasks"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:backgroundTint="#FFFFFF"
-            android:text="@string/main_activity_task_list_btn"
-            android:textColor="@color/black" />
+            android:layout_row="1"
+            android:layout_rowWeight="1"
+            android:layout_column="1"
+            android:layout_columnWeight="1"
+            android:layout_gravity="fill"
+            android:focusable="true"
+            android:foreground="?attr/selectableItemBackgroundBorderless"
+            app:cardBackgroundColor="@color/white"
+            app:cardCornerRadius="50dp"
+            app:cardElevation="0dp"
+            app:cardUseCompatPadding="true">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/linear_layout4"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center_vertical|center_horizontal"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <pl.droidsonroids.gif.GifImageView
+                    android:id="@+id/gif_image_view4"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:scaleType="centerInside"
+                    android:src="@drawable/animated_tasks"
+                    app:layout_constraintBottom_toBottomOf="@id/guideline28"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="@id/guideline27" />
+
+                <TextView
+                    android:id="@+id/child_tasks_text"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_marginTop="2dp"
+                    android:autoSizeMaxTextSize="100sp"
+                    android:autoSizeMinTextSize="6sp"
+                    android:autoSizeStepGranularity="2sp"
+                    android:autoSizeTextType="uniform"
+                    android:maxLines="1"
+                    android:text="@string/manage_tasks_text"
+                    android:textAlignment="center"
+                    android:textColor="@color/black"
+                    android:textSize="16sp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="@id/guideline30"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintStart_toStartOf="@id/guideline29"
+                    app:layout_constraintTop_toBottomOf="@+id/gif_image_view4"
+                    app:layout_constraintVertical_bias="0.060000002" />
+
+                <androidx.constraintlayout.widget.Guideline
+                    android:id="@+id/guideline27"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    app:layout_constraintGuide_percent="0.25" />
+
+                <androidx.constraintlayout.widget.Guideline
+                    android:id="@+id/guideline28"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    app:layout_constraintGuide_percent="0.65" />
+
+                <androidx.constraintlayout.widget.Guideline
+                    android:id="@+id/guideline29"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    app:layout_constraintGuide_percent="0.27" />
+
+                <androidx.constraintlayout.widget.Guideline
+                    android:id="@+id/guideline30"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    app:layout_constraintGuide_percent="0.73" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.cardview.widget.CardView>
+
     </GridLayout>
+
+    <ImageButton
+        android:id="@+id/help_button"
+        android:layout_width="57dp"
+        android:layout_height="55dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="18dp"
+        android:layout_marginEnd="24dp"
+        android:background="@drawable/round_button"
+        android:clickable="true"
+        android:contentDescription="@string/help_button"
+        android:focusable="true"
+        android:foreground="@drawable/custom_round_button"
+        android:scaleType="fitCenter"
+        app:srcCompat="@drawable/ic_baseline_help_24" />
+
 </RelativeLayout>

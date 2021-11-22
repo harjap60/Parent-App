@@ -22,14 +22,6 @@ public class Task {
         this.setName(name);
     }
 
-    @NonNull
-    @Override
-    public String toString() {
-        return "Task{" +
-                "name='" + name + '\'' +
-                '}';
-    }
-
     public String getName() {
 
         return name;
@@ -51,5 +43,13 @@ public class Task {
     public void setTaskId(int taskId) {
 
         this.taskId = taskId;
+    }
+
+    @NonNull
+    @Override
+    public String toString() {
+        return "Task{" +
+                "name='" + name + '\'' +
+                '}';
     }
 }

@@ -53,7 +53,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void setupTaskListButton() {
-        this.binding.btnTaskList.setOnClickListener(v -> {
+        this.binding.btnStartTasks.setOnClickListener(v -> {
             Intent i = TaskListActivity.getIntent(this);
             startActivity(i);
         });
