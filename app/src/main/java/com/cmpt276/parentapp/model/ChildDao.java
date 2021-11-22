@@ -37,7 +37,7 @@ public interface ChildDao {
     Single<Boolean> hasChildren();
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    Completable insert(Child... children);
+    Single<Long> insert(Child children);
 
     @Delete
     Completable delete(Child... children);
