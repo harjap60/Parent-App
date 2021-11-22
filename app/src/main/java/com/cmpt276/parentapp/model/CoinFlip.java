@@ -5,6 +5,7 @@ import static androidx.room.ForeignKey.CASCADE;
 import androidx.annotation.NonNull;
 import androidx.room.Entity;
 import androidx.room.ForeignKey;
+import androidx.room.Index;
 import androidx.room.PrimaryKey;
 
 import java.time.LocalDateTime;
@@ -29,10 +30,11 @@ import java.time.LocalDateTime;
                 childColumns = "childId",
                 onDelete = CASCADE
         )
+},indices = {
+        @Index("coinFlipId"),
+        @Index("childId")
 })
 public class CoinFlip {
-
-
     @PrimaryKey(autoGenerate = true)
     private int coinFlipId;
 
