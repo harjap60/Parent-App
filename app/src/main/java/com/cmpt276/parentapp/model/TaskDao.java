@@ -5,6 +5,7 @@ import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
+import androidx.room.Transaction;
 import androidx.room.Update;
 
 import java.util.List;
@@ -27,6 +28,7 @@ public interface TaskDao {
             "WHERE taskId = :taskId and `order` > :minOrder")
     Completable decrementOrder(int taskId, int minOrder);
 
+    @Transaction
     @Query("SELECT * FROM Task WHERE taskId = :taskId")
     Single<TaskWithChildren> getTaskWithChildren(int taskId);
 
