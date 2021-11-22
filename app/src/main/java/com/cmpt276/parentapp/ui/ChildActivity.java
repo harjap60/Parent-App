@@ -3,7 +3,6 @@ package com.cmpt276.parentapp.ui;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
@@ -15,15 +14,15 @@ import android.provider.MediaStore;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.Toast;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import com.cmpt276.parentapp.R;
@@ -48,8 +47,7 @@ public class ChildActivity extends AppCompatActivity {
             "com.cmpt276.parentapp.ui.AddChildActivity.childId";
     private static final int NEW_CHILD_INDEX = -1;
     private final String[] IMAGE_OPTIONS = {"Take Photo", "Choose from Gallery", "Cancel"};
-    private final int REQUEST_READ_EXTERNAL_STORAGE = 111;
-    private final int REQUEST_CODE_FOR_CAMERA = 222;
+
     private final int REQUEST_CODE_FOR_TAKE_PHOTO = 10;
     private final int REQUEST_CODE_FOR_CHOOSE_FROM_GALLERY = 20;
 
@@ -57,6 +55,9 @@ public class ChildActivity extends AppCompatActivity {
     private ChildDao childDao;
     private ActivityChildBinding binding;
     private Bitmap image;
+
+    private ActivityResultLauncher<String> requestCameraPermissionLauncher;
+    private ActivityResultLauncher<String> requestStoragePermissionLauncher;
 
     public static Intent getIntentForNewChild(Context context) {
         return getIntentForExistingChild(context, NEW_CHILD_INDEX);
@@ -81,11 +82,12 @@ public class ChildActivity extends AppCompatActivity {
         setUpToolbar(id);
         setupSaveButton();
         setupImageCaptureButton();
+        setupPermissionLaunchers();
         updateUI();
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
+    public boolean onCreateOptionsMenu(@NonNull Menu menu) {
         if (child != null) {
             getMenuInflater().inflate(R.menu.menu_edit_child, menu);
         }
@@ -161,7 +163,7 @@ public class ChildActivity extends AppCompatActivity {
                                 int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
                                 String picturePath = cursor.getString(columnIndex);
 
-                                image = (Bitmap)BitmapFactory.decodeFile(picturePath);
+                                image = (Bitmap) BitmapFactory.decodeFile(picturePath);
                                 cursor.close();
                             }
                         }
@@ -210,6 +212,32 @@ public class ChildActivity extends AppCompatActivity {
 
         ActionBar ab = getSupportActionBar();
         Objects.requireNonNull(ab).setDisplayHomeAsUpEnabled(true);
+    }
+
+    private void setupPermissionLaunchers() {
+        requestCameraPermissionLauncher = registerForActivityResult(new ActivityResultContracts.RequestPermission(), isGranted -> {
+            if (isGranted) {
+                captureImage();
+            } else {
+                Toast.makeText(
+                        this,
+                        R.string.camera_permission_message,
+                        Toast.LENGTH_LONG
+                ).show();
+            }
+        });
+
+        requestStoragePermissionLauncher =
+                registerForActivityResult(new ActivityResultContracts.RequestPermission(), isGranted -> {
+                    if (isGranted) {
+                        chooseImageFromGallery();
+                    } else {
+                        Toast.makeText(
+                                this,
+                                R.string.storage_permission_message,
+                                Toast.LENGTH_LONG).show();
+                    }
+                });
     }
 
     private void setupImageCaptureButton() {
@@ -263,7 +291,7 @@ public class ChildActivity extends AppCompatActivity {
 
             if (child == null) {
                 int coinFlipOrder = childDao.getNextCoinFlipOrder().blockingGet();
-                childDao.insert(new Child(name, coinFlipOrder,image)).blockingAwait();
+                childDao.insert(new Child(name, coinFlipOrder, image)).blockingAwait();
             } else {
                 child.setName(name);
                 child.setImage(image);
@@ -312,19 +340,9 @@ public class ChildActivity extends AppCompatActivity {
 
     private void captureImage() {
         // if we do not have the permission for the camera
-        if (ContextCompat
-                .checkSelfPermission(
-                        this,
-                        Manifest.permission.CAMERA
-                ) != PackageManager.PERMISSION_GRANTED
+        if (isGranted(Manifest.permission.CAMERA)
         ) {
-            // then ask the permission from the user
-            ActivityCompat.requestPermissions(
-                    ChildActivity.this,
-                    new String[]{
-                            Manifest.permission.CAMERA
-                    }, REQUEST_CODE_FOR_CAMERA
-            );
+            requestCameraPermissionLauncher.launch(Manifest.permission.CAMERA);
         } else {
             // permission has been granted
             Intent takePicture = new Intent(
@@ -337,20 +355,9 @@ public class ChildActivity extends AppCompatActivity {
 
     private void chooseImageFromGallery() {
         // if we do not have permission to read external storage
-        if (ContextCompat
-                .checkSelfPermission(
-                        this,
-                        Manifest.permission.READ_EXTERNAL_STORAGE
-                ) != PackageManager.PERMISSION_GRANTED
+        if (isGranted(Manifest.permission.READ_EXTERNAL_STORAGE)
         ) {
-            // then ask the permission from the user
-            ActivityCompat.requestPermissions(
-                    ChildActivity.this,
-                    new String[]{
-                            Manifest.permission.READ_EXTERNAL_STORAGE
-                    },
-                    REQUEST_READ_EXTERNAL_STORAGE
-            );
+            requestStoragePermissionLauncher.launch(Manifest.permission.READ_EXTERNAL_STORAGE);
         } else {
             // permission has been granted
             Intent pickPhoto = new Intent(Intent.ACTION_PICK);
@@ -359,36 +366,13 @@ public class ChildActivity extends AppCompatActivity {
         }
     }
 
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-
-        if (requestCode == REQUEST_CODE_FOR_CAMERA) {
-            if (grantResults.length > 0
-                    && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                captureImage();
-            } else {
-                Toast.makeText(
+    private boolean isGranted(String permission) {
+        return ContextCompat
+                .checkSelfPermission(
                         this,
-                        "You need to grant camera permission to take photo of the child",
-                        Toast.LENGTH_LONG
-                ).show();
-            }
-        }
-
-        if (requestCode == REQUEST_READ_EXTERNAL_STORAGE) {
-            if (grantResults.length > 0
-                    && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                chooseImageFromGallery();
-            } else {
-                Toast.makeText(
-                        this,
-                        "You need to grant read external storage permission to choose a photo of the child",
-                        Toast.LENGTH_LONG).show();
-            }
-        }
+                        permission
+                ) != PackageManager.PERMISSION_GRANTED;
     }
-
 
     private boolean isClean() {
         String name = binding.txtName.getText().toString();

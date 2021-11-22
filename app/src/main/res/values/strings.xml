@@ -112,5 +112,7 @@
     <string name="cancel">Cancel</string>
     <string name="choose_picture">Choose picture</string>
     <string name="set_image_btn_label">Set Image</string>
+    <string name="camera_permission_message">You need to grant camera permission to take photo of the child</string>
+    <string name="storage_permission_message">You need to grant read external storage permission to choose a photo of the child</string>
 
 </resources>
