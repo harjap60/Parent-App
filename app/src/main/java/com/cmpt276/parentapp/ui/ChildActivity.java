@@ -48,6 +48,14 @@ import io.reactivex.rxjava3.schedulers.Schedulers;
  * The user sets the name of the child but has a restriction to it
  * - the name of the new/edit child cannot be empty
  */
+
+
+/**
+ * TODO
+ *      Add titles to all dialog boxes
+ *      Change button text for edit child
+ *
+ */
 public class ChildActivity extends AppCompatActivity {
 
     private static final String EXTRA_FOR_INDEX =
@@ -286,6 +294,8 @@ public class ChildActivity extends AppCompatActivity {
     private void saveChild() {
         new Thread(() -> {
 
+            //Check if name is null
+            //              Don't add child
             String name = this.binding.txtName.getText().toString();
 
             if (child == null) {
@@ -334,8 +344,7 @@ public class ChildActivity extends AppCompatActivity {
     }
 
     private void captureImage() {
-        if (isGranted(Manifest.permission.CAMERA)
-        ) {
+        if (isGranted(Manifest.permission.CAMERA)) {
             Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
             // Ensure that there's a camera activity to handle the intent
             // Create the File where the photo should go
