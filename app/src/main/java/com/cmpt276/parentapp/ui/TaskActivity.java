@@ -11,19 +11,22 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
+import android.widget.TextView;
 
 import com.cmpt276.parentapp.R;
-import com.cmpt276.parentapp.databinding.ActivityChildBinding;
 import com.cmpt276.parentapp.databinding.ActivityTaskBinding;
 import com.cmpt276.parentapp.model.Child;
-import com.cmpt276.parentapp.model.ChildDao;
 import com.cmpt276.parentapp.model.ParentAppDatabase;
 import com.cmpt276.parentapp.model.Task;
 import com.cmpt276.parentapp.model.TaskDao;
 import com.cmpt276.parentapp.model.TaskWithChildren;
 
+import java.util.List;
 import java.util.Objects;
 
+import io.reactivex.rxjava3.core.Single;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 
 public class TaskActivity extends AppCompatActivity {
@@ -34,6 +37,8 @@ public class TaskActivity extends AppCompatActivity {
     private static final String EXTRA_FOR_INDEX =
             "com.cmpt276.parentapp.ui.AddChildActivity.childId";
     private static final int NEW_TASK_INDEX = -1;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,9 +51,31 @@ public class TaskActivity extends AppCompatActivity {
         setupTask(id);
         setUpToolbar(id);
         setupSaveButton();
+        setupCancelButton();
         updateUI();
-        setupConfirmButton();
+        configureUI(id);
+    }
 
+    private void setupCancelButton() {
+        Button cancelBtn = binding.cancelTaskBtn;
+        cancelBtn.setOnClickListener(view -> finish());
+    }
+
+    private void configureUI(int id) {
+        if(id == NEW_TASK_INDEX){
+            binding.confirmTurnBtn.setVisibility(View.GONE);
+            binding.cancelTaskBtn.setVisibility(View.GONE);
+            binding.btnSave.setVisibility(View.VISIBLE);
+            binding.childTaskImage.setVisibility(View.GONE);
+        }
+        else {
+            binding.taskEditName.setEnabled(false);
+            binding.taskEditName.setClickable(false);
+            binding.btnSave.setVisibility(View.VISIBLE);
+            binding.btnSave.setVisibility(View.VISIBLE);
+            binding.btnSave.setVisibility(View.GONE);
+           // setupConfirmButton(); // !----------BROKEN---------!
+        }
     }
 
     public static Intent getIntentForNewTask(Context context) {
@@ -66,7 +93,6 @@ public class TaskActivity extends AppCompatActivity {
         if (task != null) {
             getMenuInflater().inflate(R.menu.menu_edit_task, menu);// change to task menu
         }
-
         return true;
     }
 
@@ -110,6 +136,7 @@ public class TaskActivity extends AppCompatActivity {
 
     private void setupDB() {
         taskDao = ParentAppDatabase.getInstance(this).taskDao();
+
     }
 
     private void setupTask(int id) {
@@ -118,7 +145,7 @@ public class TaskActivity extends AppCompatActivity {
             return;
         }
 
-        taskDao.getTaskWithChildren(id) // no taskDao.get(id) query
+        taskDao.getTaskWithChildren(id)
                 .subscribeOn(Schedulers.newThread())
                 .subscribe((TaskWithChildren taskWithChildren) -> {
                     this.task = taskWithChildren.task;
@@ -148,7 +175,7 @@ public class TaskActivity extends AppCompatActivity {
             return;
         }
 
-        binding.txtName.setText(task.getName());
+        binding.taskEditName.setText(task.getName());
     }
 
     private void handleUnsavedChanges() {
@@ -160,7 +187,7 @@ public class TaskActivity extends AppCompatActivity {
                 .setMessage(getString(
                         R.string.confirm_edit_task_dialog_box_message,
                         task.getName(),
-                        binding.txtName.getText()
+                        binding.taskEditName.getText()
                 ))
                 .setPositiveButton(R.string.yes, (dialog, which) -> saveTask())
                 .create()
@@ -181,7 +208,7 @@ public class TaskActivity extends AppCompatActivity {
     private void saveTask() {
         new Thread(() -> {
 
-            String name = this.binding.txtName.getText().toString();
+            String name = this.binding.taskEditName.getText().toString();
 
             if (task == null) {
                 ////int coinFlipOrder = taskDao.getNextCoinFlipOrder().blockingGet();
@@ -205,6 +232,15 @@ public class TaskActivity extends AppCompatActivity {
     }
 
     private void setupConfirmButton() {
+        List<Child> childList = taskDao.getTaskWithChildren(task.getTaskId()).blockingGet().children;
+        int nextChild = taskDao.getNextOrder(task.getTaskId()).blockingGet();
+        Button btn = binding.confirmTurnBtn;
+
+        btn.setOnClickListener(view -> {
+            TextView childsTurn = binding.nameNextChild;
+            childsTurn.setText("Current Child" + childList.get(nextChild).getName());
+        });
+
     }
 
     private AlertDialog.Builder getAlertDialogBox() {
@@ -215,7 +251,7 @@ public class TaskActivity extends AppCompatActivity {
 
 
     private boolean isClean() {
-        String name = binding.txtName.getText().toString();
+        String name = binding.taskEditName.getText().toString();
         return (task == null && name.isEmpty()) ||
                 (task != null && name.equals(task.getName()));
     }

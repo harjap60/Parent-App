@@ -104,7 +104,6 @@
     <string name="task_child_image">Child\'s Image</string>
     <string name="main_activity_task_list_btn">Task List</string>
 
-    <string name="task_name">Task Name</string>
     <string name="delete_task">Delete Task</string>
     <string name="warning_change_happened_for_add_task">
         Are you sure you want to go back? This will not add the new task.
@@ -121,4 +120,7 @@
     <string name="warning_change_happened_for_edit_task">
         Are you sure you want to go back? This will not edit the name of the task.
     </string>
+    <string name="cancel">Cancel</string>
+    <string name="confirm_turn">Confirm Turn</string>
+    <string name="task_name">Task Name</string>
 </resources>
