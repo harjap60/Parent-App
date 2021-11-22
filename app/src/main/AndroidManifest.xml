@@ -14,6 +14,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.ParentApp">
         <activity
+            android:name=".ui.TaskActivity"
+            android:exported="false" />
+        <activity
             android:name=".ui.TaskListActivity"
             android:exported="true" />
         <activity
@@ -24,16 +27,12 @@
         <activity
             android:name=".ui.ChildActivity"
             android:exported="false"
-            android:theme="@style/Theme.ParentApp.NoActionBar"
-            android:parentActivityName=".ui.MainActivity" />
-
-            android:screenOrientation="portrait"
+            android:parentActivityName=".ui.MainActivity"
+            android:theme="@style/Theme.ParentApp.NoActionBar" />
         <activity
             android:name=".ui.ChildListActivity"
             android:exported="false"
             android:parentActivityName=".ui.MainActivity"
-            android:theme="@style/Theme.ParentApp.NoActionBar"/>
-            android:screenOrientation="portrait"
             android:theme="@style/Theme.ParentApp.NoActionBar" />
         <activity
             android:name=".ui.TimerActivity"

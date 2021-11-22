@@ -100,6 +100,7 @@
     <string name="main_activity_task_list_btn">Task List</string>
     <string name="save_button_description">Save Button</string>
     <string name="child_image_description">Child Image</string>
+    <string name="task_name">Task Name</string>
     <!-- ============================== -->
 
 </resources>

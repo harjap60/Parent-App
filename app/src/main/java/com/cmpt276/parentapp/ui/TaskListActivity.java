@@ -14,7 +14,11 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.cmpt276.parentapp.R;
 import com.cmpt276.parentapp.databinding.ActivityTaskListBinding;
+import com.cmpt276.parentapp.model.Child;
+import com.cmpt276.parentapp.model.ChildDao;
+import com.cmpt276.parentapp.model.ParentAppDatabase;
 import com.cmpt276.parentapp.model.Task;
+import com.cmpt276.parentapp.model.TaskDao;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,10 +26,6 @@ import java.util.List;
 public class TaskListActivity extends AppCompatActivity {
 
     private ActivityTaskListBinding binding;
-
-    public static Intent getIntent(Context context) {
-        return new Intent(context, TaskListActivity.class);
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,16 +37,26 @@ public class TaskListActivity extends AppCompatActivity {
     }
 
     private void populateTaskRecyclerView() {
-        List<Task> taskList = new ArrayList<>();
+//        List<Task> taskList = new ArrayList<>();
+//
+//
+//        taskList.add(new Task("Read"));
+//        taskList.add(new Task("Eat"));
+//        taskList.add(new Task("Play"));
+//        taskList.add(new Task("Jump"));
+//        taskList.add(new Task("Run"));
+        new Thread(()->{
+            TaskDao TaskDao = ParentAppDatabase.getInstance(this).taskDao();
 
-        taskList.add(new Task("Read"));
-        taskList.add(new Task("Eat"));
-        taskList.add(new Task("Play"));
-        taskList.add(new Task("Jump"));
-        taskList.add(new Task("Run"));
+            List<Task> list = TaskDao.getAll().blockingGet();
 
-        TaskListAdapter adapter = new TaskListAdapter(taskList);
-        binding.rvTaskList.setAdapter(adapter);
+            if (list.size() == 0) {
+                return;
+            }
+
+            TaskListAdapter adapter = new TaskListAdapter(list);
+            runOnUiThread(() -> binding.rvTaskList.setAdapter(adapter));
+        }).start();
     }
 
     @Override
@@ -90,5 +100,9 @@ public class TaskListActivity extends AppCompatActivity {
 
             return itemView;
         }
+
+    }
+    public static Intent getIntent(Context context) {
+        return new Intent(context, TaskListActivity.class);
     }
 }
