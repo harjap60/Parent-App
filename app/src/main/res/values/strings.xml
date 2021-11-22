@@ -31,7 +31,6 @@
     <string name="child_name_label">Name:</string>
     <string name="hint_enter_child_name">Name</string>
     <string name="add_child_title">Add Child</string>
-
     <string name="edit_child_button_text">Edit</string>
     <string name="edit_child_title">Edit Child</string>
     <string name="confirm_edit_child_dialog_box_message">
@@ -95,9 +94,6 @@
     <string name="no_child_string">---</string>
     <string name="child_won">won</string>
     <string name="child_lost">lost</string>
-    <string name="add_task_btn_title">Add Task</string>
-    <string name="task_child_image">Child\'s Image</string>
-    <string name="main_activity_task_list_btn">Task List</string>
     <string name="help_button">Help button</string>
     <string name="save_button_description">Save Button</string>
     <string name="child_image_description">Child Image</string>
@@ -108,5 +104,28 @@
     <string name="task_mark_as_done_label">Done</string>
     <string name="task_detail_child_image_description">Child\'s Image</string>
     <!-- ============================== -->
+    <string name="add_task_btn_title">Add Task</string>
+    <string name="task_child_image">Child\'s Image</string>
+    <string name="main_activity_task_list_btn">Task List</string>
 
+    <string name="delete_task">Delete Task</string>
+    <string name="warning_change_happened_for_add_task">
+        Are you sure you want to go back? This will not add the new task.
+    </string>
+    <string name="add_task_title">Add Task</string>
+    <string name="edit_task_button_text">Edit</string>
+    <string name="edit_task_title">Edit Task</string>
+    <string name="confirm_edit_task_dialog_box_message">
+        Are you sure you want the name from \"%1$s\" to \"%2$s\"?
+    </string>
+    <string name="confirm_delete_task_dialog_box_message">
+        Are you sure you want to delete \"%1$s\" from your task list?
+    </string>
+    <string name="warning_change_happened_for_edit_task">
+        Are you sure you want to go back? This will not edit the name of the task.
+    </string>
+    <string name="cancel">Cancel</string>
+    <string name="confirm_turn">Confirm Turn</string>
+    <string name="task_name">Task Name</string>
+    <string name="current_child">Current Child:</string>
 </resources>

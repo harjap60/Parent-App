@@ -1,5 +1,8 @@
 package com.cmpt276.parentapp.model;
 
+import static androidx.room.ForeignKey.CASCADE;
+
+import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.ForeignKey;
 import androidx.room.Index;
@@ -11,16 +14,17 @@ import androidx.room.Index;
  */
 @Entity(primaryKeys = {"taskId", "childId"},
         foreignKeys = {
-                @ForeignKey(entity = Child.class, parentColumns = "childId", childColumns = "childId"),
-                @ForeignKey(entity = Task.class, parentColumns = "taskId", childColumns = "taskId")
-        },
-        indices = {
-                @Index("childId")
+                @ForeignKey(entity = Child.class, parentColumns = "childId", childColumns = "childId", onDelete = CASCADE),
+                @ForeignKey(entity = Task.class, parentColumns = "taskId", childColumns = "taskId", onDelete = CASCADE)
         }
 )
 public class ChildTaskCrossRef {
+
     private final int taskId;
+
+    @ColumnInfo(index = true)
     private final int childId;
+
     private int order;
 
     public ChildTaskCrossRef(int taskId, int childId, int order) {

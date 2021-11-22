@@ -52,8 +52,6 @@ public abstract class ParentAppDatabase extends RoomDatabase {
     public abstract CoinFlipDao coinFlipDao();
 
     public abstract TaskDao taskDao();
-
-    public abstract ChildTaskCrossRefDao childTaskCrossRefDao();
 }
 
 class Converters {
