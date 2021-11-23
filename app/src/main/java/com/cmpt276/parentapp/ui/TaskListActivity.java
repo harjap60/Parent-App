@@ -36,6 +36,7 @@ public class TaskListActivity extends AppCompatActivity {
 
     private ActivityTaskListBinding binding;
     private TaskDao TaskDao;
+
     public static Intent getIntent(Context context) {
         return new Intent(context, TaskListActivity.class);
     }
@@ -115,15 +116,15 @@ public class TaskListActivity extends AppCompatActivity {
                                 false
                         );
             }
-            Task task = taskList.get(position);
+            TaskWithChild taskWithChild = taskList.get(position);
 
             TextView taskNameText = itemView.findViewById(R.id.tv_task_name);
-            taskNameText.setText(task.task.getName());
+            taskNameText.setText(taskWithChild.task.getName());
 
-            if (task.child != null) {
+            if (taskWithChild.child != null) {
                 ImageView imageView = itemView.findViewById(R.id.iv_child_image);
                 Glide.with(TaskListActivity.this)
-                        .load(task.child.getImagePath())
+                        .load(taskWithChild.child.getImagePath())
                         .centerCrop()
                         .placeholder(R.drawable.child_image_icon)
                         .into(imageView);
@@ -132,8 +133,7 @@ public class TaskListActivity extends AppCompatActivity {
             itemView.setOnClickListener(v -> startActivity(
                     TaskDetailActivity.getIntent(
                             TaskListActivity.this,
-                            taskList.get(position)
-                                    .getTaskId()
+                            taskWithChild.task.getTaskId()
                     )
             ));
 
