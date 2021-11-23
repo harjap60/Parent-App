@@ -85,12 +85,16 @@ public class ChildActivity extends AppCompatActivity {
         childId = getIntent().getIntExtra(EXTRA_FOR_INDEX, NEW_CHILD_INDEX);
         childDao = ParentAppDatabase.getInstance(this).childDao();
 
-        setupDB();
         setupImageCaptureButton();
         setupPermissionLaunchers();
         setupChild(childId);
         setUpToolbar(childId);
+        setupAddEditButton();
         updateUI();
+    }
+
+    private void setupAddEditButton() {
+        binding.btnSave.setOnClickListener((v)-> saveChild());
     }
 
     @Override
@@ -167,12 +171,6 @@ public class ChildActivity extends AppCompatActivity {
         updateUI();
     }
 
-
-    private void setupDB() {
-
-        childDao = ParentAppDatabase.getInstance(this).childDao();
-    }
-
     private void setupChild(int id) {
 
         if (id == NEW_CHILD_INDEX) {
@@ -245,6 +243,7 @@ public class ChildActivity extends AppCompatActivity {
 
         if (child != null) {
             binding.txtName.setText(child.getName());
+            binding.btnSave.setText(R.string.edit_child_button_text);
         }
     }
 
