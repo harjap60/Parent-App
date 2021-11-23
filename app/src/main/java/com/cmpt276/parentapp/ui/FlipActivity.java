@@ -117,10 +117,9 @@ public class FlipActivity extends AppCompatActivity implements AdapterView.OnIte
 
     private void setupChildChoiceSpinner() {
         binding.chooseChildFlipSpinner.setVisibility(View.VISIBLE);
-        binding.previousChildFlipImage.setVisibility(View.VISIBLE);
-
 
         new Thread(() -> {
+
             ChildDao childDao = ParentAppDatabase.getInstance(this).childDao();
             coinFlipOrderList = childDao.getChildrenForFlip().blockingGet();
 
@@ -332,6 +331,7 @@ public class FlipActivity extends AppCompatActivity implements AdapterView.OnIte
                         Child child = flip.getChild();
                         ImageView image = findViewById(R.id.previous_child_flip_image);
                         runOnUiThread(() -> {
+                            binding.previousChildFlipImage.setVisibility(View.VISIBLE);
                             if (child.getImagePath() != null) {
                                 Glide.with(FlipActivity.this)
                                         .load(child.getImagePath())
@@ -342,7 +342,6 @@ public class FlipActivity extends AppCompatActivity implements AdapterView.OnIte
                                 image.setImageResource(R.drawable.child_image_icon);
                             }
                             binding.prevChildName.setText(child.getName());
-
                         });
                     }
 
