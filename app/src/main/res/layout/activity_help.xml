@@ -72,10 +72,8 @@
                 android:gravity="center"
                 android:orientation="vertical">
 
-
-
                 <TextView
-                    android:id="@+id/flip_coin_text"
+                    android:id="@+id/team_title_text"
                     android:layout_width="0dp"
                     android:layout_height="0dp"
                     android:layout_marginTop="2dp"
@@ -84,44 +82,63 @@
                     android:autoSizeStepGranularity="2sp"
                     android:autoSizeTextType="uniform"
                     android:maxLines="1"
-                    android:text="@string/flip_a_coin"
+                    android:text="Team Helium"
                     android:textAlignment="center"
                     android:textColor="@color/black"
                     android:textSize="11sp"
-                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintBottom_toBottomOf="@id/guideline7"
                     app:layout_constraintEnd_toEndOf="@id/guideline21"
                     app:layout_constraintHorizontal_bias="0.5"
                     app:layout_constraintStart_toStartOf="@id/guideline20"
-                    app:layout_constraintTop_toBottomOf="@+id/gif_image_view"
+                    app:layout_constraintTop_toBottomOf="@+id/guideline6"
                     app:layout_constraintVertical_bias="0.060000002" />
+
+                <TextView
+                    android:id="@+id/textView2"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_marginTop="2dp"
+                    android:autoSizeMaxTextSize="45sp"
+                    android:autoSizeMinTextSize="6sp"
+                    android:autoSizeStepGranularity="2sp"
+                    android:autoSizeTextType="uniform"
+                    android:textAlignment="center"
+                    android:maxLines="5"
+                    android:text="Meet the Team:\nDivij\nSagardeep\nSukhpal\nHarjap"
+                    android:textColor="@color/black"
+                    android:textSize="11sp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@+id/guideline21"
+                    app:layout_constraintStart_toStartOf="@+id/guideline20"
+                    app:layout_constraintTop_toBottomOf="@+id/team_title_text" />
 
                 <androidx.constraintlayout.widget.Guideline
                     android:id="@+id/guideline6"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
-                    app:layout_constraintGuide_percent="0.25" />
+                    app:layout_constraintGuide_percent="0.15" />
 
                 <androidx.constraintlayout.widget.Guideline
                     android:id="@+id/guideline7"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
-                    app:layout_constraintGuide_percent="0.65" />
+                    app:layout_constraintGuide_percent="0.40" />
 
                 <androidx.constraintlayout.widget.Guideline
                     android:id="@+id/guideline20"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    app:layout_constraintGuide_begin="118dp" />
+                    app:layout_constraintGuide_percent="0.15"  />
 
                 <androidx.constraintlayout.widget.Guideline
                     android:id="@+id/guideline21"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    app:layout_constraintGuide_percent="0.65" />
+                    app:layout_constraintGuide_percent="0.85" />
             </androidx.constraintlayout.widget.ConstraintLayout>
 
         </androidx.cardview.widget.CardView>
@@ -153,38 +170,38 @@
                 android:orientation="vertical">
 
                 <TextView
-                    android:id="@+id/configure_child_text"
+                    android:id="@+id/copyright_info"
                     android:layout_width="0dp"
                     android:layout_height="0dp"
                     android:layout_marginTop="2dp"
                     android:autoSizeMaxTextSize="100sp"
-                    android:autoSizeMinTextSize="6sp"
+                    android:autoSizeMinTextSize="16sp"
                     android:autoSizeStepGranularity="2sp"
                     android:autoSizeTextType="uniform"
                     android:maxLines="1"
-                    android:text="@string/configure_children"
+                    android:text="Resources Used"
                     android:textAlignment="center"
                     android:textColor="@color/black"
                     android:textSize="16sp"
-                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintBottom_toTopOf="@id/guideline11"
                     app:layout_constraintEnd_toEndOf="@id/guideline26"
                     app:layout_constraintHorizontal_bias="0.5"
                     app:layout_constraintStart_toStartOf="@id/guideline25"
-                    app:layout_constraintTop_toBottomOf="@+id/gif_image_view3" />
+                    app:layout_constraintTop_toBottomOf="@+id/guideline10" />
 
                 <androidx.constraintlayout.widget.Guideline
                     android:id="@+id/guideline10"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
-                    app:layout_constraintGuide_percent="0.25" />
+                    app:layout_constraintGuide_percent="0.10" />
 
                 <androidx.constraintlayout.widget.Guideline
                     android:id="@+id/guideline11"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
-                    app:layout_constraintGuide_percent="0.65" />
+                    app:layout_constraintGuide_percent="0.25" />
 
                 <androidx.constraintlayout.widget.Guideline
                     android:id="@+id/guideline25"
