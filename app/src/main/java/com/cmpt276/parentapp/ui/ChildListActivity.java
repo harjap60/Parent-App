@@ -9,6 +9,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -16,6 +17,7 @@ import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import com.bumptech.glide.Glide;
 import com.cmpt276.parentapp.R;
 import com.cmpt276.parentapp.databinding.ActivityChildListBinding;
 import com.cmpt276.parentapp.model.Child;
@@ -44,12 +46,11 @@ public class ChildListActivity extends AppCompatActivity {
         binding = ActivityChildListBinding.inflate(this.getLayoutInflater());
         setContentView(binding.getRoot());
 
-        setUpToolbar();
-        enableUpOnToolbar();
+        setupToolbar();
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
+    public boolean onCreateOptionsMenu(@NonNull Menu menu) {
         // inflate the menu:
         getMenuInflater().inflate(R.menu.menu_child_list, menu);
         return true;
@@ -73,12 +74,10 @@ public class ChildListActivity extends AppCompatActivity {
         populateListView();
     }
 
-    private void setUpToolbar() {
+    private void setupToolbar() {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-    }
 
-    private void enableUpOnToolbar() {
         ActionBar ab = getSupportActionBar();
         if (ab != null) {
             ab.setDisplayHomeAsUpEnabled(true);
@@ -86,7 +85,7 @@ public class ChildListActivity extends AppCompatActivity {
     }
 
     private void populateListView() {
-        new Thread(()->{
+        new Thread(() -> {
             ChildDao childDao = ParentAppDatabase.getInstance(this).childDao();
 
             List<Child> list = childDao.getAll().blockingGet();
@@ -127,6 +126,19 @@ public class ChildListActivity extends AppCompatActivity {
 
             TextView childNameTextView = itemView.findViewById(R.id.child_name_text_view);
             childNameTextView.setText(child.getName());
+
+            // Child Image
+            ImageView childImage = itemView.findViewById(R.id.item_icon_child);
+
+            // if the user has specified a picture for the child, then set the image of the child
+            // otherwise just display the default image for the child
+            if (child.getImagePath() != null) {
+                Glide.with(ChildListActivity.this)
+                        .load(child.getImagePath())
+                        .centerCrop()
+                        .placeholder(R.drawable.child_image_icon)
+                        .into(childImage);
+            }
 
             itemView.setOnClickListener(v -> {
                 Intent i = ChildActivity.getIntentForExistingChild(ChildListActivity.this, child.getChildId());

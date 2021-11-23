@@ -14,6 +14,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 import com.cmpt276.parentapp.R;
 import com.cmpt276.parentapp.databinding.ActivityTaskListBinding;
@@ -23,7 +24,8 @@ import com.cmpt276.parentapp.model.TaskDao;
 
 import java.util.List;
 
-/** +
+/**
+ * +
  * Activity lists all created tasks
  * Redirects to create new task screen and confirm child for a task when appropriate
  */
@@ -41,10 +43,26 @@ public class TaskListActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         binding = ActivityTaskListBinding.inflate(this.getLayoutInflater());
         setContentView(binding.getRoot());
-
         populateTaskRecyclerView();
-        setUpToolbar();
-        enableUpOnToolbar();
+        setupToolbar();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_task_list, menu);
+        return true;
+    }
+
+    @SuppressLint("NonConstantResourceId")
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if (item.getItemId() == R.id.btn_add_task) {
+            startActivity(
+                    TaskActivity.getIntentForNewTask(this)
+            );
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     private void populateTaskRecyclerView() {
@@ -53,25 +71,9 @@ public class TaskListActivity extends AppCompatActivity {
 
             List<Task> list = TaskDao.getAll().blockingGet();
 
-            if (list.size() == 0) {
-                return;
-            }
-
             TaskListAdapter adapter = new TaskListAdapter(list);
             runOnUiThread(() -> binding.rvTaskList.setAdapter(adapter));
         }).start();
-    }
-
-    @SuppressLint("NonConstantResourceId")
-    @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        if (item.getItemId() == R.id.btn_add_task) {
-            startActivity(
-                    TaskActivity.getIntentForNewTask(TaskListActivity.this)
-            );
-            return true;
-        }
-        return super.onOptionsItemSelected(item);
     }
 
     @Override
@@ -80,21 +82,14 @@ public class TaskListActivity extends AppCompatActivity {
         populateTaskRecyclerView();
     }
 
-    private void setUpToolbar() {
-        setSupportActionBar(binding.toolbar);
-    }
+    private void setupToolbar() {
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
 
-    private void enableUpOnToolbar() {
         ActionBar ab = getSupportActionBar();
         if (ab != null) {
             ab.setDisplayHomeAsUpEnabled(true);
         }
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_task_list, menu);
-        return true;
     }
 
     class TaskListAdapter extends ArrayAdapter<Task> {
