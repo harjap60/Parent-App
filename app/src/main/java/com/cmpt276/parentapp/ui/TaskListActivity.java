@@ -35,7 +35,7 @@ import java.util.List;
 public class TaskListActivity extends AppCompatActivity {
 
     private ActivityTaskListBinding binding;
-
+    private TaskDao TaskDao;
     public static Intent getIntent(Context context) {
         return new Intent(context, TaskListActivity.class);
     }
@@ -45,12 +45,13 @@ public class TaskListActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         binding = ActivityTaskListBinding.inflate(this.getLayoutInflater());
         setContentView(binding.getRoot());
-        populateTaskRecyclerView();
+
+        TaskDao = ParentAppDatabase.getInstance(this).taskDao();
         setupToolbar();
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
+    public boolean onCreateOptionsMenu(@NonNull Menu menu) {
         getMenuInflater().inflate(R.menu.menu_task_list, menu);
         return true;
     }
@@ -114,7 +115,7 @@ public class TaskListActivity extends AppCompatActivity {
                                 false
                         );
             }
-            TaskWithChild task = taskList.get(position);
+            Task task = taskList.get(position);
 
             TextView taskNameText = itemView.findViewById(R.id.tv_task_name);
             taskNameText.setText(task.task.getName());
@@ -128,10 +129,14 @@ public class TaskListActivity extends AppCompatActivity {
                         .into(imageView);
             }
 
-            itemView.setOnClickListener(v -> {
-                Intent i = TaskActivity.getIntentForExistingTask(TaskListActivity.this, task.task.getTaskId());
-                startActivity(i);
-            });
+            itemView.setOnClickListener(v -> startActivity(
+                    TaskDetailActivity.getIntent(
+                            TaskListActivity.this,
+                            taskList.get(position)
+                                    .getTaskId()
+                    )
+            ));
+
             return itemView;
         }
     }

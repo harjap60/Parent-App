@@ -10,7 +10,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
@@ -56,10 +55,9 @@ public class ChildActivity extends AppCompatActivity {
             "com.cmpt276.parentapp.ui.AddChildActivity.childId";
     private static final int NEW_CHILD_INDEX = -1;
     private final String[] IMAGE_OPTIONS = {"Take Photo", "Choose from Gallery", "Cancel"};
-
     private final int REQUEST_CODE_FOR_TAKE_PHOTO = 10;
     private final int REQUEST_CODE_FOR_CHOOSE_FROM_GALLERY = 20;
-
+    private int childId;
     private Child child;
     private ChildDao childDao;
     private ActivityChildBinding binding;
@@ -84,22 +82,29 @@ public class ChildActivity extends AppCompatActivity {
         binding = ActivityChildBinding.inflate(this.getLayoutInflater());
         setContentView(binding.getRoot());
 
-        int id = getIntent().getIntExtra(EXTRA_FOR_INDEX, NEW_CHILD_INDEX);
+        childId = getIntent().getIntExtra(EXTRA_FOR_INDEX, NEW_CHILD_INDEX);
+        childDao = ParentAppDatabase.getInstance(this).childDao();
 
-        setupDB();
-        setupChild(id);
-        setUpToolbar(id);
-        setupSaveButton();
         setupImageCaptureButton();
         setupPermissionLaunchers();
+        setupChild(childId);
+        setUpToolbar(childId);
+        setupAddEditButton();
         updateUI();
+    }
+
+    private void setupAddEditButton() {
+        binding.btnSave.setOnClickListener((v)-> saveChild());
     }
 
     @Override
     public boolean onCreateOptionsMenu(@NonNull Menu menu) {
-        if (child != null) {
-            getMenuInflater().inflate(R.menu.menu_child, menu);
-        }
+        getMenuInflater().inflate(
+                childId == NEW_CHILD_INDEX ?
+                        R.menu.menu_child :
+                        R.menu.menu_child_edit,
+                menu
+        );
 
         return true;
     }
@@ -108,7 +113,11 @@ public class ChildActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.btn_delete_child:
+            case R.id.btn_child_save:
+                saveChild();
+                return true;
+
+            case R.id.btn_child_delete:
                 showDeleteChildDialog();
                 return true;
 
@@ -128,18 +137,7 @@ public class ChildActivity extends AppCompatActivity {
             return;
         }
 
-        AlertDialog.Builder builder = getAlertDialogBox();
-        builder.setMessage(
-                getString(child == null ?
-                        R.string.warning_change_happened_for_add_child :
-                        R.string.warning_change_happened_for_edit_child)
-        );
-
-        builder.setPositiveButton(R.string.yes, (dialogInterface, i) -> finish());
-
-        AlertDialog alertDialog = builder.create();
-        alertDialog.show();
-
+        showUpConfirmationDialog();
     }
 
     @Override
@@ -173,12 +171,6 @@ public class ChildActivity extends AppCompatActivity {
         updateUI();
     }
 
-
-    private void setupDB() {
-
-        childDao = ParentAppDatabase.getInstance(this).childDao();
-    }
-
     private void setupChild(int id) {
 
         if (id == NEW_CHILD_INDEX) {
@@ -192,11 +184,6 @@ public class ChildActivity extends AppCompatActivity {
                     this.imagePath = child.getImagePath();
                     runOnUiThread(this::updateUI);
                 });
-    }
-
-    private void setupSaveButton() {
-
-        binding.btnSave.setOnClickListener(view -> saveChild());
     }
 
     private void setUpToolbar(int id) {
@@ -256,27 +243,27 @@ public class ChildActivity extends AppCompatActivity {
 
         if (child != null) {
             binding.txtName.setText(child.getName());
+            binding.btnSave.setText(R.string.edit_child_button_text);
         }
     }
 
-    private void handleUnsavedChanges() {
-        if (isClean()) {
-            return;
-        }
-
-        getAlertDialogBox()
-                .setMessage(getString(
-                        R.string.confirm_edit_child_dialog_box_message,
-                        child.getName(),
-                        binding.txtName.getText()
-                ))
-                .setPositiveButton(R.string.yes, (dialog, which) -> saveChild())
+    private void showUpConfirmationDialog() {
+        new AlertDialog.Builder(ChildActivity.this)
+                .setTitle(R.string.up_alert_title)
+                .setNegativeButton(R.string.no, null)
+                .setMessage(
+                        getString(child == null ?
+                                R.string.warning_change_happened_for_add_child :
+                                R.string.warning_change_happened_for_edit_child)
+                ).setPositiveButton(R.string.yes, (dialogInterface, i) -> finish())
                 .create()
                 .show();
     }
 
     private void showDeleteChildDialog() {
-        getAlertDialogBox()
+        new AlertDialog.Builder(ChildActivity.this)
+                .setTitle(R.string.delete_alert_title)
+                .setNegativeButton(R.string.no, null)
                 .setMessage(getString(
                         R.string.confirm_delete_child_dialog_box_message,
                         child.getName()
@@ -287,39 +274,40 @@ public class ChildActivity extends AppCompatActivity {
     }
 
     private void saveChild() {
+
+        String name = this.binding.txtName.getText().toString();
+
+        if (name.isEmpty()) {
+            Toast.makeText(
+                    this,
+                    R.string.empty_child_name_message,
+                    Toast.LENGTH_LONG
+            ).show();
+            return;
+        }
+
         new Thread(() -> {
+            if (child == null) {
+                int coinFlipOrder = childDao.getNextCoinFlipOrder().blockingGet();
+                Long id = childDao.insert(new Child(name, coinFlipOrder, imagePath)).blockingGet();
 
-            String name = this.binding.txtName.getText().toString();
-            if(!name.equals("")) {
-                if (child == null) {
-                    int coinFlipOrder = childDao.getNextCoinFlipOrder().blockingGet();
-                    Long id = childDao.insert(new Child(name, coinFlipOrder, imagePath)).blockingGet();
+                TaskDao taskDao = ParentAppDatabase.getInstance(ChildActivity.this).taskDao();
 
-                    TaskDao taskDao = ParentAppDatabase.getInstance(ChildActivity.this).taskDao();
-
-                    List<Task> tasks = taskDao.getAll().blockingGet();
-                    for (Task task : tasks) {
-                        int order = taskDao.getNextOrder(task.getTaskId()).blockingGet();
-                        taskDao.insertRef(new ChildTaskCrossRef(
-                                task.getTaskId(),
-                                id.intValue(),
-                                order
-                        )).blockingAwait();
-                    }
-                } else {
-                    child.setName(name);
-                    child.setImagePath(imagePath);
-                    childDao.update(child).blockingAwait();
+                List<Task> tasks = taskDao.getAll().blockingGet();
+                for (Task task : tasks) {
+                    int order = taskDao.getNextOrder(task.getTaskId()).blockingGet();
+                    taskDao.insertRef(new ChildTaskCrossRef(
+                            task.getTaskId(),
+                            id.intValue(),
+                            order
+                    )).blockingAwait();
                 }
-                runOnUiThread(this::finish);
-            }else{
-                this.runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        Toast.makeText(ChildActivity.this, R.string.name_can_not_be_empty, Toast.LENGTH_SHORT).show();
-                    }
-                });
+            } else {
+                child.setName(name);
+                child.setImagePath(imagePath);
+                childDao.update(child).blockingAwait();
             }
+            runOnUiThread(this::finish);
         }).start();
     }
 
@@ -341,9 +329,9 @@ public class ChildActivity extends AppCompatActivity {
     }
 
     private void selectImage() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle(R.string.choose_picture);
-        builder.setItems(IMAGE_OPTIONS, (dialogInterface, item) -> {
+        new AlertDialog.Builder(this)
+                .setTitle(R.string.choose_picture)
+        .setItems(IMAGE_OPTIONS, (dialogInterface, item) -> {
             if (IMAGE_OPTIONS[item].equals(getString(R.string.take_photo))) {
                 captureImage();
             } else if (IMAGE_OPTIONS[item].equals(getString(R.string.choose_from_gallery))) {
@@ -351,8 +339,7 @@ public class ChildActivity extends AppCompatActivity {
             } else if (IMAGE_OPTIONS[item].equals(getString(R.string.cancel))) {
                 dialogInterface.dismiss();
             }
-        });
-        builder.show();
+        }).show();
     }
 
     private void captureImage() {

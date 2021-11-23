@@ -24,62 +24,48 @@
         android:requestLegacyExternalStorage="true"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.ParentApp">
-
+        android:theme="@style/Theme.ParentApp.NoActionBar"
+        android:screenOrientation="portrait">
+        <activity
+            android:name=".ui.TaskDetailActivity"
+            android:exported="false"
+            android:parentActivityName=".ui.TaskListActivity" />
         <activity
             android:name=".ui.HelpActivity"
             android:exported="false"
             android:parentActivityName=".ui.MainActivity"
-            android:screenOrientation="portrait"
             android:theme="@style/Theme.ParentApp.NoActionBar"/>
         <activity
             android:name=".ui.TaskActivity"
-            android:exported="false"
-            android:parentActivityName=".ui.TaskListActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/Theme.ParentApp.NoActionBar"/>
+            android:exported="false" />
         <activity
             android:name=".ui.TaskListActivity"
-            android:exported="true"
-            android:parentActivityName=".ui.MainActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/Theme.ParentApp.NoActionBar"/>
+            android:exported="false"
+            android:parentActivityName=".ui.MainActivity" />
         <activity
             android:name=".ui.FlipHistoryActivity"
             android:exported="false"
-            android:parentActivityName=".ui.FlipActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/Theme.ParentApp.NoActionBar" />
+            android:parentActivityName=".ui.FlipActivity" />
         <activity
             android:name=".ui.ChildActivity"
             android:exported="false"
-            android:parentActivityName=".ui.MainActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/Theme.ParentApp.NoActionBar" />
+            android:parentActivityName=".ui.MainActivity" />
         <activity
             android:name=".ui.ChildListActivity"
             android:exported="false"
-            android:parentActivityName=".ui.MainActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/Theme.ParentApp.NoActionBar" />
+            android:parentActivityName=".ui.MainActivity" />
         <activity
             android:name=".ui.TimerActivity"
             android:exported="false"
-            android:parentActivityName=".ui.MainActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/Theme.AppCompat.NoActionBar" />
+            android:parentActivityName=".ui.MainActivity" />
         <activity
             android:name=".ui.FlipActivity"
             android:exported="false"
-            android:parentActivityName=".ui.MainActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/Theme.ParentApp.NoActionBar" />
+            android:parentActivityName=".ui.MainActivity" />
         <activity
             android:name=".ui.MainActivity"
             android:exported="true"
-            android:label="@string/app_name"
-            android:screenOrientation="portrait"
-            android:theme="@style/Theme.ParentApp.NoActionBar">
+            android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

@@ -1,0 +1,13 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:icon="@drawable/ic_baseline_edit_white"
+        android:title="@string/menu_task_edit_label"
+        android:id="@+id/btn_task_edit"
+        app:showAsAction="ifRoom" />
+    <item
+        android:icon="@drawable/ic_baseline_delete_24"
+        android:title="@string/btn_task_delete_label"
+        android:id="@+id/btn_task_delete"
+        app:showAsAction="ifRoom" />
+</menu>

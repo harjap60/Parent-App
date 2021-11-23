@@ -1,9 +1,6 @@
 package com.cmpt276.parentapp.model;
 
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.util.Base64;
 
 import androidx.room.Database;
 import androidx.room.Room;
@@ -11,7 +8,6 @@ import androidx.room.RoomDatabase;
 import androidx.room.TypeConverter;
 import androidx.room.TypeConverters;
 
-import java.io.ByteArrayOutputStream;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
@@ -30,7 +26,7 @@ import java.time.format.DateTimeFormatter;
                 Task.class,
                 ChildTaskCrossRef.class
         },
-        version = 15
+        version = 16
 )
 @TypeConverters({Converters.class})
 public abstract class ParentAppDatabase extends RoomDatabase {
