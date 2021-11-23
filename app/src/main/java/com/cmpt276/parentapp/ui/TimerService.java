@@ -24,12 +24,12 @@ import com.cmpt276.parentapp.R;
 /**
  * Timer service runs a timer in a foreground service and
  * allow it to run independent of the activity that starts it.
- *
+ * <p>
  * It shows a persistent notification that can interact with the timer or start an activity for
  * the timer.
- *
+ * <p>
  * This service is dependant on notification channels not created by it.
- *
+ * <p>
  * Plays a sound and vibrates the phone on end.
  */
 public class TimerService extends Service {

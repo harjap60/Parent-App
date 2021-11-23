@@ -37,10 +37,8 @@ import com.cmpt276.parentapp.model.TaskDao;
 
 import java.io.File;
 import java.io.IOException;
-import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
@@ -56,9 +54,8 @@ import io.reactivex.rxjava3.schedulers.Schedulers;
 
 /**
  * TODO
- *      Add titles to all dialog boxes
- *      Change button text for edit child
- *
+ * Add titles to all dialog boxes
+ * Change button text for edit child
  */
 public class ChildActivity extends AppCompatActivity {
 
