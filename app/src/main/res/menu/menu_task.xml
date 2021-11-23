@@ -2,8 +2,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
-        android:id="@+id/btn_delete_task"
-        android:title="@string/delete_child_button_text"
-        android:icon="@drawable/ic_baseline_delete_forever"
-        app:showAsAction="ifRoom"/>
+        android:id="@+id/btn_task_save"
+        android:title="@string/delete_task"
+        android:icon="@drawable/ic_baseline_save_24"
+        app:showAsAction="always"/>
 </menu>

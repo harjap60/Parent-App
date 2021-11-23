@@ -27,14 +27,14 @@ public interface ChildDao {
     @Query("SELECT * FROM child ORDER BY coinFlipOrder LIMIT 1")
     Single<Child> getChildForNextFlip();
 
+    @Query("SELECT * FROM child ORDER BY coinFlipOrder")
+    Single<List<Child>> getChildrenForFlip();
+
     @Query("UPDATE child set coinFlipOrder = coinFlipOrder - 1 WHERE coinFlipOrder > :min")
     Completable decrementCoinFlipOrder(int min);
 
     @Query("SELECT IFNULL(MAX(coinFlipOrder) + 1, 0) FROM child")
     Single<Integer> getNextCoinFlipOrder();
-
-    @Query("SELECT * FROM child ORDER BY coinFlipOrder")
-    Single<List<Child>> getChildrenForFlip();
 
     @Query("SELECT COUNT(*) > 0 FROM Child")
     Single<Boolean> hasChildren();

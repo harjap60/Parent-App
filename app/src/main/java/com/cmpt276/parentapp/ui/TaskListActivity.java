@@ -33,7 +33,7 @@ import java.util.List;
 public class TaskListActivity extends AppCompatActivity {
 
     private ActivityTaskListBinding binding;
-
+    private TaskDao TaskDao;
     public static Intent getIntent(Context context) {
         return new Intent(context, TaskListActivity.class);
     }
@@ -43,15 +43,11 @@ public class TaskListActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         binding = ActivityTaskListBinding.inflate(this.getLayoutInflater());
         setContentView(binding.getRoot());
-        populateTaskRecyclerView();
+
+        TaskDao = ParentAppDatabase.getInstance(this).taskDao();
         setupToolbar();
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_task_list, menu);
-        return true;
-    }
 
     @SuppressLint("NonConstantResourceId")
     @Override
@@ -92,6 +88,12 @@ public class TaskListActivity extends AppCompatActivity {
         }
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(@NonNull Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_task_list, menu);
+        return true;
+    }
+
     class TaskListAdapter extends ArrayAdapter<Task> {
         List<Task> taskList;
 
@@ -112,15 +114,20 @@ public class TaskListActivity extends AppCompatActivity {
                                 false
                         );
             }
+
+            itemView.setOnClickListener(v -> startActivity(
+                    TaskDetailActivity.getIntent(
+                    TaskListActivity.this,
+                    taskList.get(position)
+                            .getTaskId()
+                    )
+            ));
+
             Task task = taskList.get(position);
 
             TextView taskNameText = itemView.findViewById(R.id.tv_task_name);
             taskNameText.setText(task.getName());
 
-            itemView.setOnClickListener(v -> {
-                Intent i = TaskActivity.getIntentForExistingTask(TaskListActivity.this, task.getTaskId());
-                startActivity(i);
-            });
             return itemView;
         }
     }

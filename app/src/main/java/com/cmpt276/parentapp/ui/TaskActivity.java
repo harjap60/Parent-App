@@ -4,9 +4,9 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
@@ -35,7 +35,6 @@ import io.reactivex.rxjava3.schedulers.Schedulers;
 
 public class TaskActivity extends AppCompatActivity {
 
-    public static final int MIN_ORDER = 0;
     private static final String EXTRA_FOR_INDEX =
             "com.cmpt276.parentapp.ui.AddChildActivity.childId";
     private static final int NEW_TASK_INDEX = -1;
@@ -66,14 +65,11 @@ public class TaskActivity extends AppCompatActivity {
         setupTask(id);
         setUpToolbar(id);
         enableUpOnToolbar();
-        setupSaveButton();
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        if (task != null) {
-            getMenuInflater().inflate(R.menu.menu_edit_task, menu);
-        }
+    public boolean onCreateOptionsMenu(@NonNull Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_task, menu);
         return true;
     }
 
@@ -81,13 +77,14 @@ public class TaskActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.action_delete_task_button:
-                showDeleteTaskDialog();
-                return true;
 
             case android.R.id.home:
                 onBackPressed();
                 return true;
+
+            case R.id.btn_task_save:
+                saveTask();
+                return false;
 
             default:
                 return super.onOptionsItemSelected(item);
@@ -101,21 +98,21 @@ public class TaskActivity extends AppCompatActivity {
             return;
         }
 
-        AlertDialog.Builder builder = getAlertDialogBox();
-        builder.setMessage(
-                getString(task == null ?
-                        R.string.warning_change_happened_for_add_task :
-                        R.string.warning_change_happened_for_edit_task)
-        );
-
-        builder.setPositiveButton(R.string.yes, (dialogInterface, i) -> finish());
-
-        AlertDialog alertDialog = builder.create();
-        alertDialog.show();
+        new AlertDialog.Builder(TaskActivity.this)
+                .setTitle(R.string.warning_message)
+                .setNegativeButton(R.string.no, null)
+                .setMessage(
+                        getString(task == null ?
+                                R.string.warning_change_happened_for_add_task :
+                                R.string.warning_change_happened_for_edit_task)
+                ).setPositiveButton(R.string.yes, (dialogInterface, i) -> finish())
+                .create()
+                .show();
 
     }
 
     private void setupDB() {
+
         taskDao = ParentAppDatabase.getInstance(this).taskDao();
     }
 
@@ -132,10 +129,6 @@ public class TaskActivity extends AppCompatActivity {
                     this.child = task.child;
                     updateUI();
                 });
-    }
-
-    private void setupSaveButton() {
-        binding.btnSave.setOnClickListener(view -> saveTask());
     }
 
     private void setUpToolbar(int id) {
@@ -162,42 +155,23 @@ public class TaskActivity extends AppCompatActivity {
         if (task == null) {
             return;
         }
+
         binding.txtName.setText(task.getName());
-        if (child != null) {
-            binding.txtName.setText(child.getName());
-        }
-    }
-
-    private void handleUnsavedChanges() {
-        if (isClean()) {
-            return;
-        }
-
-        getAlertDialogBox()
-                .setMessage(getString(
-                        R.string.confirm_edit_task_dialog_box_message,
-                        task.getName(),
-                        binding.txtName.getText()
-                ))
-                .setPositiveButton(R.string.yes, (dialog, which) -> saveTask())
-                .create()
-                .show();
-    }
-
-    private void showDeleteTaskDialog() {
-        getAlertDialogBox()
-                .setMessage(getString(
-                        R.string.confirm_delete_child_dialog_box_message,
-                        task.getName()
-                ))
-                .setPositiveButton(R.string.yes, (dialogInterface, i) -> deleteTask())
-                .create()
-                .show();
     }
 
     private void saveTask() {
+        String name = this.binding.txtName.getText().toString();
+
+        if (name.isEmpty()) {
+            Toast.makeText(
+                    this,
+                    "Task Name cannot be empty.",
+                    Toast.LENGTH_LONG
+            ).show();
+            return;
+        }
+
         new Thread(() -> {
-            String name = this.binding.txtName.getText().toString();
             if (task == null) {
                 ChildDao childDao = ParentAppDatabase
                         .getInstance(TaskActivity.this)
@@ -222,27 +196,6 @@ public class TaskActivity extends AppCompatActivity {
             }
             runOnUiThread(this::finish);
         }).start();
-    }
-
-    private void deleteTask() {
-        if (task == null) {
-            return;
-        }
-        new Thread(() -> {
-
-            try {
-                taskDao.delete(this.task).blockingAwait();
-                runOnUiThread(this::finish);
-            } catch (Exception e) {
-                Log.i("Task Activity deletion", e.getMessage());
-            }
-        }).start();
-    }
-
-    private AlertDialog.Builder getAlertDialogBox() {
-        return new AlertDialog.Builder(TaskActivity.this)
-                .setTitle(R.string.warning_message)
-                .setNegativeButton(R.string.no, null);
     }
 
     private boolean isClean() {
