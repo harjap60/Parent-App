@@ -28,9 +28,6 @@ public interface TaskDao {
             "WHERE taskId = :taskId and `order` > :minOrder")
     Completable decrementOrder(int taskId, int minOrder);
 
-    @Transaction
-    @Query("SELECT * FROM Task WHERE taskId = :taskId")
-    Single<TaskWithChildren> getTaskWithChildren(int taskId);
     @Query("SELECT " +
             "t.taskId as t_taskId," +
             "t.name as t_name, " +

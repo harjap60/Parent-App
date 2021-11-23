@@ -12,7 +12,6 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -32,7 +31,7 @@ import java.util.List;
 public class TaskListActivity extends AppCompatActivity {
 
     private ActivityTaskListBinding binding;
-
+    private TaskDao TaskDao;
     public static Intent getIntent(Context context) {
         return new Intent(context, TaskListActivity.class);
     }
@@ -43,15 +42,14 @@ public class TaskListActivity extends AppCompatActivity {
         binding = ActivityTaskListBinding.inflate(this.getLayoutInflater());
         setContentView(binding.getRoot());
 
-        populateTaskRecyclerView();
+        TaskDao = ParentAppDatabase.getInstance(this).taskDao();
+
         setUpToolbar();
         enableUpOnToolbar();
     }
 
-    private void populateTaskRecyclerView() {
+    private void populateTaskList() {
         new Thread(() -> {
-            TaskDao TaskDao = ParentAppDatabase.getInstance(this).taskDao();
-
             List<Task> list = TaskDao.getAll().blockingGet();
 
             if (list.size() == 0) {
@@ -78,7 +76,7 @@ public class TaskListActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        populateTaskRecyclerView();
+        populateTaskList();
     }
 
     private void setUpToolbar() {

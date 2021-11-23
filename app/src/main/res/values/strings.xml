@@ -128,4 +128,5 @@
     <string name="confirm_turn">Confirm Turn</string>
     <string name="task_name">Task Name</string>
     <string name="current_child">Current Child:</string>
+    <string name="task_list_title">Tasks</string>
 </resources>
