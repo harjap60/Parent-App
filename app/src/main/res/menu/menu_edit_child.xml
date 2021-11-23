@@ -2,8 +2,14 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
-        android:id="@+id/action_delete_child_button"
-        android:title="@string/delete_child_button_text"
+        android:id="@+id/btn_child_save"
+        android:icon="@drawable/ic_baseline_save_24"
+        android:title="@string/save_button_description"
+        app:showAsAction="ifRoom" />
+
+    <item
+        android:id="@+id/btn_child_delete"
         android:icon="@drawable/ic_baseline_delete_forever"
-        app:showAsAction="ifRoom"/>
+        android:title="@string/delete_child_button_text"
+        app:showAsAction="never" />
 </menu>

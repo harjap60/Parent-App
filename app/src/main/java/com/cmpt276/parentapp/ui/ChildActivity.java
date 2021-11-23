@@ -58,16 +58,15 @@ public class ChildActivity extends AppCompatActivity {
         setContentView(binding.getRoot());
 
         int id = getIntent().getIntExtra(EXTRA_FOR_INDEX, NEW_CHILD_INDEX);
+        childDao = ParentAppDatabase.getInstance(this).childDao();
 
-        setupDB();
         setupChild(id);
         setUpToolbar(id);
-        setupSaveButton();
         updateUI();
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
+    public boolean onCreateOptionsMenu(@NonNull Menu menu) {
         if (child != null) {
             getMenuInflater().inflate(R.menu.menu_edit_child, menu);
         }
@@ -79,8 +78,8 @@ public class ChildActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.action_delete_child_button:
-                showDeleteChildDialog();
+            case R.id.btn_child_save:
+                saveChild();
                 return true;
 
             case android.R.id.home:
@@ -99,23 +98,8 @@ public class ChildActivity extends AppCompatActivity {
             return;
         }
 
-        AlertDialog.Builder builder = getAlertDialogBox();
-        builder.setMessage(
-                getString(child == null ?
-                        R.string.warning_change_happened_for_add_child :
-                        R.string.warning_change_happened_for_edit_child)
-        );
+        showUpConfirmationDialog();
 
-        builder.setPositiveButton(R.string.yes, (dialogInterface, i) -> finish());
-
-        AlertDialog alertDialog = builder.create();
-        alertDialog.show();
-
-    }
-
-    private void setupDB() {
-
-        childDao = ParentAppDatabase.getInstance(this).childDao();
     }
 
     private void setupChild(int id) {
@@ -130,11 +114,6 @@ public class ChildActivity extends AppCompatActivity {
                     this.child = child;
                     updateUI();
                 });
-    }
-
-    private void setupSaveButton() {
-
-        binding.btnSave.setOnClickListener(view -> saveChild());
     }
 
     private void setUpToolbar(int id) {
@@ -158,29 +137,15 @@ public class ChildActivity extends AppCompatActivity {
         binding.txtName.setText(child.getName());
     }
 
-    private void handleUnsavedChanges() {
-        if (isClean()) {
-            return;
-        }
-
-        getAlertDialogBox()
-                .setMessage(getString(
-                        R.string.confirm_edit_child_dialog_box_message,
-                        child.getName(),
-                        binding.txtName.getText()
-                ))
-                .setPositiveButton(R.string.yes, (dialog, which) -> saveChild())
-                .create()
-                .show();
-    }
-
-    private void showDeleteChildDialog() {
-        getAlertDialogBox()
-                .setMessage(getString(
-                        R.string.confirm_delete_child_dialog_box_message,
-                        child.getName()
-                ))
-                .setPositiveButton(R.string.yes, (dialogInterface, i) -> deleteChild())
+    private void showUpConfirmationDialog() {
+        new AlertDialog.Builder(ChildActivity.this)
+                .setTitle(R.string.warning_message)
+                .setNegativeButton(R.string.no, null)
+                .setMessage(
+                        getString(child == null ?
+                                R.string.warning_change_happened_for_add_child :
+                                R.string.warning_change_happened_for_edit_child)
+                ).setPositiveButton(R.string.yes, (dialogInterface, i) -> finish())
                 .create()
                 .show();
     }
@@ -211,23 +176,6 @@ public class ChildActivity extends AppCompatActivity {
             }
             runOnUiThread(this::finish);
         }).start();
-    }
-
-    private void deleteChild() {
-
-        if (child == null) {
-            return;
-        }
-
-        childDao.delete(this.child)
-                .subscribeOn(Schedulers.newThread())
-                .subscribe(this::finish);
-    }
-
-    private AlertDialog.Builder getAlertDialogBox() {
-        return new AlertDialog.Builder(ChildActivity.this)
-                .setTitle(R.string.warning_message)
-                .setNegativeButton(R.string.no, null);
     }
 
 
