@@ -50,13 +50,6 @@ import io.reactivex.rxjava3.schedulers.Schedulers;
  * The user sets the name of the child but has a restriction to it
  * - the name of the new/edit child cannot be empty
  */
-
-
-/**
- * TODO
- * Add titles to all dialog boxes
- * Change button text for edit child
- */
 public class ChildActivity extends AppCompatActivity {
 
     private static final String EXTRA_FOR_INDEX =
