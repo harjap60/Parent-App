@@ -153,6 +153,11 @@ public class TaskDetailActivity extends AppCompatActivity {
 
 
     private void updateUI() {
+
+        int deviceWidth = getResources().getDisplayMetrics().widthPixels;
+        binding.btnConfirmTask.setTextSize((deviceWidth / 25f));
+        binding.btnCancel.setTextSize((deviceWidth / 25f));
+
         if (taskWithChild == null) {
             return;
         }
