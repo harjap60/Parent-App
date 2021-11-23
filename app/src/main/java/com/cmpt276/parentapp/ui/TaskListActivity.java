@@ -44,9 +44,7 @@ public class TaskListActivity extends AppCompatActivity {
         setContentView(binding.getRoot());
 
         TaskDao = ParentAppDatabase.getInstance(this).taskDao();
-
-        setUpToolbar();
-        enableUpOnToolbar();
+        setupToolbar();
     }
 
 

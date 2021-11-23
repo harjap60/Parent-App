@@ -6,8 +6,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.Button;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -67,31 +65,11 @@ public class TaskActivity extends AppCompatActivity {
         setupTask(id);
         setUpToolbar(id);
         enableUpOnToolbar();
-        setupCancelButton();
-        configureUI(id);
-    }
-
-    private void setupCancelButton() {
-        Button cancelBtn = binding.cancelTaskBtn;
-        cancelBtn.setOnClickListener(view -> finish());
-    }
-
-    private void configureUI(int id) {
-        if (id == NEW_TASK_INDEX) {
-            binding.confirmTurnBtn.setVisibility(View.GONE);
-            binding.cancelTaskBtn.setVisibility(View.GONE);
-            binding.childTaskImage.setVisibility(View.GONE);
-        } else {
-            binding.taskEditName.setEnabled(false);
-            binding.taskEditName.setClickable(false);
-        }
     }
 
     @Override
     public boolean onCreateOptionsMenu(@NonNull Menu menu) {
-        if (task != null) {
-            getMenuInflater().inflate(R.menu.menu_edit_task, menu);
-        }
+        getMenuInflater().inflate(R.menu.menu_task, menu);
         return true;
     }
 
@@ -177,14 +155,12 @@ public class TaskActivity extends AppCompatActivity {
         if (task == null) {
             return;
         }
+
         binding.txtName.setText(task.getName());
-        if (child != null) {
-            binding.txtName.setText(child.getName());
-        }
     }
 
     private void saveTask() {
-        String name = this.binding.taskEditName.getText().toString();
+        String name = this.binding.txtName.getText().toString();
 
         if (name.isEmpty()) {
             Toast.makeText(

@@ -133,5 +133,9 @@
     <string name="confirm_turn">Confirm Turn</string>
     <string name="task_name">Task Name</string>
     <string name="current_child">Current Child:</string>
-    <string name="task_list_title">Tasks</string>
+    <string name="task_deleted_toast_message">Task Deleted</string>
+    <string name="up_alert_title">Unsaved Changes</string>
+    <string name="delete_alert_title">Confirm Delete</string>
+    <string name="empty_child_name_message">Child Name cannot be empty.</string>
+    <string name="no_children_configure_message">No Children Configured.</string>
 </resources>

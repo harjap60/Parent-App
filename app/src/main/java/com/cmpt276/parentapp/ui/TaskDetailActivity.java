@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -25,6 +26,7 @@ public class TaskDetailActivity extends AppCompatActivity {
     public static final int DEFAULT_VALUE = -1;
     public static final int MIN_ORDER = 0;
 
+    private int taskId;
     private ActivityTaskDetailBinding binding;
     private TaskDao taskDao;
     private TaskWithChild taskWithChild;
@@ -41,12 +43,17 @@ public class TaskDetailActivity extends AppCompatActivity {
         binding = ActivityTaskDetailBinding.inflate(this.getLayoutInflater());
         setContentView(binding.getRoot());
 
-        int id = getIntent().getIntExtra(TASK_ID_EXTRA, DEFAULT_VALUE);
+        taskId = getIntent().getIntExtra(TASK_ID_EXTRA, DEFAULT_VALUE);
         taskDao = ParentAppDatabase.getInstance(this).taskDao();
 
         setupToolbar();
         setupConfirmButton();
-        setupTask(id);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        setupTask();
     }
 
     @Override
@@ -80,20 +87,19 @@ public class TaskDetailActivity extends AppCompatActivity {
 
     private void setupConfirmButton() {
         binding.btnConfirmTask.setOnClickListener((v) -> new Thread(() -> {
-            int taskId = taskWithChild.task.getTaskId();
             int order = taskDao.getNextOrder(taskId).blockingGet();
 
             taskDao.updateOrder(taskId, taskWithChild.child.getChildId(), order).blockingAwait();
             taskDao.decrementOrder(taskId, MIN_ORDER).blockingAwait();
 
-            setupTask(taskId);
+            setupTask();
         }).start());
     }
 
-    private void setupTask(int id) {
+    private void setupTask() {
         new Thread(() -> {
             taskWithChild = taskDao
-                    .getTaskWithNextChild(id)
+                    .getTaskWithNextChild(taskId)
                     .blockingGet();
 
             runOnUiThread(this::updateUI);
@@ -126,8 +132,11 @@ public class TaskDetailActivity extends AppCompatActivity {
             try {
                 taskDao.delete(this.taskWithChild.task).blockingAwait();
 
-                Toast.makeText(this, "Deleted.", Toast.LENGTH_SHORT).show();
-                runOnUiThread(this::finish);
+                runOnUiThread(() -> {
+                    Toast.makeText(this, R.string.task_deleted_toast_message, Toast.LENGTH_SHORT).show();
+                    TaskDetailActivity.this.finish();
+                });
+
             } catch (Exception e) {
                 Log.i("Task Activity deletion", e.getMessage());
             }
@@ -136,8 +145,18 @@ public class TaskDetailActivity extends AppCompatActivity {
 
 
     private void updateUI() {
-        if (taskWithChild != null) {
-            binding.tvChildName.setText(taskWithChild.child.getName());
+        if (taskWithChild == null) {
+            return;
         }
+
+        binding.toolbar.setTitle(taskWithChild.task.getName());
+        if (taskWithChild.child == null) {
+            binding.tvChildName.setText(R.string.no_children_configure_message);
+            binding.btnConfirmTask.setVisibility(View.INVISIBLE);
+            return;
+        }
+
+        binding.tvChildName.setText(taskWithChild.child.getName());
+        binding.btnConfirmTask.setVisibility(View.VISIBLE);
     }
 }
