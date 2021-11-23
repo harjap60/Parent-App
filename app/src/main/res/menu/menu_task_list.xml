@@ -4,6 +4,6 @@
     <item
         android:id="@+id/btn_add_task"
         android:icon="@drawable/ic_baseline_add_box_24"
-        android:title="@string/add_task_btn_title"
+        android:title="@string/task_list_title"
         app:showAsAction="always"/>
 </menu>
