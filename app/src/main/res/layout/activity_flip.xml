@@ -291,7 +291,7 @@
                 android:id="@+id/previous_child_tv"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_weight="0.57"
+                android:layout_weight="0.535"
 
                 android:autoSizeMaxTextSize="100dp"
                 android:autoSizeMinTextSize="16dp"
@@ -307,20 +307,20 @@
                 android:id="@+id/previous_child_flip_image"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_weight="0.215"
+                android:layout_weight="0.2325"
                 android:contentDescription="@string/previous_child_image"
                 android:foregroundGravity="left"
                 app:srcCompat="@drawable/child_image_icon" />
 
             <TextView
                 android:id="@+id/prev_child_name"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="match_parent"
+                android:layout_weight="0.2325"
                 android:autoSizeMaxTextSize="100dp"
                 android:autoSizeMinTextSize="12dp"
                 android:autoSizeStepGranularity="2dp"
                 android:autoSizeTextType="uniform"
-                android:layout_weight="0.215"
                 android:text="@string/prev_child" />
         </LinearLayout>
     </LinearLayout>
