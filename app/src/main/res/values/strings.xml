@@ -104,6 +104,7 @@
     <string name="title_main">Parental App</string>
     <string name="manage_tasks_text">Manage Tasks</string>
     <string name="previous_child_image">Previous child image</string>
+    <string name="coin_flip_menu">Coin Flip Menu</string>
     <!-- ============================== -->
 
 </resources>

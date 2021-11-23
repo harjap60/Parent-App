@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/no_child_button"
+        android:icon="@drawable/nobodys_turn"
+        android:title="@string/coin_flip_menu"
+        app:showAsAction="always"
+        />
+
+</menu>

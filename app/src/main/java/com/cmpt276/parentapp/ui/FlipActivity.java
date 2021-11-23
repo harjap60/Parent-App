@@ -8,6 +8,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.media.MediaPlayer;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AccelerateDecelerateInterpolator;
@@ -59,6 +61,7 @@ public class FlipActivity extends AppCompatActivity implements AdapterView.OnIte
     List<Child> coinFlipOrderList;
 
 
+
     public static Intent getIntent(Context context) {
         return new Intent(context, FlipActivity.class);
     }
@@ -97,7 +100,29 @@ public class FlipActivity extends AppCompatActivity implements AdapterView.OnIte
         }
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // inflate the menu:
+        getMenuInflater().inflate(R.menu.menu_coin_flip, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@androidx.annotation.NonNull MenuItem item) {
+        if(item.getItemId() == R.id.no_child_button){
+            setupButtonsNoChild();
+            currentChild = null;
+            binding.chooseChildFlipSpinner.setVisibility(View.INVISIBLE);
+            binding.previousChildTv.setText(getString(R.string.previous_child_tv_string, getString(R.string.no_child_string)));
+            binding.previousChildFlipImage.setVisibility(View.INVISIBLE);
+            return true;
+        }
+        return false;
+    }
+
     private void setupChildChoiceSpinner() {
+        binding.chooseChildFlipSpinner.setVisibility(View.VISIBLE);
+
         new Thread(() -> {
 
             ChildDao childDao = ParentAppDatabase.getInstance(this).childDao();
@@ -336,6 +361,8 @@ public class FlipActivity extends AppCompatActivity implements AdapterView.OnIte
     }
 
     private void setupPreviousChild() {
+        binding.previousChildFlipImage.setVisibility(View.VISIBLE);
+
         coinFlipDao.getLastFlip()
                 .subscribeOn(Schedulers.io())
                 .subscribe(new SingleObserver<ChildCoinFlip>() {
@@ -345,10 +372,12 @@ public class FlipActivity extends AppCompatActivity implements AdapterView.OnIte
 
                     @Override
                     public void onSuccess(@NonNull ChildCoinFlip flip) {
+
                         binding.previousChildTv.setText(getString(
                                 R.string.previous_child_tv_string,
                                 flip.getChild().getName()
                         ));
+
                     }
 
                     @Override
@@ -357,11 +386,11 @@ public class FlipActivity extends AppCompatActivity implements AdapterView.OnIte
                             binding.previousChildTv.setText(getString(
                                     R.string.previous_child_tv_string,
                                     getString(R.string.no_child_string)));
+                            binding.previousChildFlipImage.setVisibility(View.INVISIBLE);
                         }
                     }
                 });
     }
-
 
     //Determine the side of the coin which will be shown
     private CoinFlip.Choice determineSide() {
