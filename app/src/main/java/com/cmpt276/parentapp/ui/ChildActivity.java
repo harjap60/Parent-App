@@ -30,7 +30,10 @@ import com.cmpt276.parentapp.R;
 import com.cmpt276.parentapp.databinding.ActivityChildBinding;
 import com.cmpt276.parentapp.model.Child;
 import com.cmpt276.parentapp.model.ChildDao;
+import com.cmpt276.parentapp.model.ChildTaskCrossRef;
 import com.cmpt276.parentapp.model.ParentAppDatabase;
+import com.cmpt276.parentapp.model.Task;
+import com.cmpt276.parentapp.model.TaskDao;
 
 import java.io.File;
 import java.io.IOException;
@@ -38,6 +41,7 @@ import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
+import java.util.List;
 import java.util.Objects;
 
 import io.reactivex.rxjava3.schedulers.Schedulers;
@@ -104,7 +108,7 @@ public class ChildActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(@NonNull Menu menu) {
         if (child != null) {
-            getMenuInflater().inflate(R.menu.menu_edit_child, menu);
+            getMenuInflater().inflate(R.menu.menu_child, menu);
         }
 
         return true;
@@ -114,7 +118,7 @@ public class ChildActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.action_delete_child_button:
+            case R.id.btn_delete_child:
                 showDeleteChildDialog();
                 return true;
 
@@ -181,6 +185,7 @@ public class ChildActivity extends AppCompatActivity {
 
 
     private void setupDB() {
+
         childDao = ParentAppDatabase.getInstance(this).childDao();
     }
 
@@ -200,6 +205,7 @@ public class ChildActivity extends AppCompatActivity {
     }
 
     private void setupSaveButton() {
+
         binding.btnSave.setOnClickListener(view -> saveChild());
     }
 
@@ -256,7 +262,6 @@ public class ChildActivity extends AppCompatActivity {
                     .centerCrop()
                     .placeholder(R.drawable.child_image_icon)
                     .into(binding.imageViewChildImage);
-//            binding.imageViewChildImage.setImageBitmap();
         }
 
         if (child != null) {
@@ -294,13 +299,23 @@ public class ChildActivity extends AppCompatActivity {
     private void saveChild() {
         new Thread(() -> {
 
-            //Check if name is null
-            //              Don't add child
             String name = this.binding.txtName.getText().toString();
 
             if (child == null) {
                 int coinFlipOrder = childDao.getNextCoinFlipOrder().blockingGet();
-                childDao.insert(new Child(name, coinFlipOrder, imagePath)).blockingAwait();
+                Long id = childDao.insert(new Child(name, coinFlipOrder, imagePath)).blockingGet();
+
+                TaskDao taskDao = ParentAppDatabase.getInstance(ChildActivity.this).taskDao();
+
+                List<Task> tasks = taskDao.getAll().blockingGet();
+                for (Task task : tasks) {
+                    int order = taskDao.getNextOrder(task.getTaskId()).blockingGet();
+                    taskDao.insertRef(new ChildTaskCrossRef(
+                            task.getTaskId(),
+                            id.intValue(),
+                            order
+                    )).blockingAwait();
+                }
             } else {
                 child.setName(name);
                 child.setImagePath(imagePath);

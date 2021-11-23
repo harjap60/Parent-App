@@ -33,11 +33,14 @@ public interface ChildDao {
     @Query("SELECT IFNULL(MAX(coinFlipOrder) + 1, 0) FROM child")
     Single<Integer> getNextCoinFlipOrder();
 
+    @Query("SELECT * FROM child ORDER BY coinFlipOrder")
+    Single<List<Child>> getChildrenForFlip();
+
     @Query("SELECT COUNT(*) > 0 FROM Child")
     Single<Boolean> hasChildren();
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    Completable insert(Child... children);
+    Single<Long> insert(Child children);
 
     @Delete
     Completable delete(Child... children);

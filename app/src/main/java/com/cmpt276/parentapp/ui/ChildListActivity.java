@@ -46,8 +46,7 @@ public class ChildListActivity extends AppCompatActivity {
         binding = ActivityChildListBinding.inflate(this.getLayoutInflater());
         setContentView(binding.getRoot());
 
-        setUpToolbar();
-        enableUpOnToolbar();
+        setupToolbar();
     }
 
     @Override
@@ -75,12 +74,10 @@ public class ChildListActivity extends AppCompatActivity {
         populateListView();
     }
 
-    private void setUpToolbar() {
+    private void setupToolbar() {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-    }
 
-    private void enableUpOnToolbar() {
         ActionBar ab = getSupportActionBar();
         if (ab != null) {
             ab.setDisplayHomeAsUpEnabled(true);
