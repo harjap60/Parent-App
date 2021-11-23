@@ -87,7 +87,7 @@ public class TimerActivity extends AppCompatActivity {
     }
 
     private void setupToolbar() {
-        setSupportActionBar(binding.toolbar4);
+        setSupportActionBar(binding.toolbar);
         ActionBar ab = getSupportActionBar();
         if (ab != null) {
             ab.setTitle(R.string.timer_activity_toolbar_label);
