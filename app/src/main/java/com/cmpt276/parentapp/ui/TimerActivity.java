@@ -9,7 +9,7 @@ import android.content.ServiceConnection;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.view.View;
-
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.cmpt276.parentapp.R;
@@ -76,6 +76,7 @@ public class TimerActivity extends AppCompatActivity {
         binding = ActivityTimerBinding.inflate(this.getLayoutInflater());
         setContentView(binding.getRoot());
 
+        setupToolbar();
         extractDurationFromIntent();
         setupPauseResumeButton();
         setupResetTimerButton();
@@ -83,6 +84,15 @@ public class TimerActivity extends AppCompatActivity {
         setupCancelTimerButton();
         setupTimerService();
         updateUI();
+    }
+
+    private void setupToolbar() {
+        setSupportActionBar(binding.toolbar4);
+        ActionBar ab = getSupportActionBar();
+        if (ab != null) {
+            ab.setTitle(R.string.timer_activity_toolbar_label);
+            ab.setDisplayHomeAsUpEnabled(true);
+        }
     }
 
     @Override

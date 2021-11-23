@@ -88,6 +88,8 @@
     <string name="which_side_do_you_think_it_will_land_on">Which side do you think it will land on?</string>
     <string name="image_of_coin_flip_to_start_animation">Image of coin flip to start animation</string>
     <string name="flip_activity_toolbar_label">Coin Flip</string>
+    <string name="help_activity_toolbar_label">Help</string>
+    <string name="timer_activity_toolbar_label">Timeout Timer</string>
     <string name="history_of_flips">History</string>
     <string name="Heads">Heads</string>
     <string name="Tails">Tails</string>
@@ -125,6 +127,10 @@
     <string name="confirm_turn">Confirm Turn</string>
     <string name="task_name">Task Name</string>
     <string name="current_child">Current Child:</string>
+    <string name="resources_used">Resources Used</string>
+    <string name="team_helium">Team Helium</string>
+    <string name="resource_links1">Menu Timer: https://icons8.com/icon/8YCHhvwCdMI0/clock\nMenu Tasks: https://icons8.com/icon/0Y3lDsW7gKTm/tasks\nMenu add/delete: https://icons8.com/icon/iJRdexk2R7eH/add\nMenu Coin: https://icons8.com/icon/SohcD1NaJrgg/us-dollar\nCoin heads: https://www.subpng.com/png-l21sit/\nCoin sound: https://bit.ly/3CGyNIT\nCoin tails: https://bit.ly/3kXESeg\nFlip Coin: https://bit.ly/3CCAGGI</string>
+    <string name="meet_the_team">Meet the Team:\nDivij\nSagardeep\nSukhpal\nHarjap</string>
     <string name="help_button_text">Help</string>
 
     <string name="take_photo">Take Photo</string>
