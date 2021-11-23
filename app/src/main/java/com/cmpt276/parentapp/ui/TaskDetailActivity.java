@@ -14,6 +14,7 @@ import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.bumptech.glide.Glide;
 import com.cmpt276.parentapp.R;
 import com.cmpt276.parentapp.databinding.ActivityTaskDetailBinding;
 import com.cmpt276.parentapp.model.ParentAppDatabase;
@@ -158,5 +159,14 @@ public class TaskDetailActivity extends AppCompatActivity {
 
         binding.tvChildName.setText(taskWithChild.child.getName());
         binding.btnConfirmTask.setVisibility(View.VISIBLE);
+
+        if(taskWithChild.child.getImagePath() != null){
+            Glide.with(this)
+                    .load(taskWithChild.child.getImagePath())
+                    .centerCrop()
+                    .into(binding.imageView);
+        }else{
+            binding.imageView.setImageResource(R.drawable.child_image_icon);
+        }
     }
 }

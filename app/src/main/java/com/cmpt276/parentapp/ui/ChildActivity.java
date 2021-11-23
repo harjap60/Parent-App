@@ -290,7 +290,7 @@ public class ChildActivity extends AppCompatActivity {
         new Thread(() -> {
             if (child == null) {
                 int coinFlipOrder = childDao.getNextCoinFlipOrder().blockingGet();
-                Long id = childDao.insert(new Child(name, coinFlipOrder)).blockingGet();
+                Long id = childDao.insert(new Child(name, coinFlipOrder, imagePath)).blockingGet();
 
                 TaskDao taskDao = ParentAppDatabase.getInstance(ChildActivity.this).taskDao();
 
@@ -330,9 +330,9 @@ public class ChildActivity extends AppCompatActivity {
     }
 
     private void selectImage() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle(R.string.choose_picture);
-        builder.setItems(IMAGE_OPTIONS, (dialogInterface, item) -> {
+        new AlertDialog.Builder(this)
+                .setTitle(R.string.choose_picture)
+        .setItems(IMAGE_OPTIONS, (dialogInterface, item) -> {
             if (IMAGE_OPTIONS[item].equals(getString(R.string.take_photo))) {
                 captureImage();
             } else if (IMAGE_OPTIONS[item].equals(getString(R.string.choose_from_gallery))) {
@@ -340,8 +340,7 @@ public class ChildActivity extends AppCompatActivity {
             } else if (IMAGE_OPTIONS[item].equals(getString(R.string.cancel))) {
                 dialogInterface.dismiss();
             }
-        });
-        builder.show();
+        }).show();
     }
 
     private void captureImage() {
