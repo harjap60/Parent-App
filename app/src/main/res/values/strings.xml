@@ -89,6 +89,7 @@
     <string name="image_of_coin_flip_to_start_animation">Image of coin flip to start animation</string>
     <string name="flip_activity_toolbar_label">Coin Flip</string>
     <string name="help_activity_toolbar_label">Help</string>
+    <string name="timer_activity_toolbar_label">Timeout Timer</string>
     <string name="history_of_flips">History</string>
     <string name="Heads">Heads</string>
     <string name="Tails">Tails</string>
