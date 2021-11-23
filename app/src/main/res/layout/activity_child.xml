@@ -38,8 +38,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
 
-        android:layout_margin="0dp"
-        android:layout_marginStart="16dp"
+        android:layout_marginStart="8dp"
         android:layout_marginEnd="16dp"
         android:autoSizeMaxTextSize="100dp"
         android:autoSizeMinTextSize="10dp"
@@ -61,10 +60,12 @@
         android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="8dp"
         android:text="@string/child_name_label"
         android:textSize="34sp"
+        app:layout_constraintEnd_toStartOf="@+id/txt_name"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/appBarLayout" />
 
