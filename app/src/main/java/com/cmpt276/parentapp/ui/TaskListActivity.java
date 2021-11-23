@@ -9,6 +9,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -16,11 +17,12 @@ import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import com.bumptech.glide.Glide;
 import com.cmpt276.parentapp.R;
 import com.cmpt276.parentapp.databinding.ActivityTaskListBinding;
 import com.cmpt276.parentapp.model.ParentAppDatabase;
-import com.cmpt276.parentapp.model.Task;
 import com.cmpt276.parentapp.model.TaskDao;
+import com.cmpt276.parentapp.model.TaskWithChild;
 
 import java.util.List;
 
@@ -34,6 +36,7 @@ public class TaskListActivity extends AppCompatActivity {
 
     private ActivityTaskListBinding binding;
     private TaskDao TaskDao;
+
     public static Intent getIntent(Context context) {
         return new Intent(context, TaskListActivity.class);
     }
@@ -48,6 +51,11 @@ public class TaskListActivity extends AppCompatActivity {
         setupToolbar();
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(@NonNull Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_task_list, menu);
+        return true;
+    }
 
     @SuppressLint("NonConstantResourceId")
     @Override
@@ -65,7 +73,7 @@ public class TaskListActivity extends AppCompatActivity {
         new Thread(() -> {
             TaskDao TaskDao = ParentAppDatabase.getInstance(this).taskDao();
 
-            List<Task> list = TaskDao.getAll().blockingGet();
+            List<TaskWithChild> list = TaskDao.getTasksWithFirstChild().blockingGet();
 
             TaskListAdapter adapter = new TaskListAdapter(list);
             runOnUiThread(() -> binding.rvTaskList.setAdapter(adapter));
@@ -88,16 +96,10 @@ public class TaskListActivity extends AppCompatActivity {
         }
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(@NonNull Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_task_list, menu);
-        return true;
-    }
+    class TaskListAdapter extends ArrayAdapter<TaskWithChild> {
+        List<TaskWithChild> taskList;
 
-    class TaskListAdapter extends ArrayAdapter<Task> {
-        List<Task> taskList;
-
-        public TaskListAdapter(List<Task> taskList) {
+        public TaskListAdapter(List<TaskWithChild> taskList) {
             super(TaskListActivity.this,
                     R.layout.task_list_item,
                     taskList);
@@ -114,19 +116,26 @@ public class TaskListActivity extends AppCompatActivity {
                                 false
                         );
             }
+            TaskWithChild taskWithChild = taskList.get(position);
+
+            TextView taskNameText = itemView.findViewById(R.id.tv_task_name);
+            taskNameText.setText(taskWithChild.task.getName());
+
+            if (taskWithChild.child != null) {
+                ImageView imageView = itemView.findViewById(R.id.iv_child_image);
+                Glide.with(TaskListActivity.this)
+                        .load(taskWithChild.child.getImagePath())
+                        .centerCrop()
+                        .placeholder(R.drawable.child_image_icon)
+                        .into(imageView);
+            }
 
             itemView.setOnClickListener(v -> startActivity(
                     TaskDetailActivity.getIntent(
-                    TaskListActivity.this,
-                    taskList.get(position)
-                            .getTaskId()
+                            TaskListActivity.this,
+                            taskWithChild.task.getTaskId()
                     )
             ));
-
-            Task task = taskList.get(position);
-
-            TextView taskNameText = itemView.findViewById(R.id.tv_task_name);
-            taskNameText.setText(task.getName());
 
             return itemView;
         }
