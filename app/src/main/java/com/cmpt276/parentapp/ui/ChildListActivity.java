@@ -88,10 +88,6 @@ public class ChildListActivity extends AppCompatActivity {
 
             List<Child> list = childDao.getAll().blockingGet();
 
-            if (list.size() == 0) {
-                return;
-            }
-
             ChildListAdapter adapter = new ChildListAdapter(list);
             runOnUiThread(() -> binding.listChildren.setAdapter(adapter));
         }).start();
