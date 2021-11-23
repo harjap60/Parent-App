@@ -53,14 +53,14 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_row="0"
-            android:layout_rowWeight="1"
+            android:layout_rowWeight="0.4"
             android:layout_column="0"
             android:layout_columnWeight="1"
             android:layout_gravity="fill"
             android:focusable="true"
             android:foreground="?attr/selectableItemBackgroundBorderless"
             app:cardBackgroundColor="@color/white"
-            app:cardCornerRadius="50dp"
+            app:cardCornerRadius="30dp"
             app:cardElevation="0dp"
             app:cardUseCompatPadding="true">
 
@@ -81,11 +81,13 @@
                     android:autoSizeMinTextSize="6sp"
                     android:autoSizeStepGranularity="2sp"
                     android:autoSizeTextType="uniform"
+                    android:fontFamily="@font/roboto"
                     android:maxLines="1"
-                    android:text="Team Helium"
+                    android:text="@string/team_helium"
                     android:textAlignment="center"
                     android:textColor="@color/black"
                     android:textSize="11sp"
+                    android:textStyle="bold"
                     app:layout_constraintBottom_toBottomOf="@id/guideline7"
                     app:layout_constraintEnd_toEndOf="@id/guideline21"
                     app:layout_constraintHorizontal_bias="0.5"
@@ -94,17 +96,19 @@
                     app:layout_constraintVertical_bias="0.060000002" />
 
                 <TextView
-                    android:id="@+id/textView2"
+                    android:id="@+id/team_names"
                     android:layout_width="0dp"
                     android:layout_height="0dp"
                     android:layout_marginTop="2dp"
+                    android:layout_marginBottom="3dp"
                     android:autoSizeMaxTextSize="45sp"
                     android:autoSizeMinTextSize="6sp"
                     android:autoSizeStepGranularity="2sp"
                     android:autoSizeTextType="uniform"
-                    android:textAlignment="center"
+                    android:fontFamily="@font/roboto"
                     android:maxLines="5"
                     android:text="Meet the Team:\nDivij\nSagardeep\nSukhpal\nHarjap"
+                    android:textAlignment="center"
                     android:textColor="@color/black"
                     android:textSize="11sp"
                     app:layout_constraintBottom_toBottomOf="parent"
@@ -117,14 +121,14 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
-                    app:layout_constraintGuide_percent="0.15" />
+                    app:layout_constraintGuide_percent="0.05" />
 
                 <androidx.constraintlayout.widget.Guideline
                     android:id="@+id/guideline7"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
-                    app:layout_constraintGuide_percent="0.40" />
+                    app:layout_constraintGuide_percent="0.30" />
 
                 <androidx.constraintlayout.widget.Guideline
                     android:id="@+id/guideline20"
@@ -170,52 +174,73 @@
                 android:orientation="vertical">
 
                 <TextView
-                    android:id="@+id/copyright_info"
+                    android:id="@+id/copyright_info_title"
                     android:layout_width="0dp"
                     android:layout_height="0dp"
                     android:layout_marginTop="2dp"
-                    android:autoSizeMaxTextSize="100sp"
+                    android:autoSizeMaxTextSize="40sp"
                     android:autoSizeMinTextSize="16sp"
                     android:autoSizeStepGranularity="2sp"
                     android:autoSizeTextType="uniform"
+                    android:fontFamily="@font/roboto"
                     android:maxLines="1"
-                    android:text="Resources Used"
+                    android:text="@string/resources_used"
                     android:textAlignment="center"
                     android:textColor="@color/black"
                     android:textSize="16sp"
                     app:layout_constraintBottom_toTopOf="@id/guideline11"
                     app:layout_constraintEnd_toEndOf="@id/guideline26"
-                    app:layout_constraintHorizontal_bias="0.5"
                     app:layout_constraintStart_toStartOf="@id/guideline25"
                     app:layout_constraintTop_toBottomOf="@+id/guideline10" />
+
+                <TextView
+                    android:id="@+id/copyright_links"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_marginTop="3dp"
+                    android:autoSizeMaxTextSize="30sp"
+                    android:autoSizeMinTextSize="8sp"
+                    android:autoSizeStepGranularity="2sp"
+                    android:autoSizeTextType="uniform"
+                    android:fontFamily="@font/roboto"
+                    android:lineSpacingExtra="15dp"
+                    android:maxLines="11"
+                    android:text="Menu Timer: https://icons8.com/icon/8YCHhvwCdMI0/clock\nMenu Tasks: https://icons8.com/icon/0Y3lDsW7gKTm/tasks\nMenu add/delete: https://icons8.com/icon/iJRdexk2R7eH/add\nMenu Coin: https://icons8.com/icon/SohcD1NaJrgg/us-dollar\nCoin heads: https://www.subpng.com/png-l21sit/\nCoin sound: https://www.partnersinrhyme.com/soundfx/office_sounds/office_coin-flip_wav.shtml\nCoin tails: https://imgbin.com/png/HktLjuRk/dollar-coin-canada-loonie-royal-canadian-mint-png\nFlip Coin: https://www.alamy.com/coin-toss-related-vector-line-icon-image416755224.html"
+                    android:textAlignment="center"
+                    android:textColor="@color/black"
+                    android:textSize="6sp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@+id/guideline26"
+                    app:layout_constraintStart_toStartOf="@+id/guideline25"
+                    app:layout_constraintTop_toBottomOf="@+id/copyright_info_title" />
 
                 <androidx.constraintlayout.widget.Guideline
                     android:id="@+id/guideline10"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
-                    app:layout_constraintGuide_percent="0.10" />
+                    app:layout_constraintGuide_percent="0.04" />
 
                 <androidx.constraintlayout.widget.Guideline
                     android:id="@+id/guideline11"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
-                    app:layout_constraintGuide_percent="0.25" />
+                    app:layout_constraintGuide_percent="0.15" />
 
                 <androidx.constraintlayout.widget.Guideline
                     android:id="@+id/guideline25"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    app:layout_constraintGuide_percent="0.23" />
+                    app:layout_constraintGuide_percent="0.02" />
 
                 <androidx.constraintlayout.widget.Guideline
                     android:id="@+id/guideline26"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    app:layout_constraintGuide_percent="0.77" />
+                    app:layout_constraintGuide_percent="0.98" />
             </androidx.constraintlayout.widget.ConstraintLayout>
 
         </androidx.cardview.widget.CardView>

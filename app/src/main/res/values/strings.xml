@@ -125,4 +125,8 @@
     <string name="confirm_turn">Confirm Turn</string>
     <string name="task_name">Task Name</string>
     <string name="current_child">Current Child:</string>
+    <string name="copyright_links">Coin sound: https://www.partnersinrhyme.com/soundfx/office_sounds/office_coin-flip_wav.shtml\nCoin heads: https://www.subpng.com/png-l21sit/\nCoin tails: https://imgbin.com/png/HktLjuRk/dollar-coin-canada-loonie-royal-canadian-mint-png\nFlip Coin: https://www.alamy.com/coin-toss-related-vector-line-icon-image416755224.html
+    </string>
+    <string name="resources_used">Resources Used</string>
+    <string name="team_helium">Team Helium</string>
 </resources>
