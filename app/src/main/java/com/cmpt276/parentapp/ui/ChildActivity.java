@@ -312,6 +312,13 @@ public class ChildActivity extends AppCompatActivity {
                     childDao.update(child).blockingAwait();
                 }
                 runOnUiThread(this::finish);
+            }else{
+                this.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Toast.makeText(ChildActivity.this, R.string.name_can_not_be_empty, Toast.LENGTH_SHORT).show();
+                    }
+                });
             }
         }).start();
     }
