@@ -263,7 +263,9 @@
                 android:autoSizeMinTextSize="12dp"
                 android:autoSizeStepGranularity="2dp"
                 android:autoSizeTextType="uniform"
-                android:gravity="center"
+                android:paddingLeft="70dp"
+                app:layout_constraintStart_toEndOf="@+id/tell_user_choose_heads_tails_start_guideline"
+
                 android:text="Current Child: "
                 android:textColor="?colorOnPrimary" />
 
@@ -288,13 +290,13 @@
                 android:id="@+id/previous_child_tv"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_weight="0.9"
+                android:layout_weight="0.57"
 
                 android:autoSizeMaxTextSize="100dp"
-                android:autoSizeMinTextSize="12dp"
+                android:autoSizeMinTextSize="16dp"
                 android:autoSizeStepGranularity="2dp"
                 android:autoSizeTextType="uniform"
-                android:gravity="center"
+                android:paddingLeft="70dp"
 
                 android:text="@string/previous_child_tv_string"
                 android:textColor="?colorOnPrimary" />
@@ -303,10 +305,21 @@
                 android:id="@+id/previous_child_flip_image"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_weight="0.1"
+                android:layout_weight="0.215"
                 android:contentDescription="@string/previous_child_image"
                 android:foregroundGravity="left"
                 app:srcCompat="@drawable/child_image_icon" />
+
+            <TextView
+                android:id="@+id/new_Child"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:autoSizeMaxTextSize="100dp"
+                android:autoSizeMinTextSize="12dp"
+                android:autoSizeStepGranularity="2dp"
+                android:autoSizeTextType="uniform"
+                android:layout_weight="0.215"
+                android:text="TextView" />
         </LinearLayout>
     </LinearLayout>
 

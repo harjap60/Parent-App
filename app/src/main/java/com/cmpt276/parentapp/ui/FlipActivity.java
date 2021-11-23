@@ -324,18 +324,15 @@ public class FlipActivity extends AppCompatActivity implements AdapterView.OnIte
 
                     @Override
                     public void onSuccess(@NonNull ChildCoinFlip flip) {
-                        binding.previousChildTv.setText(getString(
-                                R.string.previous_child_tv_string,
+                        binding.newChild.setText(
                                 flip.getChild().getName()
-                        ));
+                        );
                     }
 
                     @Override
                     public void onError(@NonNull Throwable e) {
                         if (e.getClass() == EmptyResultSetException.class) {
-                            binding.previousChildTv.setText(getString(
-                                    R.string.previous_child_tv_string,
-                                    getString(R.string.no_child_string)));
+                            binding.newChild.setText("");
                             binding.previousChildFlipImage.setVisibility(View.INVISIBLE);
                         }
                     }
