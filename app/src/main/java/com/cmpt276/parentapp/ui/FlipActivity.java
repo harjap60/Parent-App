@@ -61,7 +61,6 @@ public class FlipActivity extends AppCompatActivity implements AdapterView.OnIte
     List<Child> coinFlipOrderList;
 
 
-
     public static Intent getIntent(Context context) {
         return new Intent(context, FlipActivity.class);
     }
@@ -109,7 +108,7 @@ public class FlipActivity extends AppCompatActivity implements AdapterView.OnIte
 
     @Override
     public boolean onOptionsItemSelected(@androidx.annotation.NonNull MenuItem item) {
-        if(item.getItemId() == R.id.no_child_button){
+        if (item.getItemId() == R.id.no_child_button) {
             setupButtonsNoChild();
             currentChild = null;
             binding.chooseChildFlipSpinner.setVisibility(View.INVISIBLE);
@@ -122,7 +121,6 @@ public class FlipActivity extends AppCompatActivity implements AdapterView.OnIte
         binding.chooseChildFlipSpinner.setVisibility(View.VISIBLE);
 
         new Thread(() -> {
-
             ChildDao childDao = ParentAppDatabase.getInstance(this).childDao();
             coinFlipOrderList = childDao.getChildrenForFlip().blockingGet();
 
@@ -136,6 +134,7 @@ public class FlipActivity extends AppCompatActivity implements AdapterView.OnIte
         binding.chooseChildFlipSpinner.setOnItemSelectedListener(this);
 
     }
+
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
         if (parent.getId() == R.id.choose_child_flip_spinner) {
@@ -161,12 +160,14 @@ public class FlipActivity extends AppCompatActivity implements AdapterView.OnIte
         }
 
         @Override
-        public View getDropDownView(int position, View convertView, @androidx.annotation.NonNull ViewGroup parent) {
+        public View getDropDownView(int position, View convertView,
+                                    @androidx.annotation.NonNull ViewGroup parent) {
             return getView(position, convertView, parent);
         }
 
         @Override
-        public View getView(int position, @Nullable View convertView, @androidx.annotation.NonNull ViewGroup parent) {
+        public View getView(int position, @Nullable View convertView,
+                            @androidx.annotation.NonNull ViewGroup parent) {
             View itemView = convertView;
             if (itemView == null) {
                 itemView = getLayoutInflater().inflate(
@@ -262,8 +263,10 @@ public class FlipActivity extends AppCompatActivity implements AdapterView.OnIte
 
         animatorSet = new AnimatorSet();
 
-        final ObjectAnimator firstAnimation = ObjectAnimator.ofFloat(binding.coinImageView, "scaleY", 1f, 0f);
-        final ObjectAnimator secondAnimation = ObjectAnimator.ofFloat(binding.coinImageView, "scaleY", 0f, 1f);
+        final ObjectAnimator firstAnimation = ObjectAnimator.ofFloat(binding.coinImageView,
+                "scaleY", 1f, 0f);
+        final ObjectAnimator secondAnimation = ObjectAnimator.ofFloat(binding.coinImageView,
+                "scaleY", 0f, 1f);
         secondAnimation.setInterpolator(new AccelerateDecelerateInterpolator());
 
         int ANIMATION_DURATION = 50;
@@ -336,7 +339,6 @@ public class FlipActivity extends AppCompatActivity implements AdapterView.OnIte
     }
 
     private void setupCurrentChild() {
-
         childDao.getChildForNextFlip()
                 .subscribeOn(Schedulers.newThread())
                 .subscribe(new SingleObserver<Child>() {
@@ -359,7 +361,6 @@ public class FlipActivity extends AppCompatActivity implements AdapterView.OnIte
     }
 
     private void setupPreviousChild() {
-
         coinFlipDao.getLastFlip()
                 .subscribeOn(Schedulers.io())
                 .subscribe(new SingleObserver<ChildCoinFlip>() {
@@ -369,12 +370,10 @@ public class FlipActivity extends AppCompatActivity implements AdapterView.OnIte
 
                     @Override
                     public void onSuccess(@NonNull ChildCoinFlip flip) {
-
                         binding.previousChildTv.setText(getString(
                                 R.string.previous_child_tv_string,
                                 flip.getChild().getName()
                         ));
-
                     }
 
                     @Override
