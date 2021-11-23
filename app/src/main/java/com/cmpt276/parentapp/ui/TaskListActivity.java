@@ -14,6 +14,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 import com.cmpt276.parentapp.R;
 import com.cmpt276.parentapp.databinding.ActivityTaskListBinding;
@@ -48,42 +49,40 @@ public class TaskListActivity extends AppCompatActivity {
         enableUpOnToolbar();
     }
 
-    private void populateTaskList() {
-        new Thread(() -> {
-            List<Task> list = TaskDao.getAll().blockingGet();
-
-            if (list.size() == 0) {
-                return;
-            }
-
-            TaskListAdapter adapter = new TaskListAdapter(list);
-            runOnUiThread(() -> binding.rvTaskList.setAdapter(adapter));
-        }).start();
-    }
 
     @SuppressLint("NonConstantResourceId")
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if (item.getItemId() == R.id.btn_add_task) {
             startActivity(
-                    TaskActivity.getIntentForNewTask(TaskListActivity.this)
+                    TaskActivity.getIntentForNewTask(this)
             );
             return true;
         }
         return super.onOptionsItemSelected(item);
     }
 
+    private void populateTaskRecyclerView() {
+        new Thread(() -> {
+            TaskDao TaskDao = ParentAppDatabase.getInstance(this).taskDao();
+
+            List<Task> list = TaskDao.getAll().blockingGet();
+
+            TaskListAdapter adapter = new TaskListAdapter(list);
+            runOnUiThread(() -> binding.rvTaskList.setAdapter(adapter));
+        }).start();
+    }
+
     @Override
     protected void onResume() {
         super.onResume();
-        populateTaskList();
+        populateTaskRecyclerView();
     }
 
-    private void setUpToolbar() {
-        setSupportActionBar(binding.toolbar);
-    }
+    private void setupToolbar() {
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
 
-    private void enableUpOnToolbar() {
         ActionBar ab = getSupportActionBar();
         if (ab != null) {
             ab.setDisplayHomeAsUpEnabled(true);
@@ -117,7 +116,8 @@ public class TaskListActivity extends AppCompatActivity {
                         );
             }
 
-            itemView.setOnClickListener(v -> startActivity(TaskDetailActivity.getIntent(
+            itemView.setOnClickListener(v -> startActivity(
+                    TaskDetailActivity.getIntent(
                     TaskListActivity.this,
                     taskList.get(position)
                             .getTaskId()

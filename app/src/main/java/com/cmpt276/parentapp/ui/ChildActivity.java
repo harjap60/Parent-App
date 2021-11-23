@@ -69,7 +69,7 @@ public class ChildActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(@NonNull Menu menu) {
         if (child != null) {
-            getMenuInflater().inflate(R.menu.menu_edit_child, menu);
+            getMenuInflater().inflate(R.menu.menu_child, menu);
         }
 
         return true;
@@ -81,6 +81,10 @@ public class ChildActivity extends AppCompatActivity {
         switch (item.getItemId()) {
             case R.id.btn_child_save:
                 saveChild();
+                return true;
+
+            case R.id.btn_delete_child:
+                showDeleteChildDialog();
                 return true;
 
             case android.R.id.home:
@@ -186,6 +190,23 @@ public class ChildActivity extends AppCompatActivity {
             }
             runOnUiThread(this::finish);
         }).start();
+    }
+
+    private void deleteChild() {
+
+        if (child == null) {
+            return;
+        }
+
+        childDao.delete(this.child)
+                .subscribeOn(Schedulers.newThread())
+                .subscribe(this::finish);
+    }
+
+    private AlertDialog.Builder getAlertDialogBox() {
+        return new AlertDialog.Builder(ChildActivity.this)
+                .setTitle(R.string.warning_message)
+                .setNegativeButton(R.string.no, null);
     }
 
 

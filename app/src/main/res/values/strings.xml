@@ -105,6 +105,9 @@
     <string name="btn_task_delete_label">Delete Task</string>
     <string name="task_mark_as_done_label">Done</string>
     <string name="task_detail_child_image_description">Child\'s Image</string>
+    <string name="task_name_label">Name:</string>
+    <string name="task_list_title">Tasks</string>
+    <string name="task_add_title">Add Task</string>
     <!-- ============================== -->
     <string name="add_task_btn_title">Add Task</string>
     <string name="task_child_image">Child\'s Image</string>

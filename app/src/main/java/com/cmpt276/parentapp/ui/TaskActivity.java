@@ -177,9 +177,9 @@ public class TaskActivity extends AppCompatActivity {
         if (task == null) {
             return;
         }
-        binding.taskEditName.setText(task.getName());
+        binding.txtName.setText(task.getName());
         if (child != null) {
-            binding.nameNextChild.setText(child.getName());
+            binding.txtName.setText(child.getName());
         }
     }
 
@@ -223,7 +223,7 @@ public class TaskActivity extends AppCompatActivity {
     }
 
     private boolean isClean() {
-        String name = binding.taskEditName.getText().toString();
+        String name = binding.txtName.getText().toString();
         return (task == null && name.isEmpty()) ||
                 (task != null && name.equals(task.getName()));
     }
