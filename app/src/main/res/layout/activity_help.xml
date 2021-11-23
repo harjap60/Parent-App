@@ -8,7 +8,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <com.google.android.material.appbar.AppBarLayout
-    android:id="@+id/appBarLayout"
+    android:id="@+id/help_toolbar"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:theme="@style/Theme.ParentApp.AppBarOverlay">
@@ -107,7 +107,7 @@
                     android:autoSizeTextType="uniform"
                     android:fontFamily="@font/roboto"
                     android:maxLines="5"
-                    android:text="Meet the Team:\nDivij\nSagardeep\nSukhpal\nHarjap"
+                    android:text="@string/meet_the_team"
                     android:textAlignment="center"
                     android:textColor="@color/black"
                     android:textSize="11sp"
@@ -147,10 +147,8 @@
 
         </androidx.cardview.widget.CardView>
 
-
-
         <androidx.cardview.widget.CardView
-            android:id="@+id/start_child_list"
+            android:id="@+id/resource_card"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_row="1"
@@ -205,10 +203,10 @@
                     android:fontFamily="@font/roboto"
                     android:lineSpacingExtra="15dp"
                     android:maxLines="11"
-                    android:text="Menu Timer: https://icons8.com/icon/8YCHhvwCdMI0/clock\nMenu Tasks: https://icons8.com/icon/0Y3lDsW7gKTm/tasks\nMenu add/delete: https://icons8.com/icon/iJRdexk2R7eH/add\nMenu Coin: https://icons8.com/icon/SohcD1NaJrgg/us-dollar\nCoin heads: https://www.subpng.com/png-l21sit/\nCoin sound: https://www.partnersinrhyme.com/soundfx/office_sounds/office_coin-flip_wav.shtml\nCoin tails: https://imgbin.com/png/HktLjuRk/dollar-coin-canada-loonie-royal-canadian-mint-png\nFlip Coin: https://www.alamy.com/coin-toss-related-vector-line-icon-image416755224.html"
+                    android:text="@string/resource_links1"
                     android:textAlignment="center"
                     android:textColor="@color/black"
-                    android:textSize="6sp"
+                    android:textSize="8sp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toStartOf="@+id/guideline26"
                     app:layout_constraintStart_toStartOf="@+id/guideline25"

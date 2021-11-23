@@ -14,6 +14,7 @@ import com.cmpt276.parentapp.databinding.ActivityHelpBinding;
 public class HelpActivity extends AppCompatActivity {
 
     private ActivityHelpBinding binding;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -33,8 +34,7 @@ public class HelpActivity extends AppCompatActivity {
     }
 
     public static Intent getIntent(Context context) {
-        Intent intent = new Intent(context, HelpActivity.class);
-        return intent;
+        return new Intent(context, HelpActivity.class);
     }
 
     @Override

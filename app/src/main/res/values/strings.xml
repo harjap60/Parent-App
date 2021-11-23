@@ -126,8 +126,8 @@
     <string name="confirm_turn">Confirm Turn</string>
     <string name="task_name">Task Name</string>
     <string name="current_child">Current Child:</string>
-    <string name="copyright_links">Coin sound: https://www.partnersinrhyme.com/soundfx/office_sounds/office_coin-flip_wav.shtml\nCoin heads: https://www.subpng.com/png-l21sit/\nCoin tails: https://imgbin.com/png/HktLjuRk/dollar-coin-canada-loonie-royal-canadian-mint-png\nFlip Coin: https://www.alamy.com/coin-toss-related-vector-line-icon-image416755224.html
-    </string>
     <string name="resources_used">Resources Used</string>
     <string name="team_helium">Team Helium</string>
+    <string name="resource_links1">Menu Timer: https://icons8.com/icon/8YCHhvwCdMI0/clock\nMenu Tasks: https://icons8.com/icon/0Y3lDsW7gKTm/tasks\nMenu add/delete: https://icons8.com/icon/iJRdexk2R7eH/add\nMenu Coin: https://icons8.com/icon/SohcD1NaJrgg/us-dollar\nCoin heads: https://www.subpng.com/png-l21sit/\nCoin sound: https://www.partnersinrhyme.com/soundfx/office_sounds/office_coin-flip_wav.shtml\nCoin tails: https://imgbin.com/png/HktLjuRk/dollar-coin-canada-loonie-royal-canadian-mint-png\nFlip Coin: https://www.alamy.com/coin-toss-related-vector-line-icon-image416755224.html</string>
+    <string name="meet_the_team">Meet the Team:\nDivij\nSagardeep\nSukhpal\nHarjap</string>
 </resources>
