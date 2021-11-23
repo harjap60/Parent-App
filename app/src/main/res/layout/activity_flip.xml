@@ -301,7 +301,7 @@
 
                 android:text="@string/previous_child_tv_string"
                 android:textColor="?colorOnPrimary"
-                tools:ignore="NestedWeights,RtlSymmetry" />
+                tools:ignore="NestedWeights" />
 
             <ImageView
                 android:id="@+id/previous_child_flip_image"

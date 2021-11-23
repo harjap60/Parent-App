@@ -5,6 +5,7 @@ import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
+import androidx.room.Transaction;
 import androidx.room.Update;
 
 import java.util.List;
@@ -37,6 +38,16 @@ public interface TaskDao {
             "LEFT OUTER JOIN child c ON c.childId = ref.childId WHERE t.taskId = :taskId " +
             "ORDER BY ref.`order` LIMIT 1")
     Single<TaskWithChild> getTaskWithNextChild(int taskId);
+
+    @Query("SELECT " +
+            "t.taskId as t_taskId," +
+            "t.name as t_name, " +
+            "c.*, " +
+            "ref.`order`" +
+            "FROM Task t " +
+            "LEFT OUTER JOIN (SELECT taskId,  childId, min(`order`) as `order` from CHILDTASKCROSSREF group by taskId) ref on ref.taskId = t.taskId " +
+            "LEFT OUTER JOIN child c ON c.childId = ref.childId ")
+    Single<List<TaskWithChild>> getTasksWithFirstChild();
 
     @Query("SELECT * FROM task ORDER BY taskId")
     Single<List<Task>> getAll();

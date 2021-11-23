@@ -8,29 +8,33 @@
     android:orientation="vertical"
     tools:context=".ui.TimerActivity">
 
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/appBarLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:theme="@style/Theme.ParentApp.AppBarOverlay"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:layout_gravity="center"
+            android:background="#24429A"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:titleTextColor="@color/white" />
+    </com.google.android.material.appbar.AppBarLayout>
+
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/selected_right"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
         app:layout_constraintGuide_percent="0.96" />
-
-    <TextView
-        android:id="@+id/timer_title"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:autoSizeMaxTextSize="100sp"
-        android:autoSizeMinTextSize="12sp"
-        android:autoSizeStepGranularity="2sp"
-        android:autoSizeTextType="uniform"
-        android:textAlignment="center"
-        android:text="@string/timeout_timer"
-        android:textColor="@color/white"
-        android:textSize="16sp"
-        app:layout_constraintBottom_toTopOf="@+id/top_title_bottom"
-        app:layout_constraintEnd_toStartOf="@+id/top_selected_left"
-        app:layout_constraintStart_toStartOf="@+id/top_elapsed_left"
-        app:layout_constraintTop_toTopOf="@+id/top_title_top" />
 
     <TextView
         android:id="@+id/timer_live"

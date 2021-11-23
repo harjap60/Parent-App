@@ -37,8 +37,10 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="24dp"
+        android:layout_marginEnd="8dp"
         android:text="@string/task_name_label"
         android:textSize="34sp"
+        app:layout_constraintEnd_toStartOf="@+id/txt_name"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/app_bar_layout" />
 
@@ -47,7 +49,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
 
-        android:layout_marginStart="16dp"
+        android:layout_marginStart="8dp"
         android:layout_marginEnd="16dp"
         android:autoSizeMaxTextSize="100dp"
         android:autoSizeMinTextSize="10dp"
@@ -65,20 +67,5 @@
         app:layout_constraintStart_toEndOf="@+id/tv_task_name"
         app:layout_constraintTop_toTopOf="@+id/tv_task_name"
         tools:ignore="TextContrastCheck" />
-
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/btn_save"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="16dp"
-        android:layout_marginBottom="16dp"
-        android:clickable="true"
-        android:contentDescription="@string/save_button_description"
-        android:src="@drawable/ic_baseline_save_24"
-        app:backgroundTint="?colorPrimaryVariant"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:tint="@color/white"
-        tools:ignore="SpeakableTextPresentCheck,RedundantDescriptionCheck" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

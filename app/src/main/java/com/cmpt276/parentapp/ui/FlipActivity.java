@@ -308,6 +308,7 @@ public class FlipActivity extends AppCompatActivity implements AdapterView.OnIte
                     @Override
                     public void onSuccess(@NonNull Child child) {
                         currentChild = child;
+
                         runOnUiThread(() -> setupButtonWithChild());
                     }
 
@@ -400,7 +401,13 @@ public class FlipActivity extends AppCompatActivity implements AdapterView.OnIte
             childName.setText(currentChild.getName());
 
             ImageView childImage = itemView.findViewById(R.id.item_icon_child);
-            childImage.setImageResource(R.drawable.child_image_icon);
+            if (currentChild.getImagePath() != null) {
+                Glide.with(FlipActivity.this)
+                        .load(currentChild.getImagePath())
+                        .centerCrop()
+                        .placeholder(R.drawable.child_image_icon)
+                        .into(childImage);
+            }
 
             return itemView;
         }

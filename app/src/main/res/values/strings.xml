@@ -84,10 +84,12 @@
     <!-- Strings used for FLIP ACTIVITY -->
     <string name="print_child_name_current_previous_flip">Current Child: %1$s \nPrevious Child: %2$s</string>
     <string name="previous_child_tv_string">Previous child:</string>
-    <string name="current_child_tv_string">Current child: %1$s</string>
+    <string name="current_child_tv_string">Current child: </string>
     <string name="which_side_do_you_think_it_will_land_on">Which side do you think it will land on?</string>
     <string name="image_of_coin_flip_to_start_animation">Image of coin flip to start animation</string>
     <string name="flip_activity_toolbar_label">Coin Flip</string>
+    <string name="help_activity_toolbar_label">Help</string>
+    <string name="timer_activity_toolbar_label">Timeout Timer</string>
     <string name="history_of_flips">History</string>
     <string name="Heads">Heads</string>
     <string name="Tails">Tails</string>
@@ -101,6 +103,10 @@
     <string name="manage_tasks_text">Manage Tasks</string>
     <string name="previous_child_image">Previous child image</string>
     <string name="coin_flip_menu">Coin Flip Menu</string>
+    <string name="menu_task_edit_label">Edit Task</string>
+    <string name="btn_task_delete_label">Delete Task</string>
+    <string name="task_mark_as_done_label">Done</string>
+    <string name="task_detail_child_image_description">Child\'s Image</string>
     <string name="task_name_label">Name:</string>
     <string name="task_list_title">Tasks</string>
     <string name="task_add_title">Add Task</string>
@@ -125,6 +131,10 @@
     <string name="confirm_turn">Confirm Turn</string>
     <string name="task_name">Task Name</string>
     <string name="current_child">Current Child:</string>
+    <string name="resources_used">Resources Used</string>
+    <string name="team_helium">Team Helium</string>
+    <string name="resource_links1">Menu Timer: https://icons8.com/icon/8YCHhvwCdMI0/clock\nMenu Tasks: https://icons8.com/icon/0Y3lDsW7gKTm/tasks\nMenu add/delete: https://icons8.com/icon/iJRdexk2R7eH/add\nMenu Coin: https://icons8.com/icon/SohcD1NaJrgg/us-dollar\nCoin heads: https://www.subpng.com/png-l21sit/\nCoin sound: https://bit.ly/3CGyNIT\nCoin tails: https://bit.ly/3kXESeg\nFlip Coin: https://bit.ly/3CCAGGI</string>
+    <string name="meet_the_team">Meet the Team:\nDivij\nSagardeep\nSukhpal\nHarjap</string>
     <string name="help_button_text">Help</string>
 
     <string name="take_photo">Take Photo</string>
@@ -137,4 +147,9 @@
     <string name="name_can_not_be_empty">Name can not be empty</string>
     <string name="prev_child">Prev Child</string>
 
+    <string name="task_deleted_toast_message">Task Deleted</string>
+    <string name="up_alert_title">Unsaved Changes</string>
+    <string name="delete_alert_title">Confirm Delete</string>
+    <string name="empty_child_name_message">Child Name cannot be empty.</string>
+    <string name="no_children_configure_message">No Children Configured.</string>
 </resources>
