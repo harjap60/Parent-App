@@ -290,28 +290,29 @@ public class ChildActivity extends AppCompatActivity {
         new Thread(() -> {
 
             String name = this.binding.txtName.getText().toString();
+            if(!name.equals("")) {
+                if (child == null) {
+                    int coinFlipOrder = childDao.getNextCoinFlipOrder().blockingGet();
+                    Long id = childDao.insert(new Child(name, coinFlipOrder, imagePath)).blockingGet();
 
-            if (child == null) {
-                int coinFlipOrder = childDao.getNextCoinFlipOrder().blockingGet();
-                Long id = childDao.insert(new Child(name, coinFlipOrder, imagePath)).blockingGet();
+                    TaskDao taskDao = ParentAppDatabase.getInstance(ChildActivity.this).taskDao();
 
-                TaskDao taskDao = ParentAppDatabase.getInstance(ChildActivity.this).taskDao();
-
-                List<Task> tasks = taskDao.getAll().blockingGet();
-                for (Task task : tasks) {
-                    int order = taskDao.getNextOrder(task.getTaskId()).blockingGet();
-                    taskDao.insertRef(new ChildTaskCrossRef(
-                            task.getTaskId(),
-                            id.intValue(),
-                            order
-                    )).blockingAwait();
+                    List<Task> tasks = taskDao.getAll().blockingGet();
+                    for (Task task : tasks) {
+                        int order = taskDao.getNextOrder(task.getTaskId()).blockingGet();
+                        taskDao.insertRef(new ChildTaskCrossRef(
+                                task.getTaskId(),
+                                id.intValue(),
+                                order
+                        )).blockingAwait();
+                    }
+                } else {
+                    child.setName(name);
+                    child.setImagePath(imagePath);
+                    childDao.update(child).blockingAwait();
                 }
-            } else {
-                child.setName(name);
-                child.setImagePath(imagePath);
-                childDao.update(child).blockingAwait();
+                runOnUiThread(this::finish);
             }
-            runOnUiThread(this::finish);
         }).start();
     }
 
@@ -334,8 +335,7 @@ public class ChildActivity extends AppCompatActivity {
 
     private void selectImage() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Choose picture");
-        Log.e("TAG", "Reached the select image");
+        builder.setTitle(R.string.choose_picture);
         builder.setItems(IMAGE_OPTIONS, (dialogInterface, item) -> {
             if (IMAGE_OPTIONS[item].equals(getString(R.string.take_photo))) {
                 captureImage();
@@ -359,7 +359,7 @@ public class ChildActivity extends AppCompatActivity {
             } catch (IOException ex) {
                 Toast.makeText(
                         this,
-                        "Could not create a file.",
+                        getString(R.string.could_not_create_file),
                         Toast.LENGTH_SHORT
                 ).show();
             }
