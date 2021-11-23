@@ -22,7 +22,7 @@
         <activity
             android:name=".ui.TaskActivity"
             android:exported="false"
-            android:parentActivityName=".ui.MainActivity"
+            android:parentActivityName=".ui.TaskListActivity"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.ParentApp.NoActionBar"/>
         <activity
