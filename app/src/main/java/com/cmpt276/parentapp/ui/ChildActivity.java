@@ -38,6 +38,8 @@ public class ChildActivity extends AppCompatActivity {
     private static final String EXTRA_FOR_INDEX =
             "com.cmpt276.parentapp.ui.AddChildActivity.childId";
     private static final int NEW_CHILD_INDEX = -1;
+
+    private int childId;
     private Child child;
     private ChildDao childDao;
     private ActivityChildBinding binding;
@@ -58,19 +60,22 @@ public class ChildActivity extends AppCompatActivity {
         binding = ActivityChildBinding.inflate(this.getLayoutInflater());
         setContentView(binding.getRoot());
 
-        int id = getIntent().getIntExtra(EXTRA_FOR_INDEX, NEW_CHILD_INDEX);
+        childId = getIntent().getIntExtra(EXTRA_FOR_INDEX, NEW_CHILD_INDEX);
         childDao = ParentAppDatabase.getInstance(this).childDao();
 
-        setupChild(id);
-        setUpToolbar(id);
+        setupChild(childId);
+        setUpToolbar(childId);
         updateUI();
     }
 
     @Override
     public boolean onCreateOptionsMenu(@NonNull Menu menu) {
-        if (child != null) {
-            getMenuInflater().inflate(R.menu.menu_child, menu);
-        }
+        getMenuInflater().inflate(
+                childId == NEW_CHILD_INDEX ?
+                        R.menu.menu_child :
+                        R.menu.menu_child_edit,
+                menu
+        );
 
         return true;
     }
@@ -83,7 +88,7 @@ public class ChildActivity extends AppCompatActivity {
                 saveChild();
                 return true;
 
-            case R.id.btn_delete_child:
+            case R.id.btn_child_delete:
                 showDeleteChildDialog();
                 return true;
 
@@ -144,13 +149,26 @@ public class ChildActivity extends AppCompatActivity {
 
     private void showUpConfirmationDialog() {
         new AlertDialog.Builder(ChildActivity.this)
-                .setTitle(R.string.warning_message)
+                .setTitle(R.string.up_alert_title)
                 .setNegativeButton(R.string.no, null)
                 .setMessage(
                         getString(child == null ?
                                 R.string.warning_change_happened_for_add_child :
                                 R.string.warning_change_happened_for_edit_child)
                 ).setPositiveButton(R.string.yes, (dialogInterface, i) -> finish())
+                .create()
+                .show();
+    }
+
+    private void showDeleteChildDialog() {
+        new AlertDialog.Builder(ChildActivity.this)
+                .setTitle(R.string.delete_alert_title)
+                .setNegativeButton(R.string.no, null)
+                .setMessage(getString(
+                        R.string.confirm_delete_child_dialog_box_message,
+                        child.getName()
+                ))
+                .setPositiveButton(R.string.yes, (dialogInterface, i) -> deleteChild())
                 .create()
                 .show();
     }
@@ -162,7 +180,7 @@ public class ChildActivity extends AppCompatActivity {
         if (name.isEmpty()) {
             Toast.makeText(
                     this,
-                    "Child Name cannot be empty.",
+                    R.string.empty_child_name_message,
                     Toast.LENGTH_LONG
             ).show();
             return;
