@@ -99,6 +99,8 @@
     <string name="child_image_description">Child Image</string>
     <string name="title_main">Parental App</string>
     <string name="manage_tasks_text">Manage Tasks</string>
+    <string name="previous_child_image">Previous child image</string>
+    <string name="coin_flip_menu">Coin Flip Menu</string>
     <string name="menu_task_edit_label">Edit Task</string>
     <string name="btn_task_delete_label">Delete Task</string>
     <string name="task_mark_as_done_label">Done</string>
