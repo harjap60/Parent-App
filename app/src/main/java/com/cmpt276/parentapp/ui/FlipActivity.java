@@ -113,8 +113,6 @@ public class FlipActivity extends AppCompatActivity implements AdapterView.OnIte
             setupButtonsNoChild();
             currentChild = null;
             binding.chooseChildFlipSpinner.setVisibility(View.INVISIBLE);
-            binding.previousChildTv.setText(getString(R.string.previous_child_tv_string, getString(R.string.no_child_string)));
-            binding.previousChildFlipImage.setVisibility(View.INVISIBLE);
             return true;
         }
         return false;
@@ -361,7 +359,6 @@ public class FlipActivity extends AppCompatActivity implements AdapterView.OnIte
     }
 
     private void setupPreviousChild() {
-        binding.previousChildFlipImage.setVisibility(View.VISIBLE);
 
         coinFlipDao.getLastFlip()
                 .subscribeOn(Schedulers.io())
