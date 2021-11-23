@@ -263,11 +263,12 @@
                 android:autoSizeMinTextSize="12dp"
                 android:autoSizeStepGranularity="2dp"
                 android:autoSizeTextType="uniform"
-                android:paddingLeft="70dp"
+                android:paddingStart="70dp"
                 app:layout_constraintStart_toEndOf="@+id/tell_user_choose_heads_tails_start_guideline"
 
-                android:text="Current Child: "
-                android:textColor="?colorOnPrimary" />
+                android:text="@string/current_child"
+                android:textColor="?colorOnPrimary"
+                tools:ignore="NestedWeights,RtlSymmetry" />
 
             <Spinner
                 android:id="@+id/choose_child_flip_spinner"
@@ -296,10 +297,11 @@
                 android:autoSizeMinTextSize="16dp"
                 android:autoSizeStepGranularity="2dp"
                 android:autoSizeTextType="uniform"
-                android:paddingLeft="70dp"
+                android:paddingStart="70dp"
 
                 android:text="@string/previous_child_tv_string"
-                android:textColor="?colorOnPrimary" />
+                android:textColor="?colorOnPrimary"
+                tools:ignore="NestedWeights,RtlSymmetry" />
 
             <ImageView
                 android:id="@+id/previous_child_flip_image"
@@ -311,7 +313,7 @@
                 app:srcCompat="@drawable/child_image_icon" />
 
             <TextView
-                android:id="@+id/new_Child"
+                android:id="@+id/prev_child_name"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:autoSizeMaxTextSize="100dp"
@@ -319,7 +321,7 @@
                 android:autoSizeStepGranularity="2dp"
                 android:autoSizeTextType="uniform"
                 android:layout_weight="0.215"
-                android:text="TextView" />
+                android:text="@string/prev_child" />
         </LinearLayout>
     </LinearLayout>
 
