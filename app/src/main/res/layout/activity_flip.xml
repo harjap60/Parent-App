@@ -28,42 +28,6 @@
 
     </com.google.android.material.appbar.AppBarLayout>
 
-    <TextView
-        android:id="@+id/current_child_tv"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginTop="20dp"
-        android:autoSizeMaxTextSize="100dp"
-        android:autoSizeMinTextSize="12dp"
-        android:autoSizeStepGranularity="2dp"
-        android:autoSizeTextType="uniform"
-        android:gravity="center"
-        android:text="@string/current_child_tv_string"
-        android:textColor="?colorOnPrimary"
-
-        app:layout_constraintBottom_toTopOf="@+id/previous_child_tv"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/current_child_tv_top_guideline" />
-
-    <TextView
-        android:id="@+id/previous_child_tv"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-
-        android:autoSizeMaxTextSize="100dp"
-        android:autoSizeMinTextSize="12dp"
-        android:autoSizeStepGranularity="2dp"
-        android:autoSizeTextType="uniform"
-        android:gravity="center"
-
-        android:text="@string/previous_child_tv_string"
-        android:textColor="?colorOnPrimary"
-        app:layout_constraintBottom_toBottomOf="@id/current_child_tv_bottom_guideline"
-        app:layout_constraintEnd_toEndOf="@+id/current_child_tv"
-        app:layout_constraintStart_toStartOf="@id/current_child_tv"
-        app:layout_constraintTop_toBottomOf="@id/current_child_tv" />
-
     <ImageView
         android:id="@+id/coin_image_view"
         android:layout_width="0dp"
@@ -270,6 +234,81 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         app:layout_constraintGuide_percent="0.96" />
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="16dp"
+        android:orientation="vertical"
+        android:weightSum="2"
+        app:layout_constraintBottom_toBottomOf="@id/current_child_tv_bottom_guideline"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/current_child_tv_top_guideline">
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="horizontal"
+            android:weightSum="1">
+
+            <TextView
+                android:id="@+id/current_child_tv"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.6"
+                android:autoSizeMaxTextSize="100dp"
+                android:autoSizeMinTextSize="12dp"
+                android:autoSizeStepGranularity="2dp"
+                android:autoSizeTextType="uniform"
+                android:gravity="center"
+                android:text="Current Child: "
+                android:textColor="?colorOnPrimary" />
+
+            <Spinner
+                android:id="@+id/choose_child_flip_spinner"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.4"
+                android:background="?colorPrimary"
+                android:dropDownSelector="@drawable/drop_down_arrow"
+                android:popupBackground="?colorPrimaryVariant" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/previous_child_tv"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.9"
+
+                android:autoSizeMaxTextSize="100dp"
+                android:autoSizeMinTextSize="12dp"
+                android:autoSizeStepGranularity="2dp"
+                android:autoSizeTextType="uniform"
+                android:gravity="center"
+
+                android:text="@string/previous_child_tv_string"
+                android:textColor="?colorOnPrimary" />
+
+            <ImageView
+                android:id="@+id/previous_child_flip_image"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.1"
+                android:contentDescription="@string/previous_child_image"
+                android:foregroundGravity="left"
+                app:srcCompat="@drawable/child_image_icon" />
+        </LinearLayout>
+    </LinearLayout>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

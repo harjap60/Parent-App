@@ -69,7 +69,7 @@ public class ChildActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         if (child != null) {
-            getMenuInflater().inflate(R.menu.menu_edit_child, menu);
+            getMenuInflater().inflate(R.menu.menu_child, menu);
         }
 
         return true;
@@ -79,7 +79,7 @@ public class ChildActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.action_delete_child_button:
+            case R.id.btn_delete_child:
                 showDeleteChildDialog();
                 return true;
 
