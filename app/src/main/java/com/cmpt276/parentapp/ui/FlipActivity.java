@@ -299,6 +299,7 @@ public class FlipActivity extends AppCompatActivity implements AdapterView.OnIte
 
     private void saveFlip(CoinFlip.Choice choice) {
         if (currentChild != null) {
+            binding.previousChildFlipImage.setVisibility(View.VISIBLE);
             Thread thread = new Thread(() -> {
 
                 CoinFlip flip = new CoinFlip(
