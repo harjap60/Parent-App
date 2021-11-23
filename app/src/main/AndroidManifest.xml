@@ -1,15 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.cmpt276.parentapp">
 
     <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission
+        android:name="android.permission.WRITE_EXTERNAL_STORAGE"
+        android:maxSdkVersion="28"
+        tools:ignore="ScopedStorage" />
+
+    <uses-feature
+        android:name="android.hardware.camera"
+        android:required="false" />
 
     <application
         android:allowBackup="true"
         android:fullBackupOnly="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
+        android:requestLegacyExternalStorage="true"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.ParentApp.NoActionBar">
@@ -19,8 +31,7 @@
             android:parentActivityName=".ui.TaskListActivity" />
         <activity
             android:name=".ui.TaskActivity"
-            android:exported="false"
-            android:theme="@style/Theme.ParentApp.NoActionBar"/>
+            android:exported="false" />
         <activity
             android:name=".ui.TaskListActivity"
             android:exported="false"
@@ -40,8 +51,7 @@
         <activity
             android:name=".ui.TimerActivity"
             android:exported="false"
-            android:parentActivityName=".ui.MainActivity"
-            android:theme="@style/Theme.AppCompat.NoActionBar" />
+            android:parentActivityName=".ui.MainActivity" />
         <activity
             android:name=".ui.FlipActivity"
             android:exported="false"
@@ -62,6 +72,16 @@
             android:resource="@array/preloaded_fonts" />
 
         <service android:name=".ui.TimerService" />
+
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="com.cmpt276.parentapp"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_paths" />
+        </provider>
     </application>
 
 </manifest>
