@@ -70,10 +70,6 @@ public class TaskListActivity extends AppCompatActivity {
 
             List<Task> list = TaskDao.getAll().blockingGet();
 
-            if (list.size() == 0) {
-                return;
-            }
-
             TaskListAdapter adapter = new TaskListAdapter(list);
             runOnUiThread(() -> binding.rvTaskList.setAdapter(adapter));
         }).start();
