@@ -108,6 +108,8 @@ public class FlipActivity extends AppCompatActivity implements AdapterView.OnIte
             setupButtonsNoChild();
             currentChild = null;
             binding.chooseChildFlipSpinner.setVisibility(View.INVISIBLE);
+            binding.prevChildName.setText("");
+            binding.previousChildFlipImage.setVisibility(View.INVISIBLE);
             return true;
         }
         return false;
@@ -117,6 +119,7 @@ public class FlipActivity extends AppCompatActivity implements AdapterView.OnIte
         binding.chooseChildFlipSpinner.setVisibility(View.VISIBLE);
 
         new Thread(() -> {
+
             ChildDao childDao = ParentAppDatabase.getInstance(this).childDao();
             coinFlipOrderList = childDao.getChildrenForFlip().blockingGet();
 
@@ -254,7 +257,6 @@ public class FlipActivity extends AppCompatActivity implements AdapterView.OnIte
 
     private void saveFlip(CoinFlip.Choice choice) {
         if (currentChild != null) {
-            binding.previousChildFlipImage.setVisibility(View.VISIBLE);
             Thread thread = new Thread(() -> {
 
                 CoinFlip flip = new CoinFlip(
@@ -330,6 +332,7 @@ public class FlipActivity extends AppCompatActivity implements AdapterView.OnIte
                         Child child = flip.getChild();
                         ImageView image = findViewById(R.id.previous_child_flip_image);
                         runOnUiThread(() -> {
+                            binding.previousChildFlipImage.setVisibility(View.VISIBLE);
                             if (child.getImagePath() != null) {
                                 Glide.with(FlipActivity.this)
                                         .load(child.getImagePath())
@@ -339,20 +342,14 @@ public class FlipActivity extends AppCompatActivity implements AdapterView.OnIte
                             }else{
                                 image.setImageResource(R.drawable.child_image_icon);
                             }
+                            binding.prevChildName.setText(child.getName());
                         });
-
-                        binding.previousChildTv.setText(getString(
-                                R.string.previous_child_tv_string,
-                                flip.getChild().getName()
-                        ));
                     }
 
                     @Override
                     public void onError(@NonNull Throwable e) {
                         if (e.getClass() == EmptyResultSetException.class) {
-                            binding.previousChildTv.setText(getString(
-                                    R.string.previous_child_tv_string,
-                                    getString(R.string.no_child_string)));
+                            binding.prevChildName.setText("");
                             binding.previousChildFlipImage.setVisibility(View.INVISIBLE);
                         }
                     }
