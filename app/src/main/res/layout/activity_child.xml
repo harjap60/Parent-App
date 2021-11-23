@@ -129,8 +129,8 @@
     <!-- ADD CHILD BUTTON AND GUIDELINES -->
     <Button
         android:id="@+id/btn_save"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
 
         android:autoSizeMaxTextSize="100dp"
         android:autoSizeMinTextSize="1dp"
@@ -138,13 +138,12 @@
         android:autoSizeTextType="uniform"
         android:backgroundTint="?colorPrimaryVariant"
         android:gravity="center"
-        android:paddingStart="30dp"
-        android:paddingEnd="30dp"
+        android:padding="5dp"
         android:text="@string/add_child_button_text"
-        app:layout_constraintBottom_toBottomOf="@id/btn_add_child"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@id/guideline_top_button_add_child" />
+        app:layout_constraintStart_toEndOf="@id/guideline_start_button_add_child"
+        app:layout_constraintEnd_toStartOf="@id/guideline_end_button_add_child"
+        app:layout_constraintTop_toTopOf="@id/guideline_top_button_add_child"
+        app:layout_constraintBottom_toBottomOf="@id/guideline_bottom_button_add_child"/>
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline_top_button_add_child"
@@ -168,7 +167,7 @@
         app:layout_constraintGuide_percent="0.66" />
 
     <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/btn_add_child"
+        android:id="@+id/guideline_bottom_button_add_child"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"

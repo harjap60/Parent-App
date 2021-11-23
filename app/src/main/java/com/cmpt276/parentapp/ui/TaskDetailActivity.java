@@ -49,6 +49,13 @@ public class TaskDetailActivity extends AppCompatActivity {
 
         setupToolbar();
         setupConfirmButton();
+        setupCancelButton();
+    }
+
+    private void setupCancelButton() {
+        binding.btnCancel.setOnClickListener(v -> {
+            this.finish();
+        });
     }
 
     @Override
@@ -160,12 +167,12 @@ public class TaskDetailActivity extends AppCompatActivity {
         binding.tvChildName.setText(taskWithChild.child.getName());
         binding.btnConfirmTask.setVisibility(View.VISIBLE);
 
-        if(taskWithChild.child.getImagePath() != null){
+        if (taskWithChild.child.getImagePath() != null) {
             Glide.with(this)
                     .load(taskWithChild.child.getImagePath())
                     .centerCrop()
                     .into(binding.imageView);
-        }else{
+        } else {
             binding.imageView.setImageResource(R.drawable.child_image_icon);
         }
     }
