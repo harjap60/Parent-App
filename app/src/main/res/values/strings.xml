@@ -135,5 +135,6 @@
     <string name="choose_picture">Choose picture</string>
     <string name="could_not_create_file">Could not create a file.</string>
     <string name="name_can_not_be_empty">Name can not be empty</string>
+    <string name="prev_child">Prev Child</string>
 
 </resources>
