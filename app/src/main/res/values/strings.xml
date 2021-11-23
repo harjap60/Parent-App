@@ -101,6 +101,9 @@
     <string name="manage_tasks_text">Manage Tasks</string>
     <string name="previous_child_image">Previous child image</string>
     <string name="coin_flip_menu">Coin Flip Menu</string>
+    <string name="task_name_label">Name:</string>
+    <string name="task_list_title">Tasks</string>
+    <string name="task_add_title">Add Task</string>
     <!-- ============================== -->
     <string name="add_task_btn_title">Add Task</string>
     <string name="task_child_image">Child\'s Image</string>
