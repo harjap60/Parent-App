@@ -8,10 +8,18 @@ import android.content.Context;
 import android.content.Intent;
 import android.media.MediaPlayer;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.view.animation.DecelerateInterpolator;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.ImageView;
+import android.widget.TextView;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.room.rxjava3.EmptyResultSetException;
@@ -26,6 +34,7 @@ import com.cmpt276.parentapp.model.CoinFlipDao;
 import com.cmpt276.parentapp.model.ParentAppDatabase;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Random;
 
 import io.reactivex.rxjava3.annotations.NonNull;
@@ -36,7 +45,7 @@ import io.reactivex.rxjava3.schedulers.Schedulers;
 /**
  * Flip Activity provides the UI for the Coin Flip.
  */
-public class FlipActivity extends AppCompatActivity {
+public class FlipActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
 
     private static final float SET_BUTTON_TO_ENABLE = 1f;
     private ActivityFlipBinding binding;
@@ -48,6 +57,9 @@ public class FlipActivity extends AppCompatActivity {
 
     private CoinFlipDao coinFlipDao;
     private ChildDao childDao;
+
+    List<Child> coinFlipOrderList;
+
 
     public static Intent getIntent(Context context) {
         return new Intent(context, FlipActivity.class);
@@ -67,12 +79,15 @@ public class FlipActivity extends AppCompatActivity {
                 .getInstance(this)
                 .childDao();
 
+
         setupToolbar();
         setupPreviousChild();
         setupCurrentChild();
+
         setupHistoryButton();
         setupChoiceButtons();
         setupCoinFlipButton();
+        setupChildChoiceSpinner();
     }
 
     @Override
@@ -81,6 +96,96 @@ public class FlipActivity extends AppCompatActivity {
 
         if (animatorSet != null && animatorSet.isRunning()) {
             animatorSet.cancel();
+        }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // inflate the menu:
+        getMenuInflater().inflate(R.menu.menu_coin_flip, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@androidx.annotation.NonNull MenuItem item) {
+        if (item.getItemId() == R.id.no_child_button) {
+            setupButtonsNoChild();
+            currentChild = null;
+            binding.chooseChildFlipSpinner.setVisibility(View.INVISIBLE);
+            return true;
+        }
+        return false;
+    }
+
+    private void setupChildChoiceSpinner() {
+        binding.chooseChildFlipSpinner.setVisibility(View.VISIBLE);
+
+        new Thread(() -> {
+            ChildDao childDao = ParentAppDatabase.getInstance(this).childDao();
+            coinFlipOrderList = childDao.getChildrenForFlip().blockingGet();
+
+            if (coinFlipOrderList.size() == 0) {
+                return;
+            }
+
+            ArrayAdapter<Child> myAdapter = new MySpinnerListAdapter(coinFlipOrderList);
+            runOnUiThread(() -> binding.chooseChildFlipSpinner.setAdapter(myAdapter));
+        }).start();
+        binding.chooseChildFlipSpinner.setOnItemSelectedListener(this);
+
+    }
+
+    @Override
+    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+        if (parent.getId() == R.id.choose_child_flip_spinner) {
+            int currentChildIndex = parent.getSelectedItemPosition();
+            currentChild = (Child) parent.getItemAtPosition(currentChildIndex);
+        }
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> parent) {
+
+    }
+
+    public class MySpinnerListAdapter extends ArrayAdapter<Child> {
+        private final List<Child> flipOrder;
+
+        public MySpinnerListAdapter(List<Child> order) {
+            super(FlipActivity.this,
+                    R.layout.child_list_item,
+                    order
+            );
+            this.flipOrder = order;
+        }
+
+        @Override
+        public View getDropDownView(int position, View convertView,
+                                    @androidx.annotation.NonNull ViewGroup parent) {
+            return getView(position, convertView, parent);
+        }
+
+        @Override
+        public View getView(int position, @Nullable View convertView,
+                            @androidx.annotation.NonNull ViewGroup parent) {
+            View itemView = convertView;
+            if (itemView == null) {
+                itemView = getLayoutInflater().inflate(
+                        R.layout.child_list_item,
+                        parent,
+                        false
+                );
+            }
+
+            Child currentChild = flipOrder.get(position);
+
+            TextView childName = itemView.findViewById(R.id.child_name_text_view);
+            childName.setText(currentChild.getName());
+
+            ImageView childImage = itemView.findViewById(R.id.item_icon_child);
+            childImage.setImageResource(R.drawable.child_image_icon);
+
+            return itemView;
         }
     }
 
@@ -118,6 +223,7 @@ public class FlipActivity extends AppCompatActivity {
             setButtonState(binding.userChoiceHeadsButton, false);
             setButtonState(binding.userChoiceTailsButton, false);
             setButtonState(binding.flipCoinImageButton, false);
+            setButtonState(binding.flipHistoryButton, false);
 
             flipCoin();
         });
@@ -126,11 +232,14 @@ public class FlipActivity extends AppCompatActivity {
     private void enableFlipCoinButton() {
         binding.headsTailsTextAfterFlip.setVisibility(View.INVISIBLE);
         setButtonState(binding.flipCoinImageButton, true);
+        setButtonState(binding.userChoiceHeadsButton, false);
+        setButtonState(binding.userChoiceTailsButton, false);
     }
 
     private void setupButtonWithChild() {
         setButtonState(binding.userChoiceHeadsButton, true);
         setButtonState(binding.userChoiceTailsButton, true);
+        setButtonState(binding.flipHistoryButton, true);
         setButtonState(binding.flipCoinImageButton, false);
     }
 
@@ -138,6 +247,7 @@ public class FlipActivity extends AppCompatActivity {
         setButtonState(binding.userChoiceHeadsButton, false);
         setButtonState(binding.userChoiceTailsButton, false);
         setButtonState(binding.flipCoinImageButton, true);
+        setButtonState(binding.flipHistoryButton, true);
     }
 
     private void setButtonState(View btn, boolean isEnabled) {
@@ -153,8 +263,10 @@ public class FlipActivity extends AppCompatActivity {
 
         animatorSet = new AnimatorSet();
 
-        final ObjectAnimator firstAnimation = ObjectAnimator.ofFloat(binding.coinImageView, "scaleY", 1f, 0f);
-        final ObjectAnimator secondAnimation = ObjectAnimator.ofFloat(binding.coinImageView, "scaleY", 0f, 1f);
+        final ObjectAnimator firstAnimation = ObjectAnimator.ofFloat(binding.coinImageView,
+                "scaleY", 1f, 0f);
+        final ObjectAnimator secondAnimation = ObjectAnimator.ofFloat(binding.coinImageView,
+                "scaleY", 0f, 1f);
         secondAnimation.setInterpolator(new AccelerateDecelerateInterpolator());
 
         int ANIMATION_DURATION = 50;
@@ -208,12 +320,15 @@ public class FlipActivity extends AppCompatActivity {
                 //Moving everyone behind this child up by one.
                 childDao.decrementCoinFlipOrder(currentOrder).blockingAwait();
 
+
                 setupCurrentChild();
+                setupChildChoiceSpinner();
                 setupPreviousChild();
             });
             thread.start();
         } else {
             setupCurrentChild();
+            setupChildChoiceSpinner();
             setupPreviousChild();
         }
     }
@@ -224,7 +339,6 @@ public class FlipActivity extends AppCompatActivity {
     }
 
     private void setupCurrentChild() {
-
         childDao.getChildForNextFlip()
                 .subscribeOn(Schedulers.newThread())
                 .subscribe(new SingleObserver<Child>() {
@@ -236,20 +350,11 @@ public class FlipActivity extends AppCompatActivity {
                     @Override
                     public void onSuccess(@NonNull Child child) {
                         currentChild = child;
-
-                        binding.currentChildTv.setText(getString(
-                                R.string.current_child_tv_string,
-                                child.getName()));
-
                         runOnUiThread(() -> setupButtonWithChild());
                     }
 
                     @Override
                     public void onError(@NonNull Throwable e) {
-                        binding.currentChildTv.setText(getString(
-                                R.string.current_child_tv_string,
-                                getString(R.string.no_child_string)));
-
                         runOnUiThread(() -> setupButtonsNoChild());
                     }
                 });
@@ -267,20 +372,21 @@ public class FlipActivity extends AppCompatActivity {
                     public void onSuccess(@NonNull ChildCoinFlip flip) {
                         binding.previousChildTv.setText(getString(
                                 R.string.previous_child_tv_string,
-                                flip.getChild().getName()));
+                                flip.getChild().getName()
+                        ));
                     }
 
                     @Override
                     public void onError(@NonNull Throwable e) {
                         if (e.getClass() == EmptyResultSetException.class) {
                             binding.previousChildTv.setText(getString(
-                                    R.string.current_child_tv_string,
+                                    R.string.previous_child_tv_string,
                                     getString(R.string.no_child_string)));
+                            binding.previousChildFlipImage.setVisibility(View.INVISIBLE);
                         }
                     }
                 });
     }
-
 
     //Determine the side of the coin which will be shown
     private CoinFlip.Choice determineSide() {
