@@ -43,7 +43,7 @@
         app:layout_constraintTop_toBottomOf="@+id/app_bar_layout" />
 
     <EditText
-        android:id="@+id/et_task_name"
+        android:id="@+id/txt_name"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
 
@@ -78,7 +78,7 @@
         app:backgroundTint="?colorPrimaryVariant"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:tint="#FFFFFF"
+        app:tint="@color/white"
         tools:ignore="SpeakableTextPresentCheck,RedundantDescriptionCheck" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

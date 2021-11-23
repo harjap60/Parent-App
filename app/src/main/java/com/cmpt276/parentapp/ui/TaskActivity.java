@@ -160,9 +160,9 @@ public class TaskActivity extends AppCompatActivity {
         if (task == null) {
             return;
         }
-        binding.etTaskName.setText(task.getName());
+        binding.txtName.setText(task.getName());
         if (child != null) {
-            binding.etTaskName.setText(child.getName());
+            binding.txtName.setText(child.getName());
         }
     }
 
@@ -175,7 +175,7 @@ public class TaskActivity extends AppCompatActivity {
                 .setMessage(getString(
                         R.string.confirm_edit_task_dialog_box_message,
                         task.getName(),
-                        binding.etTaskName.getText()
+                        binding.txtName.getText()
                 ))
                 .setPositiveButton(R.string.yes, (dialog, which) -> saveTask())
                 .create()
@@ -195,7 +195,7 @@ public class TaskActivity extends AppCompatActivity {
 
     private void saveTask() {
         new Thread(() -> {
-            String name = this.binding.etTaskName.getText().toString();
+            String name = this.binding.txtName.getText().toString();
             if (task == null) {
                 ChildDao childDao = ParentAppDatabase
                         .getInstance(TaskActivity.this)
@@ -244,7 +244,7 @@ public class TaskActivity extends AppCompatActivity {
     }
 
     private boolean isClean() {
-        String name = binding.etTaskName.getText().toString();
+        String name = binding.txtName.getText().toString();
         return (task == null && name.isEmpty()) ||
                 (task != null && name.equals(task.getName()));
     }
