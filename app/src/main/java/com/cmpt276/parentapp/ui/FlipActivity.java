@@ -24,6 +24,7 @@ import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.room.rxjava3.EmptyResultSetException;
 
+import com.bumptech.glide.Glide;
 import com.cmpt276.parentapp.R;
 import com.cmpt276.parentapp.databinding.ActivityFlipBinding;
 import com.cmpt276.parentapp.model.Child;
@@ -95,7 +96,7 @@ public class FlipActivity extends AppCompatActivity implements AdapterView.OnIte
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
+    public boolean onCreateOptionsMenu(@androidx.annotation.NonNull Menu menu) {
         // inflate the menu:
         getMenuInflater().inflate(R.menu.menu_coin_flip, menu);
         return true;
@@ -253,6 +254,7 @@ public class FlipActivity extends AppCompatActivity implements AdapterView.OnIte
 
     private void saveFlip(CoinFlip.Choice choice) {
         if (currentChild != null) {
+            binding.previousChildFlipImage.setVisibility(View.VISIBLE);
             Thread thread = new Thread(() -> {
 
                 CoinFlip flip = new CoinFlip(
@@ -304,6 +306,7 @@ public class FlipActivity extends AppCompatActivity implements AdapterView.OnIte
                     @Override
                     public void onSuccess(@NonNull Child child) {
                         currentChild = child;
+
                         runOnUiThread(() -> setupButtonWithChild());
                     }
 
@@ -324,6 +327,20 @@ public class FlipActivity extends AppCompatActivity implements AdapterView.OnIte
 
                     @Override
                     public void onSuccess(@NonNull ChildCoinFlip flip) {
+                        Child child = flip.getChild();
+                        ImageView image = findViewById(R.id.previous_child_flip_image);
+                        runOnUiThread(() -> {
+                            if (child.getImagePath() != null) {
+                                Glide.with(FlipActivity.this)
+                                        .load(child.getImagePath())
+                                        .centerCrop()
+                                        .placeholder(R.drawable.child_image_icon)
+                                        .into(image);
+                            }else{
+                                image.setImageResource(R.drawable.child_image_icon);
+                            }
+                        });
+
                         binding.previousChildTv.setText(getString(
                                 R.string.previous_child_tv_string,
                                 flip.getChild().getName()
@@ -387,7 +404,13 @@ public class FlipActivity extends AppCompatActivity implements AdapterView.OnIte
             childName.setText(currentChild.getName());
 
             ImageView childImage = itemView.findViewById(R.id.item_icon_child);
-            childImage.setImageResource(R.drawable.child_image_icon);
+            if (currentChild.getImagePath() != null) {
+                Glide.with(FlipActivity.this)
+                        .load(currentChild.getImagePath())
+                        .centerCrop()
+                        .placeholder(R.drawable.child_image_icon)
+                        .into(childImage);
+            }
 
             return itemView;
         }
