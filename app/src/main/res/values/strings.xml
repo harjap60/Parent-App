@@ -104,10 +104,6 @@
     <string name="task_name_label">Name:</string>
     <string name="task_list_title">Tasks</string>
     <string name="task_add_title">Add Task</string>
-    <!-- ============================== -->
-    <string name="add_task_btn_title">Add Task</string>
-    <string name="task_child_image">Child\'s Image</string>
-    <string name="main_activity_task_list_btn">Task List</string>
 
     <string name="delete_task">Delete Task</string>
     <string name="warning_change_happened_for_add_task">
@@ -129,4 +125,15 @@
     <string name="confirm_turn">Confirm Turn</string>
     <string name="task_name">Task Name</string>
     <string name="current_child">Current Child:</string>
+    <string name="help_button_text">Help</string>
+
+    <string name="take_photo">Take Photo</string>
+    <string name="choose_from_gallery">Choose from Gallery</string>
+    <string name="set_image_btn_label">Set Image</string>
+    <string name="camera_permission_message">You need to grant camera permission to take photo of the child</string>
+    <string name="storage_permission_message">You need to grant read external storage permission to choose a photo of the child</string>
+    <string name="choose_picture">Choose picture</string>
+    <string name="could_not_create_file">Could not create a file.</string>
+    <string name="name_can_not_be_empty">Name can not be empty</string>
+
 </resources>

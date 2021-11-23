@@ -48,18 +48,13 @@ import io.reactivex.rxjava3.schedulers.Schedulers;
 public class FlipActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
 
     private static final float SET_BUTTON_TO_ENABLE = 1f;
+    List<Child> coinFlipOrderList;
     private ActivityFlipBinding binding;
-
     private CoinFlip.Choice userChoice;
-
     private Child currentChild;
     private AnimatorSet animatorSet;
-
     private CoinFlipDao coinFlipDao;
     private ChildDao childDao;
-
-    List<Child> coinFlipOrderList;
-
 
     public static Intent getIntent(Context context) {
         return new Intent(context, FlipActivity.class);
@@ -146,47 +141,6 @@ public class FlipActivity extends AppCompatActivity implements AdapterView.OnIte
     @Override
     public void onNothingSelected(AdapterView<?> parent) {
 
-    }
-
-    public class MySpinnerListAdapter extends ArrayAdapter<Child> {
-        private final List<Child> flipOrder;
-
-        public MySpinnerListAdapter(List<Child> order) {
-            super(FlipActivity.this,
-                    R.layout.child_list_item,
-                    order
-            );
-            this.flipOrder = order;
-        }
-
-        @Override
-        public View getDropDownView(int position, View convertView,
-                                    @androidx.annotation.NonNull ViewGroup parent) {
-            return getView(position, convertView, parent);
-        }
-
-        @Override
-        public View getView(int position, @Nullable View convertView,
-                            @androidx.annotation.NonNull ViewGroup parent) {
-            View itemView = convertView;
-            if (itemView == null) {
-                itemView = getLayoutInflater().inflate(
-                        R.layout.child_list_item,
-                        parent,
-                        false
-                );
-            }
-
-            Child currentChild = flipOrder.get(position);
-
-            TextView childName = itemView.findViewById(R.id.child_name_text_view);
-            childName.setText(currentChild.getName());
-
-            ImageView childImage = itemView.findViewById(R.id.item_icon_child);
-            childImage.setImageResource(R.drawable.child_image_icon);
-
-            return itemView;
-        }
     }
 
     private void setupToolbar() {
@@ -396,5 +350,46 @@ public class FlipActivity extends AppCompatActivity implements AdapterView.OnIte
         int randomNum = random.nextInt(choices.length);
 
         return choices[randomNum];
+    }
+
+    public class MySpinnerListAdapter extends ArrayAdapter<Child> {
+        private final List<Child> flipOrder;
+
+        public MySpinnerListAdapter(List<Child> order) {
+            super(FlipActivity.this,
+                    R.layout.child_list_item,
+                    order
+            );
+            this.flipOrder = order;
+        }
+
+        @Override
+        public View getDropDownView(int position, View convertView,
+                                    @androidx.annotation.NonNull ViewGroup parent) {
+            return getView(position, convertView, parent);
+        }
+
+        @Override
+        public View getView(int position, @Nullable View convertView,
+                            @androidx.annotation.NonNull ViewGroup parent) {
+            View itemView = convertView;
+            if (itemView == null) {
+                itemView = getLayoutInflater().inflate(
+                        R.layout.child_list_item,
+                        parent,
+                        false
+                );
+            }
+
+            Child currentChild = flipOrder.get(position);
+
+            TextView childName = itemView.findViewById(R.id.child_name_text_view);
+            childName.setText(currentChild.getName());
+
+            ImageView childImage = itemView.findViewById(R.id.item_icon_child);
+            childImage.setImageResource(R.drawable.child_image_icon);
+
+            return itemView;
+        }
     }
 }
