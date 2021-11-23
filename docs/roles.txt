@@ -1,4 +1,4 @@
-Scrum Master: Harjap Singh Dhaliwal
-Project Manager: Divij Gupta
-Repo Manager: Sagardeep Singh Hunjan
-Team Member: Sukhpal Singh Gosal
+Scrum Master: Sagardeep Singh Hunjan
+Repo Manager: Divij Gupta
+Project Manager: Sukhpal Singh Gosal
+Team Member: Harjap Singh Dhaliwal
