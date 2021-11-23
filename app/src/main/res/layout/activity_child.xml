@@ -21,12 +21,12 @@
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             android:theme="@style/Theme.ParentApp.PopupOverlay"
-            app:titleTextColor="?colorOnPrimary"
-            app:subtitleTextColor="?colorOnPrimary"
-
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+
+            app:layout_constraintTop_toTopOf="parent"
+            app:subtitleTextColor="?colorOnPrimary"
+            app:titleTextColor="?colorOnPrimary" />
 
     </com.google.android.material.appbar.AppBarLayout>
 
@@ -35,16 +35,15 @@
         android:id="@+id/image_view_child_image"
         android:layout_width="0dp"
         android:layout_height="0dp"
+        android:contentDescription="@string/child_image_description"
         android:scaleType="centerCrop"
-        app:layout_constraintDimensionRatio="1:1"
 
-        app:layout_constraintBottom_toBottomOf="@id/guideline_bottom_image_view_child_image"
+        app:layout_constraintDimensionRatio="1:1"
         app:layout_constraintEnd_toEndOf="@+id/guideline_end_image_view_child_image"
         app:layout_constraintStart_toStartOf="@+id/guideline_start_image_view_child_image"
-        app:layout_constraintTop_toTopOf="@id/guideline_top_image_view_child_image"
 
-        app:srcCompat="@drawable/child_image_icon"
-        android:contentDescription="@string/child_image_description" />
+        app:layout_constraintTop_toTopOf="@id/guideline_top_image_view_child_image"
+        app:srcCompat="@drawable/child_image_icon" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline_top_image_view_child_image"
@@ -54,25 +53,18 @@
         app:layout_constraintGuide_percent="0.1" />
 
     <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline_bottom_image_view_child_image"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.50" />
-
-    <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline_start_image_view_child_image"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.15" />
+        app:layout_constraintGuide_percent="0.05" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline_end_image_view_child_image"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.85" />
+        app:layout_constraintGuide_percent="0.95" />
     <!-- ========================== -->
 
     <!-- EDIT IMAGE FAB AND GUIDELINES -->
@@ -80,11 +72,15 @@
         android:id="@+id/fab_edit_child_image"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
         android:clickable="true"
-        app:srcCompat="@drawable/ic_baseline_camera_enhance"
+        android:contentDescription="@string/set_image_btn_label"
+        app:backgroundTint="@color/primaryVariant"
         app:layout_constraintBottom_toBottomOf="@+id/image_view_child_image"
         app:layout_constraintEnd_toEndOf="@+id/image_view_child_image"
-        android:contentDescription="@string/set_image_btn_label" />
+        app:srcCompat="@drawable/ic_baseline_camera_enhance"
+        app:tint="@color/white" />
     <!-- ============================= -->
 
     <!-- CHILD NAME EDIT TEXT AND GUIDELINES -->
@@ -140,10 +136,10 @@
         android:gravity="center"
         android:padding="5dp"
         android:text="@string/add_child_button_text"
-        app:layout_constraintStart_toEndOf="@id/guideline_start_button_add_child"
+        app:layout_constraintBottom_toBottomOf="@id/guideline_bottom_button_add_child"
         app:layout_constraintEnd_toStartOf="@id/guideline_end_button_add_child"
-        app:layout_constraintTop_toTopOf="@id/guideline_top_button_add_child"
-        app:layout_constraintBottom_toBottomOf="@id/guideline_bottom_button_add_child"/>
+        app:layout_constraintStart_toEndOf="@id/guideline_start_button_add_child"
+        app:layout_constraintTop_toTopOf="@id/guideline_top_button_add_child" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline_top_button_add_child"
