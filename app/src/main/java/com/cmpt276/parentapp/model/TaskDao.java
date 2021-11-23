@@ -27,18 +27,38 @@ public interface TaskDao {
             "WHERE taskId = :taskId and `order` > :minOrder")
     Completable decrementOrder(int taskId, int minOrder);
 
-    @Query("SELECT * FROM Task WHERE taskId = :taskId")
-    Single<TaskWithChildren> getTaskWithChildren(int taskId);
+    @Query("SELECT " +
+            "t.taskId as t_taskId," +
+            "t.name as t_name, " +
+            "c.*, " +
+            "ref.`order` " +
+            "FROM Task t " +
+            "LEFT OUTER JOIN childtaskcrossref ref ON t.taskId = ref.taskId " +
+            "LEFT OUTER JOIN child c ON c.childId = ref.childId WHERE t.taskId = :taskId " +
+            "ORDER BY ref.`order` LIMIT 1")
+    Single<TaskWithChild> getTaskWithNextChild(int taskId);
 
-    @Query("SELECT * FROM task")
+    @Query("SELECT * FROM task ORDER BY taskId")
     Single<List<Task>> getAll();
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    Completable insert(Task... tasks);
+    Single<Long> insert(Task task);
 
     @Update
     Completable update(Task... tasks);
 
     @Delete
     Completable delete(Task... tasks);
+
+    @Query("UPDATE ChildTaskCrossRef set `order` = :order WHERE taskId = :taskId and childId = :childId")
+    Completable updateOrder(int taskId, int childId, int order);
+
+    @Insert
+    Completable insertRef(ChildTaskCrossRef... crossRef);
+
+    @Insert
+    Completable updateRef(ChildTaskCrossRef... crossRef);
+
+    @Delete
+    Completable DeleteRef(ChildTaskCrossRef... crossRef);
 }
