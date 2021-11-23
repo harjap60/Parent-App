@@ -46,12 +46,18 @@ public class ChildListActivity extends AppCompatActivity {
         binding = ActivityChildListBinding.inflate(this.getLayoutInflater());
         setContentView(binding.getRoot());
 
+        setupFabAddChild();
         setupToolbar();
+    }
+
+    private void setupFabAddChild() {
+        binding.floatingActionButton.setOnClickListener((v) ->
+                startActivity(ChildActivity.getIntentForNewChild(ChildListActivity.this))
+        );
     }
 
     @Override
     public boolean onCreateOptionsMenu(@NonNull Menu menu) {
-        // inflate the menu:
         getMenuInflater().inflate(R.menu.menu_child_list, menu);
         return true;
     }
@@ -60,9 +66,7 @@ public class ChildListActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if (item.getItemId() == R.id.action_add_child_button_for_child_list) {
-            startActivity(
-                    ChildActivity.getIntentForNewChild(ChildListActivity.this)
-            );
+            startActivity(ChildActivity.getIntentForNewChild(ChildListActivity.this));
             return true;
         }
         return super.onOptionsItemSelected(item);
@@ -123,11 +127,8 @@ public class ChildListActivity extends AppCompatActivity {
             TextView childNameTextView = itemView.findViewById(R.id.child_name_text_view);
             childNameTextView.setText(child.getName());
 
-            // Child Image
             ImageView childImage = itemView.findViewById(R.id.item_icon_child);
 
-            // if the user has specified a picture for the child, then set the image of the child
-            // otherwise just display the default image for the child
             if (child.getImagePath() != null) {
                 Glide.with(ChildListActivity.this)
                         .load(child.getImagePath())
