@@ -10,7 +10,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
@@ -19,10 +18,16 @@ import androidx.appcompat.widget.Toolbar;
 
 import com.cmpt276.parentapp.R;
 import com.cmpt276.parentapp.databinding.ActivityTaskListBinding;
+import com.cmpt276.parentapp.model.ParentAppDatabase;
 import com.cmpt276.parentapp.model.Task;
+import com.cmpt276.parentapp.model.TaskDao;
 
-import java.util.ArrayList;
 import java.util.List;
+
+/** +
+ * Activity lists all created tasks
+ * Redirects to create new task screen and confirm child for a task when appropriate
+ */
 
 public class TaskListActivity extends AppCompatActivity {
 
@@ -38,7 +43,6 @@ public class TaskListActivity extends AppCompatActivity {
         binding = ActivityTaskListBinding.inflate(this.getLayoutInflater());
         setContentView(binding.getRoot());
         populateTaskRecyclerView();
-
         setupToolbar();
     }
 
@@ -61,16 +65,24 @@ public class TaskListActivity extends AppCompatActivity {
     }
 
     private void populateTaskRecyclerView() {
-        List<Task> taskList = new ArrayList<>();
+        new Thread(() -> {
+            TaskDao TaskDao = ParentAppDatabase.getInstance(this).taskDao();
 
-        taskList.add(new Task("Read"));
-        taskList.add(new Task("Eat"));
-        taskList.add(new Task("Play"));
-        taskList.add(new Task("Jump"));
-        taskList.add(new Task("Run"));
+            List<Task> list = TaskDao.getAll().blockingGet();
 
-        TaskListAdapter adapter = new TaskListAdapter(taskList);
-        binding.rvTaskList.setAdapter(adapter);
+            if (list.size() == 0) {
+                return;
+            }
+
+            TaskListAdapter adapter = new TaskListAdapter(list);
+            runOnUiThread(() -> binding.rvTaskList.setAdapter(adapter));
+        }).start();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        populateTaskRecyclerView();
     }
 
     private void setupToolbar() {
@@ -84,7 +96,6 @@ public class TaskListActivity extends AppCompatActivity {
     }
 
     class TaskListAdapter extends ArrayAdapter<Task> {
-
         List<Task> taskList;
 
         public TaskListAdapter(List<Task> taskList) {
@@ -104,18 +115,15 @@ public class TaskListActivity extends AppCompatActivity {
                                 false
                         );
             }
-
-            itemView.setOnClickListener(v -> Toast.makeText(
-                    TaskListActivity.this,
-                    "Clicked",
-                    Toast.LENGTH_SHORT
-            ).show());
-
             Task task = taskList.get(position);
 
-            TextView childNameText = itemView.findViewById(R.id.tv_task_name);
-            childNameText.setText(task.getName());
+            TextView taskNameText = itemView.findViewById(R.id.tv_task_name);
+            taskNameText.setText(task.getName());
 
+            itemView.setOnClickListener(v -> {
+                Intent i = TaskActivity.getIntentForExistingTask(TaskListActivity.this, task.getTaskId());
+                startActivity(i);
+            });
             return itemView;
         }
     }

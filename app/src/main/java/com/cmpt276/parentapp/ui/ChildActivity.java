@@ -16,8 +16,12 @@ import com.cmpt276.parentapp.R;
 import com.cmpt276.parentapp.databinding.ActivityChildBinding;
 import com.cmpt276.parentapp.model.Child;
 import com.cmpt276.parentapp.model.ChildDao;
+import com.cmpt276.parentapp.model.ChildTaskCrossRef;
 import com.cmpt276.parentapp.model.ParentAppDatabase;
+import com.cmpt276.parentapp.model.Task;
+import com.cmpt276.parentapp.model.TaskDao;
 
+import java.util.List;
 import java.util.Objects;
 
 import io.reactivex.rxjava3.schedulers.Schedulers;
@@ -110,6 +114,7 @@ public class ChildActivity extends AppCompatActivity {
     }
 
     private void setupDB() {
+
         childDao = ParentAppDatabase.getInstance(this).childDao();
     }
 
@@ -128,6 +133,7 @@ public class ChildActivity extends AppCompatActivity {
     }
 
     private void setupSaveButton() {
+
         binding.btnSave.setOnClickListener(view -> saveChild());
     }
 
@@ -186,7 +192,19 @@ public class ChildActivity extends AppCompatActivity {
 
             if (child == null) {
                 int coinFlipOrder = childDao.getNextCoinFlipOrder().blockingGet();
-                childDao.insert(new Child(name, coinFlipOrder)).blockingAwait();
+                Long id = childDao.insert(new Child(name, coinFlipOrder)).blockingGet();
+
+                TaskDao taskDao = ParentAppDatabase.getInstance(ChildActivity.this).taskDao();
+
+                List<Task> tasks = taskDao.getAll().blockingGet();
+                for (Task task : tasks) {
+                    int order = taskDao.getNextOrder(task.getTaskId()).blockingGet();
+                    taskDao.insertRef(new ChildTaskCrossRef(
+                            task.getTaskId(),
+                            id.intValue(),
+                            order
+                    )).blockingAwait();
+                }
             } else {
                 child.setName(name);
                 childDao.update(child).blockingAwait();

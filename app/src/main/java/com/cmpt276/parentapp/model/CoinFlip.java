@@ -32,7 +32,6 @@ import java.time.LocalDateTime;
 })
 public class CoinFlip {
 
-
     @PrimaryKey(autoGenerate = true)
     private int coinFlipId;
 
