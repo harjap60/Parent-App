@@ -26,7 +26,7 @@ import java.time.format.DateTimeFormatter;
                 Task.class,
                 ChildTaskCrossRef.class
         },
-        version = 14,
+        version = 15,
         exportSchema = false
 )
 @TypeConverters({Converters.class})
