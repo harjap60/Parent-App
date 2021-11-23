@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
@@ -151,10 +152,19 @@ public class ChildActivity extends AppCompatActivity {
     }
 
     private void saveChild() {
+
+        String name = this.binding.txtName.getText().toString();
+
+        if (name.isEmpty()) {
+            Toast.makeText(
+                    this,
+                    "Child Name cannot be empty.",
+                    Toast.LENGTH_LONG
+            ).show();
+            return;
+        }
+
         new Thread(() -> {
-
-            String name = this.binding.txtName.getText().toString();
-
             if (child == null) {
                 int coinFlipOrder = childDao.getNextCoinFlipOrder().blockingGet();
                 Long id = childDao.insert(new Child(name, coinFlipOrder)).blockingGet();

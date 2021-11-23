@@ -8,6 +8,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
@@ -87,7 +88,7 @@ public class TaskActivity extends AppCompatActivity {
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
+    public boolean onCreateOptionsMenu(@NonNull Menu menu) {
         if (task != null) {
             getMenuInflater().inflate(R.menu.menu_edit_task, menu);
         }
@@ -183,8 +184,18 @@ public class TaskActivity extends AppCompatActivity {
     }
 
     private void saveTask() {
+        String name = this.binding.taskEditName.getText().toString();
+
+        if (name.isEmpty()) {
+            Toast.makeText(
+                    this,
+                    "Task Name cannot be empty.",
+                    Toast.LENGTH_LONG
+            ).show();
+            return;
+        }
+
         new Thread(() -> {
-            String name = this.binding.taskEditName.getText().toString();
             if (task == null) {
                 ChildDao childDao = ParentAppDatabase
                         .getInstance(TaskActivity.this)
