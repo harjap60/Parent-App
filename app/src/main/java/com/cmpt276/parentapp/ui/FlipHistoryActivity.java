@@ -83,10 +83,10 @@ public class FlipHistoryActivity extends AppCompatActivity {
             if (itemView == null) {
                 itemView = getLayoutInflater()
                         .inflate(
-                        R.layout.flip_history_view,
-                        parent,
-                        false
-                );
+                                R.layout.flip_history_view,
+                                parent,
+                                false
+                        );
             }
             final String DATE_FORMAT = "MMM - dd @ KK:mma";
 
