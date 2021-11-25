@@ -28,7 +28,6 @@ public class BreatheActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_breathe);
         binding = ActivityBreatheBinding.inflate(this.getLayoutInflater());
         setContentView(binding.getRoot());
 
