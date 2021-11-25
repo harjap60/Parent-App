@@ -1,5 +1,6 @@
 package com.cmpt276.parentapp.ui;
 
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
@@ -22,7 +23,17 @@ public class BreatheActivity extends AppCompatActivity {
         binding = ActivityBreatheBinding.inflate(this.getLayoutInflater());
         setContentView(binding.getRoot());
 
+        setupToolbar();
         setupBreatheButton();
+    }
+
+    private void setupToolbar() {
+        setSupportActionBar(binding.breatheToolbar);
+        ActionBar ab = getSupportActionBar();
+        if (ab != null) {
+            ab.setTitle(R.string.breathe);
+            ab.setDisplayHomeAsUpEnabled(true);
+        }
     }
 
     private void setupBreatheButton(){
