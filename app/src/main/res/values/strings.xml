@@ -152,4 +152,5 @@
     <string name="delete_alert_title">Confirm Delete</string>
     <string name="empty_child_name_message">Child Name cannot be empty.</string>
     <string name="no_children_configure_message">No Children Configured.</string>
+    <string name="breathe">Breathe</string>
 </resources>

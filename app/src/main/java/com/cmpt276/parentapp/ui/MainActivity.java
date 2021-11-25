@@ -13,6 +13,7 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.cmpt276.parentapp.R;
@@ -49,14 +50,21 @@ public class MainActivity extends AppCompatActivity {
         setupChildButton();
         setupTaskListButton();
         setupHelpButton();
+        setupBreatheButton();
         setupNotificationChannel();
         setupTimerNotificationChannel();
     }
 
+    private void setupBreatheButton(){
+        binding.breatheActivityButton.setOnClickListener(
+                view -> startActivity(BreatheActivity.getIntent(this))
+        );
+    }
+
     private void setupHelpButton() {
-        binding.helpButton.setOnClickListener(view -> {
-            startActivity(HelpActivity.getIntent(this));
-        });
+        binding.helpButton.setOnClickListener(
+                view -> startActivity(HelpActivity.getIntent(this))
+        );
     }
 
     private void setupTaskListButton() {
@@ -102,7 +110,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
+    public boolean onCreateOptionsMenu(@NonNull Menu menu) {
         getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
     }
