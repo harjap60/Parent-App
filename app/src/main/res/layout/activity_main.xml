@@ -400,6 +400,6 @@
         android:layout_height="wrap_content"
         android:backgroundTint="@color/white"
         android:textColor="@color/black"
-        android:text="Breathe" />
+        android:text="@string/breathe" />
 
 </RelativeLayout>
