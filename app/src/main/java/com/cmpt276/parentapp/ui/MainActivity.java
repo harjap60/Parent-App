@@ -49,8 +49,15 @@ public class MainActivity extends AppCompatActivity {
         setupChildButton();
         setupTaskListButton();
         setupHelpButton();
+        setupBreatheButton();
         setupNotificationChannel();
         setupTimerNotificationChannel();
+    }
+
+    private void setupBreatheButton(){
+        binding.helpButton.setOnClickListener(view -> {
+            startActivity(BreatheActivity.getIntent(this));
+        });
     }
 
     private void setupHelpButton() {
