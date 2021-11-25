@@ -11,7 +11,16 @@ import android.widget.Toast;
 import com.cmpt276.parentapp.R;
 import com.cmpt276.parentapp.databinding.ActivityBreatheBinding;
 
-
+/**
+ * Help user to relax and calm down if they feel the need to
+ *
+ * Current state:
+ *          Just has a textview and button
+ *
+ *TODO:
+ *      Make button increase size the longer it is held
+ *      When released reset to normal size
+ */
 public class BreatheActivity extends AppCompatActivity {
 
     private ActivityBreatheBinding binding;
