@@ -3,13 +3,19 @@ package com.cmpt276.parentapp.ui;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.view.MotionEvent;
+import android.widget.Button;
 import android.widget.Toast;
 
 import com.cmpt276.parentapp.R;
 import com.cmpt276.parentapp.databinding.ActivityBreatheBinding;
+
+import java.util.concurrent.atomic.AtomicLong;
 
 /**
  * Help user to relax and calm down if they feel the need to
@@ -24,6 +30,8 @@ import com.cmpt276.parentapp.databinding.ActivityBreatheBinding;
 public class BreatheActivity extends AppCompatActivity {
 
     private ActivityBreatheBinding binding;
+    private long lastDown;
+    private long lastDuration;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,7 +58,37 @@ public class BreatheActivity extends AppCompatActivity {
                 "Nice you did the breathe",
                 Toast.LENGTH_SHORT
         ).show());
+        setupButtonToChangeSize();
     }
+
+    @SuppressLint("ClickableViewAccessibility")
+    private void setupButtonToChangeSize(){
+
+        binding.breatheButton.setOnTouchListener((view, motionEvent)->{
+            if(motionEvent.getAction() == MotionEvent.ACTION_DOWN){
+                lastDown = System.currentTimeMillis();
+                binding.breatheButton.setBackgroundColor(Color.BLACK);
+                increaseSize(binding.breatheButton);
+                Toast.makeText(this, "Button timer start", Toast.LENGTH_SHORT).show();
+            } else if(motionEvent.getAction() == MotionEvent.ACTION_UP){
+                lastDuration = System.currentTimeMillis() - lastDown;
+                binding.breatheButton.setBackgroundColor(getResources().getColor(R.color.primaryVariant));
+                Toast.makeText(this, "Button Pressed for: "+ lastDuration+"ms", Toast.LENGTH_SHORT).show();
+                resetSize(binding.breatheButton);
+            }
+            return true;
+        });
+    }
+
+    private void increaseSize(Button btn){
+        btn.setScaleX(1.25f);
+        btn.setScaleY(1.25f);
+    }
+    private void resetSize(Button btn){
+        btn.setScaleX(1f);
+        btn.setScaleY(1f);
+    }
+
 
     public static Intent getIntent(Context context) {
         return new Intent(context, BreatheActivity.class);
