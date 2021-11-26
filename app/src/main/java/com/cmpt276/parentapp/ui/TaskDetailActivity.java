@@ -1,5 +1,6 @@
 package com.cmpt276.parentapp.ui;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -53,9 +54,7 @@ public class TaskDetailActivity extends AppCompatActivity {
     }
 
     private void setupCancelButton() {
-        binding.btnCancel.setOnClickListener(v -> {
-            this.finish();
-        });
+        binding.btnCancel.setOnClickListener(v -> this.finish());
     }
 
     @Override
@@ -71,14 +70,21 @@ public class TaskDetailActivity extends AppCompatActivity {
     }
 
 
+    @SuppressLint("NonConstantResourceId")
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        if (item.getItemId() == R.id.btn_task_edit) {
-            showTaskActivity();
-            return true;
-        } else if (item.getItemId() == R.id.btn_task_delete) {
-            showDeleteTaskDialog();
-            return true;
+
+        int id = item.getItemId();
+        switch (id) {
+            case R.id.btn_task_edit:
+                showTaskActivity();
+                return true;
+            case R.id.btn_task_delete:
+                showDeleteTaskDialog();
+                return true;
+            case R.id.btn_task_history:
+                startActivity(TaskHistoryActivity.getIntent(this, taskId));
+                return true;
         }
 
         return super.onOptionsItemSelected(item);
