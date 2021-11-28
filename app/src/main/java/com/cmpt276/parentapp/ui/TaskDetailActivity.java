@@ -20,7 +20,10 @@ import com.cmpt276.parentapp.R;
 import com.cmpt276.parentapp.databinding.ActivityTaskDetailBinding;
 import com.cmpt276.parentapp.model.ParentAppDatabase;
 import com.cmpt276.parentapp.model.TaskDao;
+import com.cmpt276.parentapp.model.TaskHistory;
 import com.cmpt276.parentapp.model.TaskWithChild;
+
+import java.time.LocalDateTime;
 
 public class TaskDetailActivity extends AppCompatActivity {
 
@@ -105,6 +108,14 @@ public class TaskDetailActivity extends AppCompatActivity {
 
             taskDao.updateOrder(taskId, taskWithChild.child.getChildId(), order).blockingAwait();
             taskDao.decrementOrder(taskId, MIN_ORDER).blockingAwait();
+
+            TaskHistory history = new TaskHistory(
+                    taskWithChild.child.getChildId(),
+                    taskId,
+                    LocalDateTime.now()
+            );
+
+            taskDao.insertHistory(history).blockingAwait();
 
             setupTask();
         }).start());
