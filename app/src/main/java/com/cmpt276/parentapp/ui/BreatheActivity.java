@@ -66,6 +66,7 @@ public class BreatheActivity extends AppCompatActivity {
     @SuppressLint({"ClickableViewAccessibility"})
     private void setupButtonToChangeSize(){
         AnimatorSet scaleUp = new AnimatorSet();
+        Handler handler = new Handler();
 
         binding.breatheButton.setOnTouchListener((view, motionEvent)->{
             if(motionEvent.getAction() == MotionEvent.ACTION_DOWN){
@@ -81,7 +82,7 @@ public class BreatheActivity extends AppCompatActivity {
                 scaleUp.start();
 
                 //Tell user to let go of button after 10s
-                new Handler().postDelayed(
+                handler.postDelayed(
                         () -> Toast.makeText(
                                 BreatheActivity.this,
                                 getResources().getString(R.string.toast_10s_button_held),
@@ -90,6 +91,7 @@ public class BreatheActivity extends AppCompatActivity {
                         MAX_ANIMATION_DURATION);
 
             } else if(motionEvent.getAction() == MotionEvent.ACTION_UP){
+                handler.removeCallbacksAndMessages(null);
                 scaleUp.pause();
                 lastDuration = System.currentTimeMillis() - lastDown;
                 if(TimeUnit.MILLISECONDS.toSeconds(lastDuration) < TIME_BREATHE_GOOD){
