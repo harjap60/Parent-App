@@ -30,9 +30,9 @@ android:layout_height="match_parent">
 
         android:layout_marginStart="8dp"
         android:layout_marginEnd="8dp"
+
         android:autoSizeMaxTextSize="100dp"
         android:autoSizeMinTextSize="24dp"
-
         android:autoSizeStepGranularity="2dp"
         android:autoSizeTextType="uniform"
         android:gravity="center"

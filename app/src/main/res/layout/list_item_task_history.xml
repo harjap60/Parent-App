@@ -27,14 +27,13 @@
         android:layout_height="0dp"
 
         android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
 
         android:layout_marginEnd="8dp"
-        android:layout_marginBottom="8dp"
         android:autoSizeMaxTextSize="100dp"
         android:autoSizeMinTextSize="24dp"
         android:autoSizeStepGranularity="2dp"
         android:autoSizeTextType="uniform"
+        android:gravity="start|center_vertical"
         android:text="@string/default_date_flip_information"
         android:textColor="?colorOnPrimary"
         app:layout_constraintBottom_toTopOf="@id/tv_child_name"
@@ -47,15 +46,12 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
 
-        android:layout_marginTop="8dp"
-
         android:layout_marginEnd="8dp"
-        android:layout_marginBottom="8dp"
         android:autoSizeMaxTextSize="100dp"
         android:autoSizeMinTextSize="24dp"
         android:autoSizeStepGranularity="2dp"
         android:autoSizeTextType="uniform"
-        android:gravity="start"
+        android:gravity="start|center_vertical"
         android:text="@string/default_name_flip_information"
         android:textColor="?colorOnPrimary"
         app:layout_constraintBottom_toBottomOf="@+id/iv_child_image"
