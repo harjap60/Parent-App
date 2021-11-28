@@ -87,7 +87,7 @@ public class TaskHistoryActivity extends AppCompatActivity {
     }
 
     private class TaskHistoryAdaptor extends ArrayAdapter<TaskHistoryWithChild> {
-        private final String DATE_FORMAT = "MMM - dd @ KK:mma";
+        private final String DATE_FORMAT = "yyyy-MM-dd @ KK:mma";
         private final TaskWithHistory taskWithHistory;
 
         public TaskHistoryAdaptor(TaskWithHistory taskWithHistory) {

@@ -69,6 +69,7 @@ public class FlipHistoryActivity extends AppCompatActivity {
 
     private class FlipHistoryAdaptor extends ArrayAdapter<ChildCoinFlip> {
         private final List<ChildCoinFlip> list;
+        private final String DATE_FORMAT = "yyyy-MM-dd @ KK:mma";
 
         public FlipHistoryAdaptor(List<ChildCoinFlip> list) {
             super(FlipHistoryActivity.this,
@@ -88,7 +89,6 @@ public class FlipHistoryActivity extends AppCompatActivity {
                                 false
                         );
             }
-            final String DATE_FORMAT = "MMM - dd @ KK:mma";
 
             CoinFlip coinFlip = list.get(position).coinFlip;
             Child child = list.get(position).child;
