@@ -60,15 +60,10 @@ public class BreatheActivity extends AppCompatActivity {
     }
 
     private void setupBreatheButton(){
-        binding.breatheButton.setOnClickListener(view -> Toast.makeText(
-                BreatheActivity.this,
-                "Nice you did the breathe",
-                Toast.LENGTH_SHORT
-        ).show());
         setupButtonToChangeSize();
     }
 
-    @SuppressLint("ClickableViewAccessibility")
+    @SuppressLint({"ClickableViewAccessibility"})
     private void setupButtonToChangeSize(){
         AnimatorSet scaleUp = new AnimatorSet();
 
@@ -89,7 +84,7 @@ public class BreatheActivity extends AppCompatActivity {
                 new Handler().postDelayed(
                         () -> Toast.makeText(
                                 BreatheActivity.this,
-                                "LET GO OF ME!!!",
+                                getResources().getString(R.string.toast_10s_button_held),
                                 Toast.LENGTH_SHORT)
                                 .show(),
                         MAX_ANIMATION_DURATION);
@@ -104,8 +99,7 @@ public class BreatheActivity extends AppCompatActivity {
                 binding.breatheButton.setBackgroundColor(ContextCompat.getColor(this, R.color.primaryVariant));
                 Toast.makeText(
                         this,
-                        "Held button for: "+
-                                TimeUnit.MILLISECONDS.toSeconds(lastDuration) +"s",
+                        getResources().getString(R.string.button_time_held, TimeUnit.MILLISECONDS.toSeconds(lastDuration)),
                         Toast.LENGTH_SHORT).show();
             }
             return true;
