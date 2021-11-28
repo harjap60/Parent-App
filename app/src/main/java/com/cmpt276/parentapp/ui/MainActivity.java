@@ -6,6 +6,7 @@ import android.app.NotificationManager;
 import android.content.ComponentName;
 import android.content.Intent;
 import android.content.ServiceConnection;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.view.Menu;
@@ -15,6 +16,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 
 import com.cmpt276.parentapp.R;
 import com.cmpt276.parentapp.databinding.ActivityMainBinding;
@@ -53,6 +55,15 @@ public class MainActivity extends AppCompatActivity {
         setupBreatheButton();
         setupNotificationChannel();
         setupTimerNotificationChannel();
+        setupStatusAndNavigationColor();
+    }
+
+    private void setupStatusAndNavigationColor() {
+        if (Build.VERSION.SDK_INT >= 21)
+        {
+            getWindow().setStatusBarColor(ContextCompat.getColor(this,R.color.primary)); //status bar
+            getWindow().setNavigationBarColor(ContextCompat.getColor(this, R.color.primary)); // Navigation bar(bottom)
+        }
     }
 
     private void setupBreatheButton(){
