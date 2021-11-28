@@ -15,7 +15,7 @@ import io.reactivex.rxjava3.core.Single;
 
 /**
  * Database Access Object to manage task objects in the database.
- *
+ * <p>
  * This has all the queries and method required to handle interaction with the database.
  */
 @Dao
@@ -72,4 +72,12 @@ public interface TaskDao {
 
     @Delete
     Completable DeleteRef(ChildTaskCrossRef... crossRef);
+
+    @Insert
+    Completable insertHistory(TaskHistory history);
+
+    @Transaction
+    @Query("SELECT * FROM task WHERE taskId = :taskId")
+    Single<TaskWithHistory> getHistory(long taskId);
+
 }

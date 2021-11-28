@@ -329,7 +329,7 @@ public class FlipActivity extends AppCompatActivity implements AdapterView.OnIte
 
                     @Override
                     public void onSuccess(@NonNull ChildCoinFlip flip) {
-                        Child child = flip.getChild();
+                        Child child = flip.child;
                         ImageView image = findViewById(R.id.previous_child_flip_image);
                         runOnUiThread(() -> {
                             binding.previousChildFlipImage.setVisibility(View.VISIBLE);
@@ -371,7 +371,7 @@ public class FlipActivity extends AppCompatActivity implements AdapterView.OnIte
 
         public MySpinnerListAdapter(List<Child> order) {
             super(FlipActivity.this,
-                    R.layout.child_list_item,
+                    R.layout.list_item_child,
                     order
             );
             this.flipOrder = order;
@@ -389,7 +389,7 @@ public class FlipActivity extends AppCompatActivity implements AdapterView.OnIte
             View itemView = convertView;
             if (itemView == null) {
                 itemView = getLayoutInflater().inflate(
-                        R.layout.child_list_item,
+                        R.layout.list_item_child,
                         parent,
                         false
                 );

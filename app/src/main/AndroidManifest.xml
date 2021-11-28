@@ -27,10 +27,13 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.ParentApp.NoActionBar">
         <activity
+            android:name=".ui.TaskHistoryActivity"
+            android:exported="true"
+            android:parentActivityName=".ui.TaskDetailActivity" />
+        <activity
             android:name=".ui.BreatheActivity"
             android:exported="false"
             android:parentActivityName=".ui.MainActivity" />
-
         <activity
             android:name=".ui.TaskDetailActivity"
             android:exported="false"

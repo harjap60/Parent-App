@@ -1,5 +1,6 @@
 package com.cmpt276.parentapp.ui;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -19,7 +20,10 @@ import com.cmpt276.parentapp.R;
 import com.cmpt276.parentapp.databinding.ActivityTaskDetailBinding;
 import com.cmpt276.parentapp.model.ParentAppDatabase;
 import com.cmpt276.parentapp.model.TaskDao;
+import com.cmpt276.parentapp.model.TaskHistory;
 import com.cmpt276.parentapp.model.TaskWithChild;
+
+import java.time.LocalDateTime;
 
 public class TaskDetailActivity extends AppCompatActivity {
 
@@ -53,9 +57,7 @@ public class TaskDetailActivity extends AppCompatActivity {
     }
 
     private void setupCancelButton() {
-        binding.btnCancel.setOnClickListener(v -> {
-            this.finish();
-        });
+        binding.btnCancel.setOnClickListener(v -> this.finish());
     }
 
     @Override
@@ -71,14 +73,21 @@ public class TaskDetailActivity extends AppCompatActivity {
     }
 
 
+    @SuppressLint("NonConstantResourceId")
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        if (item.getItemId() == R.id.btn_task_edit) {
-            showTaskActivity();
-            return true;
-        } else if (item.getItemId() == R.id.btn_task_delete) {
-            showDeleteTaskDialog();
-            return true;
+
+        int id = item.getItemId();
+        switch (id) {
+            case R.id.btn_task_edit:
+                showTaskActivity();
+                return true;
+            case R.id.btn_task_delete:
+                showDeleteTaskDialog();
+                return true;
+            case R.id.btn_task_history:
+                startActivity(TaskHistoryActivity.getIntent(this, taskId));
+                return true;
         }
 
         return super.onOptionsItemSelected(item);
@@ -99,6 +108,14 @@ public class TaskDetailActivity extends AppCompatActivity {
 
             taskDao.updateOrder(taskId, taskWithChild.child.getChildId(), order).blockingAwait();
             taskDao.decrementOrder(taskId, MIN_ORDER).blockingAwait();
+
+            TaskHistory history = new TaskHistory(
+                    taskWithChild.child.getChildId(),
+                    taskId,
+                    LocalDateTime.now()
+            );
+
+            taskDao.insertHistory(history).blockingAwait();
 
             setupTask();
         }).start());
