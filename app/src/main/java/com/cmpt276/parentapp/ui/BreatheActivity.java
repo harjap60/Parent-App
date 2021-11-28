@@ -33,9 +33,9 @@ import java.util.concurrent.TimeUnit;
  */
 public class BreatheActivity extends AppCompatActivity {
 
-    public static final float BUTTON_SIZE_MAX = 2f;
-    public static final int MAX_ANIMATION_DURATION = 10000;
-    public static final int TIME_BREATHE_GOOD = 3;
+    private final float BUTTON_SIZE_MAX = 2f;
+    private final int MAX_ANIMATION_DURATION = 10000;
+    private final int TIME_BREATHE_GOOD = 3;
     private ActivityBreatheBinding binding;
     private long lastDown;
     private long lastDuration;
@@ -113,8 +113,9 @@ public class BreatheActivity extends AppCompatActivity {
     }
 
     private void resetSize(Button btn){
-        btn.setScaleX(1f);
-        btn.setScaleY(1f);
+        final float BUTTON_DEFAULT_SIZE = 1f;
+        btn.setScaleX(BUTTON_DEFAULT_SIZE);
+        btn.setScaleY(BUTTON_DEFAULT_SIZE);
     }
 
 
