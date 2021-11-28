@@ -101,7 +101,7 @@ public class TaskListActivity extends AppCompatActivity {
 
         public TaskListAdapter(List<TaskWithChild> taskList) {
             super(TaskListActivity.this,
-                    R.layout.task_list_item,
+                    R.layout.list_item_task,
                     taskList);
             this.taskList = taskList;
         }
@@ -111,7 +111,7 @@ public class TaskListActivity extends AppCompatActivity {
             if (itemView == null) {
                 itemView = getLayoutInflater()
                         .inflate(
-                                R.layout.task_list_item,
+                                R.layout.list_item_task,
                                 parent,
                                 false
                         );

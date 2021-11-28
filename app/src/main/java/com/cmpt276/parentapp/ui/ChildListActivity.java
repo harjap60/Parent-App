@@ -106,7 +106,7 @@ public class ChildListActivity extends AppCompatActivity {
 
         public ChildListAdapter(List<Child> children) {
             super(ChildListActivity.this,
-                    R.layout.child_list_item,
+                    R.layout.list_item_child,
                     children
             );
             this.children = children;
@@ -117,7 +117,7 @@ public class ChildListActivity extends AppCompatActivity {
             if (itemView == null) {
                 itemView = getLayoutInflater()
                         .inflate(
-                                R.layout.child_list_item,
+                                R.layout.list_item_child,
                                 parent,
                                 false
                         );
