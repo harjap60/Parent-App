@@ -1,8 +1,5 @@
 package com.cmpt276.parentapp.ui;
 
-import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.annotation.SuppressLint;
@@ -10,15 +7,19 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.MotionEvent;
 import android.widget.Button;
 import android.widget.Toast;
+
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 
 import com.cmpt276.parentapp.R;
 import com.cmpt276.parentapp.databinding.ActivityBreatheBinding;
 
 import java.util.concurrent.TimeUnit;
-import java.util.concurrent.atomic.AtomicLong;
 
 /**
  * Help user to relax and calm down if they feel the need to
@@ -66,29 +67,43 @@ public class BreatheActivity extends AppCompatActivity {
 
     @SuppressLint("ClickableViewAccessibility")
     private void setupButtonToChangeSize(){
+        AnimatorSet scaleUp = new AnimatorSet();
 
         binding.breatheButton.setOnTouchListener((view, motionEvent)->{
             if(motionEvent.getAction() == MotionEvent.ACTION_DOWN){
                 lastDown = System.currentTimeMillis();
                 binding.breatheButton.setBackgroundColor(Color.BLACK);
 
-                ObjectAnimator scaleDownX = ObjectAnimator.ofFloat(binding.breatheButton, "scaleX", 1.5f);
-                ObjectAnimator scaleDownY = ObjectAnimator.ofFloat(binding.breatheButton, "scaleY", 1.5f);                scaleDownX.setDuration(10000);
-                scaleDownX.setDuration(5000);
-                scaleDownY.setDuration(5000);
-
-                AnimatorSet scaleUp = new AnimatorSet();
+                //Animation for button size increase
+                ObjectAnimator scaleDownX = ObjectAnimator.ofFloat(binding.breatheButton, "scaleX", 2f);
+                ObjectAnimator scaleDownY = ObjectAnimator.ofFloat(binding.breatheButton, "scaleY", 2f);
+                scaleDownX.setDuration(10000);
+                scaleDownY.setDuration(10000);
                 scaleUp.play(scaleDownX).with(scaleDownY);
                 scaleUp.start();
-                Toast.makeText(this, "Button timer start", Toast.LENGTH_SHORT).show();
+
+                //Tell user to let go of button after 10s
+                new Handler().postDelayed(
+                        () -> Toast.makeText(
+                                BreatheActivity.this,
+                                "LET GO OF ME!!!",
+                                Toast.LENGTH_SHORT)
+                                .show(),
+                        10000);
 
             } else if(motionEvent.getAction() == MotionEvent.ACTION_UP){
+                scaleUp.end();
                 lastDuration = System.currentTimeMillis() - lastDown;
-                binding.breatheButton.setBackgroundColor(getResources().getColor(R.color.primaryVariant));
-                Toast.makeText(this, "Button Pressed for: "+ TimeUnit.MILLISECONDS.toSeconds(lastDuration) +"s", Toast.LENGTH_SHORT).show();
+                binding.breatheButton.setBackgroundColor(
+                        ContextCompat.getColor(this, R.color.primaryVariant)
+                );
+
+                Toast.makeText(
+                        this,
+                        "Held button for: "+
+                                TimeUnit.MILLISECONDS.toSeconds(lastDuration) +"s",
+                        Toast.LENGTH_SHORT).show();
                 resetSize(binding.breatheButton);
-            }else if((System.currentTimeMillis() - lastDown) == 1000){
-                Toast.makeText(this, "Button held for 1000ms", Toast.LENGTH_SHORT).show();
             }
             return true;
         });
