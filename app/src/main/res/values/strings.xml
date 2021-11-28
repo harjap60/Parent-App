@@ -156,4 +156,8 @@
     <string name="toss_result">Toss Result</string>
     <string name="toast_10s_button_held">LET GO OF ME!!!</string>
     <string name="button_time_held">\Held button for: %1$ds</string>
+    <string name="help">Help</string>
+    <string name="breath">Breath</string>
+    <string name="breath_image">Breath Image</string>
+    <string name="help_image">Help Image</string>
 </resources>
