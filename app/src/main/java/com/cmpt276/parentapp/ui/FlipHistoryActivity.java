@@ -72,7 +72,7 @@ public class FlipHistoryActivity extends AppCompatActivity {
 
         public FlipHistoryAdaptor(List<ChildCoinFlip> list) {
             super(FlipHistoryActivity.this,
-                    R.layout.flip_history_view,
+                    R.layout.list_item_flip_history,
                     list
             );
             this.list = list;
@@ -83,15 +83,15 @@ public class FlipHistoryActivity extends AppCompatActivity {
             if (itemView == null) {
                 itemView = getLayoutInflater()
                         .inflate(
-                                R.layout.flip_history_view,
+                                R.layout.list_item_flip_history,
                                 parent,
                                 false
                         );
             }
             final String DATE_FORMAT = "MMM - dd @ KK:mma";
 
-            CoinFlip coinFlip = list.get(position).getCoinFlip();
-            Child child = list.get(position).getChild();
+            CoinFlip coinFlip = list.get(position).coinFlip;
+            Child child = list.get(position).child;
 
             TextView dateText = itemView.findViewById(R.id.game_date_flip_information_tv);
             dateText.setText(
