@@ -155,4 +155,6 @@
     <string name="breathe">Breathe</string>
     <string name="toast_10s_button_held">LET GO OF ME!!!</string>
     <string name="button_time_held">\Held button for: %1$ds</string>
+
+    <string name="save_button_text">Save</string>
 </resources>
