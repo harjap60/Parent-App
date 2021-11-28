@@ -80,6 +80,7 @@ public class BreatheActivity extends AppCompatActivity {
                 scaleDownX.setDuration(10000);
                 scaleDownY.setDuration(10000);
                 scaleUp.play(scaleDownX).with(scaleDownY);
+                scaleUp.cancel();
                 scaleUp.start();
 
                 //Tell user to let go of button after 10s
@@ -92,18 +93,17 @@ public class BreatheActivity extends AppCompatActivity {
                         10000);
 
             } else if(motionEvent.getAction() == MotionEvent.ACTION_UP){
-                scaleUp.end();
+                scaleUp.pause();
                 lastDuration = System.currentTimeMillis() - lastDown;
-                binding.breatheButton.setBackgroundColor(
-                        ContextCompat.getColor(this, R.color.primaryVariant)
-                );
-
+                if(TimeUnit.MILLISECONDS.toSeconds(lastDuration) < 3){
+                    resetSize(binding.breatheButton);
+                }
+                binding.breatheButton.setBackgroundColor(ContextCompat.getColor(this, R.color.primaryVariant));
                 Toast.makeText(
                         this,
                         "Held button for: "+
                                 TimeUnit.MILLISECONDS.toSeconds(lastDuration) +"s",
                         Toast.LENGTH_SHORT).show();
-                resetSize(binding.breatheButton);
             }
             return true;
         });
