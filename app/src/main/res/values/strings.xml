@@ -4,9 +4,6 @@
 
     <!-- Strings used for CHILD LIST ACTIVITY -->
     <string name="child_list_activity_toolbar_label">Child List</string>
-
-    <string name="hello_first_fragment">Hello first fragment</string>
-    <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
     <string name="timer_activity_end_message">Done</string>
 
     <string name="dialog_duration_title">Select Duration</string>
@@ -83,8 +80,8 @@
 
     <!-- Strings used for FLIP ACTIVITY -->
     <string name="print_child_name_current_previous_flip">Current Child: %1$s \nPrevious Child: %2$s</string>
-    <string name="previous_child_tv_string">Previous child:</string>
-    <string name="current_child_tv_string">Current child: </string>
+    <string name="previous_child_tv_string">Previous:</string>
+    <string name="current_child_tv_string">Current: </string>
     <string name="which_side_do_you_think_it_will_land_on">Which side do you think it will land on?</string>
     <string name="image_of_coin_flip_to_start_animation">Image of coin flip to start animation</string>
     <string name="flip_activity_toolbar_label">Coin Flip</string>
@@ -130,7 +127,7 @@
     <string name="cancel">Cancel</string>
     <string name="confirm_turn">Confirm Turn</string>
     <string name="task_name">Task Name</string>
-    <string name="current_child">Current Child:</string>
+    <string name="current_child">Current:</string>
     <string name="resources_used">Resources Used</string>
     <string name="team_helium">Team Helium</string>
     <string name="resource_links1">Menu Timer: https://icons8.com/icon/8YCHhvwCdMI0/clock\nMenu Tasks: https://icons8.com/icon/0Y3lDsW7gKTm/tasks\nMenu add/delete: https://icons8.com/icon/iJRdexk2R7eH/add\nMenu Coin: https://icons8.com/icon/SohcD1NaJrgg/us-dollar\nCoin heads: https://www.subpng.com/png-l21sit/\nCoin sound: https://bit.ly/3CGyNIT\nCoin tails: https://bit.ly/3kXESeg\nFlip Coin: https://bit.ly/3CCAGGI</string>
