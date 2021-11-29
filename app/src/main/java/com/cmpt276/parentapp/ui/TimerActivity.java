@@ -8,7 +8,10 @@ import android.content.IntentFilter;
 import android.content.ServiceConnection;
 import android.os.Bundle;
 import android.os.IBinder;
+import android.view.Menu;
 import android.view.View;
+
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -93,6 +96,12 @@ public class TimerActivity extends AppCompatActivity {
             ab.setTitle(R.string.timer_activity_toolbar_label);
             ab.setDisplayHomeAsUpEnabled(true);
         }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(@NonNull Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_timer, menu);
+        return true;
     }
 
     @Override
