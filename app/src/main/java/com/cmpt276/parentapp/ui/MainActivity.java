@@ -59,11 +59,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void setupStatusAndNavigationColor() {
-        if (Build.VERSION.SDK_INT >= 21)
-        {
-            getWindow().setStatusBarColor(ContextCompat.getColor(this,R.color.primary)); //status bar
-            getWindow().setNavigationBarColor(ContextCompat.getColor(this, R.color.primary)); // Navigation bar(bottom)
-        }
+        getWindow().setStatusBarColor(ContextCompat.getColor(this,R.color.primary)); //status bar
+        getWindow().setNavigationBarColor(ContextCompat.getColor(this, R.color.primary)); // Navigation bar(bottom)
     }
 
     private void setupBreatheButton(){
