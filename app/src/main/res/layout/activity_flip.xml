@@ -25,8 +25,114 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:titleTextColor="?colorOnPrimary" />
-
     </com.google.android.material.appbar.AppBarLayout>
+
+    <TextView
+        android:id="@+id/lbl_current"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+
+        android:autoSizeMaxTextSize="100dp"
+        android:autoSizeMinTextSize="10dp"
+        android:autoSizeStepGranularity="1dp"
+        android:autoSizeTextType="uniform"
+        android:elegantTextHeight="true"
+        android:freezesText="false"
+        android:gravity="center_vertical|end"
+        android:text="@string/current_child_tv_string"
+        android:textColor="?colorOnPrimary"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/lbl_previous"
+        app:layout_constraintEnd_toStartOf="@+id/coin_image_view"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/appBarLayout"
+        app:layout_constraintWidth_percent="0.2" />
+
+    <Spinner
+        android:id="@+id/sp_current_child"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginEnd="8dp"
+        android:background="?colorPrimary"
+        android:dropDownWidth="wrap_content"
+        android:dropDownSelector="@drawable/drop_down_arrow"
+        android:popupBackground="?colorPrimaryVariant"
+        app:layout_constraintBottom_toBottomOf="@+id/lbl_current"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/lbl_current"
+        app:layout_constraintTop_toTopOf="@+id/lbl_current" />
+
+    <TextView
+        android:id="@+id/lbl_previous"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+
+        android:autoSizeMaxTextSize="100dp"
+        android:autoSizeMinTextSize="10dp"
+        android:autoSizeStepGranularity="1dp"
+        android:autoSizeTextType="uniform"
+
+        android:elegantTextHeight="true"
+        android:freezesText="false"
+        android:gravity="center_vertical|end"
+        android:text="@string/previous_child_tv_string"
+        android:textAllCaps="false"
+        android:textColor="?colorOnPrimary"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/coin_image_top_guideline"
+        app:layout_constraintEnd_toEndOf="@+id/lbl_current"
+        app:layout_constraintStart_toStartOf="@+id/lbl_current"
+        app:layout_constraintTop_toBottomOf="@+id/lbl_current" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraintLayout"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="1dp"
+        app:layout_constraintBottom_toTopOf="@+id/coin_image_top_guideline"
+        app:layout_constraintEnd_toEndOf="@+id/sp_current_child"
+        app:layout_constraintStart_toStartOf="@+id/sp_current_child"
+        app:layout_constraintTop_toTopOf="@+id/lbl_previous">
+
+        <ImageView
+            android:id="@+id/iv_prev_child"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:contentDescription="@string/previous_child_image"
+            android:foregroundGravity="left"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintDimensionRatio="1:1"
+            app:layout_constraintEnd_toStartOf="@+id/guide_prev_child"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/child_image_icon" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guide_prev_child"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:orientation="vertical"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintGuide_begin="160dp"
+            app:layout_constraintGuide_percent=".25" />
+
+        <TextView
+            android:id="@+id/tv_prev_child"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:autoSizeMaxTextSize="100dp"
+            android:autoSizeMinTextSize="12dp"
+            android:autoSizeStepGranularity="2dp"
+            android:autoSizeTextType="uniform"
+            android:gravity="center"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/guide_prev_child"
+            app:layout_constraintTop_toTopOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <ImageView
         android:id="@+id/coin_image_view"
@@ -48,28 +154,29 @@
         android:id="@+id/tell_user_choose_heads_tails"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginTop="8dp"
 
+        android:layout_marginTop="8dp"
         android:autoSizeMaxTextSize="100dp"
         android:autoSizeMinTextSize="12dp"
         android:autoSizeStepGranularity="2dp"
+
         android:autoSizeTextType="uniform"
         android:gravity="center"
-
         android:text="@string/which_side_do_you_think_it_will_land_on"
         android:textColor="?colorOnPrimary"
         app:layout_constraintBottom_toTopOf="@+id/tell_user_choose_heads_tails_bottom_guideline"
-        app:layout_constraintEnd_toStartOf="@id/tell_user_choose_heads_tails_end_guideline"
-        app:layout_constraintStart_toEndOf="@id/tell_user_choose_heads_tails_start_guideline"
+        app:layout_constraintEnd_toEndOf="@+id/user_choice_tails_button"
+        app:layout_constraintStart_toStartOf="@+id/user_choice_heads_button"
         app:layout_constraintTop_toBottomOf="@+id/coin_image_bottom_guideline" />
 
     <Button
         android:id="@+id/user_choice_heads_button"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginStart="-5dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="8dp"
         android:autoSizeMaxTextSize="100dp"
-        android:autoSizeMinTextSize="1dp"
+        android:autoSizeMinTextSize="12dp"
         android:autoSizeStepGranularity="1dp"
         android:autoSizeTextType="uniform"
         android:backgroundTint="?colorPrimaryVariant"
@@ -78,8 +185,8 @@
         android:text="@string/heads"
         android:textColor="?colorOnPrimary"
         app:layout_constraintBottom_toTopOf="@+id/coin_flip_button_top_guideline"
-        app:layout_constraintEnd_toStartOf="@id/screen_center_guideline"
-        app:layout_constraintStart_toStartOf="@+id/tell_user_choose_heads_tails_start_guideline"
+        app:layout_constraintEnd_toStartOf="@+id/user_choice_tails_button"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tell_user_choose_heads_tails_bottom_guideline" />
 
     <Button
@@ -87,7 +194,7 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginStart="8dp"
-        android:layout_marginEnd="8dp"
+        android:layout_marginEnd="16dp"
         android:autoSizeMaxTextSize="100sp"
         android:autoSizeMinTextSize="12sp"
         android:autoSizeStepGranularity="2sp"
@@ -98,9 +205,16 @@
         android:text="@string/tails"
         android:textColor="?colorOnPrimary"
         app:layout_constraintBottom_toBottomOf="@+id/user_choice_heads_button"
-        app:layout_constraintEnd_toStartOf="@+id/tell_user_choose_heads_tails_end_guideline"
-        app:layout_constraintStart_toEndOf="@id/screen_center_guideline"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/user_choice_heads_button"
         app:layout_constraintTop_toTopOf="@+id/user_choice_heads_button" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/tell_user_choose_heads_tails_bottom_guideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.57" />
 
     <ImageButton
         android:id="@+id/flip_coin_image_button"
@@ -122,9 +236,8 @@
         android:id="@+id/flip_history_button"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginStart="70dp"
-        android:layout_marginTop="12dp"
-        android:layout_marginEnd="70dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
         android:autoSizeMaxTextSize="100sp"
         android:autoSizeMinTextSize="12sp"
         android:autoSizeStepGranularity="2sp"
@@ -134,8 +247,8 @@
         android:text="@string/history_of_flips"
         android:textColor="?colorOnPrimary"
         app:layout_constraintBottom_toTopOf="@id/flip_history_button_bottom_guideline"
-        app:layout_constraintEnd_toStartOf="@id/tell_user_choose_heads_tails_end_guideline"
-        app:layout_constraintStart_toEndOf="@+id/tell_user_choose_heads_tails_start_guideline"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/coin_flip_button_bottom_guideline" />
 
     <TextView
@@ -163,7 +276,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.22" />
+        app:layout_constraintGuide_percent="0.21" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/coin_image_bottom_guideline"
@@ -187,143 +300,12 @@
         app:layout_constraintGuide_percent="0.8578372" />
 
     <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/screen_center_guideline"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.5" />
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/tell_user_choose_heads_tails_start_guideline"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.07" />
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/tell_user_choose_heads_tails_end_guideline"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.93" />
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/tell_user_choose_heads_tails_bottom_guideline"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.57" />
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/current_child_tv_top_guideline"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.08" />
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/current_child_tv_bottom_guideline"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.2" />
-
-    <androidx.constraintlayout.widget.Guideline
         android:id="@+id/flip_history_button_bottom_guideline"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         app:layout_constraintGuide_percent="0.96" />
 
-    <LinearLayout
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginTop="12dp"
-        android:orientation="vertical"
-        android:weightSum="2"
-        app:layout_constraintBottom_toBottomOf="@id/current_child_tv_bottom_guideline"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/current_child_tv_top_guideline">
-
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:orientation="horizontal"
-            android:weightSum="1">
-
-            <TextView
-                android:id="@+id/current_child_tv"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="0.6"
-                android:autoSizeMaxTextSize="100dp"
-                android:autoSizeMinTextSize="12dp"
-                android:autoSizeStepGranularity="2dp"
-                android:autoSizeTextType="uniform"
-                android:paddingStart="70dp"
-                app:layout_constraintStart_toEndOf="@+id/tell_user_choose_heads_tails_start_guideline"
-
-                android:text="@string/current_child"
-                android:textColor="?colorOnPrimary"
-                tools:ignore="NestedWeights,RtlSymmetry" />
-
-            <Spinner
-                android:id="@+id/choose_child_flip_spinner"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="0.4"
-                android:background="?colorPrimary"
-                android:dropDownSelector="@drawable/drop_down_arrow"
-                android:popupBackground="?colorPrimaryVariant" />
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:orientation="horizontal">
-
-            <TextView
-                android:id="@+id/previous_child_tv"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="0.535"
-
-                android:autoSizeMaxTextSize="100dp"
-                android:autoSizeMinTextSize="16dp"
-                android:autoSizeStepGranularity="2dp"
-                android:autoSizeTextType="uniform"
-                android:paddingStart="70dp"
-
-                android:text="@string/previous_child_tv_string"
-                android:textColor="?colorOnPrimary"
-                tools:ignore="NestedWeights" />
-
-            <ImageView
-                android:id="@+id/previous_child_flip_image"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="0.2325"
-                android:contentDescription="@string/previous_child_image"
-                android:foregroundGravity="left"
-                app:srcCompat="@drawable/child_image_icon" />
-
-            <TextView
-                android:id="@+id/prev_child_name"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="0.2325"
-                android:autoSizeMaxTextSize="100dp"
-                android:autoSizeMinTextSize="12dp"
-                android:autoSizeStepGranularity="2dp"
-                android:autoSizeTextType="uniform"
-                android:text="@string/prev_child" />
-        </LinearLayout>
-    </LinearLayout>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

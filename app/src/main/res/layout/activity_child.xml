@@ -36,12 +36,14 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginTop="20dp"
-        android:contentDescription="@string/child_image_description"
+        android:adjustViewBounds="true"
 
+        android:contentDescription="@string/child_image_description"
         android:scaleType="centerCrop"
+        app:layout_constraintBottom_toTopOf="@+id/guideline_image_bottom"
+
         app:layout_constraintDimensionRatio="1:1"
         app:layout_constraintEnd_toEndOf="@+id/guideline_end_image_view_child_image"
-
         app:layout_constraintStart_toStartOf="@+id/guideline_start_image_view_child_image"
         app:layout_constraintTop_toBottomOf="@+id/appBarLayout"
         app:srcCompat="@drawable/child_image_icon" />
@@ -62,6 +64,18 @@
     <!-- ========================== -->
 
     <!-- EDIT IMAGE FAB AND GUIDELINES -->
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline_image_bottom"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintGuide_end="365dp"
+        app:layout_constraintGuide_percent=".60"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fab_edit_child_image"
         android:layout_width="wrap_content"
@@ -108,14 +122,12 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
 
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"
         android:layout_marginBottom="32dp"
         android:backgroundTint="?colorPrimaryVariant"
         android:gravity="center"
-        android:text="@string/add_child_button_text"
+        android:text="@string/save_button_text"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@+id/image_view_child_image"
+        app:layout_constraintEnd_toStartOf="@+id/guideline_end_image_view_child_image"
         app:layout_constraintStart_toStartOf="@+id/guideline_start_image_view_child_image" />
 
     <!-- =============================== -->
