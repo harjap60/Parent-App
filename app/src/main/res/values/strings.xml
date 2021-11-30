@@ -157,4 +157,10 @@
     <string name="toast_10s_button_held">LET GO OF ME!!!</string>
     <string name="button_time_held">\Held button for: %1$ds</string>
     <string name="text_view_breaths_taken_count">Breaths Taken: %1$d</string>
+
+    <string name="breathe_in_button_text">Breathe IN</string>
+    <string name="breathe_out_button_text">Breathe OUT</string>
+    <string name="all_breaths_taken">Good Job</string>
+    <string name="breathe_value_null">Please enter a number.</string>
+    <string name="breaths_entered_invalid">Number of breaths must be between %1$d and %2$d</string>
 </resources>

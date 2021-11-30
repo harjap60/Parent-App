@@ -24,19 +24,21 @@ import java.util.concurrent.TimeUnit;
 
 /**
  * Help user to relax and calm down if they feel the need to
- *
+ * <p>
  * Current state:
- *          Just has a textview and button
- *
- *TODO:
- *      Make button increase size the longer it is held
- *      When released reset to normal size
+ * Just has a textview and button
+ * <p>
+ * TODO:
+ * Make button increase size the longer it is held
+ * When released reset to normal size
  */
 public class BreatheActivity extends AppCompatActivity {
 
     private final float BUTTON_SIZE_MAX = 2f;
     private final int MAX_ANIMATION_DURATION = 10000;
     private final int TIME_BREATHE_GOOD = 3;
+    private final int MIN_NUM_BREATHS = 0;
+    private final int MAX_NUM_BREATHS = 10;
     private ActivityBreatheBinding binding;
     private long lastDown;
     private long lastDuration;
@@ -64,29 +66,47 @@ public class BreatheActivity extends AppCompatActivity {
         }
     }
 
-    private void setupBeginButton(){
+    private void setupBeginButton() {
         binding.noOfBreaths.setEnabled(true);
         binding.beginButton.setVisibility(View.VISIBLE);
         binding.breatheButton.setVisibility(View.INVISIBLE);
         binding.textViewTotalBreathsTaken.setVisibility(View.INVISIBLE);
-        binding.beginButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                // need to add a check that will make sure that the user has selected
-                // a specific no of breaths and only then do the following things
-                // might not need to add the check if we are using a spinner instead of edit text
-                // and in that case, we can select a default value of the spinner and we do not
-                // need to add the check
-                binding.noOfBreaths.setEnabled(false);
+        binding.beginButton.setOnClickListener(view -> {
+            // get the number of breaths
+            if (binding.noOfBreaths.getText().toString().equals("")) {
+                Toast.makeText(BreatheActivity.this,
+                        getString(R.string.breathe_value_null),
+                        Toast.LENGTH_SHORT).show();
+            } else {
 
-                // get the number of breaths
-                numBreaths = Integer.parseInt(String.valueOf(binding.noOfBreaths.getText()));
+                numBreaths = Integer.parseInt(binding.noOfBreaths.getText().toString());
 
-                binding.beginButton.setVisibility(View.INVISIBLE);
-                binding.textViewTotalBreathsTaken.setVisibility(View.VISIBLE);
-                binding.textViewTotalBreathsTaken.setText(getString(R.string.text_view_breaths_taken_count, breathsTaken));
-                binding.breatheButton.setVisibility(View.VISIBLE);
-                binding.breatheButton.setText("Breathe IN");
+                //Check if number enter is valid
+                if (numBreaths > MIN_NUM_BREATHS && numBreaths <= MAX_NUM_BREATHS) {
+
+                    // need to add a check that will make sure that the user has selected
+                    // a specific no of breaths and only then do the following things
+                    // might not need to add the check if we are using a spinner instead of edit text
+                    // and in that case, we can select a default value of the spinner and we do not
+                    // need to add the check
+                    binding.noOfBreaths.setEnabled(false);
+
+
+                    binding.beginButton.setVisibility(View.INVISIBLE);
+                    binding.textViewTotalBreathsTaken.setVisibility(View.VISIBLE);
+                    binding.textViewTotalBreathsTaken.setText(getString(R.string.text_view_breaths_taken_count, breathsTaken));
+                    binding.breatheButton.setVisibility(View.VISIBLE);
+                    binding.breatheButton.setText(R.string.breathe_in_button_text);
+                } else {
+                    Toast.makeText(
+                            BreatheActivity.this,
+                            getString(
+                                    R.string.breaths_entered_invalid,
+                                    MIN_NUM_BREATHS,
+                                    MAX_NUM_BREATHS
+                            ),
+                            Toast.LENGTH_SHORT).show();
+                }
             }
         });
     }
@@ -112,12 +132,12 @@ public class BreatheActivity extends AppCompatActivity {
         return false;
     }*/
 
-    private void updateBreathCountTextView () {
+    private void updateBreathCountTextView() {
         binding.textViewTotalBreathsTaken.setText(getString(R.string.text_view_breaths_taken_count, breathsTaken));
     }
 
     @SuppressLint({"ClickableViewAccessibility"})
-    private void setupBreatheButtonToChangeSize(){
+    private void setupBreatheButtonToChangeSize() {
 
         AnimatorSet scaleUp = new AnimatorSet();
         Handler handler = new Handler();
@@ -126,7 +146,7 @@ public class BreatheActivity extends AppCompatActivity {
 
             if (breathsTaken < numBreaths) {
 
-                binding.breatheButton.setText("Breathe IN");
+                binding.breatheButton.setText(R.string.breathe_in_button_text);
                 if (motionEvent.getAction() == MotionEvent.ACTION_DOWN) {
                     lastDown = System.currentTimeMillis();
                     binding.breatheButton.setBackgroundColor(Color.BLACK);
@@ -154,23 +174,19 @@ public class BreatheActivity extends AppCompatActivity {
                     lastDuration = System.currentTimeMillis() - lastDown;
 
                     if (TimeUnit.MILLISECONDS.toSeconds(lastDuration) >= TIME_BREATHE_GOOD) {
-                        binding.breatheButton.setText("Breathe OUT");
+                        binding.breatheButton.setText(R.string.breathe_out_button_text);
 
                         breathsTaken++;
                         updateBreathCountTextView();
 
-                        handler.postDelayed(new Runnable() {
-                            @Override
-                            public void run() {
-                                // also 'might' want to disable the onTouchListener on the button for
-                                // the next 3 seconds while the user exhales out
+                        handler.postDelayed(() -> {
+                            // also 'might' want to disable the onTouchListener on the button for
+                            // the next 3 seconds while the user exhales out
 
-                                if (breathsTaken == numBreaths) {
-                                    binding.breatheButton.setText("Good Job");
-                                }
-                                else {
-                                    binding.breatheButton.setText("Breathe IN");
-                                }
+                            if (breathsTaken == numBreaths) {
+                                binding.breatheButton.setText(R.string.all_breaths_taken);
+                            } else {
+                                binding.breatheButton.setText(R.string.breathe_in_button_text);
                             }
                         }, 3000);
                     }
@@ -186,11 +202,12 @@ public class BreatheActivity extends AppCompatActivity {
                             Toast.LENGTH_SHORT).show();
                 }
 
-            }return true;
+            }
+            return true;
         });
     }
 
-    private void resetSize(Button btn){
+    private void resetSize(Button btn) {
         final float BUTTON_DEFAULT_SIZE = 1f;
         btn.setScaleX(BUTTON_DEFAULT_SIZE);
         btn.setScaleY(BUTTON_DEFAULT_SIZE);
