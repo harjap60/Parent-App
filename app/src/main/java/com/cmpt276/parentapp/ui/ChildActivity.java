@@ -232,6 +232,7 @@ public class ChildActivity extends AppCompatActivity {
     private void updateUI() {
         int deviceWidth = getResources().getDisplayMetrics().widthPixels;
         binding.txtName.setTextSize((deviceWidth / 25f));
+        binding.btnSave.setTextSize((deviceWidth / 25f));
 
         if (imagePath != null) {
             Glide.with(this)
@@ -243,7 +244,6 @@ public class ChildActivity extends AppCompatActivity {
 
         if (child != null) {
             binding.txtName.setText(child.getName());
-            binding.btnSave.setText(R.string.edit_child_button_text);
         }
     }
 

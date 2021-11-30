@@ -63,7 +63,7 @@ public class TaskActivity extends AppCompatActivity {
 
         setupDB();
         setupTask(id);
-        setUpToolbar(id);
+        setuptoolbar(id);
         enableUpOnToolbar();
     }
 
@@ -131,7 +131,7 @@ public class TaskActivity extends AppCompatActivity {
                 });
     }
 
-    private void setUpToolbar(int id) {
+    private void setuptoolbar(int id) {
         binding.toolbar.setTitle(
                 getString(id == NEW_TASK_INDEX ?
                         R.string.add_task_title :

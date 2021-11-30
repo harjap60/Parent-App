@@ -107,16 +107,16 @@ public class FlipActivity extends AppCompatActivity implements AdapterView.OnIte
         if (item.getItemId() == R.id.no_child_button) {
             setupButtonsNoChild();
             currentChild = null;
-            binding.chooseChildFlipSpinner.setVisibility(View.INVISIBLE);
-            binding.prevChildName.setText("");
-            binding.previousChildFlipImage.setVisibility(View.INVISIBLE);
+            binding.spCurrentChild.setVisibility(View.INVISIBLE);
+            binding.tvPrevChild.setText("");
+            binding.ivPrevChild.setVisibility(View.INVISIBLE);
             return true;
         }
         return false;
     }
 
     private void setupChildChoiceSpinner() {
-        binding.chooseChildFlipSpinner.setVisibility(View.VISIBLE);
+        binding.spCurrentChild.setVisibility(View.VISIBLE);
 
         new Thread(() -> {
 
@@ -128,15 +128,15 @@ public class FlipActivity extends AppCompatActivity implements AdapterView.OnIte
             }
 
             ArrayAdapter<Child> myAdapter = new MySpinnerListAdapter(coinFlipOrderList);
-            runOnUiThread(() -> binding.chooseChildFlipSpinner.setAdapter(myAdapter));
+            runOnUiThread(() -> binding.spCurrentChild.setAdapter(myAdapter));
         }).start();
-        binding.chooseChildFlipSpinner.setOnItemSelectedListener(this);
+        binding.spCurrentChild.setOnItemSelectedListener(this);
 
     }
 
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-        if (parent.getId() == R.id.choose_child_flip_spinner) {
+        if (parent.getId() == R.id.sp_current_child) {
             int currentChildIndex = parent.getSelectedItemPosition();
             currentChild = (Child) parent.getItemAtPosition(currentChildIndex);
         }
@@ -329,10 +329,10 @@ public class FlipActivity extends AppCompatActivity implements AdapterView.OnIte
 
                     @Override
                     public void onSuccess(@NonNull ChildCoinFlip flip) {
-                        Child child = flip.getChild();
-                        ImageView image = findViewById(R.id.previous_child_flip_image);
+                        Child child = flip.child;
+                        ImageView image = findViewById(R.id.iv_prev_child);
                         runOnUiThread(() -> {
-                            binding.previousChildFlipImage.setVisibility(View.VISIBLE);
+                            binding.ivPrevChild.setVisibility(View.VISIBLE);
                             if (child.getImagePath() != null) {
                                 Glide.with(FlipActivity.this)
                                         .load(child.getImagePath())
@@ -342,15 +342,15 @@ public class FlipActivity extends AppCompatActivity implements AdapterView.OnIte
                             }else{
                                 image.setImageResource(R.drawable.child_image_icon);
                             }
-                            binding.prevChildName.setText(child.getName());
+                            binding.tvPrevChild.setText(child.getName());
                         });
                     }
 
                     @Override
                     public void onError(@NonNull Throwable e) {
                         if (e.getClass() == EmptyResultSetException.class) {
-                            binding.prevChildName.setText("");
-                            binding.previousChildFlipImage.setVisibility(View.INVISIBLE);
+                            binding.tvPrevChild.setText("");
+                            binding.ivPrevChild.setVisibility(View.INVISIBLE);
                         }
                     }
                 });
@@ -371,7 +371,7 @@ public class FlipActivity extends AppCompatActivity implements AdapterView.OnIte
 
         public MySpinnerListAdapter(List<Child> order) {
             super(FlipActivity.this,
-                    R.layout.child_list_item,
+                    R.layout.list_item_child,
                     order
             );
             this.flipOrder = order;
@@ -389,7 +389,7 @@ public class FlipActivity extends AppCompatActivity implements AdapterView.OnIte
             View itemView = convertView;
             if (itemView == null) {
                 itemView = getLayoutInflater().inflate(
-                        R.layout.child_list_item,
+                        R.layout.spinner_item_child,
                         parent,
                         false
                 );
