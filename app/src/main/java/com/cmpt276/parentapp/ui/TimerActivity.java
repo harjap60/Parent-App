@@ -9,7 +9,9 @@ import android.content.ServiceConnection;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
@@ -102,6 +104,35 @@ public class TimerActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(@NonNull Menu menu) {
         getMenuInflater().inflate(R.menu.menu_timer, menu);
         return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        switch (id) {
+            case R.id.submenu1:
+                Toast.makeText(this, "Selected 1",
+                        Toast.LENGTH_SHORT).show();
+                return true;
+
+            case R.id.submenu2:
+                Toast.makeText(this, "Selected 2",
+                        Toast.LENGTH_SHORT).show();
+                return true;
+
+            case R.id.submenu3:
+                Toast.makeText(this, "Selected 3",
+                        Toast.LENGTH_SHORT).show();
+                return true;
+
+            case R.id.submenu4:
+                Toast.makeText(this, "Selected 4",
+                        Toast.LENGTH_SHORT).show();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+
     }
 
     @Override

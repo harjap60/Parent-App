@@ -4,7 +4,21 @@
     tools:context="com.cmpt276.parentapp.ui.TimerActivity">
     <item
         android:id="@+id/action_settings"
-        android:orderInCategory="100"
         android:title="@string/action_settings"
-        app:showAsAction="ifRoom" />
+        app:showAsAction="never"/>
+    <item
+        android:id="@+id/submenu1"
+        app:showAsAction="never"
+        android:title="sub_menu1" />
+    <item
+        android:id="@+id/submenu2"
+        android:title="sub_menu2" />
+    <item
+        android:id="@+id/submenu3"
+        app:showAsAction="never"
+        android:title="sub_menu3" />
+    <item
+        android:id="@+id/submenu4"
+        app:showAsAction="never"
+        android:title="sub_menu4" />
 </menu>
