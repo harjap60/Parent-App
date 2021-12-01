@@ -31,6 +31,7 @@ import java.util.concurrent.TimeUnit;
 public class BreatheActivity extends AppCompatActivity {
 
     private final float BUTTON_SIZE_MAX = 2f;
+    private final float BUTTON_DEFAULT_SIZE = 1f;
     private final int MAX_ANIMATION_DURATION = 10000;
     private final int TIME_BREATHE_GOOD = 3;
     private final int MIN_NUM_BREATHS = 0;
@@ -90,7 +91,7 @@ public class BreatheActivity extends AppCompatActivity {
 
                     binding.beginButton.setVisibility(View.INVISIBLE);
                     binding.textViewTotalBreathsTaken.setVisibility(View.VISIBLE);
-                    binding.textViewTotalBreathsTaken.setText(getString(R.string.text_view_breaths_taken_count, breathsTaken));
+                    binding.textViewTotalBreathsTaken.setText(getString(R.string.text_view_breaths_taken_count, breathsTaken, numBreaths));
                     binding.breatheButton.setVisibility(View.VISIBLE);
                     binding.breatheButton.setText(R.string.breathe_in_button_text);
                 } else {
@@ -107,29 +108,8 @@ public class BreatheActivity extends AppCompatActivity {
         });
     }
 
-    /*private void takeBreaths() {
-
-        //Toast.makeText(this, "Reached here", Toast.LENGTH_SHORT).show();
-        while (breathsTaken < numBreaths) {
-
-            if (breathTaken()) {
-                // make a toast that shows the number of breaths taken
-                //setupButtonToChangeSize();
-                breathsTaken++;
-            }
-        }
-    }
-
-    private boolean breathTaken() {
-        // if button is held for more than 3 seconds, then return true
-        // otherwise return false
-
-        setupButtonToChangeSize();
-        return false;
-    }*/
-
     private void updateBreathCountTextView() {
-        binding.textViewTotalBreathsTaken.setText(getString(R.string.text_view_breaths_taken_count, breathsTaken));
+        binding.textViewTotalBreathsTaken.setText(getString(R.string.text_view_breaths_taken_count, breathsTaken, numBreaths));
     }
 
     @SuppressLint({"ClickableViewAccessibility"})
@@ -164,11 +144,11 @@ public class BreatheActivity extends AppCompatActivity {
                                     .show(),
                             MAX_ANIMATION_DURATION);
 
-                } else if (motionEvent.getAction() == MotionEvent.ACTION_UP) {
+                }
+                else if (motionEvent.getAction() == MotionEvent.ACTION_UP) {
 
                     handler.removeCallbacksAndMessages(null);
                     scaleUp.cancel();
-
 
                     timeButtonHeldFor = System.currentTimeMillis() - buttonPressedTimerStart;
 
@@ -179,32 +159,15 @@ public class BreatheActivity extends AppCompatActivity {
                         breathsTaken++;
                         updateBreathCountTextView();
 
-                        //Set button text
-                        if (breathsTaken == numBreaths) {
-                            binding.breatheButton.setText(R.string.all_breaths_taken);
-                        } else {
-                            binding.breatheButton.setText(R.string.breathe_in_button_text);
-                        }
-
                         buttonExhale(binding.breatheButton.getScaleX(), binding.breatheButton.getScaleY());
-
-
-                        /*** Not sure what this is for thats why i commented it out ***/
-//                        handler.postDelayed(() -> {
-//                            // also 'might' want to disable the onTouchListener on the button for
-//                            // the next 3 seconds while the user exhales out
-//
-//                            if (breathsTaken == numBreaths) {
-//                                binding.breatheButton.setText(R.string.all_breaths_taken);
-//                            } else {
-//                                binding.breatheButton.setText(R.string.breathe_in_button_text);
-//                            }
-//                        }, 3000);
-
-
-                    } else {
+                    }
+                    // Button released before 3 seconds ,
+                    // i.e., the breathe is incomplete and need to breathe again
+                    else {
                         resetSize(binding.breatheButton);
                     }
+
+                    // not sure if we need the following toast
                     Toast.makeText(
                             this,
                             getResources().getString(R.string.button_time_held, TimeUnit.MILLISECONDS.toSeconds(timeButtonHeldFor)),
@@ -218,28 +181,44 @@ public class BreatheActivity extends AppCompatActivity {
 
     @SuppressLint("ClickableViewAccessibility")
     private void buttonExhale(float buttonX, float buttonY) {
+
+        // basically we want to show the exhale animation for 10 seconds (at least 3 seconds)
         AnimatorSet scaleDown = new AnimatorSet();
+        Handler handler = new Handler();
 
         binding.breatheButton.setScaleX(buttonX);
         binding.breatheButton.setScaleY(buttonY);
         binding.breatheButton.setBackgroundColor(Color.RED);
 
         //Animation for button size increase
-        ObjectAnimator scaleDownX = ObjectAnimator.ofFloat(binding.breatheButton, "scaleX", 1f);
-        ObjectAnimator scaleDownY = ObjectAnimator.ofFloat(binding.breatheButton, "scaleY", 1f);
+        ObjectAnimator scaleDownX = ObjectAnimator.ofFloat(binding.breatheButton, "scaleX", BUTTON_DEFAULT_SIZE);
+        ObjectAnimator scaleDownY = ObjectAnimator.ofFloat(binding.breatheButton, "scaleY", BUTTON_DEFAULT_SIZE);
         scaleDownX.setDuration(MAX_ANIMATION_DURATION);
         scaleDownY.setDuration(MAX_ANIMATION_DURATION);
         scaleDown.play(scaleDownX).with(scaleDownY);
         scaleDown.start();
 
+        // todo: should we disable touchListener/ button for the
+        //  3 seconds while the user is breathing out
+
+        // changes the text of the button after 3 seconds of exhaling out
+        handler.postDelayed(() -> {
+            // also 'might' want to disable the onTouchListener on the button for
+            // the next 3 seconds while the user exhales out
+
+            if (breathsTaken == numBreaths) {
+                binding.breatheButton.setText(R.string.all_breaths_taken);
+            } else {
+                binding.breatheButton.setText(R.string.breathe_in_button_text);
+            }
+        }, 3000);
+
     }
 
     private void resetSize(Button btn) {
-        final float BUTTON_DEFAULT_SIZE = 1f;
         btn.setScaleX(BUTTON_DEFAULT_SIZE);
         btn.setScaleY(BUTTON_DEFAULT_SIZE);
     }
-
 
     public static Intent getIntent(Context context) {
         return new Intent(context, BreatheActivity.class);
