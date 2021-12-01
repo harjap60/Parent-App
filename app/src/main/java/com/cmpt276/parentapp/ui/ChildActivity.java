@@ -244,7 +244,6 @@ public class ChildActivity extends AppCompatActivity {
 
         if (child != null) {
             binding.txtName.setText(child.getName());
-            binding.btnSave.setText(R.string.edit_child_button_text);
         }
     }
 
