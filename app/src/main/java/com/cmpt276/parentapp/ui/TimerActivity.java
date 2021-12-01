@@ -33,6 +33,7 @@ public class TimerActivity extends AppCompatActivity {
 
     private long initialMillisUntilFinished;
     private boolean settingRunningService;
+    private int speed = 100;
 
     private BroadcastReceiver receiver;
     private TimerService service;
@@ -110,45 +111,43 @@ public class TimerActivity extends AppCompatActivity {
         int id = item.getItemId();
         switch (id) {
             case R.id.speed25:
-                Toast.makeText(this, "Selected 25%",
-                        Toast.LENGTH_SHORT).show();
                 this.service.setTimerSpeed(0.25);
+                binding.speedPercentage.setText("25");
+                speed = 25;
                 return true;
 
             case R.id.speed50:
-                Toast.makeText(this, "Selected 50",
-                        Toast.LENGTH_SHORT).show();
                 this.service.setTimerSpeed(1.5);
-
+                binding.speedPercentage.setText("50");
+                speed = 50;
                 return true;
 
             case R.id.speed75:
-                Toast.makeText(this, "Selected 75",
-                        Toast.LENGTH_SHORT).show();
                 this.service.setTimerSpeed(0.75);
-
+                binding.speedPercentage.setText("75");
+                speed = 75;
                 return true;
 
             case R.id.speed100:
-                Toast.makeText(this, "Selected 100",
-                        Toast.LENGTH_SHORT).show();
                 this.service.setTimerSpeed(1.0);
+                binding.speedPercentage.setText("100");
+                speed = 100;
                 return true;
 
             case R.id.speed200:
-                Toast.makeText(this, "Selected 200",
-                        Toast.LENGTH_SHORT).show();
                 this.service.setTimerSpeed(2.0);
+                binding.speedPercentage.setText("200");
+                speed = 200;
                 return true;
             case R.id.speed300:
-                Toast.makeText(this, "Selected 300",
-                        Toast.LENGTH_SHORT).show();
                 this.service.setTimerSpeed(3.0);
+                binding.speedPercentage.setText("300");
+                speed = 300;
                 return true;
             case R.id.speed400:
-                Toast.makeText(this, "Selected 400",
-                        Toast.LENGTH_SHORT).show();
                 this.service.setTimerSpeed(4.0);
+                binding.speedPercentage.setText("400");
+                speed = 400;
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -178,6 +177,7 @@ public class TimerActivity extends AppCompatActivity {
             if (this.service != null) {
                 this.service.reset();
             }
+            speed = 100;
         });
     }
 
@@ -218,6 +218,7 @@ public class TimerActivity extends AppCompatActivity {
             binding.timerLive.setText(this.service.getRemainingTimeString());
             binding.timerBar.setProgress(this.service.getProgress());
             binding.timeElapsed.setText(String.format(getString(R.string.time_elapsed), this.service.getElapsedTimeString()));
+            binding.speedPercentage.setText(""+ this.service.getSpeed());
         }
         binding.btnPauseResume.setText(getString(pauseButtonString));
     }

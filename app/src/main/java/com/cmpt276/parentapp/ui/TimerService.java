@@ -271,7 +271,7 @@ public class TimerService extends Service {
     public void reset() {
         this.pause();
 
-        this.millisUntilFinished = this.initialDurationMillis;
+        this.millisUntilFinished = (long)(this.initialDurationMillis/speed);
         TimerService.this.isFinished = false;
 
         if (player != null) {
@@ -308,7 +308,7 @@ public class TimerService extends Service {
 
     @NonNull
     public String getTotalTimeString() {
-        return getTimerString(initialDurationMillis);
+        return getTimerString((long)(initialDurationMillis/speed));
     }
 
     @NonNull
@@ -317,9 +317,8 @@ public class TimerService extends Service {
     }
 
     private String getTimerString(long millisSeconds){
-     //   long totalSeconds = millisSeconds / (int)((TimerService.COUNT_DOWN_INTERVAL)/speed);
         long totalSeconds = millisSeconds / (int)(1000/speed);
-        Log.e("totalSeconds", millisSeconds + "= "+ totalSeconds);
+       // Log.e("totalSeconds", millisSeconds + "= "+ totalSeconds);
         long minutes = totalSeconds / SECONDS_IN_MINUTE;
         long hours = minutes / MINUTES_IN_HOUR;
         minutes = minutes % MINUTES_IN_HOUR;
@@ -331,6 +330,10 @@ public class TimerService extends Service {
                 minutes,
                 seconds
         );
+    }
+
+    public int getSpeed() {
+        return (int)(speed * 100);
     }
 
     public class LocalBinder extends Binder {
