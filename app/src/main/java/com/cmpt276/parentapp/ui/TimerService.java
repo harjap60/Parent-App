@@ -39,10 +39,7 @@ public class TimerService extends Service {
     public static final String NOTIFICATION_CHANNEL_ID = "TIMER_SERVICE";
     public static final String TIMER_END_NOTIFICATION_CHANNEL_ID = "TIMER_SERVICE_END";
     public static int COUNT_DOWN_INTERVAL = 1000;
-    private boolean speedChange = false;
-    private double speed = 1;
     public static final int SECONDS_IN_MINUTE = 60;
-
     private static final String TIMER_DURATION_TAG = "com.cmpt276.parentapp.TimerService.TIMER_DURATION";
     private static final String INITIAL_TIMER_DURATION_TAG = "com.cmpt276.parentapp.TimerService.INITIAL_DURATION";
     private static final String TIMER_RESUME_BROADCAST_ACTION = "com.cmpt276.parent.TIMER_RESUME";
@@ -60,6 +57,9 @@ public class TimerService extends Service {
     private long millisUntilFinished;
     private boolean isRunning = false;
     private boolean isFinished = false;
+    private boolean speedChange = false;
+    private double speed = 1;
+    private double previousSpeed = 1;
 
     private MediaPlayer player;
     private Vibrator vibrator;
@@ -77,6 +77,48 @@ public class TimerService extends Service {
 
     public static Intent getIntent(Context context) {
         return new Intent(context, TimerService.class);
+    }
+
+    public void setTimerSpeed(double speed){
+        this.pause();
+        this.speed = speed;
+        speedChange = true;
+        this.resume();
+    }
+
+    private void startTimer() {
+        long millis = millisUntilFinished;
+        if(speedChange){
+            if(previousSpeed != 1) {
+                millis *= previousSpeed;
+            }
+            millis = (long)(millis/speed);
+            previousSpeed = speed;
+            speedChange = false;
+        }
+
+        timer = new CountDownTimer(millis, (long)(COUNT_DOWN_INTERVAL/speed)) {
+            @Override
+            public void onTick(long millisUntilFinished) {
+                TimerService.this.millisUntilFinished = millisUntilFinished;
+                TimerService.this.broadcast();
+                updateForeGroundNotification();
+            }
+
+            @Override
+            public void onFinish() {
+                TimerService.this.isRunning = false;
+                TimerService.this.isFinished = true;
+                TimerService.this.millisUntilFinished = MILLIS_AT_FINISHED;
+                TimerService.this.broadcast();
+                speed = 1.0;
+                startTimerEndNotification();
+                playAlarmAlert();
+            }
+        }.start();
+
+        this.isRunning = true;
+        this.isFinished = false;
     }
 
     @Nullable
@@ -128,37 +170,6 @@ public class TimerService extends Service {
         registerReceiver(stopTimerBroadcastReceiver, intentFilter);
     }
 
-    private void startTimer() {
-        long millis = millisUntilFinished;
-        if(speedChange){
-            millis = (long)(millis/speed);
-            speedChange = false;
-        }
-
-        timer = new CountDownTimer(millis, (long)(COUNT_DOWN_INTERVAL/speed)) {
-            @Override
-            public void onTick(long millisUntilFinished) {
-                TimerService.this.millisUntilFinished = millisUntilFinished;
-                TimerService.this.broadcast();
-                updateForeGroundNotification();
-            }
-
-            @Override
-            public void onFinish() {
-                TimerService.this.isRunning = false;
-                TimerService.this.isFinished = true;
-                TimerService.this.millisUntilFinished = MILLIS_AT_FINISHED;
-                TimerService.this.broadcast();
-                speed = 1.0;
-                startTimerEndNotification();
-                playAlarmAlert();
-            }
-        }.start();
-
-        this.isRunning = true;
-        this.isFinished = false;
-    }
-
     private void playAlarmAlert() {
         vibrator = (Vibrator) this.getSystemService(Context.VIBRATOR_SERVICE);
         vibrator.vibrate(VibrationEffect.createWaveform(PATTERN, VIBRATION_REPEAT_INDEX));
@@ -172,12 +183,6 @@ public class TimerService extends Service {
         this.player.start();
     }
 
-    public void setTimerSpeed(double speed){
-        this.pause();
-        this.speed = speed;
-        speedChange = true;
-        this.resume();
-    }
     private void updateForeGroundNotification() {
         Notification notification = getNotification(TimerService.this.getRemainingTimeString(), NOTIFICATION_CHANNEL_ID);
         startForeground(NOTIFICATION_ID, notification);
@@ -284,7 +289,7 @@ public class TimerService extends Service {
     }
 
     public int getProgress() {
-        final long i = (millisUntilFinished * PROGRESS_MULTIPLIER) / initialDurationMillis;
+        final long i = (millisUntilFinished * PROGRESS_MULTIPLIER) / (long)(initialDurationMillis/speed);
         return (int) i;
     }
 
@@ -308,7 +313,7 @@ public class TimerService extends Service {
 
     @NonNull
     public String getElapsedTimeString() {
-        return getTimerString(initialDurationMillis - millisUntilFinished);
+        return getTimerString((long)(initialDurationMillis/speed) - millisUntilFinished);
     }
 
     private String getTimerString(long millisSeconds){
