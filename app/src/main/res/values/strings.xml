@@ -153,4 +153,8 @@
     <string name="button_time_held">\Held button for: %1$ds</string>
 
     <string name="save_button_text">Save</string>
+    <string name="help">Help</string>
+    <string name="breath">Breath</string>
+    <string name="breath_image">Breath Image</string>
+    <string name="help_image">Help Image</string>
 </resources>
