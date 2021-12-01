@@ -332,8 +332,8 @@ public class TimerService extends Service {
         );
     }
 
-    public int getSpeed() {
-        return (int)(speed * 100);
+    public String getSpeed() {
+        return String.valueOf((int)(speed * 100));
     }
 
     public class LocalBinder extends Binder {

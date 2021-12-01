@@ -1,5 +1,6 @@
 package com.cmpt276.parentapp.ui;
 
+import android.annotation.SuppressLint;
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;
@@ -11,7 +12,6 @@ import android.os.IBinder;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
@@ -33,7 +33,6 @@ public class TimerActivity extends AppCompatActivity {
 
     private long initialMillisUntilFinished;
     private boolean settingRunningService;
-    private int speed = 100;
 
     private BroadcastReceiver receiver;
     private TimerService service;
@@ -107,48 +106,48 @@ public class TimerActivity extends AppCompatActivity {
     }
 
     @Override
+    @SuppressLint("NonConstantResourceId")
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
+        if (this.service == null) {
+            return true;
+        }
         switch (id) {
             case R.id.speed25:
                 this.service.setTimerSpeed(0.25);
-                binding.speedPercentage.setText("25");
-                speed = 25;
+                binding.speedPercentage.setText(R.string.twenty_five);
                 return true;
 
             case R.id.speed50:
-                this.service.setTimerSpeed(1.5);
-                binding.speedPercentage.setText("50");
-                speed = 50;
+                this.service.setTimerSpeed(0.5);
+                binding.speedPercentage.setText(R.string.fifty);
                 return true;
 
             case R.id.speed75:
                 this.service.setTimerSpeed(0.75);
-                binding.speedPercentage.setText("75");
-                speed = 75;
+                binding.speedPercentage.setText(R.string.seventy_five);
                 return true;
 
             case R.id.speed100:
                 this.service.setTimerSpeed(1.0);
-                binding.speedPercentage.setText("100");
-                speed = 100;
+                binding.speedPercentage.setText(R.string.one_hundred);
                 return true;
 
             case R.id.speed200:
                 this.service.setTimerSpeed(2.0);
-                binding.speedPercentage.setText("200");
-                speed = 200;
+                binding.speedPercentage.setText(R.string.two_hundred);
                 return true;
+
             case R.id.speed300:
                 this.service.setTimerSpeed(3.0);
-                binding.speedPercentage.setText("300");
-                speed = 300;
+                binding.speedPercentage.setText(R.string.three_hundred);
                 return true;
+
             case R.id.speed400:
                 this.service.setTimerSpeed(4.0);
-                binding.speedPercentage.setText("400");
-                speed = 400;
+                binding.speedPercentage.setText(R.string.four_hundred);
                 return true;
+
             default:
                 return super.onOptionsItemSelected(item);
         }
@@ -177,7 +176,7 @@ public class TimerActivity extends AppCompatActivity {
             if (this.service != null) {
                 this.service.reset();
             }
-            speed = 100;
+            //binding.speedPercentage.setText(R.string.one_hundred);
         });
     }
 
@@ -194,6 +193,7 @@ public class TimerActivity extends AppCompatActivity {
         binding.btnPauseResume.setOnClickListener(v -> {
             if (this.service == null) {
                 setupTimerService();
+                binding.speedPercentage.setText(R.string.one_hundred);
                 return;
             }
             if (this.service.isRunning()) {
@@ -218,7 +218,9 @@ public class TimerActivity extends AppCompatActivity {
             binding.timerLive.setText(this.service.getRemainingTimeString());
             binding.timerBar.setProgress(this.service.getProgress());
             binding.timeElapsed.setText(String.format(getString(R.string.time_elapsed), this.service.getElapsedTimeString()));
-            binding.speedPercentage.setText(""+ this.service.getSpeed());
+            binding.speedPercentage.setText(this.service.getSpeed());
+        } else {
+            binding.speedPercentage.setText(R.string.one_hundred);
         }
         binding.btnPauseResume.setText(getString(pauseButtonString));
     }
