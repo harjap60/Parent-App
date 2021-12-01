@@ -14,6 +14,7 @@ import android.os.CountDownTimer;
 import android.os.IBinder;
 import android.os.VibrationEffect;
 import android.os.Vibrator;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -37,7 +38,9 @@ public class TimerService extends Service {
     public static final String TIMER_TICK_BROADCAST_ACTION = "com.cmpt276.parent.TIMER_NOTIFICATION";
     public static final String NOTIFICATION_CHANNEL_ID = "TIMER_SERVICE";
     public static final String TIMER_END_NOTIFICATION_CHANNEL_ID = "TIMER_SERVICE_END";
-    public static final int COUNT_DOWN_INTERVAL = 1000;
+    public static int COUNT_DOWN_INTERVAL = 1000;
+    private boolean speedChange = false;
+    private double speed = 1;
     public static final int SECONDS_IN_MINUTE = 60;
 
     private static final String TIMER_DURATION_TAG = "com.cmpt276.parentapp.TimerService.TIMER_DURATION";
@@ -126,7 +129,13 @@ public class TimerService extends Service {
     }
 
     private void startTimer() {
-        timer = new CountDownTimer(millisUntilFinished, COUNT_DOWN_INTERVAL) {
+        long millis = millisUntilFinished;
+        if(speedChange){
+            millis = (long)(millis/speed);
+            speedChange = false;
+        }
+
+        timer = new CountDownTimer(millis, (long)(COUNT_DOWN_INTERVAL/speed)) {
             @Override
             public void onTick(long millisUntilFinished) {
                 TimerService.this.millisUntilFinished = millisUntilFinished;
@@ -140,6 +149,7 @@ public class TimerService extends Service {
                 TimerService.this.isFinished = true;
                 TimerService.this.millisUntilFinished = MILLIS_AT_FINISHED;
                 TimerService.this.broadcast();
+                speed = 1.0;
                 startTimerEndNotification();
                 playAlarmAlert();
             }
@@ -162,6 +172,12 @@ public class TimerService extends Service {
         this.player.start();
     }
 
+    public void setTimerSpeed(double speed){
+        this.pause();
+        this.speed = speed;
+        speedChange = true;
+        this.resume();
+    }
     private void updateForeGroundNotification() {
         Notification notification = getNotification(TimerService.this.getRemainingTimeString(), NOTIFICATION_CHANNEL_ID);
         startForeground(NOTIFICATION_ID, notification);
@@ -295,9 +311,10 @@ public class TimerService extends Service {
         return getTimerString(initialDurationMillis - millisUntilFinished);
     }
 
-    private String getTimerString(long millisSeconds) {
-        long totalSeconds = millisSeconds / TimerService.COUNT_DOWN_INTERVAL;
-
+    private String getTimerString(long millisSeconds){
+     //   long totalSeconds = millisSeconds / (int)((TimerService.COUNT_DOWN_INTERVAL)/speed);
+        long totalSeconds = millisSeconds / (int)(1000/speed);
+        Log.e("totalSeconds", millisSeconds + "= "+ totalSeconds);
         long minutes = totalSeconds / SECONDS_IN_MINUTE;
         long hours = minutes / MINUTES_IN_HOUR;
         minutes = minutes % MINUTES_IN_HOUR;

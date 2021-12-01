@@ -61,7 +61,6 @@ public class TimerActivity extends AppCompatActivity {
                         TimerService.SECONDS_IN_MINUTE *
                         TimerService.COUNT_DOWN_INTERVAL
         );
-
         return i;
     }
 
@@ -110,29 +109,50 @@ public class TimerActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         switch (id) {
-            case R.id.submenu1:
-                Toast.makeText(this, "Selected 1",
+            case R.id.speed25:
+                Toast.makeText(this, "Selected 25%",
                         Toast.LENGTH_SHORT).show();
+                this.service.setTimerSpeed(0.25);
                 return true;
 
-            case R.id.submenu2:
-                Toast.makeText(this, "Selected 2",
+            case R.id.speed50:
+                Toast.makeText(this, "Selected 50",
                         Toast.LENGTH_SHORT).show();
+                this.service.setTimerSpeed(1.5);
+
                 return true;
 
-            case R.id.submenu3:
-                Toast.makeText(this, "Selected 3",
+            case R.id.speed75:
+                Toast.makeText(this, "Selected 75",
                         Toast.LENGTH_SHORT).show();
+                this.service.setTimerSpeed(0.75);
+
                 return true;
 
-            case R.id.submenu4:
-                Toast.makeText(this, "Selected 4",
+            case R.id.speed100:
+                Toast.makeText(this, "Selected 100",
                         Toast.LENGTH_SHORT).show();
+                this.service.setTimerSpeed(1.0);
+                return true;
+
+            case R.id.speed200:
+                Toast.makeText(this, "Selected 200",
+                        Toast.LENGTH_SHORT).show();
+                this.service.setTimerSpeed(2.0);
+                return true;
+            case R.id.speed300:
+                Toast.makeText(this, "Selected 300",
+                        Toast.LENGTH_SHORT).show();
+                this.service.setTimerSpeed(3.0);
+                return true;
+            case R.id.speed400:
+                Toast.makeText(this, "Selected 400",
+                        Toast.LENGTH_SHORT).show();
+                this.service.setTimerSpeed(4.0);
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
-
     }
 
     @Override

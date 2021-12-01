@@ -3,22 +3,31 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="com.cmpt276.parentapp.ui.TimerActivity">
     <item
-        android:id="@+id/action_settings"
-        android:title="@string/action_settings"
-        app:showAsAction="never"/>
-    <item
-        android:id="@+id/submenu1"
+        android:id="@+id/speed25"
         app:showAsAction="never"
-        android:title="sub_menu1" />
+        android:title="25%" />
     <item
-        android:id="@+id/submenu2"
-        android:title="sub_menu2" />
+        android:id="@+id/speed50"
+        android:title="50%" />
     <item
-        android:id="@+id/submenu3"
+        android:id="@+id/speed75"
         app:showAsAction="never"
-        android:title="sub_menu3" />
+        android:title="75%" />
     <item
-        android:id="@+id/submenu4"
+        android:id="@+id/speed100"
         app:showAsAction="never"
-        android:title="sub_menu4" />
+        android:title="100%" />
+    <item
+        android:id="@+id/speed200"
+        app:showAsAction="never"
+        android:title="200%" />
+    <item
+        android:id="@+id/speed300"
+        app:showAsAction="never"
+        android:title="300%" />
+    <item
+        android:id="@+id/speed400"
+        app:showAsAction="never"
+        android:title="400%" />
+
 </menu>
