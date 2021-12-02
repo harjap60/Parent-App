@@ -8,6 +8,7 @@
         android:title="25%" />
     <item
         android:id="@+id/speed50"
+        app:showAsAction="never"
         android:title="50%" />
     <item
         android:id="@+id/speed75"

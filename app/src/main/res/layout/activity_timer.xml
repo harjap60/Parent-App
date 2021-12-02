@@ -12,7 +12,8 @@
         android:id="@+id/appBarLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:theme="@style/Theme.ParentApp.AppBarOverlay"
+        android:background="#24429A"
+        android:theme="@style/shortDropDown"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -22,11 +23,11 @@
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             android:layout_gravity="center"
-            android:theme="@style/Theme.ParentApp.PopupOverlay"
+            android:theme="@style/shortDropDown"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:popupTheme="@style/popupTheme"
+            app:popupTheme="@style/shortDropDown"
             app:titleTextColor="@color/white" />
     </com.google.android.material.appbar.AppBarLayout>
 
