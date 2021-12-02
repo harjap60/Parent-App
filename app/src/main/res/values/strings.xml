@@ -160,4 +160,8 @@
     <string name="two_hundred">200</string>
     <string name="three_hundred">300</string>
     <string name="four_hundred">400</string>
+    <string name="help">Help</string>
+    <string name="breath">Breath</string>
+    <string name="breath_image">Breath Image</string>
+    <string name="help_image">Help Image</string>
 </resources>
