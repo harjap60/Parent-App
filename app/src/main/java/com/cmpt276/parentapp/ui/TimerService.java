@@ -14,7 +14,6 @@ import android.os.CountDownTimer;
 import android.os.IBinder;
 import android.os.VibrationEffect;
 import android.os.Vibrator;
-import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -32,13 +31,14 @@ import com.cmpt276.parentapp.R;
  * This service is dependant on notification channels not created by it.
  * <p>
  * Plays a sound and vibrates the phone on end.
+ * Adjusts to different timer speeds from 25% up to 400%
  */
 public class TimerService extends Service {
 
     public static final String TIMER_TICK_BROADCAST_ACTION = "com.cmpt276.parent.TIMER_NOTIFICATION";
     public static final String NOTIFICATION_CHANNEL_ID = "TIMER_SERVICE";
     public static final String TIMER_END_NOTIFICATION_CHANNEL_ID = "TIMER_SERVICE_END";
-    public static int COUNT_DOWN_INTERVAL = 1000;
+    public static final int COUNT_DOWN_INTERVAL = 1000;
     public static final int SECONDS_IN_MINUTE = 60;
     private static final String TIMER_DURATION_TAG = "com.cmpt276.parentapp.TimerService.TIMER_DURATION";
     private static final String INITIAL_TIMER_DURATION_TAG = "com.cmpt276.parentapp.TimerService.INITIAL_DURATION";
@@ -63,9 +63,7 @@ public class TimerService extends Service {
 
     private MediaPlayer player;
     private Vibrator vibrator;
-
     private BroadcastReceiver stopTimerBroadcastReceiver;
-
     private CountDownTimer timer;
 
     public static Intent getIntentWithDuration(Context context, long initialDurationMillis) {
@@ -79,7 +77,7 @@ public class TimerService extends Service {
         return new Intent(context, TimerService.class);
     }
 
-    public void setTimerSpeed(double speed){
+    public void setTimerSpeed(double speed) {
         this.pause();
         this.speed = speed;
         speedChange = true;
@@ -88,16 +86,16 @@ public class TimerService extends Service {
 
     private void startTimer() {
         long millis = millisUntilFinished;
-        if(speedChange){
-            if(previousSpeed != 1) {
+        if (speedChange) {
+            if (previousSpeed != 1) {
                 millis *= previousSpeed;
             }
-            millis = (long)(millis/speed);
+            millis = (long) (millis / speed);
             previousSpeed = speed;
             speedChange = false;
         }
 
-        timer = new CountDownTimer(millis, (long)(COUNT_DOWN_INTERVAL/speed)) {
+        timer = new CountDownTimer(millis, (long) (COUNT_DOWN_INTERVAL / speed)) {
             @Override
             public void onTick(long millisUntilFinished) {
                 TimerService.this.millisUntilFinished = millisUntilFinished;
@@ -129,7 +127,6 @@ public class TimerService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-
         this.initialDurationMillis = intent.getLongExtra(INITIAL_TIMER_DURATION_TAG, 0);
         this.millisUntilFinished = this.initialDurationMillis;
 
@@ -251,7 +248,6 @@ public class TimerService extends Service {
     }
 
     public void pause() {
-
         if (this.timer == null) {
             return;
         }
@@ -271,7 +267,7 @@ public class TimerService extends Service {
     public void reset() {
         this.pause();
 
-        this.millisUntilFinished = (long)(this.initialDurationMillis/speed);
+        this.millisUntilFinished = (long) (this.initialDurationMillis / speed);
         TimerService.this.isFinished = false;
 
         if (player != null) {
@@ -289,7 +285,7 @@ public class TimerService extends Service {
     }
 
     public int getProgress() {
-        final long i = (millisUntilFinished * PROGRESS_MULTIPLIER) / (long)(initialDurationMillis/speed);
+        final long i = (millisUntilFinished * PROGRESS_MULTIPLIER) / (long) (initialDurationMillis / speed);
         return (int) i;
     }
 
@@ -308,17 +304,16 @@ public class TimerService extends Service {
 
     @NonNull
     public String getTotalTimeString() {
-        return getTimerString((long)(initialDurationMillis/speed));
+        return getTimerString((long) (initialDurationMillis / speed));
     }
 
     @NonNull
     public String getElapsedTimeString() {
-        return getTimerString((long)(initialDurationMillis/speed) - millisUntilFinished);
+        return getTimerString((long) (initialDurationMillis / speed) - millisUntilFinished);
     }
 
-    private String getTimerString(long millisSeconds){
-        long totalSeconds = millisSeconds / (int)(1000/speed);
-       // Log.e("totalSeconds", millisSeconds + "= "+ totalSeconds);
+    private String getTimerString(long millisSeconds) {
+        long totalSeconds = millisSeconds / (int) (COUNT_DOWN_INTERVAL / speed);
         long minutes = totalSeconds / SECONDS_IN_MINUTE;
         long hours = minutes / MINUTES_IN_HOUR;
         minutes = minutes % MINUTES_IN_HOUR;
@@ -333,7 +328,7 @@ public class TimerService extends Service {
     }
 
     public String getSpeed() {
-        return String.valueOf((int)(speed * 100));
+        return String.valueOf((int) (speed * 100));
     }
 
     public class LocalBinder extends Binder {

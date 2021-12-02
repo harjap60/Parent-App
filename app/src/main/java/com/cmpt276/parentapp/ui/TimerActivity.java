@@ -176,7 +176,6 @@ public class TimerActivity extends AppCompatActivity {
             if (this.service != null) {
                 this.service.reset();
             }
-            //binding.speedPercentage.setText(R.string.one_hundred);
         });
     }
 

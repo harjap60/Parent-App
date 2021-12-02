@@ -132,7 +132,7 @@
         app:layout_constraintStart_toStartOf="@+id/timer_bar"
         app:layout_constraintTop_toTopOf="@+id/timer_bar"
         tools:ignore="SpeakableTextPresentCheck" />
-    
+
     <TextView
         android:id="@+id/speedPercentage"
         android:layout_width="0dp"
@@ -141,9 +141,9 @@
         android:autoSizeMinTextSize="8sp"
         android:autoSizeStepGranularity="2sp"
         android:autoSizeTextType="uniform"
+        android:text="@string/one_hundred"
         android:textAlignment="center"
         android:textColor="@android:color/white"
-        android:text="100"
         android:textSize="8sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/speed_vertical"
