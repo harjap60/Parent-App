@@ -91,7 +91,9 @@ public class BreatheActivity extends AppCompatActivity {
     }
 
     private void updateBreathCountTextView() {
-        binding.textViewTotalBreathsTaken.setText(getString(R.string.text_view_breaths_taken_count, breathsTaken, numBreaths));
+        binding.textViewTotalBreathsTaken.setText(getString(
+                R.string.text_view_breaths_taken_count, breathsTaken, numBreaths
+        ));
     }
 
     @SuppressLint({"ClickableViewAccessibility"})
@@ -101,63 +103,83 @@ public class BreatheActivity extends AppCompatActivity {
         Handler handler = new Handler();
 
         binding.breatheButton.setOnTouchListener((view, motionEvent) -> {
-
+            // the onTouchListener will only be set only until there are more breaths remaining.
             if (breathsTaken < numBreaths) {
 
                 binding.breatheButton.setText(R.string.breathe_in_button_text);
+
                 if (motionEvent.getAction() == MotionEvent.ACTION_DOWN) {
-                    buttonPressedTimerStart = System.currentTimeMillis();
-                    binding.breatheButton.setBackgroundColor(Color.BLACK);
-
-                    //Animation for button size increase
-                    ObjectAnimator scaleUpX = ObjectAnimator.ofFloat(binding.breatheButton, "scaleX", BUTTON_SIZE_MAX);
-                    ObjectAnimator scaleUpY = ObjectAnimator.ofFloat(binding.breatheButton, "scaleY", BUTTON_SIZE_MAX);
-                    scaleUpX.setDuration(MAX_ANIMATION_DURATION);
-                    scaleUpY.setDuration(MAX_ANIMATION_DURATION);
-                    scaleUp.play(scaleUpX).with(scaleUpY);
-                    scaleUp.start();
-
-                    //Tell user to let go of button after 10s
-                    handler.postDelayed(
-                            () -> Toast.makeText(
-                                    BreatheActivity.this,
-                                    getResources().getString(R.string.toast_10s_button_held),
-                                    Toast.LENGTH_SHORT)
-                                    .show(),
-                            MAX_ANIMATION_DURATION);
-
-                } else if (motionEvent.getAction() == MotionEvent.ACTION_UP) {
-
-                    handler.removeCallbacksAndMessages(null);
-                    scaleUp.cancel();
-
-                    timeButtonHeldFor = System.currentTimeMillis() - buttonPressedTimerStart;
-
-                    //Button held for more than 3 seconds
-                    if (TimeUnit.MILLISECONDS.toSeconds(timeButtonHeldFor) >= TIME_BREATHE_GOOD) {
-                        binding.breatheButton.setText(R.string.breathe_out_button_text);
-
-                        breathsTaken++;
-                        updateBreathCountTextView();
-
-                        buttonExhale(binding.breatheButton.getScaleX(), binding.breatheButton.getScaleY());
-                    }
-                    // Button released before 3 seconds ,
-                    // i.e., the breathe is incomplete and need to breathe again
-                    else {
-                        resetSize(binding.breatheButton);
-                    }
-
-                    // not sure if we need the following toast
-                    Toast.makeText(
-                            this,
-                            getResources().getString(R.string.button_time_held, TimeUnit.MILLISECONDS.toSeconds(timeButtonHeldFor)),
-                            Toast.LENGTH_SHORT).show();
+                    // the button is pressed
+                    buttonPressed(scaleUp, handler);
                 }
-
+                else if (motionEvent.getAction() == MotionEvent.ACTION_UP) {
+                    // the button is released
+                    buttonReleased(scaleUp, handler);
+                }
             }
             return true;
         });
+    }
+
+    private void buttonPressed(AnimatorSet scaleUp, Handler handler) {
+        buttonPressedTimerStart = System.currentTimeMillis();
+        binding.breatheButton.setBackgroundColor(Color.BLACK);
+
+        //Animation for button size increase
+        ObjectAnimator scaleUpX = ObjectAnimator.ofFloat(
+                binding.breatheButton, "scaleX", BUTTON_SIZE_MAX
+        );
+        ObjectAnimator scaleUpY = ObjectAnimator.ofFloat(
+                binding.breatheButton, "scaleY", BUTTON_SIZE_MAX
+        );
+        scaleUpX.setDuration(MAX_ANIMATION_DURATION);
+        scaleUpY.setDuration(MAX_ANIMATION_DURATION);
+        scaleUp.play(scaleUpX).with(scaleUpY);
+        scaleUp.start();
+
+        //Tell user to let go of button after 10s
+        handler.postDelayed(
+                () -> Toast.makeText(
+                        BreatheActivity.this,
+                        getResources().getString(R.string.toast_10s_button_held),
+                        Toast.LENGTH_SHORT)
+                        .show(),
+                MAX_ANIMATION_DURATION);
+    }
+
+    private void buttonReleased(AnimatorSet scaleUp, Handler handler) {
+        handler.removeCallbacksAndMessages(null);
+        scaleUp.cancel();
+
+        timeButtonHeldFor = System.currentTimeMillis() - buttonPressedTimerStart;
+
+        //Button held for more than 3 seconds
+        if (TimeUnit.MILLISECONDS.toSeconds(timeButtonHeldFor) >= TIME_BREATHE_GOOD) {
+            binding.breatheButton.setText(R.string.breathe_out_button_text);
+
+            breathsTaken++;
+            updateBreathCountTextView();
+
+            buttonExhale(
+                    binding.breatheButton.getScaleX(),
+                    binding.breatheButton.getScaleY()
+            );
+        }
+        // Button released before 3 seconds ,
+        // i.e., the breathe is incomplete and need to breathe again
+        else {
+            resetSize(binding.breatheButton);
+        }
+
+        // not sure if we need the following toast
+        Toast.makeText(
+                this,
+                getResources().getString(
+                        R.string.button_time_held,
+                        TimeUnit.MILLISECONDS.toSeconds(timeButtonHeldFor)
+                ),
+                Toast.LENGTH_SHORT
+        ).show();
     }
 
     @SuppressLint("ClickableViewAccessibility")
@@ -172,8 +194,12 @@ public class BreatheActivity extends AppCompatActivity {
         binding.breatheButton.setBackgroundColor(Color.RED);
 
         //Animation for button size increase
-        ObjectAnimator scaleDownX = ObjectAnimator.ofFloat(binding.breatheButton, "scaleX", BUTTON_DEFAULT_SIZE);
-        ObjectAnimator scaleDownY = ObjectAnimator.ofFloat(binding.breatheButton, "scaleY", BUTTON_DEFAULT_SIZE);
+        ObjectAnimator scaleDownX = ObjectAnimator.ofFloat(
+                binding.breatheButton, "scaleX", BUTTON_DEFAULT_SIZE
+        );
+        ObjectAnimator scaleDownY = ObjectAnimator.ofFloat(
+                binding.breatheButton, "scaleY", BUTTON_DEFAULT_SIZE
+        );
         scaleDownX.setDuration(MAX_ANIMATION_DURATION);
         scaleDownY.setDuration(MAX_ANIMATION_DURATION);
         scaleDown.play(scaleDownX).with(scaleDownY);
