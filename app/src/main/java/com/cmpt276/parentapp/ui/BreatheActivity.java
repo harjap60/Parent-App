@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Toast;
 
@@ -52,6 +53,16 @@ public class BreatheActivity extends AppCompatActivity {
         setupToolbar();
         setupBeginButton();
         setupBreatheButtonToChangeSize();
+
+        setupSpinner();
+    }
+
+    private void setupSpinner() {
+        Integer[] options = new Integer[]{1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
+        ArrayAdapter<Integer> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, options);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+        binding.numberSpinner.setAdapter(adapter);
     }
 
     private void setupToolbar() {
@@ -64,47 +75,18 @@ public class BreatheActivity extends AppCompatActivity {
     }
 
     private void setupBeginButton() {
-        binding.noOfBreaths.setEnabled(true);
         binding.beginButton.setVisibility(View.VISIBLE);
         binding.breatheButton.setVisibility(View.INVISIBLE);
         binding.textViewTotalBreathsTaken.setVisibility(View.INVISIBLE);
         binding.beginButton.setOnClickListener(view -> {
             // get the number of breaths
-            if (binding.noOfBreaths.getText().toString().equals("")) {
-                Toast.makeText(BreatheActivity.this,
-                        getString(R.string.breathe_value_null),
-                        Toast.LENGTH_SHORT).show();
-            } else {
+            numBreaths = (binding.numberSpinner.getSelectedItemPosition() + 1);
 
-                numBreaths = Integer.parseInt(binding.noOfBreaths.getText().toString());
-
-                //Check if number enter is valid
-                if (numBreaths > MIN_NUM_BREATHS && numBreaths <= MAX_NUM_BREATHS) {
-
-                    // need to add a check that will make sure that the user has selected
-                    // a specific no of breaths and only then do the following things
-                    // might not need to add the check if we are using a spinner instead of edit text
-                    // and in that case, we can select a default value of the spinner and we do not
-                    // need to add the check
-                    binding.noOfBreaths.setEnabled(false);
-
-
-                    binding.beginButton.setVisibility(View.INVISIBLE);
-                    binding.textViewTotalBreathsTaken.setVisibility(View.VISIBLE);
-                    binding.textViewTotalBreathsTaken.setText(getString(R.string.text_view_breaths_taken_count, breathsTaken, numBreaths));
-                    binding.breatheButton.setVisibility(View.VISIBLE);
-                    binding.breatheButton.setText(R.string.breathe_in_button_text);
-                } else {
-                    Toast.makeText(
-                            BreatheActivity.this,
-                            getString(
-                                    R.string.breaths_entered_invalid,
-                                    MIN_NUM_BREATHS,
-                                    MAX_NUM_BREATHS
-                            ),
-                            Toast.LENGTH_SHORT).show();
-                }
-            }
+            binding.beginButton.setVisibility(View.INVISIBLE);
+            binding.textViewTotalBreathsTaken.setVisibility(View.VISIBLE);
+            binding.textViewTotalBreathsTaken.setText(getString(R.string.text_view_breaths_taken_count, breathsTaken, numBreaths));
+            binding.breatheButton.setVisibility(View.VISIBLE);
+            binding.breatheButton.setText(R.string.breathe_in_button_text);
         });
     }
 
@@ -144,8 +126,7 @@ public class BreatheActivity extends AppCompatActivity {
                                     .show(),
                             MAX_ANIMATION_DURATION);
 
-                }
-                else if (motionEvent.getAction() == MotionEvent.ACTION_UP) {
+                } else if (motionEvent.getAction() == MotionEvent.ACTION_UP) {
 
                     handler.removeCallbacksAndMessages(null);
                     scaleUp.cancel();

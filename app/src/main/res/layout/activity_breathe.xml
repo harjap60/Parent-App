@@ -16,15 +16,15 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-    <androidx.appcompat.widget.Toolbar
-        android:id="@+id/breathe_toolbar"
-        android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        android:theme="@style/Theme.ParentApp.PopupOverlay"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:titleTextColor="?colorOnPrimary" />
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/breathe_toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:theme="@style/Theme.ParentApp.PopupOverlay"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:titleTextColor="?colorOnPrimary" />
     </com.google.android.material.appbar.AppBarLayout>
 
 
@@ -33,36 +33,36 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/text_view_total_breaths_taken"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toTopOf="@+id/text_view_total_breaths_taken">
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Let's take "
-            android:layout_weight="1"/>
-
-        <!--<Spinner
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:dropDownSelector="@drawable/drop_down_arrow"
-            android:layout_weight="1"/>-->
-
-        <EditText
-            android:id="@+id/no_of_breaths"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:textColor="?colorOnPrimary"
-            android:inputType="numberSigned"/>
+            android:text="Let's take " />
+
+
+        <Spinner
+            android:id="@+id/number_spinner"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:dropDownSelector="@drawable/drop_down_arrow"
+            android:popupBackground="?colorPrimary"
+            app:layout_constraintBottom_toTopOf="@+id/text_view_total_breaths_taken"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/linear_layout_no_of_breaths" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="breaths together"
-            android:layout_weight="1"/>
+            android:layout_weight="1"
+            android:text="breaths together" />
     </LinearLayout>
 
 
@@ -82,10 +82,10 @@
         android:layout_height="wrap_content"
         android:backgroundTint="?colorPrimaryVariant"
         android:text="Begin"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/text_view_total_breaths_taken"
-        app:layout_constraintBottom_toBottomOf="parent"/>
+        app:layout_constraintTop_toBottomOf="@+id/text_view_total_breaths_taken" />
 
     <Button
         android:id="@+id/breathe_button"
@@ -93,8 +93,8 @@
         android:layout_height="wrap_content"
         android:backgroundTint="?colorPrimaryVariant"
         android:text="Breathe"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/text_view_total_breaths_taken"
-        app:layout_constraintBottom_toBottomOf="parent"/>
+        app:layout_constraintTop_toBottomOf="@+id/text_view_total_breaths_taken" />
 </androidx.constraintlayout.widget.ConstraintLayout>
