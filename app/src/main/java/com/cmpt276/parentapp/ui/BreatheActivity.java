@@ -19,8 +19,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.cmpt276.parentapp.R;
 import com.cmpt276.parentapp.databinding.ActivityBreatheBinding;
 
-import java.util.concurrent.TimeUnit;
-
 /**
  * Help user to relax and calm down if they feel the need to
  * <p>
@@ -32,27 +30,23 @@ import java.util.concurrent.TimeUnit;
 /**
  * todo:
  *  - add sound effect to breathe in and out
- *  - fix the linear layout, the 2nd text view is chipped out
  *  - add shared prefs to remember the last choice of the user selected breaths
  *  - test for all screen sizes
+ *     - Scale text of spinner
  *  - make code better by refactoring strings and not hardcode them
  *  - might want to change colour (or their hex values)
  */
 public class BreatheActivity extends AppCompatActivity {
 
-    private final float BUTTON_SIZE_MAX = 2f;
     private final float BUTTON_DEFAULT_SIZE = 1f;
 
     private final int MAX_ANIMATION_DURATION_MILLISECONDS = 10000;
-    private final int MAX_ANIMATION_DURATION_SECONDS = 10;
 
     private final int TIME_BREATHE_GOOD_MILLISECONDS = 3000;
-    private final int TIME_BREATHE_GOOD_SECONDS = 3;
 
     private ActivityBreatheBinding binding;
     private long buttonPressedTimerStart;
-    private long timeButtonHeldFor;
-    private Integer[] optionsNumOfBreaths = new Integer[]{1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
+    private final Integer[] optionsNumOfBreaths = new Integer[]{1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
 
     private int numBreaths;
     int breathsTaken = 0;
@@ -71,8 +65,12 @@ public class BreatheActivity extends AppCompatActivity {
     }
 
     private void setupSpinner() {
-        ArrayAdapter<Integer> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, optionsNumOfBreaths);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        ArrayAdapter<Integer> adapter = new ArrayAdapter<>(
+                this,
+                android.R.layout.simple_spinner_item,
+                optionsNumOfBreaths
+        );
+        adapter.setDropDownViewResource(R.layout.simple_spinner_dropdown);
 
         binding.numberSpinner.setAdapter(adapter);
     }
@@ -144,6 +142,7 @@ public class BreatheActivity extends AppCompatActivity {
         binding.breatheButton.setBackgroundResource(R.drawable.green_circle);
 
         //Animation for button size increase
+        float BUTTON_SIZE_MAX = 1.5f;
         ObjectAnimator scaleUpX = ObjectAnimator.ofFloat(
                 binding.breatheButton, "scaleX", BUTTON_SIZE_MAX
         );
@@ -177,10 +176,10 @@ public class BreatheActivity extends AppCompatActivity {
         handler.removeCallbacksAndMessages(null);
         scaleUp.cancel();
 
-        timeButtonHeldFor = System.currentTimeMillis() - buttonPressedTimerStart;
+        long timeButtonHeldFor = System.currentTimeMillis() - buttonPressedTimerStart;
 
         //Button held for more than 3 seconds
-        if (TimeUnit.MILLISECONDS.toSeconds(timeButtonHeldFor) >= TIME_BREATHE_GOOD_SECONDS) {
+        if (timeButtonHeldFor >= TIME_BREATHE_GOOD_MILLISECONDS) {
             binding.breatheInfoTextView.setText(R.string.breathe_out_text);
 
             breathsTaken++;
@@ -196,16 +195,6 @@ public class BreatheActivity extends AppCompatActivity {
         else {
             resetSize(binding.breatheButton);
         }
-
-        // TODO: not sure if we need the following toast
-        Toast.makeText(
-                this,
-                getResources().getString(
-                        R.string.button_time_held,
-                        TimeUnit.MILLISECONDS.toSeconds(timeButtonHeldFor)
-                ),
-                Toast.LENGTH_SHORT
-        ).show();
     }
 
     @SuppressLint("ClickableViewAccessibility")
@@ -227,8 +216,8 @@ public class BreatheActivity extends AppCompatActivity {
                 binding.breatheButton, "scaleY", BUTTON_DEFAULT_SIZE
         );
 
-        scaleDownX.setDuration(TIME_BREATHE_GOOD_MILLISECONDS);
-        scaleDownY.setDuration(TIME_BREATHE_GOOD_MILLISECONDS);
+        scaleDownX.setDuration(MAX_ANIMATION_DURATION_MILLISECONDS);
+        scaleDownY.setDuration(MAX_ANIMATION_DURATION_MILLISECONDS);
         scaleDown.play(scaleDownX).with(scaleDownY);
         scaleDown.start();
 
