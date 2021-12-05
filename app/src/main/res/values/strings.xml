@@ -164,4 +164,7 @@
     <string name="breath">Breath</string>
     <string name="breath_image">Breath Image</string>
     <string name="help_image">Help Image</string>
+    <string name="how_many_breaths_would_you_like_to_take">How many breaths would you like to take?</string>
+    <string name="begin">Begin</string>
+    <string name="button_increase_decrease_size">button increase decrease size</string>
 </resources>
