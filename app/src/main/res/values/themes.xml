@@ -29,4 +29,17 @@
     <style name="Theme.ParentApp.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" >
         <item name="colorControlNormal">?colorOnPrimary</item>
     </style>
+
+    <style name="popupTheme" parent="ThemeOverlay.AppCompat.Light">
+        <item name="colorSurface">#444444</item>
+        <item name="android:popupElevation">8dp</item>
+    </style>
+
+    <style name="shortDropDown" parent="ThemeOverlay.AppCompat.Dark.ActionBar">
+        <item name="android:listPreferredItemHeightSmall">35dp</item>
+        <item name="colorSurface">#4954B5</item>
+        <item name="android:listPreferredItemPaddingLeft">30dp</item>
+        <item name="android:listPreferredItemPaddingRight">30dp</item>
+    </style>
+
 </resources>

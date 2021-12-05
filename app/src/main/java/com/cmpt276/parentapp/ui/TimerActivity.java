@@ -1,5 +1,6 @@
 package com.cmpt276.parentapp.ui;
 
+import android.annotation.SuppressLint;
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;
@@ -8,7 +9,11 @@ import android.content.IntentFilter;
 import android.content.ServiceConnection;
 import android.os.Bundle;
 import android.os.IBinder;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
+
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -23,6 +28,13 @@ public class TimerActivity extends AppCompatActivity {
 
     public static final String TIMER_DURATION_TAG = "TIMER_DURATION_TAG";
     public static final String TIMER_RUNNING_TAG = "TIMER_RUNNING";
+    public static final double SPEED_PERCENTAGE_25 = 0.25;
+    public static final double SPEED_PERCENTAGE_50 = 0.5;
+    public static final double SPEED_PERCENTAGE_75 = 0.75;
+    public static final double SPEED_PERCENTAGE_100 = 1.0;
+    public static final double SPEED_PERCENTAGE_200 = 2.0;
+    public static final double SPEED_PERCENTAGE_300 = 3.0;
+    public static final double SPEED_PERCENTAGE_400 = 4.0;
 
     private ActivityTimerBinding binding;
 
@@ -56,7 +68,6 @@ public class TimerActivity extends AppCompatActivity {
                         TimerService.SECONDS_IN_MINUTE *
                         TimerService.COUNT_DOWN_INTERVAL
         );
-
         return i;
     }
 
@@ -92,6 +103,60 @@ public class TimerActivity extends AppCompatActivity {
         if (ab != null) {
             ab.setTitle(R.string.timer_activity_toolbar_label);
             ab.setDisplayHomeAsUpEnabled(true);
+        }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(@NonNull Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_timer, menu);
+        return true;
+    }
+
+    @Override
+    @SuppressLint("NonConstantResourceId")
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        if (this.service == null) {
+            return true;
+        }
+        switch (id) {
+            case R.id.speed25:
+                this.service.setTimerSpeed(SPEED_PERCENTAGE_25);
+                binding.speedPercentage.setText(R.string.twenty_five);
+                return true;
+
+            case R.id.speed50:
+                this.service.setTimerSpeed(SPEED_PERCENTAGE_50);
+                binding.speedPercentage.setText(R.string.fifty);
+                return true;
+
+            case R.id.speed75:
+                this.service.setTimerSpeed(SPEED_PERCENTAGE_75);
+                binding.speedPercentage.setText(R.string.seventy_five);
+                return true;
+
+            case R.id.speed100:
+                this.service.setTimerSpeed(SPEED_PERCENTAGE_100);
+                binding.speedPercentage.setText(R.string.one_hundred);
+                return true;
+
+            case R.id.speed200:
+                this.service.setTimerSpeed(SPEED_PERCENTAGE_200);
+                binding.speedPercentage.setText(R.string.two_hundred);
+                return true;
+
+            case R.id.speed300:
+                this.service.setTimerSpeed(SPEED_PERCENTAGE_300);
+                binding.speedPercentage.setText(R.string.three_hundred);
+                return true;
+
+            case R.id.speed400:
+                this.service.setTimerSpeed(SPEED_PERCENTAGE_400);
+                binding.speedPercentage.setText(R.string.four_hundred);
+                return true;
+
+            default:
+                return super.onOptionsItemSelected(item);
         }
     }
 
@@ -134,6 +199,7 @@ public class TimerActivity extends AppCompatActivity {
         binding.btnPauseResume.setOnClickListener(v -> {
             if (this.service == null) {
                 setupTimerService();
+                binding.speedPercentage.setText(R.string.one_hundred);
                 return;
             }
             if (this.service.isRunning()) {
@@ -158,6 +224,9 @@ public class TimerActivity extends AppCompatActivity {
             binding.timerLive.setText(this.service.getRemainingTimeString());
             binding.timerBar.setProgress(this.service.getProgress());
             binding.timeElapsed.setText(String.format(getString(R.string.time_elapsed), this.service.getElapsedTimeString()));
+            binding.speedPercentage.setText(this.service.getSpeed());
+        } else {
+            binding.speedPercentage.setText(R.string.one_hundred);
         }
         binding.btnPauseResume.setText(getString(pauseButtonString));
     }
