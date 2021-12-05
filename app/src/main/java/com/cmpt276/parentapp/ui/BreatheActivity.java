@@ -1,10 +1,12 @@
 package com.cmpt276.parentapp.ui;
 
+import android.animation.Animator;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.MotionEvent;
@@ -29,7 +31,6 @@ import com.cmpt276.parentapp.databinding.ActivityBreatheBinding;
 
 /**
  * todo:
- *  - add sound effect to breathe in and out
  *  - add shared prefs to remember the last choice of the user selected breaths
  *  - test for all screen sizes
  *     - Scale text of spinner
@@ -48,6 +49,9 @@ public class BreatheActivity extends AppCompatActivity {
     private long buttonPressedTimerStart;
     private final Integer[] optionsNumOfBreaths = new Integer[]{1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
 
+    private MediaPlayer calmMusic;
+
+
     private int numBreaths;
     int breathsTaken = 0;
 
@@ -57,6 +61,7 @@ public class BreatheActivity extends AppCompatActivity {
         binding = ActivityBreatheBinding.inflate(this.getLayoutInflater());
         setContentView(binding.getRoot());
 
+        calmMusic = MediaPlayer.create(this, R.raw.windy_sea_loop);
         setupToolbar();
         setupBeginButton();
         setupBreatheButtonToChangeSize();
@@ -138,6 +143,8 @@ public class BreatheActivity extends AppCompatActivity {
     }
 
     private void buttonPressed(AnimatorSet scaleUp, Handler handler) {
+        calmMusic.start();
+
         buttonPressedTimerStart = System.currentTimeMillis();
         binding.breatheButton.setBackgroundResource(R.drawable.green_circle);
 
@@ -161,13 +168,14 @@ public class BreatheActivity extends AppCompatActivity {
         );
 
         //Tell user to let go of button after 10s
-        handler.postDelayed(
-                () -> Toast.makeText(
-                        BreatheActivity.this,
-                        getResources().getString(R.string.toast_10s_button_held),
-                        Toast.LENGTH_SHORT)
-                        .show(),
-                MAX_ANIMATION_DURATION_MILLISECONDS);
+        handler.postDelayed(() -> {
+            Toast.makeText(
+                    BreatheActivity.this,
+                    getResources().getString(R.string.toast_10s_button_held),
+                    Toast.LENGTH_SHORT)
+                    .show();
+            calmMusic.pause();
+        },MAX_ANIMATION_DURATION_MILLISECONDS);
     }
 
     private void buttonReleased(AnimatorSet scaleUp, Handler handler) {
@@ -203,6 +211,8 @@ public class BreatheActivity extends AppCompatActivity {
         // basically we want to show the exhale animation for 10 seconds (at least 3 seconds)
         AnimatorSet scaleDown = new AnimatorSet();
         Handler handler = new Handler();
+        calmMusic.start();
+
 
         binding.breatheButton.setScaleX(buttonX);
         binding.breatheButton.setScaleY(buttonY);
@@ -220,6 +230,27 @@ public class BreatheActivity extends AppCompatActivity {
         scaleDownY.setDuration(MAX_ANIMATION_DURATION_MILLISECONDS);
         scaleDown.play(scaleDownX).with(scaleDownY);
         scaleDown.start();
+        scaleDown.addListener(new Animator.AnimatorListener() {
+            @Override
+            public void onAnimationStart(Animator animator) {
+
+            }
+
+            @Override
+            public void onAnimationEnd(Animator animator) {
+                calmMusic.release();
+            }
+
+            @Override
+            public void onAnimationCancel(Animator animator) {
+
+            }
+
+            @Override
+            public void onAnimationRepeat(Animator animator) {
+
+            }
+        });
 
         // changes the text of the button after 3 seconds of exhaling out
         handler.postDelayed(() -> {
