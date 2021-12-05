@@ -161,7 +161,7 @@
         android:autoSizeStepGranularity="2sp"
         android:autoSizeTextType="uniform"
         android:background="@drawable/round_button"
-        android:backgroundTint="#683A3131"
+        android:backgroundTint="#687F91"
         android:foreground="@drawable/round_button"
         android:layoutDirection="ltr"
         android:max="100"
@@ -178,14 +178,14 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.855" />
+        app:layout_constraintGuide_percent="0.905" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.5822435" />
+        app:layout_constraintGuide_percent="0.6322435" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline4"
@@ -235,7 +235,7 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         app:layout_constraintGuide_begin="502dp"
-        app:layout_constraintGuide_percent="0.685" />
+        app:layout_constraintGuide_percent="0.735" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/bottom_image"
@@ -243,7 +243,7 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         app:layout_constraintGuide_begin="550dp"
-        app:layout_constraintGuide_percent="0.755" />
+        app:layout_constraintGuide_percent="0.805" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/elapsed_selected_top"

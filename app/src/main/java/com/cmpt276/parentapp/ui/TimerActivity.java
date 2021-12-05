@@ -28,6 +28,13 @@ public class TimerActivity extends AppCompatActivity {
 
     public static final String TIMER_DURATION_TAG = "TIMER_DURATION_TAG";
     public static final String TIMER_RUNNING_TAG = "TIMER_RUNNING";
+    public static final double SPEED_PERCENTAGE_25 = 0.25;
+    public static final double SPEED_PERCENTAGE_50 = 0.5;
+    public static final double SPEED_PERCENTAGE_75 = 0.75;
+    public static final double SPEED_PERCENTAGE_100 = 1.0;
+    public static final double SPEED_PERCENTAGE_200 = 2.0;
+    public static final double SPEED_PERCENTAGE_300 = 3.0;
+    public static final double SPEED_PERCENTAGE_400 = 4.0;
 
     private ActivityTimerBinding binding;
 
@@ -114,37 +121,37 @@ public class TimerActivity extends AppCompatActivity {
         }
         switch (id) {
             case R.id.speed25:
-                this.service.setTimerSpeed(0.25);
+                this.service.setTimerSpeed(SPEED_PERCENTAGE_25);
                 binding.speedPercentage.setText(R.string.twenty_five);
                 return true;
 
             case R.id.speed50:
-                this.service.setTimerSpeed(0.5);
+                this.service.setTimerSpeed(SPEED_PERCENTAGE_50);
                 binding.speedPercentage.setText(R.string.fifty);
                 return true;
 
             case R.id.speed75:
-                this.service.setTimerSpeed(0.75);
+                this.service.setTimerSpeed(SPEED_PERCENTAGE_75);
                 binding.speedPercentage.setText(R.string.seventy_five);
                 return true;
 
             case R.id.speed100:
-                this.service.setTimerSpeed(1.0);
+                this.service.setTimerSpeed(SPEED_PERCENTAGE_100);
                 binding.speedPercentage.setText(R.string.one_hundred);
                 return true;
 
             case R.id.speed200:
-                this.service.setTimerSpeed(2.0);
+                this.service.setTimerSpeed(SPEED_PERCENTAGE_200);
                 binding.speedPercentage.setText(R.string.two_hundred);
                 return true;
 
             case R.id.speed300:
-                this.service.setTimerSpeed(3.0);
+                this.service.setTimerSpeed(SPEED_PERCENTAGE_300);
                 binding.speedPercentage.setText(R.string.three_hundred);
                 return true;
 
             case R.id.speed400:
-                this.service.setTimerSpeed(4.0);
+                this.service.setTimerSpeed(SPEED_PERCENTAGE_400);
                 binding.speedPercentage.setText(R.string.four_hundred);
                 return true;
 
