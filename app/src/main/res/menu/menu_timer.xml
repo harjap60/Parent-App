@@ -3,32 +3,39 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="com.cmpt276.parentapp.ui.TimerActivity">
     <item
-        android:id="@+id/speed25"
-        app:showAsAction="never"
-        android:title="25%" />
-    <item
-        android:id="@+id/speed50"
-        app:showAsAction="never"
-        android:title="50%" />
-    <item
-        android:id="@+id/speed75"
-        app:showAsAction="never"
-        android:title="75%" />
-    <item
-        android:id="@+id/speed100"
-        app:showAsAction="never"
-        android:title="100%" />
-    <item
-        android:id="@+id/speed200"
-        app:showAsAction="never"
-        android:title="200%" />
-    <item
-        android:id="@+id/speed300"
-        app:showAsAction="never"
-        android:title="300%" />
-    <item
-        android:id="@+id/speed400"
-        app:showAsAction="never"
-        android:title="400%" />
-
+        android:id="@+id/overflowMenu"
+        android:icon="@drawable/ic_baseline_speed_24"
+        android:title=""
+        app:showAsAction="always">
+        <menu>
+            <item
+                 android:id="@+id/speed25"
+                 app:showAsAction="never"
+                 android:title="@string/_25" />
+            <item
+                android:id="@+id/speed50"
+                app:showAsAction="never"
+                android:title="@string/_50" />
+            <item
+                android:id="@+id/speed75"
+                app:showAsAction="never"
+                android:title="@string/_75" />
+            <item
+                android:id="@+id/speed100"
+                app:showAsAction="never"
+                android:title="@string/_100" />
+            <item
+                android:id="@+id/speed200"
+                app:showAsAction="never"
+                android:title="@string/_200" />
+            <item
+                android:id="@+id/speed300"
+                app:showAsAction="never"
+                android:title="@string/_300" />
+            <item
+                android:id="@+id/speed400"
+                app:showAsAction="never"
+                android:title="@string/_400" />
+        </menu>
+    </item>
 </menu>
