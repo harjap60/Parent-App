@@ -35,50 +35,44 @@ public class CoinFlip {
 
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(index = true)
-    private int coinFlipId;
+    private long coinFlipId;
 
     @ColumnInfo(index = true)
-    private final int childId;
+    private final long childId;
 
     private final Choice choice;
-    private final boolean isWinner;
+    private final Boolean isWinner;
     private final LocalDateTime date;
 
 
-    public CoinFlip(int childId, Choice choice, boolean isWinner, LocalDateTime date) {
+    public CoinFlip(long childId, Choice choice, Boolean isWinner, LocalDateTime date) {
         this.childId = childId;
         this.choice = choice;
         this.isWinner = isWinner;
         this.date = date;
     }
 
-    public int getChildId() {
-
+    public long getChildId() {
         return this.childId;
     }
 
     public Choice getChoice() {
-
         return this.choice;
     }
 
-    public boolean isWinner() {
-
+    public Boolean isWinner() {
         return this.isWinner;
     }
 
     public LocalDateTime getDate() {
-
         return this.date;
     }
 
-    public int getCoinFlipId() {
-
+    public long getCoinFlipId() {
         return coinFlipId;
     }
 
-    public void setCoinFlipId(int coinFlipId) {
-
+    public void setCoinFlipId(long coinFlipId) {
         this.coinFlipId = coinFlipId;
     }
 

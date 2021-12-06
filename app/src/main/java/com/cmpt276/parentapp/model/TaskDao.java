@@ -22,11 +22,11 @@ import io.reactivex.rxjava3.core.Single;
 public interface TaskDao {
 
     @Query("SELECT IFNULL(MAX(`order`) + 1, 0) FROM ChildTaskCrossRef WHERE taskId = :taskId")
-    Single<Integer> getNextOrder(int taskId);
+    Single<Long> getNextOrder(Long taskId);
 
     @Query("UPDATE ChildTaskCrossRef SET `order` = `order` - 1 " +
             "WHERE taskId = :taskId and `order` > :minOrder")
-    Completable decrementOrder(int taskId, int minOrder);
+    Completable decrementOrder(long taskId, long minOrder);
 
     @Query("SELECT " +
             "t.taskId as t_taskId," +
@@ -37,7 +37,7 @@ public interface TaskDao {
             "LEFT OUTER JOIN childtaskcrossref ref ON t.taskId = ref.taskId " +
             "LEFT OUTER JOIN child c ON c.childId = ref.childId WHERE t.taskId = :taskId " +
             "ORDER BY ref.`order` LIMIT 1")
-    Single<TaskWithChild> getTaskWithNextChild(int taskId);
+    Single<TaskWithChild> getTaskWithNextChild(long taskId);
 
     @Query("SELECT " +
             "t.taskId as t_taskId," +
@@ -62,7 +62,7 @@ public interface TaskDao {
     Completable delete(Task... tasks);
 
     @Query("UPDATE ChildTaskCrossRef set `order` = :order WHERE taskId = :taskId and childId = :childId")
-    Completable updateOrder(int taskId, int childId, int order);
+    Completable updateOrder(long taskId, long childId, long order);
 
     @Insert
     Completable insertRef(ChildTaskCrossRef... crossRef);

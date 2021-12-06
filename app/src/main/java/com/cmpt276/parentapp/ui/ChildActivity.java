@@ -10,6 +10,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
@@ -40,7 +41,10 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Objects;
+import java.util.Observable;
 
+import io.reactivex.rxjava3.core.CompletableObserver;
+import io.reactivex.rxjava3.disposables.Disposable;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 
 /**
@@ -53,11 +57,11 @@ public class ChildActivity extends AppCompatActivity {
 
     private static final String EXTRA_FOR_INDEX =
             "com.cmpt276.parentapp.ui.AddChildActivity.childId";
-    private static final int NEW_CHILD_INDEX = -1;
+    private static final Long NEW_CHILD_INDEX = -1L;
     private final String[] IMAGE_OPTIONS = {"Take Photo", "Choose from Gallery", "Cancel"};
     private final int REQUEST_CODE_FOR_TAKE_PHOTO = 10;
     private final int REQUEST_CODE_FOR_CHOOSE_FROM_GALLERY = 20;
-    private int childId;
+    private Long childId;
     private Child child;
     private ChildDao childDao;
     private ActivityChildBinding binding;
@@ -70,7 +74,7 @@ public class ChildActivity extends AppCompatActivity {
         return getIntentForExistingChild(context, NEW_CHILD_INDEX);
     }
 
-    public static Intent getIntentForExistingChild(Context context, int index) {
+    public static Intent getIntentForExistingChild(Context context, Long index) {
         Intent intent = new Intent(context, ChildActivity.class);
         intent.putExtra(EXTRA_FOR_INDEX, index);
         return intent;
@@ -82,7 +86,7 @@ public class ChildActivity extends AppCompatActivity {
         binding = ActivityChildBinding.inflate(this.getLayoutInflater());
         setContentView(binding.getRoot());
 
-        childId = getIntent().getIntExtra(EXTRA_FOR_INDEX, NEW_CHILD_INDEX);
+        childId = getIntent().getLongExtra(EXTRA_FOR_INDEX, NEW_CHILD_INDEX);
         childDao = ParentAppDatabase.getInstance(this).childDao();
 
         setupImageCaptureButton();
@@ -100,7 +104,7 @@ public class ChildActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(@NonNull Menu menu) {
         getMenuInflater().inflate(
-                childId == NEW_CHILD_INDEX ?
+                childId.equals(NEW_CHILD_INDEX) ?
                         R.menu.menu_child :
                         R.menu.menu_child_edit,
                 menu
@@ -171,9 +175,9 @@ public class ChildActivity extends AppCompatActivity {
         updateUI();
     }
 
-    private void setupChild(int id) {
+    private void setupChild(Long id) {
 
-        if (id == NEW_CHILD_INDEX) {
+        if (id.equals(NEW_CHILD_INDEX)) {
             return;
         }
 
@@ -186,9 +190,9 @@ public class ChildActivity extends AppCompatActivity {
                 });
     }
 
-    private void setUpToolbar(int id) {
+    private void setUpToolbar(Long id) {
         binding.toolbar.setTitle(
-                getString(id == NEW_CHILD_INDEX ?
+                getString(id.equals(NEW_CHILD_INDEX) ?
                         R.string.add_child_title :
                         R.string.edit_child_title)
         );
@@ -289,16 +293,16 @@ public class ChildActivity extends AppCompatActivity {
         new Thread(() -> {
             if (child == null) {
                 int coinFlipOrder = childDao.getNextCoinFlipOrder().blockingGet();
-                Long id = childDao.insert(new Child(name, coinFlipOrder, imagePath)).blockingGet();
+                long id = childDao.insert(new Child(name, coinFlipOrder, imagePath)).blockingGet();
 
                 TaskDao taskDao = ParentAppDatabase.getInstance(ChildActivity.this).taskDao();
 
                 List<Task> tasks = taskDao.getAll().blockingGet();
                 for (Task task : tasks) {
-                    int order = taskDao.getNextOrder(task.getTaskId()).blockingGet();
+                    Long order = taskDao.getNextOrder(task.getTaskId()).blockingGet();
                     taskDao.insertRef(new ChildTaskCrossRef(
                             task.getTaskId(),
-                            id.intValue(),
+                            id,
                             order
                     )).blockingAwait();
                 }
@@ -319,7 +323,23 @@ public class ChildActivity extends AppCompatActivity {
 
         childDao.delete(this.child)
                 .subscribeOn(Schedulers.newThread())
-                .subscribe(this::finish);
+                .subscribe(new CompletableObserver(){
+
+                    @Override
+                    public void onSubscribe(@io.reactivex.rxjava3.annotations.NonNull Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onComplete() {
+                        ChildActivity.this.finish();
+                    }
+
+                    @Override
+                    public void onError(@io.reactivex.rxjava3.annotations.NonNull Throwable e) {
+                        Log.i("DELETE CHILD", "onError: " + e.getMessage());
+                    }
+                });
     }
 
     private AlertDialog.Builder getAlertDialogBox() {

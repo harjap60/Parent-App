@@ -20,7 +20,7 @@ import androidx.room.PrimaryKey;
 public class Child {
 
     @PrimaryKey(autoGenerate = true)
-    private int childId;
+    private Long childId;
 
     @ColumnInfo(name = "name")
     private String name;
@@ -36,32 +36,26 @@ public class Child {
     }
 
     public String getName() {
-
         return name;
     }
 
     public void setName(String name) {
-
         this.name = name;
     }
 
     public int getCoinFlipOrder() {
-
         return coinFlipOrder;
     }
 
     public void setCoinFlipOrder(int coinFlipOrder) {
-
         this.coinFlipOrder = coinFlipOrder;
     }
 
-    public int getChildId() {
-
+    public Long getChildId() {
         return childId;
     }
 
-    public void setChildId(int childId) {
-
+    public void setChildId(Long childId) {
         this.childId = childId;
     }
 

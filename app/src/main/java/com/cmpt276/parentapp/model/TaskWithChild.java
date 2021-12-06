@@ -12,5 +12,5 @@ public class TaskWithChild {
     @Embedded
     public Child child;
 
-    public int order;
+    public long order;
 }
