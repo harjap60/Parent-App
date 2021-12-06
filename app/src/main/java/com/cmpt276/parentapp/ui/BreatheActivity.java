@@ -31,11 +31,11 @@ import com.cmpt276.parentapp.databinding.ActivityBreatheBinding;
 
 /**
  * todo:
- *  - add shared prefs to remember the last choice of the user selected breaths
- *  - test for all screen sizes
- *     - Scale text of spinner
- *  - make code better by refactoring strings and not hardcode them
- *  - might want to change colour (or their hex values)
+ * - add shared prefs to remember the last choice of the user selected breaths
+ * - test for all screen sizes
+ * - Scale text of spinner
+ * - make code better by refactoring strings and not hardcode them
+ * - might want to change colour (or their hex values)
  */
 public class BreatheActivity extends AppCompatActivity {
 
@@ -50,6 +50,8 @@ public class BreatheActivity extends AppCompatActivity {
     private final Integer[] optionsNumOfBreaths = new Integer[]{1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
 
     private MediaPlayer calmMusic;
+    AnimatorSet scaleUp;
+    AnimatorSet scaleDown;
 
 
     private int numBreaths;
@@ -61,7 +63,6 @@ public class BreatheActivity extends AppCompatActivity {
         binding = ActivityBreatheBinding.inflate(this.getLayoutInflater());
         setContentView(binding.getRoot());
 
-        calmMusic = MediaPlayer.create(this, R.raw.windy_sea_loop);
         setupToolbar();
         setupBeginButton();
         setupBreatheButtonToChangeSize();
@@ -120,7 +121,7 @@ public class BreatheActivity extends AppCompatActivity {
     @SuppressLint({"ClickableViewAccessibility"})
     private void setupBreatheButtonToChangeSize() {
 
-        AnimatorSet scaleUp = new AnimatorSet();
+        scaleUp = new AnimatorSet();
         Handler handler = new Handler();
 
         binding.breatheButton.setOnTouchListener((view, motionEvent) -> {
@@ -131,8 +132,7 @@ public class BreatheActivity extends AppCompatActivity {
                 if (motionEvent.getAction() == MotionEvent.ACTION_DOWN) {
                     // the button is pressed
                     buttonPressed(scaleUp, handler);
-                }
-                else if (motionEvent.getAction() == MotionEvent.ACTION_UP) {
+                } else if (motionEvent.getAction() == MotionEvent.ACTION_UP) {
                     // the button is released
                     // the button is released
                     buttonReleased(scaleUp, handler);
@@ -143,7 +143,7 @@ public class BreatheActivity extends AppCompatActivity {
     }
 
     private void buttonPressed(AnimatorSet scaleUp, Handler handler) {
-        calmMusic.start();
+        calmMusic = MediaPlayer.create(this, R.raw.windy_sea_loop);
 
         buttonPressedTimerStart = System.currentTimeMillis();
         binding.breatheButton.setBackgroundResource(R.drawable.green_circle);
@@ -161,6 +161,31 @@ public class BreatheActivity extends AppCompatActivity {
         scaleUp.play(scaleUpX).with(scaleUpY);
         scaleUp.start();
 
+        scaleUp.addListener(new Animator.AnimatorListener() {
+            @Override
+            public void onAnimationStart(Animator animator) {
+                if (scaleDown.isRunning()) {
+                    scaleDown.end();
+                }
+                calmMusic.start();
+            }
+
+            @Override
+            public void onAnimationEnd(Animator animator) {
+                calmMusic.stop();
+            }
+
+            @Override
+            public void onAnimationCancel(Animator animator) {
+
+            }
+
+            @Override
+            public void onAnimationRepeat(Animator animator) {
+
+            }
+        });
+
         // change the colour of the circle to red after 3 seconds of breathing in
         handler.postDelayed(
                 () -> binding.breatheButton.setBackgroundResource(R.drawable.red_circle),
@@ -175,7 +200,7 @@ public class BreatheActivity extends AppCompatActivity {
                     Toast.LENGTH_SHORT)
                     .show();
             calmMusic.pause();
-        },MAX_ANIMATION_DURATION_MILLISECONDS);
+        }, MAX_ANIMATION_DURATION_MILLISECONDS);
     }
 
     private void buttonReleased(AnimatorSet scaleUp, Handler handler) {
@@ -209,7 +234,7 @@ public class BreatheActivity extends AppCompatActivity {
     private void buttonExhale(float buttonX, float buttonY) {
 
         // basically we want to show the exhale animation for 10 seconds (at least 3 seconds)
-        AnimatorSet scaleDown = new AnimatorSet();
+        scaleDown = new AnimatorSet();
         Handler handler = new Handler();
         calmMusic.start();
 
@@ -230,19 +255,24 @@ public class BreatheActivity extends AppCompatActivity {
         scaleDownY.setDuration(MAX_ANIMATION_DURATION_MILLISECONDS);
         scaleDown.play(scaleDownX).with(scaleDownY);
         scaleDown.start();
+
         scaleDown.addListener(new Animator.AnimatorListener() {
             @Override
             public void onAnimationStart(Animator animator) {
+                if (scaleUp.isRunning()) {
+                    scaleUp.end();
+                }
 
             }
 
             @Override
             public void onAnimationEnd(Animator animator) {
-                calmMusic.release();
+                calmMusic.stop();
             }
 
             @Override
             public void onAnimationCancel(Animator animator) {
+                calmMusic.stop();
 
             }
 
