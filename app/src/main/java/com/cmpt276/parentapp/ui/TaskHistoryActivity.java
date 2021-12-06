@@ -28,11 +28,11 @@ import java.time.format.DateTimeFormatter;
 public class TaskHistoryActivity extends AppCompatActivity {
 
     public static final String TASK_ID_EXTRA = "com.cmpt276.parentapp.TaskHistory.TASK_ID_EXTRA";
-    public static final int INVALID_ID = -1;
+    public static final long INVALID_ID = -1L;
 
     ActivityTaskHistoryBinding binding;
 
-    public static Intent getIntent(Context context, int taskId) {
+    public static Intent getIntent(Context context, long taskId) {
         Intent i = new Intent(context, TaskHistoryActivity.class);
         i.putExtra(TASK_ID_EXTRA, taskId);
         return i;
@@ -71,8 +71,8 @@ public class TaskHistoryActivity extends AppCompatActivity {
     }
 
     private void populateTaskHistoryList() {
-        int taskId = getIntent().getIntExtra(TASK_ID_EXTRA, INVALID_ID);
-        if (taskId > INVALID_ID) {
+        long taskId = getIntent().getLongExtra(TASK_ID_EXTRA, INVALID_ID);
+        if (taskId != INVALID_ID) {
             new Thread(() -> {
                 TaskDao taskDao = ParentAppDatabase.getInstance(TaskHistoryActivity.this).taskDao();
 

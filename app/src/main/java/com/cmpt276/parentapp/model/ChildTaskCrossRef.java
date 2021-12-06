@@ -5,7 +5,6 @@ import static androidx.room.ForeignKey.CASCADE;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.ForeignKey;
-import androidx.room.Index;
 
 /**
  * Cross reference object to represent many to many relationship between Task and Child tables
@@ -20,36 +19,32 @@ import androidx.room.Index;
 )
 public class ChildTaskCrossRef {
 
-    private final int taskId;
+    private final long taskId;
 
     @ColumnInfo(index = true)
-    private final int childId;
+    private final long childId;
 
-    private int order;
+    private long order;
 
-    public ChildTaskCrossRef(int taskId, int childId, int order) {
+    public ChildTaskCrossRef(long taskId, long childId, long order) {
         this.taskId = taskId;
         this.childId = childId;
         this.order = order;
     }
 
-    public int getTaskId() {
-
+    public long getTaskId() {
         return taskId;
     }
 
-    public int getChildId() {
-
+    public long getChildId() {
         return childId;
     }
 
-    public int getOrder() {
-
+    public long getOrder() {
         return order;
     }
 
-    public void setOrder(int order) {
-
+    public void setOrder(long order) {
         this.order = order;
     }
 }

@@ -37,9 +37,8 @@ public class TaskActivity extends AppCompatActivity {
 
     private static final String EXTRA_FOR_INDEX =
             "com.cmpt276.parentapp.ui.AddChildActivity.childId";
-    private static final int NEW_TASK_INDEX = -1;
+    private static final long NEW_TASK_INDEX = -1L;
     private Task task;
-    private Child child;
     private TaskDao taskDao;
     private ActivityTaskBinding binding;
 
@@ -47,7 +46,7 @@ public class TaskActivity extends AppCompatActivity {
         return getIntentForExistingTask(context, NEW_TASK_INDEX);
     }
 
-    public static Intent getIntentForExistingTask(Context context, int index) {
+    public static Intent getIntentForExistingTask(Context context, long index) {
         Intent intent = new Intent(context, TaskActivity.class);
         intent.putExtra(EXTRA_FOR_INDEX, index);
         return intent;
@@ -59,7 +58,7 @@ public class TaskActivity extends AppCompatActivity {
         binding = ActivityTaskBinding.inflate(this.getLayoutInflater());
         setContentView(binding.getRoot());
 
-        int id = getIntent().getIntExtra(EXTRA_FOR_INDEX, NEW_TASK_INDEX);
+        long id = getIntent().getLongExtra(EXTRA_FOR_INDEX, NEW_TASK_INDEX);
 
         setupDB();
         setupTask(id);
@@ -116,7 +115,7 @@ public class TaskActivity extends AppCompatActivity {
         taskDao = ParentAppDatabase.getInstance(this).taskDao();
     }
 
-    private void setupTask(int id) {
+    private void setupTask(long id) {
 
         if (id == NEW_TASK_INDEX) {
             return;
@@ -126,12 +125,11 @@ public class TaskActivity extends AppCompatActivity {
                 .subscribeOn(Schedulers.newThread())
                 .subscribe((TaskWithChild task) -> {
                     this.task = task.task;
-                    this.child = task.child;
                     updateUI();
                 });
     }
 
-    private void setuptoolbar(int id) {
+    private void setuptoolbar(long id) {
         binding.toolbar.setTitle(
                 getString(id == NEW_TASK_INDEX ?
                         R.string.add_task_title :
@@ -177,14 +175,14 @@ public class TaskActivity extends AppCompatActivity {
                         .getInstance(TaskActivity.this)
                         .childDao();
 
-                Long id = taskDao.insert(new Task(name)).blockingGet();
+                long id = taskDao.insert(new Task(name)).blockingGet();
 
                 List<Child> children = childDao.getAll().blockingGet();
 
-                for (int i = 0; i < children.size(); i++) {
+                for (long i = 0L; i < children.size(); i++) {
                     ChildTaskCrossRef ref = new ChildTaskCrossRef(
-                            id.intValue(),
-                            children.get(i).getChildId(),
+                            id,
+                            children.get((int) i).getChildId(),
                             i
                     );
 
