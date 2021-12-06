@@ -7,6 +7,8 @@ import androidx.room.Entity;
 import androidx.room.ForeignKey;
 import androidx.room.PrimaryKey;
 
+import androidx.annotation.Nullable;
+
 import java.time.LocalDateTime;
 
 @Entity(
@@ -17,13 +19,16 @@ import java.time.LocalDateTime;
 )
 public class TaskHistory {
 
-    private final int childId;
-    private final int taskId;
+    @Nullable
+    private final Long childId;
+
+    private final long taskId;
     private final LocalDateTime date;
+
     @PrimaryKey(autoGenerate = true)
     private long taskHistoryId;
 
-    public TaskHistory(int childId, int taskId, LocalDateTime date) {
+    public TaskHistory(@Nullable Long childId, long taskId, LocalDateTime date) {
         this.childId = childId;
         this.taskId = taskId;
         this.date = date;
@@ -37,11 +42,12 @@ public class TaskHistory {
         this.taskHistoryId = taskHistoryId;
     }
 
-    public int getChildId() {
+    @Nullable
+    public Long getChildId() {
         return childId;
     }
 
-    public int getTaskId() {
+    public long getTaskId() {
         return taskId;
     }
 

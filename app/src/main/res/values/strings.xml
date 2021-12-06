@@ -96,7 +96,7 @@
     <string name="help_button">Help button</string>
     <string name="save_button_description">Save Button</string>
     <string name="child_image_description">Child Image</string>
-    <string name="title_main">Parent App</string>
+    <string name="title_main">Parental App</string>
     <string name="manage_tasks_text">Manage Tasks</string>
     <string name="previous_child_image">Previous child image</string>
     <string name="coin_flip_menu">Coin Flip Menu</string>
@@ -160,10 +160,25 @@
     <string name="breaths_entered_invalid">Number of breaths must be between %1$d and %2$d</string>
 
     <string name="save_button_text">Save</string>
+    <string name="twenty_five">25</string>
+    <string name="fifty">50</string>
+    <string name="seventy_five">75</string>
+    <string name="one_hundred">100</string>
+    <string name="two_hundred">200</string>
+    <string name="three_hundred">300</string>
+    <string name="four_hundred">400</string>
     <string name="help">Help</string>
     <string name="breath">Breath</string>
     <string name="breath_image">Breath Image</string>
     <string name="help_image">Help Image</string>
+    <string name="_25">25%</string>
+    <string name="_50">50%</string>
+    <string name="_75">75%</string>
+    <string name="_100">100%</string>
+    <string name="_200">200%</string>
+    <string name="_300">300%</string>
+    <string name="_400">400%</string>
+    <string name="task_history_deleted_child">Deleted Child</string>
     <string name="how_many_breaths_would_you_like_to_take">How many breaths would you like to take?</string>
     <string name="begin">Begin</string>
     <string name="button_increase_decrease_size">button increase decrease size</string>

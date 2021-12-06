@@ -13,17 +13,15 @@ import androidx.room.PrimaryKey;
 public class Task {
 
     @PrimaryKey(autoGenerate = true)
-    private int taskId;
+    private long taskId;
 
     private String name;
 
     public Task(String name) {
-
         this.setName(name);
     }
 
     public String getName() {
-
         return name;
     }
 
@@ -35,13 +33,11 @@ public class Task {
         this.name = name;
     }
 
-    public int getTaskId() {
-
+    public long getTaskId() {
         return taskId;
     }
 
-    public void setTaskId(int taskId) {
-
+    public void setTaskId(long taskId) {
         this.taskId = taskId;
     }
 

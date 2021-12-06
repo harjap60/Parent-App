@@ -29,14 +29,14 @@ public class TaskDetailActivity extends AppCompatActivity {
 
     public static final String TASK_ID_EXTRA = "TASK_ID_EXTRA";
     public static final int DEFAULT_VALUE = -1;
-    public static final int MIN_ORDER = 0;
+    public static final long MIN_ORDER = 0L;
 
-    private int taskId;
+    private long taskId;
     private ActivityTaskDetailBinding binding;
     private TaskDao taskDao;
     private TaskWithChild taskWithChild;
 
-    public static Intent getIntent(Context context, int taskId) {
+    public static Intent getIntent(Context context, long taskId) {
         Intent i = new Intent(context, TaskDetailActivity.class);
         i.putExtra(TASK_ID_EXTRA, taskId);
         return i;
@@ -48,7 +48,7 @@ public class TaskDetailActivity extends AppCompatActivity {
         binding = ActivityTaskDetailBinding.inflate(this.getLayoutInflater());
         setContentView(binding.getRoot());
 
-        taskId = getIntent().getIntExtra(TASK_ID_EXTRA, DEFAULT_VALUE);
+        taskId = getIntent().getLongExtra(TASK_ID_EXTRA, DEFAULT_VALUE);
         taskDao = ParentAppDatabase.getInstance(this).taskDao();
 
         setupToolbar();
@@ -104,7 +104,7 @@ public class TaskDetailActivity extends AppCompatActivity {
 
     private void setupConfirmButton() {
         binding.btnConfirmTask.setOnClickListener((v) -> new Thread(() -> {
-            int order = taskDao.getNextOrder(taskId).blockingGet();
+            Long order = taskDao.getNextOrder(taskId).blockingGet();
 
             taskDao.updateOrder(taskId, taskWithChild.child.getChildId(), order).blockingAwait();
             taskDao.decrementOrder(taskId, MIN_ORDER).blockingAwait();

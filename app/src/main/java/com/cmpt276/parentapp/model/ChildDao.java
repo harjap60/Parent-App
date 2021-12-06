@@ -22,7 +22,7 @@ public interface ChildDao {
     Single<List<Child>> getAll();
 
     @Query("SELECT * FROM child WHERE childId = :childId")
-    Single<Child> get(int childId);
+    Single<Child> get(Long childId);
 
     @Query("SELECT * FROM child ORDER BY coinFlipOrder LIMIT 1")
     Single<Child> getChildForNextFlip();

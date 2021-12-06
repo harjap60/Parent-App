@@ -27,7 +27,7 @@ import java.time.format.DateTimeFormatter;
                 TaskHistory.class,
                 ChildTaskCrossRef.class
         },
-        version = 17
+        version = 22
 )
 @TypeConverters({Converters.class})
 public abstract class ParentAppDatabase extends RoomDatabase {
