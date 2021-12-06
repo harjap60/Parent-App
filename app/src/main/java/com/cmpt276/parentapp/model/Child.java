@@ -20,7 +20,7 @@ import androidx.room.PrimaryKey;
 public class Child {
 
     @PrimaryKey(autoGenerate = true)
-    private long childId;
+    private Long childId;
 
     @ColumnInfo(name = "name")
     private String name;

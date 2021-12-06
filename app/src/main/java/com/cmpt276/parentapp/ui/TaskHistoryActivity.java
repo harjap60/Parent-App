@@ -120,14 +120,19 @@ public class TaskHistoryActivity extends AppCompatActivity {
             );
 
             TextView childNameText = itemView.findViewById(R.id.tv_child_name);
-            childNameText.setText(taskHistoryWithChild.child.getName());
+            if (taskHistoryWithChild.child == null) {
+                childNameText.setText(R.string.task_history_deleted_child);
+            } else {
+                childNameText.setText(taskHistoryWithChild.child.getName());
 
-            ImageView childImage = itemView.findViewById(R.id.iv_child_image);
-            Glide.with(TaskHistoryActivity.this)
-                    .load(taskHistoryWithChild.child.getImagePath())
-                    .centerCrop()
-                    .placeholder(R.drawable.child_image_icon)
-                    .into(childImage);
+                ImageView childImage = itemView.findViewById(R.id.iv_child_image);
+                Glide.with(TaskHistoryActivity.this)
+                        .load(taskHistoryWithChild.child.getImagePath())
+                        .centerCrop()
+                        .placeholder(R.drawable.child_image_icon)
+                        .into(childImage);
+            }
+
 
             return itemView;
         }
