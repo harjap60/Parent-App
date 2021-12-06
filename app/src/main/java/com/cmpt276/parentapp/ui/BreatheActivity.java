@@ -4,8 +4,10 @@ import android.animation.Animator;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Handler;
@@ -31,7 +33,6 @@ import com.cmpt276.parentapp.databinding.ActivityBreatheBinding;
 
 /**
  * todo:
- * - add shared prefs to remember the last choice of the user selected breaths
  * - test for all screen sizes
  * - Scale text of spinner
  * - make code better by refactoring strings and not hardcode them
@@ -39,11 +40,15 @@ import com.cmpt276.parentapp.databinding.ActivityBreatheBinding;
  */
 public class BreatheActivity extends AppCompatActivity {
 
+    public static final String SHARED_PREFS_NAME = "Shared Prefs";
+    public static final String BREATHES = "Breathes";
     private final float BUTTON_DEFAULT_SIZE = 1f;
 
     private final int MAX_ANIMATION_DURATION_MILLISECONDS = 10000;
 
     private final int TIME_BREATHE_GOOD_MILLISECONDS = 3000;
+
+    SharedPreferences sharedPreferences;
 
     private ActivityBreatheBinding binding;
     private long buttonPressedTimerStart;
@@ -54,7 +59,7 @@ public class BreatheActivity extends AppCompatActivity {
     private AnimatorSet scaleDown;
 
 
-    private int numBreaths;
+    private int numBreathsChoice;
     int breathsTaken = 0;
 
     @Override
@@ -65,9 +70,14 @@ public class BreatheActivity extends AppCompatActivity {
 
         setupToolbar();
         setupBeginButton();
+        getPrevNumBreaths();
         setupBreatheButtonToChangeSize();
-
         setupSpinner();
+    }
+
+    private void getPrevNumBreaths() {
+        sharedPreferences = getSharedPreferences(SHARED_PREFS_NAME, Activity.MODE_PRIVATE);
+        numBreathsChoice = sharedPreferences.getInt(BREATHES, 1);
     }
 
     private void setupSpinner() {
@@ -77,8 +87,8 @@ public class BreatheActivity extends AppCompatActivity {
                 optionsNumOfBreaths
         );
         adapter.setDropDownViewResource(R.layout.simple_spinner_dropdown);
-
         binding.numberSpinner.setAdapter(adapter);
+        binding.numberSpinner.setSelection(numBreathsChoice - 1);
     }
 
     private void setupToolbar() {
@@ -98,13 +108,13 @@ public class BreatheActivity extends AppCompatActivity {
         binding.textViewTotalBreathsTaken.setVisibility(View.INVISIBLE);
         binding.beginButton.setOnClickListener(view -> {
             // get the number of breaths
-            numBreaths = (binding.numberSpinner.getSelectedItemPosition() + 1);
+            numBreathsChoice = (binding.numberSpinner.getSelectedItemPosition() + 1);
             binding.numberSpinner.setEnabled(false);
 
             binding.beginButton.setVisibility(View.INVISIBLE);
             binding.textViewTotalBreathsTaken.setVisibility(View.VISIBLE);
             binding.textViewTotalBreathsTaken.setText(getString(
-                    R.string.text_view_breaths_taken_count, breathsTaken, numBreaths
+                    R.string.text_view_breaths_taken_count, breathsTaken, numBreathsChoice
             ));
             binding.breatheButton.setVisibility(View.VISIBLE);
             binding.breatheInfoTextView.setVisibility(View.VISIBLE);
@@ -114,7 +124,7 @@ public class BreatheActivity extends AppCompatActivity {
 
     private void updateBreathCountTextView() {
         binding.textViewTotalBreathsTaken.setText(getString(
-                R.string.text_view_breaths_taken_count, breathsTaken, numBreaths
+                R.string.text_view_breaths_taken_count, breathsTaken, numBreathsChoice
         ));
     }
 
@@ -126,7 +136,7 @@ public class BreatheActivity extends AppCompatActivity {
 
         binding.breatheButton.setOnTouchListener((view, motionEvent) -> {
             // the onTouchListener will only be set only until there are more breaths remaining.
-            if (breathsTaken < numBreaths) {
+            if (breathsTaken < numBreathsChoice) {
                 binding.breatheInfoTextView.setText(R.string.breathe_in_text);
 
                 if (motionEvent.getAction() == MotionEvent.ACTION_DOWN) {
@@ -283,7 +293,8 @@ public class BreatheActivity extends AppCompatActivity {
 
         // changes the text of the button after 3 seconds of exhaling out
         handler.postDelayed(() -> {
-            if (breathsTaken == numBreaths) {
+            if (breathsTaken == numBreathsChoice) {
+                saveChoice(numBreathsChoice);
                 binding.breatheInfoTextView.setText(R.string.all_breaths_taken);
             } else {
                 binding.breatheInfoTextView.setText(R.string.breathe_in_text);
@@ -302,5 +313,12 @@ public class BreatheActivity extends AppCompatActivity {
 
     public static Intent getIntent(Context context) {
         return new Intent(context, BreatheActivity.class);
+    }
+
+    private void saveChoice(int choice) {
+        sharedPreferences = getSharedPreferences(SHARED_PREFS_NAME, Activity.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putInt(BREATHES, choice);
+        editor.apply();
     }
 }
