@@ -50,8 +50,8 @@ public class BreatheActivity extends AppCompatActivity {
     private final Integer[] optionsNumOfBreaths = new Integer[]{1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
 
     private MediaPlayer calmMusic;
-    AnimatorSet scaleUp;
-    AnimatorSet scaleDown;
+    private AnimatorSet scaleUp;
+    private AnimatorSet scaleDown;
 
 
     private int numBreaths;
@@ -236,8 +236,6 @@ public class BreatheActivity extends AppCompatActivity {
         // basically we want to show the exhale animation for 10 seconds (at least 3 seconds)
         scaleDown = new AnimatorSet();
         Handler handler = new Handler();
-        calmMusic.start();
-
 
         binding.breatheButton.setScaleX(buttonX);
         binding.breatheButton.setScaleY(buttonY);
@@ -259,6 +257,7 @@ public class BreatheActivity extends AppCompatActivity {
         scaleDown.addListener(new Animator.AnimatorListener() {
             @Override
             public void onAnimationStart(Animator animator) {
+                calmMusic.start();
                 if (scaleUp.isRunning()) {
                     scaleUp.end();
                 }
