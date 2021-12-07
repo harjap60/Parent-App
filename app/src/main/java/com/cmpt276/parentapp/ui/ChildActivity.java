@@ -41,7 +41,6 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Objects;
-import java.util.Observable;
 
 import io.reactivex.rxjava3.core.CompletableObserver;
 import io.reactivex.rxjava3.disposables.Disposable;
@@ -98,7 +97,7 @@ public class ChildActivity extends AppCompatActivity {
     }
 
     private void setupAddEditButton() {
-        binding.btnSave.setOnClickListener((v)-> saveChild());
+        binding.btnSave.setOnClickListener((v) -> saveChild());
     }
 
     @Override
@@ -323,7 +322,7 @@ public class ChildActivity extends AppCompatActivity {
 
         childDao.delete(this.child)
                 .subscribeOn(Schedulers.newThread())
-                .subscribe(new CompletableObserver(){
+                .subscribe(new CompletableObserver() {
 
                     @Override
                     public void onSubscribe(@io.reactivex.rxjava3.annotations.NonNull Disposable d) {
@@ -351,15 +350,15 @@ public class ChildActivity extends AppCompatActivity {
     private void selectImage() {
         new AlertDialog.Builder(this)
                 .setTitle(R.string.choose_picture)
-        .setItems(IMAGE_OPTIONS, (dialogInterface, item) -> {
-            if (IMAGE_OPTIONS[item].equals(getString(R.string.take_photo))) {
-                captureImage();
-            } else if (IMAGE_OPTIONS[item].equals(getString(R.string.choose_from_gallery))) {
-                chooseImageFromGallery();
-            } else if (IMAGE_OPTIONS[item].equals(getString(R.string.cancel))) {
-                dialogInterface.dismiss();
-            }
-        }).show();
+                .setItems(IMAGE_OPTIONS, (dialogInterface, item) -> {
+                    if (IMAGE_OPTIONS[item].equals(getString(R.string.take_photo))) {
+                        captureImage();
+                    } else if (IMAGE_OPTIONS[item].equals(getString(R.string.choose_from_gallery))) {
+                        chooseImageFromGallery();
+                    } else if (IMAGE_OPTIONS[item].equals(getString(R.string.cancel))) {
+                        dialogInterface.dismiss();
+                    }
+                }).show();
     }
 
     private void captureImage() {

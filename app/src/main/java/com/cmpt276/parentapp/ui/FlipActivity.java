@@ -339,7 +339,7 @@ public class FlipActivity extends AppCompatActivity implements AdapterView.OnIte
                                         .centerCrop()
                                         .placeholder(R.drawable.child_image_icon)
                                         .into(image);
-                            }else{
+                            } else {
                                 image.setImageResource(R.drawable.child_image_icon);
                             }
                             binding.tvPrevChild.setText(child.getName());

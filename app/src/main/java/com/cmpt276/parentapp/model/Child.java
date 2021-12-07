@@ -1,7 +1,5 @@
 package com.cmpt276.parentapp.model;
 
-import android.graphics.Bitmap;
-
 import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;

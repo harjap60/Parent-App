@@ -12,6 +12,7 @@ import android.os.IBinder;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.WindowManager;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
@@ -86,6 +87,7 @@ public class TimerActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         binding = ActivityTimerBinding.inflate(this.getLayoutInflater());
         setContentView(binding.getRoot());
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
         setupToolbar();
         extractDurationFromIntent();

@@ -6,7 +6,6 @@ import android.app.NotificationManager;
 import android.content.ComponentName;
 import android.content.Intent;
 import android.content.ServiceConnection;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.view.Menu;
@@ -59,11 +58,11 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void setupStatusAndNavigationColor() {
-        getWindow().setStatusBarColor(ContextCompat.getColor(this,R.color.primary)); //status bar
+        getWindow().setStatusBarColor(ContextCompat.getColor(this, R.color.primary)); //status bar
         getWindow().setNavigationBarColor(ContextCompat.getColor(this, R.color.primary)); // Navigation bar(bottom)
     }
 
-    private void setupBreatheButton(){
+    private void setupBreatheButton() {
         binding.breatheActivityButton.setOnClickListener(
                 view -> startActivity(BreatheActivity.getIntent(this))
         );

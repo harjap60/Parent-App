@@ -103,6 +103,7 @@
         app:layout_constraintEnd_toStartOf="@+id/right_guideline_right"
         app:layout_constraintStart_toStartOf="@+id/right_image_guideline_left"
         app:layout_constraintTop_toTopOf="@+id/top_image"
+        app:layout_constraintDimensionRatio="1:1"
         app:srcCompat="@drawable/ic_baseline_stop_24" />
 
     <ImageButton
@@ -120,6 +121,7 @@
         app:layout_constraintEnd_toStartOf="@+id/left_image_guideline_right"
         app:layout_constraintStart_toStartOf="@+id/left_image_guidline_left"
         app:layout_constraintTop_toTopOf="@+id/top_image"
+        app:layout_constraintDimensionRatio="1:1"
         app:srcCompat="@drawable/ic_baseline_delete_24" />
 
     <Button
@@ -328,7 +330,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.05" />
+        app:layout_constraintGuide_percent="0.1" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
