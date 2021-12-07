@@ -149,7 +149,7 @@
     <string name="no_children_configure_message">No Children Configured.</string>
     <string name="breathe">Breathe</string>
     <string name="toss_result">Toss Result</string>
-    <string name="toast_10s_button_held">LET GO OF ME!!!</string>
+    <string name="toast_10s_button_held">Release your breath</string>
     <string name="button_time_held">\Held button for: %1$ds</string>
     <string name="text_view_breaths_taken_count">Taken %1$d of %2$d breaths</string>
 

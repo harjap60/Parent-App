@@ -33,14 +33,6 @@ import com.cmpt276.parentapp.databinding.ActivityBreatheBinding;
  * Just has a textview and button
  * <p>
  */
-
-/**
- * todo:
- * - test for all screen sizes
- * - Scale text of spinner
- * - make code better by refactoring strings and not hardcode them
- * - might want to change colour (or their hex values)
- */
 public class BreatheActivity extends AppCompatActivity {
 
     public static final String SHARED_PREFS_NAME = "Shared Prefs";
@@ -63,7 +55,7 @@ public class BreatheActivity extends AppCompatActivity {
 
 
     private int numBreathsChoice;
-    int breathsTaken = 0;
+    int breathsTaken;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

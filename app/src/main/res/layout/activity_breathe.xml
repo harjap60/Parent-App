@@ -57,7 +57,8 @@
                 android:autoSizeTextType="uniform"
                 android:gravity="center"
                 android:maxLines="1"
-                android:text="@string/how_many_breaths_would_you_like_to_take" />
+                android:text="@string/how_many_breaths_would_you_like_to_take"
+                tools:ignore="NestedWeights" />
 
 
             <Spinner
