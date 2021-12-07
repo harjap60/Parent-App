@@ -13,10 +13,13 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -81,14 +84,35 @@ public class BreatheActivity extends AppCompatActivity {
     }
 
     private void setupSpinner() {
-        ArrayAdapter<Integer> adapter = new ArrayAdapter<>(
-                this,
-                android.R.layout.simple_spinner_item,
-                optionsNumOfBreaths
-        );
+        ArrayAdapter<Integer> adapter = new CustomSpinner();
         adapter.setDropDownViewResource(R.layout.simple_spinner_dropdown);
         binding.numberSpinner.setAdapter(adapter);
         binding.numberSpinner.setSelection(numBreathsChoice - 1);
+    }
+
+    public class CustomSpinner extends ArrayAdapter<Integer> {
+        public CustomSpinner() {
+            super(BreatheActivity.this, R.layout.simple_spinner_item, optionsNumOfBreaths);
+        }
+
+        @Override
+        public View getView(int position, @Nullable View convertView,
+                            @androidx.annotation.NonNull ViewGroup parent) {
+            View itemView = convertView;
+            if (itemView == null) {
+                itemView = getLayoutInflater().inflate(
+                        R.layout.simple_spinner_item,
+                        parent,
+                        false
+                );
+            }
+
+            int currentInt = optionsNumOfBreaths[position];
+            TextView intToShow = itemView.findViewById(R.id.breathe_spinner);
+            intToShow.setText(String.valueOf(currentInt));
+
+            return itemView;
+        }
     }
 
     private void setupToolbar() {
