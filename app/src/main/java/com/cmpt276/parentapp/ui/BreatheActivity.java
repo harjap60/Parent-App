@@ -160,7 +160,6 @@ public class BreatheActivity extends AppCompatActivity {
                     buttonPressed(scaleUp, handler);
                 } else if (motionEvent.getAction() == MotionEvent.ACTION_UP) {
                     // the button is released
-                    // the button is released
                     buttonReleased(scaleUp, handler);
                 }
             }
