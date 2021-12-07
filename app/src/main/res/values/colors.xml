@@ -11,4 +11,6 @@
     <color name="transparent_dark">#33000000</color>
     <color name="primaryVariant">#24429A</color>
     <color name="primary">#5561CF</color>
+    <color name="breathe_activity_red_circle">#D51212</color>
+    <color name="breathe_activity_green_circle">#5DD512</color>
 </resources>

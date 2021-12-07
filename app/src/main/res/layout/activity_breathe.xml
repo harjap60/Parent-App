@@ -16,85 +16,196 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-    <androidx.appcompat.widget.Toolbar
-        android:id="@+id/breathe_toolbar"
-        android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        android:theme="@style/Theme.ParentApp.PopupOverlay"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:titleTextColor="?colorOnPrimary" />
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/breathe_toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:theme="@style/Theme.ParentApp.PopupOverlay"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:titleTextColor="?colorOnPrimary" />
     </com.google.android.material.appbar.AppBarLayout>
 
-
+    <!-- BREATH INFO LINEAR LAYOUT AND GUIDELINES -->
     <LinearLayout
-        android:id="@+id/linear_layout_no_of_breaths"
+        android:id="@+id/linear_layout_breaths_info"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:orientation="vertical"
+        android:weightSum="2"
+        app:layout_constraintBottom_toBottomOf="@id/guideline_bottom_breath_info"
+        app:layout_constraintEnd_toEndOf="@id/guideline_end_breath_info"
+        app:layout_constraintStart_toStartOf="@id/guideline_start_breath_info"
+        app:layout_constraintTop_toTopOf="@id/guideline_top_breath_info">
+
+        <LinearLayout
+            android:id="@+id/linear_layout_no_of_breaths"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.7"
+                android:autoSizeMaxTextSize="100dp"
+                android:autoSizeMinTextSize="10dp"
+                android:autoSizeStepGranularity="1dp"
+                android:autoSizeTextType="uniform"
+                android:gravity="center"
+                android:maxLines="1"
+                android:text="@string/how_many_breaths_would_you_like_to_take"
+                tools:ignore="NestedWeights" />
+
+
+            <Spinner
+                android:id="@+id/number_spinner"
+                android:layout_width="0dp"
+                android:layout_height="fill_parent"
+                android:layout_weight="0.3"
+                android:dropDownSelector="@drawable/drop_down_arrow"
+                android:popupBackground="?colorPrimary"
+                android:gravity="end"
+                app:layout_constraintBottom_toTopOf="@+id/text_view_total_breaths_taken"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/linear_layout_no_of_breaths" />
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/text_view_total_breaths_taken"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:autoSizeMaxTextSize="100dp"
+            android:autoSizeMinTextSize="10dp"
+            android:autoSizeStepGranularity="1dp"
+            android:autoSizeTextType="uniform"
+            android:gravity="center"
+            android:maxLines="1"
+            android:text="@string/text_view_breaths_taken_count" />
+    </LinearLayout>
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline_top_breath_info"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toTopOf="@+id/text_view_total_breaths_taken">
+        app:layout_constraintGuide_percent="0.15" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Let's take "
-            android:layout_weight="1"/>
-
-        <!--<Spinner
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:dropDownSelector="@drawable/drop_down_arrow"
-            android:layout_weight="1"/>-->
-
-        <EditText
-            android:id="@+id/no_of_breaths"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:textColor="?colorOnPrimary"
-            android:inputType="numberSigned"/>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="breaths together"
-            android:layout_weight="1"/>
-    </LinearLayout>
-
-
-    <TextView
-        android:id="@+id/text_view_total_breaths_taken"
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline_start_breath_info"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/text_view_breaths_taken_count"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.05" />
 
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline_end_breath_info"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.95" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline_bottom_breath_info"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.35" />
+    <!-- ======================================== -->
+
+    <!-- BEGIN BUTTON AND GUIDELINES -->
     <Button
         android:id="@+id/begin_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:backgroundTint="?colorPrimaryVariant"
-        android:text="Begin"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/text_view_total_breaths_taken"
-        app:layout_constraintBottom_toBottomOf="parent"/>
+        android:layout_width="0dp"
+        android:layout_height="0dp"
 
-    <Button
-        android:id="@+id/breathe_button"
+        android:autoSizeMaxTextSize="100sp"
+        android:autoSizeMinTextSize="12sp"
+        android:autoSizeStepGranularity="2sp"
+        android:autoSizeTextType="uniform"
+        android:backgroundTint="?colorPrimaryVariant"
+        android:gravity="center"
+
+        android:text="@string/begin"
+        app:layout_constraintDimensionRatio="2.5:1"
+        app:layout_constraintTop_toTopOf="@+id/breathe_button"
+        app:layout_constraintEnd_toEndOf="@+id/breathe_button"
+        app:layout_constraintStart_toStartOf="@+id/breathe_button"
+        app:layout_constraintBottom_toBottomOf="@+id/breathe_button"/>
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline_top_begin_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:backgroundTint="?colorPrimaryVariant"
-        android:text="Breathe"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent=".6" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline_bottom_begin_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent=".7" />
+    <!-- =========================== -->
+
+    <!-- BREATHE BUTTON AND GUIDELINES -->
+    <ImageButton
+        android:id="@+id/breathe_button"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+
+        android:background="@drawable/green_circle"
+
+        app:layout_constraintBottom_toBottomOf="@id/guideline_bottom_breathe_button"
+
+        app:layout_constraintDimensionRatio="1:1"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/text_view_total_breaths_taken"
-        app:layout_constraintBottom_toBottomOf="parent"/>
+        app:layout_constraintTop_toTopOf="@id/guideline_top_breathe_button"
+        android:contentDescription="@string/button_increase_decrease_size"/>
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline_top_breathe_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent=".50" />
+
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline_bottom_breathe_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent=".80" />
+    <!-- ============================= -->
+
+    <!-- BREATHE INFO TEXT VIEW
+         PLACE AT THE BOTTOM BECAUSE IT WILL SHOW ABOVE THE GREEN CIRCLE -->
+        <TextView
+            android:id="@+id/breathe_info_text_view"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:text="@string/breathe_in_text"
+
+            android:autoSizeMaxTextSize="100dp"
+            android:autoSizeMinTextSize="12dp"
+            android:autoSizeStepGranularity="2dp"
+
+            android:autoSizeTextType="uniform"
+
+            android:gravity="center"
+            app:layout_constraintTop_toTopOf="@id/guideline_top_begin_button"
+            app:layout_constraintBottom_toBottomOf="@id/guideline_bottom_begin_button"
+            app:layout_constraintStart_toStartOf="@id/breathe_button"
+            app:layout_constraintEnd_toEndOf="@id/breathe_button"/>
+                <!-- ===================================== -->
+
 </androidx.constraintlayout.widget.ConstraintLayout>

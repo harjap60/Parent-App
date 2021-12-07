@@ -1,25 +1,30 @@
 package com.cmpt276.parentapp.ui;
 
+import android.animation.Animator;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
+import android.content.SharedPreferences;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.MotionEvent;
 import android.view.View;
-import android.widget.Button;
+import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.ImageButton;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.cmpt276.parentapp.R;
 import com.cmpt276.parentapp.databinding.ActivityBreatheBinding;
-
-import java.util.concurrent.TimeUnit;
 
 /**
  * Help user to relax and calm down if they feel the need to
@@ -30,18 +35,26 @@ import java.util.concurrent.TimeUnit;
  */
 public class BreatheActivity extends AppCompatActivity {
 
-    private final float BUTTON_SIZE_MAX = 2f;
+    public static final String SHARED_PREFS_NAME = "Shared Prefs";
+    public static final String BREATHES = "Breathes";
     private final float BUTTON_DEFAULT_SIZE = 1f;
-    private final int MAX_ANIMATION_DURATION = 10000;
-    private final int TIME_BREATHE_GOOD = 3;
-    private final int MIN_NUM_BREATHS = 0;
-    private final int MAX_NUM_BREATHS = 10;
+
+    private final int MAX_ANIMATION_DURATION_MILLISECONDS = 10000;
+
+    private final int TIME_BREATHE_GOOD_MILLISECONDS = 3000;
+
+    SharedPreferences sharedPreferences;
+
     private ActivityBreatheBinding binding;
     private long buttonPressedTimerStart;
-    private long timeButtonHeldFor;
+    private final Integer[] optionsNumOfBreaths = new Integer[]{1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
 
-    private int numBreaths;
-    int breathsTaken = 0;
+    private MediaPlayer calmMusic;
+
+
+
+    private int numBreathsChoice;
+    int breathsTaken;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,7 +64,46 @@ public class BreatheActivity extends AppCompatActivity {
 
         setupToolbar();
         setupBeginButton();
+        getPrevNumBreaths();
         setupBreatheButtonToChangeSize();
+        setupSpinner();
+    }
+
+    private void getPrevNumBreaths() {
+        sharedPreferences = getSharedPreferences(SHARED_PREFS_NAME, Activity.MODE_PRIVATE);
+        numBreathsChoice = sharedPreferences.getInt(BREATHES, 1);
+    }
+
+    private void setupSpinner() {
+        ArrayAdapter<Integer> adapter = new CustomSpinner();
+        adapter.setDropDownViewResource(R.layout.simple_spinner_dropdown);
+        binding.numberSpinner.setAdapter(adapter);
+        binding.numberSpinner.setSelection(numBreathsChoice - 1);
+    }
+
+    public class CustomSpinner extends ArrayAdapter<Integer> {
+        public CustomSpinner() {
+            super(BreatheActivity.this, R.layout.simple_spinner_item, optionsNumOfBreaths);
+        }
+
+        @Override
+        public View getView(int position, @Nullable View convertView,
+                            @androidx.annotation.NonNull ViewGroup parent) {
+            View itemView = convertView;
+            if (itemView == null) {
+                itemView = getLayoutInflater().inflate(
+                        R.layout.simple_spinner_item,
+                        parent,
+                        false
+                );
+            }
+
+            int currentInt = optionsNumOfBreaths[position];
+            TextView intToShow = itemView.findViewById(R.id.breathe_spinner);
+            intToShow.setText(String.valueOf(currentInt));
+
+            return itemView;
+        }
     }
 
     private void setupToolbar() {
@@ -64,55 +116,30 @@ public class BreatheActivity extends AppCompatActivity {
     }
 
     private void setupBeginButton() {
-        binding.noOfBreaths.setEnabled(true);
+        breathsTaken = 0;
         binding.beginButton.setVisibility(View.VISIBLE);
+        binding.breatheInfoTextView.setVisibility(View.INVISIBLE);
         binding.breatheButton.setVisibility(View.INVISIBLE);
         binding.textViewTotalBreathsTaken.setVisibility(View.INVISIBLE);
         binding.beginButton.setOnClickListener(view -> {
             // get the number of breaths
-            if (binding.noOfBreaths.getText().toString().equals("")) {
-                Toast.makeText(BreatheActivity.this,
-                        getString(R.string.breathe_value_null),
-                        Toast.LENGTH_SHORT).show();
-            } else {
+            numBreathsChoice = (binding.numberSpinner.getSelectedItemPosition() + 1);
+            binding.numberSpinner.setEnabled(false);
 
-                numBreaths = Integer.parseInt(binding.noOfBreaths.getText().toString());
-
-                //Check if number enter is valid
-                if (numBreaths > MIN_NUM_BREATHS && numBreaths <= MAX_NUM_BREATHS) {
-
-                    // need to add a check that will make sure that the user has selected
-                    // a specific no of breaths and only then do the following things
-                    // might not need to add the check if we are using a spinner instead of edit text
-                    // and in that case, we can select a default value of the spinner and we do not
-                    // need to add the check
-                    binding.noOfBreaths.setEnabled(false);
-
-
-                    binding.beginButton.setVisibility(View.INVISIBLE);
-                    binding.textViewTotalBreathsTaken.setVisibility(View.VISIBLE);
-                    binding.textViewTotalBreathsTaken.setText(getString(
-                            R.string.text_view_breaths_taken_count, breathsTaken, numBreaths
-                    ));
-                    binding.breatheButton.setVisibility(View.VISIBLE);
-                    binding.breatheButton.setText(R.string.breathe_in_button_text);
-                } else {
-                    Toast.makeText(
-                            BreatheActivity.this,
-                            getString(
-                                    R.string.breaths_entered_invalid,
-                                    MIN_NUM_BREATHS,
-                                    MAX_NUM_BREATHS
-                            ),
-                            Toast.LENGTH_SHORT).show();
-                }
-            }
+            binding.beginButton.setVisibility(View.INVISIBLE);
+            binding.textViewTotalBreathsTaken.setVisibility(View.VISIBLE);
+            binding.textViewTotalBreathsTaken.setText(getString(
+                    R.string.text_view_breaths_taken_count, breathsTaken, numBreathsChoice
+            ));
+            binding.breatheButton.setVisibility(View.VISIBLE);
+            binding.breatheInfoTextView.setVisibility(View.VISIBLE);
+            binding.breatheInfoTextView.setText(R.string.breathe_in_text);
         });
     }
 
     private void updateBreathCountTextView() {
         binding.textViewTotalBreathsTaken.setText(getString(
-                R.string.text_view_breaths_taken_count, breathsTaken, numBreaths
+                R.string.text_view_breaths_taken_count, breathsTaken, numBreathsChoice
         ));
     }
 
@@ -124,8 +151,8 @@ public class BreatheActivity extends AppCompatActivity {
 
         binding.breatheButton.setOnTouchListener((view, motionEvent) -> {
             // the onTouchListener will only be set only until there are more breaths remaining.
-            if (breathsTaken < numBreaths) {
-                binding.breatheButton.setText(R.string.breathe_in_button_text);
+            if (breathsTaken < numBreathsChoice) {
+                binding.breatheInfoTextView.setText(R.string.breathe_in_text);
 
                 if (motionEvent.getAction() == MotionEvent.ACTION_DOWN) {
                     // the button is pressed
@@ -140,40 +167,75 @@ public class BreatheActivity extends AppCompatActivity {
     }
 
     private void buttonPressed(AnimatorSet scaleUp, Handler handler) {
+        calmMusic = MediaPlayer.create(this, R.raw.windy_sea_loop);
+        calmMusic.start();
+
         buttonPressedTimerStart = System.currentTimeMillis();
-        binding.breatheButton.setBackgroundColor(Color.BLACK);
+        binding.breatheButton.setBackgroundResource(R.drawable.green_circle);
 
         //Animation for button size increase
+        float BUTTON_SIZE_MAX = 1.5f;
         ObjectAnimator scaleUpX = ObjectAnimator.ofFloat(
                 binding.breatheButton, "scaleX", BUTTON_SIZE_MAX
         );
         ObjectAnimator scaleUpY = ObjectAnimator.ofFloat(
                 binding.breatheButton, "scaleY", BUTTON_SIZE_MAX
         );
-        scaleUpX.setDuration(MAX_ANIMATION_DURATION);
-        scaleUpY.setDuration(MAX_ANIMATION_DURATION);
+        scaleUpX.setDuration(MAX_ANIMATION_DURATION_MILLISECONDS);
+        scaleUpY.setDuration(MAX_ANIMATION_DURATION_MILLISECONDS);
         scaleUp.play(scaleUpX).with(scaleUpY);
         scaleUp.start();
 
-        //Tell user to let go of button after 10s
+        scaleUp.addListener(new Animator.AnimatorListener() {
+            @Override
+            public void onAnimationStart(Animator animator) {
+
+            }
+
+            @Override
+            public void onAnimationEnd(Animator animator) {
+                calmMusic.pause();
+            }
+
+            @Override
+            public void onAnimationCancel(Animator animator) {
+            }
+
+            @Override
+            public void onAnimationRepeat(Animator animator) {
+
+            }
+        });
+
+        // change the colour of the circle to red after 3 seconds of breathing in
         handler.postDelayed(
-                () -> Toast.makeText(
-                        BreatheActivity.this,
-                        getResources().getString(R.string.toast_10s_button_held),
-                        Toast.LENGTH_SHORT)
-                        .show(),
-                MAX_ANIMATION_DURATION);
+                () -> binding.breatheButton.setBackgroundResource(R.drawable.red_circle),
+                TIME_BREATHE_GOOD_MILLISECONDS
+        );
+
+        //Tell user to let go of button after 10s
+        handler.postDelayed(() -> {
+            Toast.makeText(
+                    BreatheActivity.this,
+                    getResources().getString(R.string.toast_10s_button_held),
+                    Toast.LENGTH_SHORT)
+                    .show();
+        }, MAX_ANIMATION_DURATION_MILLISECONDS);
     }
 
     private void buttonReleased(AnimatorSet scaleUp, Handler handler) {
+        binding.breatheButton.setEnabled(false);
+        calmMusic.start();
+
+
         handler.removeCallbacksAndMessages(null);
         scaleUp.cancel();
 
-        timeButtonHeldFor = System.currentTimeMillis() - buttonPressedTimerStart;
+        long timeButtonHeldFor = System.currentTimeMillis() - buttonPressedTimerStart;
 
         //Button held for more than 3 seconds
-        if (TimeUnit.MILLISECONDS.toSeconds(timeButtonHeldFor) >= TIME_BREATHE_GOOD) {
-            binding.breatheButton.setText(R.string.breathe_out_button_text);
+        if (timeButtonHeldFor >= TIME_BREATHE_GOOD_MILLISECONDS) {
+            binding.breatheInfoTextView.setText(R.string.breathe_out_text);
 
             breathsTaken++;
             updateBreathCountTextView();
@@ -188,20 +250,11 @@ public class BreatheActivity extends AppCompatActivity {
         else {
             resetSize(binding.breatheButton);
         }
-
-        // not sure if we need the following toast
-        Toast.makeText(
-                this,
-                getResources().getString(
-                        R.string.button_time_held,
-                        TimeUnit.MILLISECONDS.toSeconds(timeButtonHeldFor)
-                ),
-                Toast.LENGTH_SHORT
-        ).show();
     }
 
     @SuppressLint("ClickableViewAccessibility")
     private void buttonExhale(float buttonX, float buttonY) {
+        calmMusic.start();
 
         // basically we want to show the exhale animation for 10 seconds (at least 3 seconds)
         AnimatorSet scaleDown = new AnimatorSet();
@@ -209,7 +262,7 @@ public class BreatheActivity extends AppCompatActivity {
 
         binding.breatheButton.setScaleX(buttonX);
         binding.breatheButton.setScaleY(buttonY);
-        binding.breatheButton.setBackgroundColor(Color.RED);
+        binding.breatheButton.setBackgroundResource(R.drawable.red_circle);
 
         //Animation for button size increase
         ObjectAnimator scaleDownX = ObjectAnimator.ofFloat(
@@ -218,34 +271,62 @@ public class BreatheActivity extends AppCompatActivity {
         ObjectAnimator scaleDownY = ObjectAnimator.ofFloat(
                 binding.breatheButton, "scaleY", BUTTON_DEFAULT_SIZE
         );
-        scaleDownX.setDuration(MAX_ANIMATION_DURATION);
-        scaleDownY.setDuration(MAX_ANIMATION_DURATION);
+
+        scaleDownX.setDuration(MAX_ANIMATION_DURATION_MILLISECONDS);
+        scaleDownY.setDuration(MAX_ANIMATION_DURATION_MILLISECONDS);
         scaleDown.play(scaleDownX).with(scaleDownY);
         scaleDown.start();
 
-        // todo: should we disable touchListener/ button for the
-        //  3 seconds while the user is breathing out
+        scaleDown.addListener(new Animator.AnimatorListener() {
+            @Override
+            public void onAnimationStart(Animator animator) {
+
+            }
+
+            @Override
+            public void onAnimationEnd(Animator animator) {
+                calmMusic.pause();
+            }
+
+            @Override
+            public void onAnimationCancel(Animator animator) {
+
+            }
+
+            @Override
+            public void onAnimationRepeat(Animator animator) {
+
+            }
+        });
 
         // changes the text of the button after 3 seconds of exhaling out
         handler.postDelayed(() -> {
-            // also 'might' want to disable the onTouchListener on the button for
-            // the next 3 seconds while the user exhales out
-
-            if (breathsTaken == numBreaths) {
-                binding.breatheButton.setText(R.string.all_breaths_taken);
+            if (breathsTaken == numBreathsChoice) {
+                saveChoice(numBreathsChoice);
+                binding.breatheInfoTextView.setText(R.string.all_breaths_taken);
             } else {
-                binding.breatheButton.setText(R.string.breathe_in_button_text);
+                binding.breatheInfoTextView.setText(R.string.breathe_in_text);
             }
-        }, 3000);
+            binding.breatheButton.setBackgroundResource(R.drawable.green_circle);
+            binding.breatheButton.setEnabled(true);
+        }, TIME_BREATHE_GOOD_MILLISECONDS);
 
     }
 
-    private void resetSize(Button btn) {
+    private void resetSize(ImageButton btn) {
         btn.setScaleX(BUTTON_DEFAULT_SIZE);
         btn.setScaleY(BUTTON_DEFAULT_SIZE);
+        binding.breatheButton.setEnabled(true);
     }
 
     public static Intent getIntent(Context context) {
         return new Intent(context, BreatheActivity.class);
+    }
+
+    private void saveChoice(int choice) {
+        sharedPreferences = getSharedPreferences(SHARED_PREFS_NAME, Activity.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putInt(BREATHES, choice);
+        editor.apply();
     }
 }

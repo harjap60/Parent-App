@@ -129,7 +129,7 @@
     <string name="task_name">Task Name</string>
     <string name="resources_used">Resources Used</string>
     <string name="team_helium">Team Helium</string>
-    <string name="resource_links1">Menu Timer: https://icons8.com/icon/8YCHhvwCdMI0/clock\nMenu Tasks: https://icons8.com/icon/0Y3lDsW7gKTm/tasks\nMenu add/delete: https://icons8.com/icon/iJRdexk2R7eH/add\nMenu Coin: https://icons8.com/icon/SohcD1NaJrgg/us-dollar\nCoin heads: https://www.subpng.com/png-l21sit/\nCoin sound: https://bit.ly/3CGyNIT\nCoin tails: https://bit.ly/3kXESeg\nFlip Coin: https://bit.ly/3CCAGGI</string>
+    <string name="resource_links1">Menu Timer: https://icons8.com/icon/8YCHhvwCdMI0/clock\nMenu Tasks: https://icons8.com/icon/0Y3lDsW7gKTm/tasks\nMenu add/delete: https://icons8.com/icon/iJRdexk2R7eH/add\nMenu Coin: https://icons8.com/icon/SohcD1NaJrgg/us-dollar\nCoin heads: https://www.subpng.com/png-l21sit/\nCoin sound: https://bit.ly/3CGyNIT\nCoin tails: https://bit.ly/3kXESeg\nFlip Coin: https://bit.ly/3CCAGGI\nCalming Sound: https://mixkit.co/free-sound-effects/sea/</string>
     <string name="meet_the_team">Meet the Team:\nDivij\nSagardeep\nSukhpal\nHarjap</string>
     <string name="help_button_text">Help</string>
 
@@ -149,12 +149,12 @@
     <string name="no_children_configure_message">No Children Configured.</string>
     <string name="breathe">Breathe</string>
     <string name="toss_result">Toss Result</string>
-    <string name="toast_10s_button_held">LET GO OF ME!!!</string>
+    <string name="toast_10s_button_held">Release your breath</string>
     <string name="button_time_held">\Held button for: %1$ds</string>
     <string name="text_view_breaths_taken_count">Taken %1$d of %2$d breaths</string>
 
-    <string name="breathe_in_button_text">Breathe IN</string>
-    <string name="breathe_out_button_text">Breathe OUT</string>
+    <string name="breathe_in_text">Breathe IN</string>
+    <string name="breathe_out_text">Breathe OUT</string>
     <string name="all_breaths_taken">Good Job</string>
     <string name="breathe_value_null">Please enter a number.</string>
     <string name="breaths_entered_invalid">Number of breaths must be between %1$d and %2$d</string>
@@ -179,4 +179,7 @@
     <string name="_300">300%</string>
     <string name="_400">400%</string>
     <string name="task_history_deleted_child">Deleted Child</string>
+    <string name="how_many_breaths_would_you_like_to_take">How many breaths would you like to take?</string>
+    <string name="begin">Begin</string>
+    <string name="button_increase_decrease_size">button increase decrease size</string>
 </resources>
