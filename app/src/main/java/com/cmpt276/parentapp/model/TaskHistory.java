@@ -3,11 +3,10 @@ package com.cmpt276.parentapp.model;
 import static androidx.room.ForeignKey.CASCADE;
 import static androidx.room.ForeignKey.SET_NULL;
 
+import androidx.annotation.Nullable;
 import androidx.room.Entity;
 import androidx.room.ForeignKey;
 import androidx.room.PrimaryKey;
-
-import androidx.annotation.Nullable;
 
 import java.time.LocalDateTime;
 
