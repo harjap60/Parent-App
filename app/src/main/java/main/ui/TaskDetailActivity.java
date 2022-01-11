@@ -16,14 +16,15 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.bumptech.glide.Glide;
-import main.model.ParentAppDatabase;
-import main.model.TaskDao;
-import main.model.TaskHistory;
-import main.model.TaskWithChild;
 import com.cmpt276.parentapp.R;
 import com.cmpt276.parentapp.databinding.ActivityTaskDetailBinding;
 
 import java.time.LocalDateTime;
+
+import main.model.ParentAppDatabase;
+import main.model.TaskDao;
+import main.model.TaskHistory;
+import main.model.TaskWithChild;
 
 public class TaskDetailActivity extends AppCompatActivity {
 

@@ -13,13 +13,6 @@ import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
-import main.model.Child;
-import main.model.ChildDao;
-import main.model.ChildTaskCrossRef;
-import main.model.ParentAppDatabase;
-import main.model.Task;
-import main.model.TaskDao;
-import main.model.TaskWithChild;
 import com.cmpt276.parentapp.R;
 import com.cmpt276.parentapp.databinding.ActivityTaskBinding;
 
@@ -27,6 +20,13 @@ import java.util.List;
 import java.util.Objects;
 
 import io.reactivex.rxjava3.schedulers.Schedulers;
+import main.model.Child;
+import main.model.ChildDao;
+import main.model.ChildTaskCrossRef;
+import main.model.ParentAppDatabase;
+import main.model.Task;
+import main.model.TaskDao;
+import main.model.TaskWithChild;
 
 /**
  * Adding new Task Activity - This activity lets you add a new task to the list.

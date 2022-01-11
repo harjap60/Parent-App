@@ -52,7 +52,6 @@ public class BreatheActivity extends AppCompatActivity {
     private MediaPlayer calmMusic;
 
 
-
     private int numBreathsChoice;
     int breathsTaken;
 

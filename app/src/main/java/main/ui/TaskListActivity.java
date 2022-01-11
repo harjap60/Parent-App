@@ -18,13 +18,14 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import com.bumptech.glide.Glide;
-import main.model.ParentAppDatabase;
-import main.model.TaskDao;
-import main.model.TaskWithChild;
 import com.cmpt276.parentapp.R;
 import com.cmpt276.parentapp.databinding.ActivityTaskListBinding;
 
 import java.util.List;
+
+import main.model.ParentAppDatabase;
+import main.model.TaskDao;
+import main.model.TaskWithChild;
 
 /**
  * +

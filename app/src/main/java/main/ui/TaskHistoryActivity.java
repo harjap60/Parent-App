@@ -16,14 +16,15 @@ import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.bumptech.glide.Glide;
-import main.model.ParentAppDatabase;
-import main.model.TaskDao;
-import main.model.TaskHistoryWithChild;
-import main.model.TaskWithHistory;
 import com.cmpt276.parentapp.R;
 import com.cmpt276.parentapp.databinding.ActivityTaskHistoryBinding;
 
 import java.time.format.DateTimeFormatter;
+
+import main.model.ParentAppDatabase;
+import main.model.TaskDao;
+import main.model.TaskHistoryWithChild;
+import main.model.TaskWithHistory;
 
 public class TaskHistoryActivity extends AppCompatActivity {
 

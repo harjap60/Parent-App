@@ -12,11 +12,6 @@ import android.widget.TextView;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
-import main.model.Child;
-import main.model.ChildCoinFlip;
-import main.model.CoinFlip;
-import main.model.CoinFlipDao;
-import main.model.ParentAppDatabase;
 import com.cmpt276.parentapp.R;
 import com.cmpt276.parentapp.databinding.ActivityFlipHistoryBinding;
 
@@ -24,6 +19,11 @@ import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 import io.reactivex.rxjava3.schedulers.Schedulers;
+import main.model.Child;
+import main.model.ChildCoinFlip;
+import main.model.CoinFlip;
+import main.model.CoinFlipDao;
+import main.model.ParentAppDatabase;
 
 /**
  * Activity to print list of all flips that have happened

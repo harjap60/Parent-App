@@ -18,13 +18,14 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import com.bumptech.glide.Glide;
-import main.model.Child;
-import main.model.ChildDao;
-import main.model.ParentAppDatabase;
 import com.cmpt276.parentapp.R;
 import com.cmpt276.parentapp.databinding.ActivityChildListBinding;
 
 import java.util.List;
+
+import main.model.Child;
+import main.model.ChildDao;
+import main.model.ParentAppDatabase;
 
 /**
  * Child List Activity - This activity will display a list of all the

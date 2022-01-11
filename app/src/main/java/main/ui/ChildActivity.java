@@ -26,12 +26,6 @@ import androidx.core.content.ContextCompat;
 import androidx.core.content.FileProvider;
 
 import com.bumptech.glide.Glide;
-import main.model.Child;
-import main.model.ChildDao;
-import main.model.ChildTaskCrossRef;
-import main.model.ParentAppDatabase;
-import main.model.Task;
-import main.model.TaskDao;
 import com.cmpt276.parentapp.R;
 import com.cmpt276.parentapp.databinding.ActivityChildBinding;
 
@@ -45,6 +39,12 @@ import java.util.Objects;
 import io.reactivex.rxjava3.core.CompletableObserver;
 import io.reactivex.rxjava3.disposables.Disposable;
 import io.reactivex.rxjava3.schedulers.Schedulers;
+import main.model.Child;
+import main.model.ChildDao;
+import main.model.ChildTaskCrossRef;
+import main.model.ParentAppDatabase;
+import main.model.Task;
+import main.model.TaskDao;
 
 /**
  * Add Child Activity - This activity lets you add a new child to the list.

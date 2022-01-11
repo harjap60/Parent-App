@@ -25,12 +25,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.room.rxjava3.EmptyResultSetException;
 
 import com.bumptech.glide.Glide;
-import main.model.Child;
-import main.model.ChildCoinFlip;
-import main.model.ChildDao;
-import main.model.CoinFlip;
-import main.model.CoinFlipDao;
-import main.model.ParentAppDatabase;
 import com.cmpt276.parentapp.R;
 import com.cmpt276.parentapp.databinding.ActivityFlipBinding;
 
@@ -42,6 +36,12 @@ import io.reactivex.rxjava3.annotations.NonNull;
 import io.reactivex.rxjava3.core.SingleObserver;
 import io.reactivex.rxjava3.disposables.Disposable;
 import io.reactivex.rxjava3.schedulers.Schedulers;
+import main.model.Child;
+import main.model.ChildCoinFlip;
+import main.model.ChildDao;
+import main.model.CoinFlip;
+import main.model.CoinFlipDao;
+import main.model.ParentAppDatabase;
 
 /**
  * Flip Activity provides the UI for the Coin Flip.
