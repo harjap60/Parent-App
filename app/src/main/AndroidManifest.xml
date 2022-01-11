@@ -27,50 +27,50 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.ParentApp.NoActionBar">
         <activity
-            android:name=".ui.TaskHistoryActivity"
+            android:name="main.ui.TaskHistoryActivity"
             android:exported="true"
-            android:parentActivityName=".ui.TaskDetailActivity" />
+            android:parentActivityName="main.ui.TaskDetailActivity" />
         <activity
-            android:name=".ui.BreatheActivity"
+            android:name="main.ui.BreatheActivity"
             android:exported="false"
-            android:parentActivityName=".ui.MainActivity" />
+            android:parentActivityName="main.ui.MainActivity" />
         <activity
-            android:name=".ui.TaskDetailActivity"
+            android:name="main.ui.TaskDetailActivity"
             android:exported="false"
-            android:parentActivityName=".ui.TaskListActivity" />
+            android:parentActivityName="main.ui.TaskListActivity" />
         <activity
-            android:name=".ui.HelpActivity"
+            android:name="main.ui.HelpActivity"
             android:exported="false"
-            android:parentActivityName=".ui.MainActivity" />
+            android:parentActivityName="main.ui.MainActivity" />
         <activity
-            android:name=".ui.TaskActivity"
+            android:name="main.ui.TaskActivity"
             android:exported="false" />
         <activity
-            android:name=".ui.TaskListActivity"
+            android:name="main.ui.TaskListActivity"
             android:exported="false"
-            android:parentActivityName=".ui.MainActivity" />
+            android:parentActivityName="main.ui.MainActivity" />
         <activity
-            android:name=".ui.FlipHistoryActivity"
+            android:name="main.ui.FlipHistoryActivity"
             android:exported="false"
-            android:parentActivityName=".ui.FlipActivity" />
+            android:parentActivityName="main.ui.FlipActivity" />
         <activity
-            android:name=".ui.ChildActivity"
+            android:name="main.ui.ChildActivity"
             android:exported="false"
-            android:parentActivityName=".ui.MainActivity" />
+            android:parentActivityName="main.ui.MainActivity" />
         <activity
-            android:name=".ui.ChildListActivity"
+            android:name="main.ui.ChildListActivity"
             android:exported="false"
-            android:parentActivityName=".ui.MainActivity" />
+            android:parentActivityName="main.ui.MainActivity" />
         <activity
-            android:name=".ui.TimerActivity"
+            android:name="main.ui.TimerActivity"
             android:exported="false"
-            android:parentActivityName=".ui.MainActivity" />
+            android:parentActivityName="main.ui.MainActivity" />
         <activity
-            android:name=".ui.FlipActivity"
+            android:name="main.ui.FlipActivity"
             android:exported="false"
-            android:parentActivityName=".ui.MainActivity" />
+            android:parentActivityName="main.ui.MainActivity" />
         <activity
-            android:name=".ui.MainActivity"
+            android:name="main.ui.MainActivity"
             android:exported="true"
             android:label="@string/app_name">
             <intent-filter>
@@ -84,7 +84,7 @@
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />
 
-        <service android:name=".ui.TimerService" />
+        <service android:name="main.ui.TimerService" />
 
         <provider
             android:name="androidx.core.content.FileProvider"

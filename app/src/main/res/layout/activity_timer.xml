@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="@drawable/blue_gradient"
     android:orientation="vertical"
-    tools:context=".ui.TimerActivity">
+    tools:context="main.ui.TimerActivity">
 
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/appBarLayout"
