@@ -8,9 +8,9 @@
 
 <p float="center" align="center">
   <img src="https://user-images.githubusercontent.com/76246845/148919559-6f06b5ef-4117-4731-9c22-e434cba111a0.png" width="351" height="713"/>
-  <img src="https://user-images.githubusercontent.com/76246845/148919542-162af4f4-1907-446d-b863-2fa0a4c0cd7f.png" width="351" height="713/> 
+  <img src="https://user-images.githubusercontent.com/76246845/148919542-162af4f4-1907-446d-b863-2fa0a4c0cd7f.png" width="351" height="713"/> 
 </p>
-
+                                                                                                                                  
 - This Android app is compatible with all android phones and tablets running Android Oreo and above(API 27+).
 - App designed for portrait mode only
 - (Style Guide) https://google.github.io/styleguide/javaguide.html
