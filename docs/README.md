@@ -13,5 +13,6 @@
                                                                                                                                   
 - This Android app is compatible with all android phones and tablets running Android Oreo and above(API 27+).
 - App designed for portrait mode only
+- App adjusts to all screen sizes
 - (Style Guide) https://google.github.io/styleguide/javaguide.html
 
