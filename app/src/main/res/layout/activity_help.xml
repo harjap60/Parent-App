@@ -107,7 +107,7 @@
                     android:autoSizeTextType="uniform"
                     android:fontFamily="@font/roboto"
                     android:maxLines="5"
-                    android:text="@string/meet_the_team"
+                    android:text=""
                     android:textAlignment="center"
                     android:textColor="@color/black"
                     android:textSize="11sp"
